@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
+    <PackageReference Include="Pidgin" />
+    <PackageReference Include="Sprache" />
+    <PackageReference Include="Superpower" />
   </ItemGroup>
 
   <ItemGroup>

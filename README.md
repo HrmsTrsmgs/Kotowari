@@ -17,11 +17,21 @@ The test suites use xUnit v3 and Fluent Assertions. Fluent Assertions 8 is free 
 
 ## Benchmarks
 
-Benchmarks are implemented with BenchmarkDotNet and include `System.Text.Json` as the platform baseline.
+Benchmarks parse the bundled 4 MB JSON sample with Kotowari, Pidgin, Sprache, and Superpower. Kotowari is the BenchmarkDotNet baseline; `System.Text.Json` is included separately as a reference for a dedicated JSON parser.
+
+Validate that every parser can consume the sample before measuring:
+
+```powershell
+dotnet run --project Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj -c Release -- --validate
+```
+
+Run the benchmark:
 
 ```powershell
 dotnet run --project Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj -c Release
 ```
+
+Versioned benchmark records are stored in [`Kotowari.Benchmarks/Results`](Kotowari.Benchmarks/Results). Each record includes the input hash, environment, dependency versions, results, and known limitations.
 
 ## License
 
