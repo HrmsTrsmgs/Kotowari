@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JsonParser\JsonParser.csproj" />
-    <ProjectReference Include="..\ParserCombinator\ParserCombinator.csproj" />
+    <ProjectReference Include="..\Kotowari\Marimo.Kotowari.csproj" />
   </ItemGroup>
 
 </Project>

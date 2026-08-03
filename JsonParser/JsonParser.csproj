@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ParserCombinator\ParserCombinator.csproj" />
+    <ProjectReference Include="..\Kotowari\Marimo.Kotowari.csproj" />
   </ItemGroup>
 
 </Project>

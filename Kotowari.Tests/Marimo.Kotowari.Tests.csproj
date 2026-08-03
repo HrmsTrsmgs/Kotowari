@@ -1,13 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Marimo.Parser.Test</AssemblyName>
+    <AssemblyName>Marimo.Kotowari.Tests</AssemblyName>
 
-    <RootNamespace>Marimo.Parser.Test</RootNamespace>
+    <RootNamespace>Marimo.Kotowari.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\JsonParser\JsonParser.csproj" />
     <ProjectReference Include="..\Kotowari\Marimo.Kotowari.csproj" />
   </ItemGroup>
 
