@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari.Core;
+﻿using FluentAssertions;
+using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("public");
             var parser = new CharParser('p');
             var tested = new DebugParser<char>(parser, () => { });
-            (tested.Parse(cursol)).IsStructuralEqual(parser.Parse(cursol));
+            tested.Parse(cursol).Should().Be(parser.Parse(cursol));
         }
         [Fact]
         public void ParseAsyncは内部パーサーと同じように失敗します()
@@ -23,7 +24,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("public");
             var parser = new CharParser('a');
             var tested = new DebugParser<char>(parser, () => { });
-            (tested.Parse(cursol)).IsStructuralEqual(parser.Parse(cursol));
+            tested.Parse(cursol).Should().Be(parser.Parse(cursol));
         }
 
         [Fact]
@@ -34,9 +35,9 @@ namespace Marimo.Kotowari.Tests.Core
             var parser = new CharParser('a');
             var tested = new DebugParser<char>(parser, () => { isActioned = true; });
 
-            isActioned.IsFalse();
+            isActioned.Should().BeFalse();
             tested.Parse(cursol);
-            isActioned.IsTrue();
+            isActioned.Should().BeTrue();
         }
     }
 }

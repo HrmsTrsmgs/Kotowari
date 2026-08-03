@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari.Core;
+﻿using FluentAssertions;
+using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("b"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -31,7 +32,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("b"));
 
-            cursol.Index.Is(0);
+            cursol.Index.Should().Be(0);
         }
 
         [Fact]
@@ -43,7 +44,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("b"));
 
-            parsed.Count().Is(0);
+            parsed.Should().BeEmpty();
         }
 
         [Fact]
@@ -55,7 +56,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
         [Fact]
         public void 最初の要素のパースに成功すればカーソルが進みます()
@@ -66,7 +67,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("a"));
 
-            cursol.Index.Is("a".Length);
+            cursol.Index.Should().Be("a".Length);
         }
         [Fact]
         public void 最初の要素のパースに成功すれば最初の一つが結果になります()
@@ -77,7 +78,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("a"));
 
-            parsed.Is(new[] { 'a' });
+            parsed.Should().Equal('a');
         }
         [Fact]
         public void 区切り子で終わった場合は区切り子は読み込みません()
@@ -88,7 +89,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("a,"));
 
-            cursol.Index.Is("a".Length);
+            cursol.Index.Should().Be("a".Length);
         }
 
         [Fact]
@@ -100,7 +101,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("a,a"));
 
-            parsed.Is(new[] { 'a', 'a' });
+            parsed.Should().Equal('a', 'a');
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari;
+﻿using FluentAssertions;
+using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -29,7 +30,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは指定した単語を読み込みます()
@@ -39,7 +40,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.parsed.Is("public");
+            result.parsed.Should().Be("public");
         }
 
 
@@ -51,7 +52,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is(4);
+            result.cursol.Index.Should().Be(4);
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is(0);
+            result.cursol.Index.Should().Be(0);
         }
 
         [Fact]
@@ -73,7 +74,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is(7);
+            result.cursol.Index.Should().Be(7);
         }
 
         [Fact]
@@ -84,7 +85,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is(7);
+            result.cursol.Index.Should().Be(7);
         }
     }
 }

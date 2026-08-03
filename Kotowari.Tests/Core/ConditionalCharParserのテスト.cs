@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari;
+﻿using FluentAssertions;
+using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -29,7 +30,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.parsed.Is('p');
+            result.parsed.Should().Be('p');
         }
 
         [Fact]
@@ -40,7 +41,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -51,7 +52,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is(1);
+            result.cursol.Index.Should().Be(1);
         }
     }
 }

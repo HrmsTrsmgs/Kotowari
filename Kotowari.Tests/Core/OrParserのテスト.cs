@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari.Core;
+﻿using FluentAssertions;
+using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +17,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("abc"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
 
@@ -27,7 +28,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("abc"));
 
-            parsed.Is("abc");
+            parsed.Should().Be("abc");
         }
 
         [Fact]
@@ -37,7 +38,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("abc"));
 
-            cursol.Index.Is("abc".Length);
+            cursol.Index.Should().Be("abc".Length);
        }
 
         [Fact]
@@ -47,7 +48,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("ab"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -57,7 +58,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("abc"));
 
-            parsed.Is("abc");
+            parsed.Should().Be("abc");
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("ab"));
 
-            cursol.Index.Is("ab".Length);
+            cursol.Index.Should().Be("ab".Length);
         }
 
         [Fact]
@@ -77,7 +78,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
 
-            isSuccess.IsFalse();
+            isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -87,7 +88,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("a"));
 
-            cursol.Index.Is(0);
+            cursol.Index.Should().Be(0);
         }
     }
 }

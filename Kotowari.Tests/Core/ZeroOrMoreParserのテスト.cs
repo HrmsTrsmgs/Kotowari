@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari.Core;
+﻿using FluentAssertions;
+using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("b"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("b"));
 
-            cursol.Index.Is(0);
+            cursol.Index.Should().Be(0);
         }
 
         [Fact]
@@ -36,7 +37,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("b"));
 
-            parsed.Count().Is(0);
+            parsed.Should().BeEmpty();
         }
 
         [Fact]
@@ -46,7 +47,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("a"));
 
-            cursol.Index.Is("a".Length);
+            cursol.Index.Should().Be("a".Length);
         }
 
         [Fact]
@@ -66,8 +67,8 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("a"));
 
-            parsed.Count().Is(1);
-            parsed.ElementAt(0).Is('a');
+            parsed.Should().ContainSingle();
+            parsed.ElementAt(0).Should().Be('a');
         }
 
         [Fact]
@@ -77,7 +78,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, cursol, _) = tested.Parse(new Cursol("aa"));
 
-            cursol.Index.Is("aa".Length);
+            cursol.Index.Should().Be("aa".Length);
         }
 
         [Fact]
@@ -87,9 +88,9 @@ namespace Marimo.Kotowari.Tests.Core
 
             var (_, _, parsed) = tested.Parse(new Cursol("aa"));
 
-            parsed.Count().Is(2);
-            parsed.ElementAt(0).Is('a');
-            parsed.ElementAt(1).Is('a');
+            parsed.Count().Should().Be(2);
+            parsed.ElementAt(0).Should().Be('a');
+            parsed.ElementAt(1).Should().Be('a');
         }
     }
 }

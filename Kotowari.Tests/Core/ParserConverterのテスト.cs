@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari;
+﻿using FluentAssertions;
+using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Marimo.Kotowari.Tests.Core
         {
             var (isSuccess, _, _) = Tested.Parse(new Cursol("123"));
 
-            isSuccess.IsTrue();
+            isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -37,7 +38,7 @@ namespace Marimo.Kotowari.Tests.Core
         {
             var (isSuccess, _, _) = Tested.Parse(new Cursol("124"));
 
-            isSuccess.IsFalse();
+            isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -45,7 +46,7 @@ namespace Marimo.Kotowari.Tests.Core
         {
             var (_, _, parsed) = Tested.Parse(new Cursol("123"));
 
-            parsed.Is(123);
+            parsed.Should().Be(123);
         }
 
         [Fact]
@@ -53,14 +54,14 @@ namespace Marimo.Kotowari.Tests.Core
         {
             var (_, cursol, _) = Tested.Parse(new Cursol("123"));
 
-            cursol.Index.Is(3);
+            cursol.Index.Should().Be(3);
         }
         [Fact]
         public void 失敗した時はカーソルが進みません()
         {
             var (_, cursol, _) = Tested.Parse(new Cursol("124"));
 
-            cursol.Index.Is(0);
+            cursol.Index.Should().Be(0);
         }
     }
 }

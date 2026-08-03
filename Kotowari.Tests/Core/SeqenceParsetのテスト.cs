@@ -1,4 +1,5 @@
-﻿using Marimo.Kotowari;
+﻿using FluentAssertions;
+using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -36,7 +37,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -46,7 +47,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -56,7 +57,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("public", "static"));
+            result.parsed.Should().Be(("public", "static"));
         }
 
         [Fact]
@@ -67,7 +68,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = tested.Parse(cursol);
 
-            result.cursol.Index.Is("public static".Length);
+            result.cursol.Index.Should().Be("public static".Length);
         }
     }
     public class 要素を3つ持つSeqenceParserのテスト
@@ -90,7 +91,7 @@ namespace Marimo.Kotowari.Tests.Core
             
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -100,7 +101,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -110,7 +111,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -120,7 +121,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -130,7 +131,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("public", "static", "int"));
+            result.parsed.Should().Be(("public", "static", "int"));
         }
 
         [Fact]
@@ -140,7 +141,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("public static int".Length);
+            result.cursol.Index.Should().Be("public static int".Length);
         }
     }
     public class 要素を4つ持つSeqenceParserのテスト
@@ -162,7 +163,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -172,7 +173,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -182,7 +183,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -191,7 +192,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -201,7 +202,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -210,7 +211,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh"));
         }
 
         [Fact]
@@ -220,7 +221,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh".Length);
         }
     }
     public class 要素を5つ持つSeqenceParserのテスト
@@ -243,7 +244,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -253,7 +254,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -263,7 +264,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -272,7 +273,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -282,7 +283,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -292,7 +293,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -301,7 +302,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij"));
         }
 
         [Fact]
@@ -311,7 +312,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij".Length);
         }
     }
     public class 要素を6つ持つSeqenceParserのテスト
@@ -335,7 +336,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -345,7 +346,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -355,7 +356,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -364,7 +365,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -374,7 +375,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -384,7 +385,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -394,7 +395,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -403,7 +404,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij kl");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij", "kl"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl"));
         }
 
         [Fact]
@@ -413,7 +414,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij kl".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij kl".Length);
         }
     }
     public class 要素を7つ持つSeqenceParserのテスト
@@ -438,7 +439,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -448,7 +449,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -458,7 +459,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -467,7 +468,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -477,7 +478,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -487,7 +488,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -497,7 +498,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -507,7 +508,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -516,7 +517,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij kl mn");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij", "kl", "mn"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn"));
         }
 
         [Fact]
@@ -526,7 +527,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij kl mn".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij kl mn".Length);
         }
     }
     public class 要素を8つ持つSeqenceParserのテスト
@@ -552,7 +553,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -562,7 +563,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -572,7 +573,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -581,7 +582,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -591,7 +592,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -601,7 +602,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -611,7 +612,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -621,7 +622,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -631,7 +632,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -640,7 +641,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij kl mn op");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op"));
         }
 
         [Fact]
@@ -650,7 +651,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij kl mn op".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op".Length);
         }
     }
     public class 要素を9つ持つSeqenceParserのテスト
@@ -677,7 +678,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -687,7 +688,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -697,7 +698,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -706,7 +707,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -716,7 +717,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -726,7 +727,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -736,7 +737,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -746,7 +747,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -756,7 +757,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -766,7 +767,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -775,7 +776,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij kl mn op qr");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr"));
         }
 
         [Fact]
@@ -785,7 +786,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij kl mn op qr".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr".Length);
         }
     }
     public class 要素を10持つSeqenceParserのテスト
@@ -813,7 +814,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsTrue();
+            result.isSuccess.Should().BeTrue();
         }
 
         [Fact]
@@ -823,7 +824,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -833,7 +834,7 @@ namespace Marimo.Kotowari.Tests.Core
             
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
         [Fact]
         public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -842,7 +843,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -852,7 +853,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -862,7 +863,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -872,7 +873,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -882,7 +883,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -892,7 +893,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -902,7 +903,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -912,7 +913,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.isSuccess.IsFalse();
+            result.isSuccess.Should().BeFalse();
         }
 
         [Fact]
@@ -921,7 +922,7 @@ namespace Marimo.Kotowari.Tests.Core
             var cursol = new Cursol("ab cd ef gh ij kl mn op qr st");
             var result = Tested.Parse(cursol);
 
-            result.parsed.Is(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr", "st"));
+            result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr", "st"));
         }
 
         [Fact]
@@ -931,7 +932,7 @@ namespace Marimo.Kotowari.Tests.Core
 
             var result = Tested.Parse(cursol);
 
-            result.cursol.Index.Is("ab cd ef gh ij kl mn op qr st".Length);
+            result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr st".Length);
         }
     }
 }

@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Marimo.Parser;
 using Marimo.Kotowari;
 using System;
@@ -13,7 +14,7 @@ namespace Marimo.Parser.Test
         {
             var result =JSON.Parse("{}");
 
-            result.Pairs.Count.Is(0);
+            result.Pairs.Should().BeEmpty();
         }
 
         [Fact]
@@ -21,20 +22,20 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":1}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = result["a"];
-            value.IsInstanceOf<JSONLiteral>();
+            value.Should().BeOfType<JSONLiteral>();
         }
         [Fact]
         public void オブジェクトの中身は複数持てます()
         {
             var result = JSON.Parse(@"{""a"":1,""b"":2}");
 
-            result.Pairs.Count.Is(2);
+            result.Pairs.Count.Should().Be(2);
             var value = result["a"];
-            value.IsInstanceOf<JSONLiteral>();
+            value.Should().BeOfType<JSONLiteral>();
             var value2 = result["b"];
-            value2.IsInstanceOf<JSONLiteral>();
+            value2.Should().BeOfType<JSONLiteral>();
         }
 
         [Fact]
@@ -42,10 +43,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":-1}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("-1");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("-1");
         }
 
         [Fact]
@@ -53,10 +54,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":123}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("123");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("123");
         }
 
         [Fact]
@@ -64,10 +65,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":1234567890}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("1234567890");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("1234567890");
         }
 
         [Fact]
@@ -75,10 +76,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":1.2}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("1.2");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("1.2");
         }
 
         [Fact]
@@ -86,30 +87,30 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":1.234}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("1.234");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("1.234");
         }
 
         [Fact]
         public void 数値は小数で整数部の数字は0個でも識別します()
         {
             var result = JSON.Parse(@"{""a"":}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("");
         }
 
         [Fact]
         public void 数値は小数で小数部の数字は0個でも識別します()
         {
             var result = JSON.Parse(@"{""a"":0.}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("0.");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("0.");
         }
 
         [Fact]
@@ -117,10 +118,10 @@ namespace Marimo.Parser.Test
         {
             // これで指数部が成立するか疑問なのだが移植なので。
             var result = JSON.Parse(@"{""a"":e}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("e");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("e");
         }
 
         [Fact]
@@ -128,10 +129,10 @@ namespace Marimo.Parser.Test
         {
             // これで指数部が成立するか疑問なのだが移植なので。
             var result = JSON.Parse(@"{""a"":E}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("E");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("E");
         }
 
         [Fact]
@@ -139,10 +140,10 @@ namespace Marimo.Parser.Test
         {
             // これで指数部が成立するか疑問なのだが移植なので。
             var result = JSON.Parse(@"{""a"":e+}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("e+");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("e+");
         }
 
         [Fact]
@@ -150,28 +151,28 @@ namespace Marimo.Parser.Test
         {
             // これで指数部が成立するか疑問なのだが移植なので。
             var result = JSON.Parse(@"{""a"":e-}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("e-");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("e-");
         }
         [Fact]
         public void 数値の指数部の数値を識別します()
         {
             var result = JSON.Parse(@"{""a"":e+0}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("e+0");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("e+0");
         }
         [Fact]
         public void 数値の指数部の複数の数字を識別します()
         {
             var result = JSON.Parse(@"{""a"":e+10}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("e+10");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("e+10");
         }
 
         [Fact]
@@ -191,10 +192,10 @@ namespace Marimo.Parser.Test
         public void 値が何もない場合は数値と判断されます()
         {
             var result = JSON.Parse(@"{""a"":}");
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Number);
-            value.Value.Is("");
+            value.ValueType.Should().Be(LiteralType.Number);
+            value.Value.Should().Be("");
         }
 
         [Fact]
@@ -202,10 +203,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":""b""}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.String);
-            value.Value.Is("b");
+            value.ValueType.Should().Be(LiteralType.String);
+            value.Value.Should().Be("b");
         }
 
         [Fact]
@@ -213,10 +214,10 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":""bc""}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.String);
-            value.Value.Is("bc");
+            value.ValueType.Should().Be(LiteralType.String);
+            value.Value.Should().Be("bc");
         }
 
         [Fact]
@@ -224,20 +225,20 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse("{\"a\":\"\\\\\\\"\\b\\f\\n\\r\\t\"}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.String);
-            value.Value.Is("\\\"\b\f\n\r\t");
+            value.ValueType.Should().Be(LiteralType.String);
+            value.Value.Should().Be("\\\"\b\f\n\r\t");
         }
         [Fact]
         public void 真偽値の値を識別します()
         {
             var result = JSON.Parse(@"{""a"":true}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Boolean);
-            value.Value.Is("true");
+            value.ValueType.Should().Be(LiteralType.Boolean);
+            value.Value.Should().Be("true");
         }
 
         [Fact]
@@ -245,13 +246,13 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":true,""b"":false}");
 
-            result.Pairs.Count.Is(2);
+            result.Pairs.Count.Should().Be(2);
             var trueValue = (JSONLiteral)result["a"];
-            trueValue.ValueType.Is(LiteralType.Boolean);
-            trueValue.Value.Is("true");
+            trueValue.ValueType.Should().Be(LiteralType.Boolean);
+            trueValue.Value.Should().Be("true");
             var falseValue = (JSONLiteral)result["b"];
-            falseValue.ValueType.Is(LiteralType.Boolean);
-            falseValue.Value.Is("false");
+            falseValue.ValueType.Should().Be(LiteralType.Boolean);
+            falseValue.Value.Should().Be("false");
         }
 
         [Fact]
@@ -259,23 +260,23 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":TRUE,""b"":FALSE}");
 
-            result.Pairs.Count.Is(2);
+            result.Pairs.Count.Should().Be(2);
             var trueValue = (JSONLiteral)result["a"];
-            trueValue.ValueType.Is(LiteralType.Boolean);
-            trueValue.Value.Is("TRUE");
+            trueValue.ValueType.Should().Be(LiteralType.Boolean);
+            trueValue.Value.Should().Be("TRUE");
             var falseValue = (JSONLiteral)result["b"];
-            falseValue.ValueType.Is(LiteralType.Boolean);
-            falseValue.Value.Is("FALSE");
+            falseValue.ValueType.Should().Be(LiteralType.Boolean);
+            falseValue.Value.Should().Be("FALSE");
         }
         [Fact]
         public void Nullの値を識別します()
         {
             var result = JSON.Parse(@"{""a"":null}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Null);
-            value.Value.IsNull();
+            value.ValueType.Should().Be(LiteralType.Null);
+            value.Value.Should().BeNull();
         }
 
         [Fact]
@@ -283,19 +284,19 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":NULL}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
-            value.ValueType.Is(LiteralType.Null);
-            value.Value.IsNull();
+            value.ValueType.Should().Be(LiteralType.Null);
+            value.Value.Should().BeNull();
         }
         [Fact]
         public void オブジェクトの中身の配列を識別します()
         {
             var result = JSON.Parse(@"{""a"":[]}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = result["a"];
-            value.IsInstanceOf<JSONArray>();
+            value.Should().BeOfType<JSONArray>();
         }
 
         [Fact]
@@ -303,30 +304,30 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":[1]}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var array = (JSONArray)result["a"];
-            array.Elements.Count.Is(1);
-            array.Elements[0].IsInstanceOf<JSONLiteral>();
+            array.Elements.Should().ContainSingle();
+            array.Elements[0].Should().BeOfType<JSONLiteral>();
         }
         [Fact]
         public void 配列は複数の要素を持ちます()
         {
             var result = JSON.Parse(@"{""a"":[1,2]}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var array = (JSONArray)result["a"];
-            array.Elements.Count.Is(2);
-            array.Elements[0].IsInstanceOf<JSONLiteral>();
-            array.Elements[1].IsInstanceOf<JSONLiteral>();
+            array.Elements.Count.Should().Be(2);
+            array.Elements[0].Should().BeOfType<JSONLiteral>();
+            array.Elements[1].Should().BeOfType<JSONLiteral>();
         }
         [Fact]
         public void オブジェクトの中身のオブジェクトを識別します()
         {
             var result = JSON.Parse(@"{""a"":{}}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var value = result["a"];
-            value.IsInstanceOf<JSONObject>();
+            value.Should().BeOfType<JSONObject>();
         }
 
         [Fact]
@@ -463,9 +464,9 @@ namespace Marimo.Parser.Test
         {
             var result = JSON.Parse(@"{""a"":"" b ""}");
 
-            result.Pairs.Count.Is(1);
+            result.Pairs.Should().ContainSingle();
             var str = (JSONLiteral)result["a"];
-            str.Value.Is(@" b ");
+            str.Value.Should().Be(@" b ");
         }
     }
 }
