@@ -27,6 +27,7 @@ public class JsonParserBenchmarks
             (nameof(Kotowari), benchmarks.Kotowari),
             (nameof(Pidgin), benchmarks.Pidgin),
             (nameof(Sprache), benchmarks.Sprache),
+            (nameof(SpracheJsonPackage), benchmarks.SpracheJsonPackage),
             (nameof(Superpower), benchmarks.Superpower),
             (nameof(SystemTextJson), () => benchmarks.SystemTextJson())
         })
@@ -51,6 +52,9 @@ public class JsonParserBenchmarks
         Marimo.Parser.JSONObject value => 1 + value.Pairs.Values.Sum(CountNodes),
         Marimo.Parser.JSONArray value => 1 + value.Elements.Sum(CountNodes),
         Marimo.Parser.JSONLiteral => 1,
+        SpracheJSON.JSONObject value => 1 + value.Pairs.Values.Sum(CountNodes),
+        SpracheJSON.JSONArray value => 1 + value.Elements.Sum(CountNodes),
+        SpracheJSON.JSONLiteral => 1,
         JsonElement value => CountNodes(value),
         _ => throw new InvalidOperationException($"Unknown JSON result type: {result.GetType()}")
     };
@@ -73,6 +77,9 @@ public class JsonParserBenchmarks
 
     [Benchmark]
     public object Sprache() => SpracheJsonParser.Parse(_json);
+
+    [Benchmark]
+    public object SpracheJsonPackage() => SpracheJSON.JSON.Parse(_json);
 
     [Benchmark]
     public object Superpower() => SuperpowerJsonParser.Parse(_json);

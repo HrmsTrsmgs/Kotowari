@@ -1,3 +1,4 @@
+using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Running;
 using System;
 using System.Linq;
@@ -14,6 +15,7 @@ public static class Program
             return;
         }
 
-        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+        var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);
+        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, config);
     }
 }

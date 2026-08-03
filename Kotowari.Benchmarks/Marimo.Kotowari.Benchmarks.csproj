@@ -11,7 +11,16 @@
     <PackageReference Include="BenchmarkDotNet" />
     <PackageReference Include="Pidgin" />
     <PackageReference Include="Sprache" />
+    <PackageReference Include="SpracheJSON" GeneratePathProperty="true" ExcludeAssets="compile;runtime" />
     <PackageReference Include="Superpower" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- SpracheJSON 1.0.1 packages its assembly outside the NuGet-selected lib root. -->
+    <Reference Include="SpracheJSON">
+      <HintPath>$(PkgSpracheJSON)\lib\net47\SpracheJSON.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -17,7 +17,7 @@ The test suites use xUnit v3 and Fluent Assertions. Fluent Assertions 8 is free 
 
 ## Benchmarks
 
-Benchmarks parse the bundled 4 MB JSON sample with Kotowari, Pidgin, Sprache, and Superpower. Kotowari is the BenchmarkDotNet baseline; `System.Text.Json` is included separately as a reference for a dedicated JSON parser.
+Benchmarks parse the bundled 4 MB JSON sample with Kotowari, Pidgin, Sprache, Superpower, and the legacy SpracheJSON package used by the original benchmark. Kotowari is the BenchmarkDotNet baseline; `System.Text.Json` is included separately as a reference for a dedicated JSON parser.
 
 Validate that every parser can consume the sample before measuring:
 
