@@ -40,7 +40,7 @@ public class WordParser : Parser<string>
             returnValue.Add(parsed);
         }
         current = SkipBlankAsync(current);
-        return (true, current, new string(returnValue.ToArray()));
+        return (true, current, new string([.. returnValue]));
     }
 
     private Cursol SkipBlankAsync(Cursol current)

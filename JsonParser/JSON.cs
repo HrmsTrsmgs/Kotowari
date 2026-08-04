@@ -90,7 +90,7 @@ public class JSON
     static Parser<string> Digits =
         new ParserConverter<IEnumerable<char>, string>(
             new OneOrMoreParser<char>(Digit),
-            chars => new string(chars.ToArray()));
+            chars => new string([.. chars]));
 
     static Parser<string> JExp =
         new ParserConverter<(char, Optional<char>, string), string>(
@@ -168,7 +168,7 @@ public class JSON
                     DoubleQuote,
                     new ZeroOrMoreParser<char>(JChar),
                     DoubleQuote),
-                tuple => new JSONLiteral(new string(tuple.Item2.ToArray()), LiteralType.String)));
+                tuple => new JSONLiteral(new string([.. tuple.Item2]), LiteralType.String)));
 
     static Parser<JSONLiteral> JLiteral =
         new OrParser<JSONLiteral>(

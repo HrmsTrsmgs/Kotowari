@@ -65,7 +65,7 @@ internal static class SpracheJsonParser
         .Or(Sprache.Parse.Ref(() => JsonArray)).Or(Sprache.Parse.Ref(() => JsonObject));
     private static readonly Sprache.Parser<BenchmarkJson> Value = Json;
     private static readonly Sprache.Parser<IEnumerable<BenchmarkJson>> Values = Value.DelimitedBy(Sprache.Parse.Char(',').Token())
-        .Optional().Select(xs => xs.IsDefined ? xs.Get() : Enumerable.Empty<BenchmarkJson>());
+        .Optional().Select(xs => xs.IsDefined ? xs.Get() : []);
     private static readonly Sprache.Parser<BenchmarkJson> JsonArray = Values
         .Contained(Sprache.Parse.Char('[').Token(), Sprache.Parse.Char(']').Token())
         .Select(xs => (BenchmarkJson)new BenchmarkJsonArray(xs.ToArray()));
@@ -75,7 +75,7 @@ internal static class SpracheJsonParser
         from value in Value
         select new KeyValuePair<string, BenchmarkJson>(key, value);
     private static readonly Sprache.Parser<IEnumerable<KeyValuePair<string, BenchmarkJson>>> Members = Member.DelimitedBy(Sprache.Parse.Char(',').Token())
-        .Optional().Select(xs => xs.IsDefined ? xs.Get() : Enumerable.Empty<KeyValuePair<string, BenchmarkJson>>());
+        .Optional().Select(xs => xs.IsDefined ? xs.Get() : []);
     private static readonly Sprache.Parser<BenchmarkJson> JsonObject = Members
         .Contained(Sprache.Parse.Char('{').Token(), Sprache.Parse.Char('}').Token())
         .Select(xs => (BenchmarkJson)new BenchmarkJsonObject(new Dictionary<string, BenchmarkJson>(xs)));
