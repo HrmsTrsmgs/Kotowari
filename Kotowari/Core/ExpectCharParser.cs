@@ -10,9 +10,7 @@ public class ExpectCharParser : Parser<char>
     Parser<char> ExpectChars { get; }
 
     public ExpectCharParser(Parser<char> expectChars)
-    {
-        ExpectChars = expectChars;
-    }
+        => ExpectChars = expectChars;
 
     protected override (bool isSuccess, Cursol cursol, char parsed) ParseCore(Cursol cursol)
         => ExpectChars.Parse(cursol) switch

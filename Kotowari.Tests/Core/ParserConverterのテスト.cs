@@ -14,16 +14,12 @@ public class ParserConverterのテスト
     ParserConverter<string, int> Tested { get; }
 
     public ParserConverterのテスト()
-    {
-        Tested = ParserConverter.Create(new WordParser("123"), s => int.Parse(s));
-    }
+        => Tested = ParserConverter.Create(new WordParser("123"), s => int.Parse(s));
 
 
     [Fact]
     public void パースします()
-    {
-        Tested.Parse(new Cursol("123"));
-    }
+        => Tested.Parse(new Cursol("123"));
 
     [Fact]
     public void 指定したパーサーと同じ条件で成功します()

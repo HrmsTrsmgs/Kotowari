@@ -10,9 +10,7 @@ public class OrParser<T> : Parser<T>
     Parser<T>[] Parsers { get; }
 
     public OrParser(params Parser<T>[] parsers)
-    {
-        Parsers = parsers;
-    }
+        => Parsers = parsers;
 
     protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
     {

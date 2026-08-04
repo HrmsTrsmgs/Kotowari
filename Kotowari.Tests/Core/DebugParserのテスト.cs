@@ -33,7 +33,7 @@ public class DebugParserのテスト
         bool isActioned = false;
         var cursol = new Cursol("public");
         var parser = new CharParser('a');
-        var tested = new DebugParser<char>(parser, () => { isActioned = true; });
+        var tested = new DebugParser<char>(parser, () => isActioned = true);
 
         isActioned.Should().BeFalse();
         tested.Parse(cursol);

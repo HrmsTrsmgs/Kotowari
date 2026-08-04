@@ -12,9 +12,7 @@ public class SequenceParser<T1, T2> : Parser<(T1, T2)>
 {
     (Parser<T1>, Parser<T2>) Parsers { get; }
     public SequenceParser(Parser<T1> parser1, Parser<T2> parser2)
-    {
-        Parsers = (parser1, parser2);
-    }
+        => Parsers = (parser1, parser2);
     protected override (bool isSuccess, Cursol cursol, (T1, T2) parsed) ParseCore(Cursol cursol)
     {
         var (isSuccess, current, parsed1) = Parsers.Item1.Parse(cursol);

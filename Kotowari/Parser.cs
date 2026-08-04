@@ -14,9 +14,7 @@ public abstract class Parser
 public abstract class Parser<T> : Parser
 {
     public (bool isSuccess, Cursol cursol, T parsed) Parse(Cursol cursol)
-    {
-        return ParseCore(cursol);
-    }
+        => ParseCore(cursol);
 
     protected abstract (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol);
 }

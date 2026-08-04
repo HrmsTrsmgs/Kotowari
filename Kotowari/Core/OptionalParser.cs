@@ -9,9 +9,7 @@ public class OptionalParser<T> : Parser<Optional<T>>
 {
     Parser<T> Parser { get; }
     public OptionalParser(Parser<T> parser)
-    {
-        Parser = parser;
-    }
+        => Parser = parser;
 
     protected override (bool isSuccess, Cursol cursol, Optional<T> parsed) ParseCore(Cursol cursol)
     {

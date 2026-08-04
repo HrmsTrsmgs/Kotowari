@@ -9,9 +9,7 @@ public class ConditionalCharParser : Parser<char>
     Func<char, bool> Condition { get; }
 
     public ConditionalCharParser(Func<char, bool> condition)
-    {
-        Condition = condition;
-    }
+        => Condition = condition;
 
     protected override (bool isSuccess, Cursol cursol, char parsed) ParseCore(Cursol cursol)
         => cursol.Current switch

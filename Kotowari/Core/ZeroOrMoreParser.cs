@@ -10,9 +10,7 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
     Parser<T> Parser { get; }
 
     public ZeroOrMoreParser(Parser<T> parser)
-    {
-        Parser = parser;
-    }
+        => Parser = parser;
 
     protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
     {

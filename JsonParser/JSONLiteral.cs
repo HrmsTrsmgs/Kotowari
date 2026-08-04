@@ -33,9 +33,7 @@ public class JSONLiteral : IJSONValue
     public LiteralType ValueType { get; set; }
 
     public JSONLiteral(LiteralType type)
-    {
-        ValueType = type;
-    }
+        => ValueType = type;
 
     public JSONLiteral(string value, LiteralType type)
     {
@@ -67,29 +65,23 @@ public class JSONLiteral : IJSONValue
 
     public IJSONValue this[string key]
     {
-        get { throw new NotImplementedException("Cannot access JSONArray by string."); }
-        set { throw new NotImplementedException("Cannot access JSONArray by string."); }
+        get => throw new NotImplementedException("Cannot access JSONArray by string.");
+        set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
     public IJSONValue this[int i]
     {
-        get { throw new NotImplementedException("Cannot access JSONArray by string."); }
-        set { throw new NotImplementedException("Cannot access JSONArray by string."); }
+        get => throw new NotImplementedException("Cannot access JSONArray by string.");
+        set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
     /// <summary>
     /// Returns the Value property
     /// </summary>
     /// <returns>this.Value</returns>
-    public override string ToString()
-    {
-        return Value;
-    }
+    public override string ToString() => Value;
 
-    public string ToJSON()
-    {
-        throw new NotImplementedException();
-    }
+    public string ToJSON() => throw new NotImplementedException();
 }
 /// <summary>
 	/// A list of the types a JSON literal value can be
@@ -112,10 +104,7 @@ public class JSONObject : IJSONValue
     /// </summary>
     public Dictionary<string, IJSONValue> Pairs { get; set; }
 
-    public JSONObject()
-    {
-        Pairs = [];
-    }
+    public JSONObject() => Pairs = [];
 
     public JSONObject(IEnumerable<KeyValuePair<string, IJSONValue>> pairs)
     {
@@ -144,14 +133,11 @@ public class JSONObject : IJSONValue
 
     public IJSONValue this[int i]
     {
-        get { throw new NotImplementedException("Cannot access JSONArray by string."); }
-        set { throw new NotImplementedException("Cannot access JSONArray by string."); }
+        get => throw new NotImplementedException("Cannot access JSONArray by string.");
+        set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
-    public string ToJSON()
-    {
-        throw new NotImplementedException();
-    }
+    public string ToJSON() => throw new NotImplementedException();
 }
 /// <summary>
 /// Represents a JSON value
@@ -184,10 +170,7 @@ public class JSONArray : IJSONValue
     /// </summary>
     public List<IJSONValue> Elements { get; set; }
 
-    public JSONArray()
-    {
-        Elements = [];
-    }
+    public JSONArray() => Elements = [];
 
     public JSONArray(IEnumerable<IJSONValue> elements)
     {
@@ -197,8 +180,8 @@ public class JSONArray : IJSONValue
 
     public IJSONValue this[string key]
     {
-        get { throw new NotImplementedException("Cannot access JSONArray by string."); }
-        set { throw new NotImplementedException("Cannot access JSONArray by string."); }
+        get => throw new NotImplementedException("Cannot access JSONArray by string.");
+        set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
     /// <summary>
@@ -220,10 +203,7 @@ public class JSONArray : IJSONValue
         }
     }
 
-    public string ToJSON()
-    {
-        throw new NotImplementedException();
-    }
+    public string ToJSON() => throw new NotImplementedException();
 }
 /// <summary>
 /// Maps IJSONValue objects onto other objects

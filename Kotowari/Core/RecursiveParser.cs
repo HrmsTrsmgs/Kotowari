@@ -10,9 +10,7 @@ public class RecursiveParser<T> : Parser<T>
 {
     Func<Parser<T>> ParserGetter { get; }
     public RecursiveParser(Func<Parser<T>> parserGetter)
-    {
-        ParserGetter = parserGetter;
-    }
+        => ParserGetter = parserGetter;
 
     protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
         => ParserGetter().Parse(cursol);

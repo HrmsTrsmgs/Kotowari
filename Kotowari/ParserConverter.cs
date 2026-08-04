@@ -8,7 +8,5 @@ namespace Marimo.Kotowari;
 public static class ParserConverter
 {
     public static ParserConverter<U, T> Create<T, U>(Parser<U> parser, Func<U, T> converter)
-    {
-        return new ParserConverter<U, T>(parser, converter);
-    }
+        => new ParserConverter<U, T>(parser, converter);
 }

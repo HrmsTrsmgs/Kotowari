@@ -330,77 +330,51 @@ public class JSONのテスト
 
     [Fact]
     public void オブジェクトの前に空白があっても読み込みます()
-    {
-        JSON.Parse(@" {}");
-    }
+        => JSON.Parse(@" {}");
 
     [Fact]
     public void タブ記号も空白として読み飛ばします()
-    {
-        JSON.Parse("\t{}");
-    }
+        => JSON.Parse("\t{}");
 
     [Fact]
     public void CR記号も空白として読み飛ばします()
-    {
-        JSON.Parse("\r{}");
-    }
+        => JSON.Parse("\r{}");
 
     [Fact]
     public void LF記号も空白として読み飛ばします()
-    {
-        JSON.Parse("\n{}");
-    }
+        => JSON.Parse("\n{}");
 
     [Fact]
     public void オブジェクト終了の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{ }");
-    }
+        => JSON.Parse(@"{ }");
     [Fact]
     public void 配列の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"": []}");
-    }
+        => JSON.Parse(@"{""a"": []}");
     [Fact]
     public void 配列終了の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"":[ ]}");
-    }
+        => JSON.Parse(@"{""a"":[ ]}");
     [Fact]
     public void オブジェクト区切りのコロンの前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"" :1}");
-    }
+        => JSON.Parse(@"{""a"" :1}");
 
     [Fact]
     public void オブジェクト区切りのカンマの前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"":1 ,""b"":1}");
-    }
+        => JSON.Parse(@"{""a"":1 ,""b"":1}");
 
     [Fact]
     public void 配列区切りのカンマの前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"":[1 ,2]}");
-    }
+        => JSON.Parse(@"{""a"":[1 ,2]}");
 
     [Fact]
     public void Nullの前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"": null}");
-    }
+        => JSON.Parse(@"{""a"": null}");
     [Fact]
     public void 真偽値の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"": true}");
-    }
+        => JSON.Parse(@"{""a"": true}");
 
     [Fact]
     public void 数値の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"": 1}");
-    }
+        => JSON.Parse(@"{""a"": 1}");
 
     [Fact]
     public void 符号と数字の間に空白があったら読み込みません()
@@ -453,9 +427,7 @@ public class JSONのテスト
 
     [Fact]
     public void 文字列の前に空白があっても読み込みます()
-    {
-        JSON.Parse(@"{""a"": ""b""}");
-    }
+        => JSON.Parse(@"{""a"": ""b""}");
 
     [Fact]
     public void 文字列の中の空白は文字列として読み込みます()
