@@ -41,7 +41,7 @@ public struct Cursol
         Index = index;
     }
 
-    public Cursol GoFoward(int step) => new Cursol(Text, Math.Min(Index + step, Text.Length));
+    public Cursol GoFoward(int step) => new(Text, Math.Min(Index + step, Text.Length));
 
-    public Cursol Copy() => new Cursol(Text, Index);
+    public Cursol Copy() => new(Text, Index);
 }

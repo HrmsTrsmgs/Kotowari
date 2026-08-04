@@ -114,12 +114,12 @@ public class JSONObject : IJSONValue
 
     public JSONObject()
     {
-        Pairs = new Dictionary<string, IJSONValue>();
+        Pairs = new();
     }
 
     public JSONObject(IEnumerable<KeyValuePair<string, IJSONValue>> pairs)
     {
-        Pairs = new Dictionary<string, IJSONValue>();
+        Pairs = new();
         if (pairs != null) foreach (var p in pairs) Pairs.Add(p.Key, p.Value);
     }
 
@@ -186,12 +186,12 @@ public class JSONArray : IJSONValue
 
     public JSONArray()
     {
-        Elements = new List<IJSONValue>();
+        Elements = new();
     }
 
     public JSONArray(IEnumerable<IJSONValue> elements)
     {
-        Elements = new List<IJSONValue>();
+        Elements = new();
         if (elements != null) foreach (var e in elements) Elements.Add(e);
     }
 
