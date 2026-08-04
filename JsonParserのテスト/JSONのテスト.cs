@@ -94,85 +94,77 @@ namespace Marimo.Parser.Test
         }
 
         [Fact]
-        public void 数値は小数で整数部の数字は0個でも識別します()
+        public void 数値は小数で整数部の数字が必要です()
         {
-            var result = JSON.Parse(@"{""a"":}");
-            result.Pairs.Should().ContainSingle();
-            var value = (JSONLiteral)result["a"];
-            value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("");
+            var parse = () => JSON.Parse(@"{""a"":.1}");
+
+            parse.Should().Throw<ParseException>();
         }
 
         [Fact]
-        public void 数値は小数で小数部の数字は0個でも識別します()
+        public void 数値は小数で小数部の数字が必要です()
         {
-            var result = JSON.Parse(@"{""a"":0.}");
-            result.Pairs.Should().ContainSingle();
-            var value = (JSONLiteral)result["a"];
-            value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("0.");
+            var parse = () => JSON.Parse(@"{""a"":0.}");
+
+            parse.Should().Throw<ParseException>();
         }
 
         [Fact]
         public void 数値は指数部を識別します()
         {
-            // これで指数部が成立するか疑問なのだが移植なので。
-            var result = JSON.Parse(@"{""a"":e}");
+            var result = JSON.Parse(@"{""a"":1e0}");
             result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
             value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("e");
+            value.Value.Should().Be("1e0");
         }
 
         [Fact]
         public void 数値の指数部Eは大文字でも小文字でも識別します()
         {
-            // これで指数部が成立するか疑問なのだが移植なので。
-            var result = JSON.Parse(@"{""a"":E}");
-            result.Pairs.Should().ContainSingle();
-            var value = (JSONLiteral)result["a"];
-            value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("E");
+            var lower = (JSONLiteral)JSON.Parse(@"{""a"":1e0}")["a"];
+            var upper = (JSONLiteral)JSON.Parse(@"{""a"":1E0}")["a"];
+
+            lower.Value.Should().Be("1e0");
+            upper.Value.Should().Be("1E0");
         }
 
         [Fact]
         public void 数値の指数部のプラスを識別します()
         {
-            // これで指数部が成立するか疑問なのだが移植なので。
-            var result = JSON.Parse(@"{""a"":e+}");
+            var result = JSON.Parse(@"{""a"":1e+0}");
             result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
             value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("e+");
+            value.Value.Should().Be("1e+0");
         }
 
         [Fact]
         public void 数値の指数部のマイナスを識別します()
         {
-            // これで指数部が成立するか疑問なのだが移植なので。
-            var result = JSON.Parse(@"{""a"":e-}");
+            var result = JSON.Parse(@"{""a"":1e-0}");
             result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
             value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("e-");
+            value.Value.Should().Be("1e-0");
         }
         [Fact]
         public void 数値の指数部の数値を識別します()
         {
-            var result = JSON.Parse(@"{""a"":e+0}");
+            var result = JSON.Parse(@"{""a"":1e0}");
             result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
             value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("e+0");
+            value.Value.Should().Be("1e0");
         }
         [Fact]
         public void 数値の指数部の複数の数字を識別します()
         {
-            var result = JSON.Parse(@"{""a"":e+10}");
+            var result = JSON.Parse(@"{""a"":1e+10}");
             result.Pairs.Should().ContainSingle();
             var value = (JSONLiteral)result["a"];
             value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("e+10");
+            value.Value.Should().Be("1e+10");
         }
 
         [Fact]
@@ -189,13 +181,11 @@ namespace Marimo.Parser.Test
         }
 
         [Fact]
-        public void 値が何もない場合は数値と判断されます()
+        public void 値が何もない場合は読み込みません()
         {
-            var result = JSON.Parse(@"{""a"":}");
-            result.Pairs.Should().ContainSingle();
-            var value = (JSONLiteral)result["a"];
-            value.ValueType.Should().Be(LiteralType.Number);
-            value.Value.Should().Be("");
+            var parse = () => JSON.Parse(@"{""a"":}");
+
+            parse.Should().Throw<ParseException>();
         }
 
         [Fact]
@@ -297,6 +287,14 @@ namespace Marimo.Parser.Test
             result.Pairs.Should().ContainSingle();
             var value = result["a"];
             value.Should().BeOfType<JSONArray>();
+        }
+
+        [Fact]
+        public void 空の配列に要素はありません()
+        {
+            var array = (JSONArray)JSON.Parse(@"{""a"":[]}")["a"];
+
+            array.Elements.Should().BeEmpty();
         }
 
         [Fact]

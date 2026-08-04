@@ -89,7 +89,7 @@ namespace Marimo.Parser
 
         static Parser<string> Digits =
             new ParserConverter<IEnumerable<char>, string>(
-                new ZeroOrMoreParser<char>(Digit),
+                new OneOrMoreParser<char>(Digit),
                 chars => new string(chars.ToArray()));
 
         static Parser<string> JExp =
@@ -228,4 +228,3 @@ namespace Marimo.Parser
         }
     }
 }
-    
