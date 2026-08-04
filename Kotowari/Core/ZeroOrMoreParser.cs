@@ -3,32 +3,31 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Marimo.Kotowari.Core
+namespace Marimo.Kotowari.Core;
+
+public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
 {
-    public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+    Parser<T> Parser { get; }
+
+    public ZeroOrMoreParser(Parser<T> parser)
     {
-        Parser<T> Parser { get; }
+        Parser = parser;
+    }
 
-        public ZeroOrMoreParser(Parser<T> parser)
+    protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
+    {
+        var parseds = new List<T> { };
+        bool isSuccess;
+        T parsed;
+        var current = cursol;
+        while (true)
         {
-            Parser = parser;
-        }
-
-        protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
-        {
-            var parseds = new List<T> { };
-            bool isSuccess;
-            T parsed;
-            var current = cursol;
-            while (true)
+            (isSuccess, current, parsed) = Parser.Parse(current);
+            if (!isSuccess)
             {
-                (isSuccess, current, parsed) = Parser.Parse(current);
-                if (!isSuccess)
-                {
-                    return (true, current, parseds);
-                }
-                parseds.Add(parsed);
+                return (true, current, parseds);
             }
+            parseds.Add(parsed);
         }
     }
 }

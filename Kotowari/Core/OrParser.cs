@@ -3,29 +3,28 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Marimo.Kotowari.Core
+namespace Marimo.Kotowari.Core;
+
+public class OrParser<T> : Parser<T>
 {
-    public class OrParser<T> : Parser<T>
+    Parser<T>[] Parsers { get; }
+
+    public OrParser(params Parser<T>[] parsers)
     {
-        Parser<T>[] Parsers { get; }
+        Parsers = parsers;
+    }
 
-        public OrParser(params Parser<T>[] parsers)
+    protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
+    {
+        foreach(var parser in Parsers)
         {
-            Parsers = parsers;
-        }
+            var result = parser.Parse(cursol);
 
-        protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
-        {
-            foreach(var parser in Parsers)
+            if(result.isSuccess)
             {
-                var result = parser.Parse(cursol);
-                
-                if(result.isSuccess)
-                {
-                    return result;
-                }
+                return result;
             }
-            return (false, cursol, default);
         }
+        return (false, cursol, default);
     }
 }

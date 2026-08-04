@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Marimo.Parser
+namespace Marimo.Parser;
+
+public class ParseException : Exception
 {
-    public class ParseException : Exception
-    {
-    }
 }

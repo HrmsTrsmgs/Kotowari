@@ -7,52 +7,51 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Marimo.Kotowari.Tests.Core
+namespace Marimo.Kotowari.Tests.Core;
+
+public class ConditionalCharParserのテスト
 {
-    public class ConditionalCharParserのテスト
+    [Fact]
+    public void ParseAsyncは指定した文字を読み込みに成功します()
     {
-        [Fact]
-        public void ParseAsyncは指定した文字を読み込みに成功します()
-        {
-            var cursol = new Cursol("public");
-            var tested = new ConditionalCharParser(c => c == 'p');
+        var cursol = new Cursol("public");
+        var tested = new ConditionalCharParser(c => c == 'p');
 
-            var result = tested.Parse(cursol);
+        var result = tested.Parse(cursol);
 
-            result.isSuccess.Should().BeTrue();
-        }
+        result.isSuccess.Should().BeTrue();
+    }
 
-        [Fact]
-        public void ParseAsyncは指定した文字を読み込みます()
-        {
-            var cursol = new Cursol("public");
-            var tested = new ConditionalCharParser(c => c == 'p');
+    [Fact]
+    public void ParseAsyncは指定した文字を読み込みます()
+    {
+        var cursol = new Cursol("public");
+        var tested = new ConditionalCharParser(c => c == 'p');
 
-            var result = tested.Parse(cursol);
+        var result = tested.Parse(cursol);
 
-            result.parsed.Should().Be('p');
-        }
+        result.parsed.Should().Be('p');
+    }
 
-        [Fact]
-        public void ParseAsyncは指定していない文字を読み込みに失敗します()
-        {
-            var cursol = new Cursol("internal");
-            var tested = new ConditionalCharParser(c => c == 'p');
+    [Fact]
+    public void ParseAsyncは指定していない文字を読み込みに失敗します()
+    {
+        var cursol = new Cursol("internal");
+        var tested = new ConditionalCharParser(c => c == 'p');
 
-            var result = tested.Parse(cursol);
+        var result = tested.Parse(cursol);
 
-            result.isSuccess.Should().BeFalse();
-        }
+        result.isSuccess.Should().BeFalse();
+    }
 
-        [Fact]
-        public void ParseAsyncは読み込みに成功した場合にその分進んだカーソルを返します()
-        {
-            var cursol = new Cursol("public");
-            var tested = new ConditionalCharParser(c => c == 'p');
+    [Fact]
+    public void ParseAsyncは読み込みに成功した場合にその分進んだカーソルを返します()
+    {
+        var cursol = new Cursol("public");
+        var tested = new ConditionalCharParser(c => c == 'p');
 
-            var result = tested.Parse(cursol);
+        var result = tested.Parse(cursol);
 
-            result.cursol.Index.Should().Be(1);
-        }
+        result.cursol.Index.Should().Be(1);
     }
 }
