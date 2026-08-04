@@ -333,9 +333,9 @@ static class JSONMap
     /// <returns>An object of type T containing the JSON information</returns>
     public static object MapValue(Type T, IJSONValue toMap)
     {
-        if (toMap is JSONObject) return MapObject(T, (JSONObject)toMap);
-        else if (toMap is JSONArray) return MapArray(T, (JSONArray)toMap);
-        else if (toMap is JSONLiteral) return MapLiteral(T, (JSONLiteral)toMap);
+        if (toMap is JSONObject jsonObject) return MapObject(T, jsonObject);
+        else if (toMap is JSONArray jsonArray) return MapArray(T, jsonArray);
+        else if (toMap is JSONLiteral jsonLiteral) return MapLiteral(T, jsonLiteral);
         else throw new ArgumentException("Cannot map vanilla IJSONValue.");
     }
 }
