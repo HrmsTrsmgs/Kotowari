@@ -194,12 +194,12 @@ public class JSONArray : IJSONValue
         get
         {
             if (0 <= i && i < Elements.Count) return Elements[i];
-            else throw new IndexOutOfRangeException(i.ToString() + " is out of range.");
+            else throw new IndexOutOfRangeException($"{i} is out of range.");
         }
         set
         {
             if (0 <= i && i < Elements.Count) Elements[i] = value;
-            else throw new IndexOutOfRangeException(i.ToString() + " is out of range.");
+            else throw new IndexOutOfRangeException($"{i} is out of range.");
         }
     }
 
