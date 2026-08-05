@@ -109,7 +109,7 @@ public class JSONObject : IJSONValue
     public JSONObject(IEnumerable<KeyValuePair<string, IJSONValue>> pairs)
     {
         Pairs = [];
-        if (pairs != null) foreach (var p in pairs) Pairs.Add(p.Key, p.Value);
+        if (pairs is not null) foreach (var p in pairs) Pairs.Add(p.Key, p.Value);
     }
 
     /// <summary>
@@ -175,7 +175,7 @@ public class JSONArray : IJSONValue
     public JSONArray(IEnumerable<IJSONValue> elements)
     {
         Elements = [];
-        if (elements != null) foreach (var e in elements) Elements.Add(e);
+        if (elements is not null) foreach (var e in elements) Elements.Add(e);
     }
 
     public IJSONValue this[string key]
@@ -273,7 +273,7 @@ static class JSONMap
     static object MapArray(Type T, JSONArray toMap)
     {
         //If the type isn't an array or IList then the JSONArray can't be mapped onto it
-        if (!T.IsArray || T.GetInterface("System.Collections.IList") == null)
+        if (!T.IsArray || T.GetInterface("System.Collections.IList") is null)
         {
             throw new ArgumentException(T + " can't map JSONArray.");
         }
