@@ -14,9 +14,8 @@ public class JsonParserBenchmarks
 
     [GlobalSetup]
     public void Setup()
-    {
-        _json = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Data", "test.json"));
-    }
+        => _json = File.ReadAllText(
+            Path.Combine(AppContext.BaseDirectory, "Data", "test.json"));
 
     public static void ValidateAll()
     {
@@ -67,10 +66,7 @@ public class JsonParserBenchmarks
     };
 
     [Benchmark(Baseline = true)]
-    public object Kotowari()
-    {
-        return KotowariJson.Parse(_json);
-    }
+    public object Kotowari() => KotowariJson.Parse(_json);
 
     [Benchmark]
     public object Pidgin() => PidginJsonParser.Parse(_json);
