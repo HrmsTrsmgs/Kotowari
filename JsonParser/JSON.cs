@@ -106,7 +106,7 @@ public class JSON
     static Parser<string> JFrac =
         new ParserConverter<(char, string), string>(
             new SequenceParser<char, string>(Dot, Digits),
-            tuple => tuple.Item1.ToString() + tuple.Item2);
+            tuple => $"{tuple.Item1}{tuple.Item2}");
 
     static Parser<string> JInt =
         new ParserConverter<(Optional<char>, string), string>(
