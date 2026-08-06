@@ -70,4 +70,33 @@ public class Cursolのテスト
         tested = tested.GoFoward(1);
         tested.Copy().Index.Should().Be(1);
     }
+
+    [Fact]
+    public void 同じ文書の同じ位置にあるCopyは等価です()
+    {
+        var tested = new Cursol("ABC").GoFoward(1);
+
+        var copied = tested.Copy();
+
+        (copied == tested).Should().BeTrue();
+    }
+
+    [Fact]
+    public void 同じ文書でも異なる位置にあるCursolは等価ではありません()
+    {
+        var tested = new Cursol("ABC");
+
+        var moved = tested.GoFoward(1);
+
+        (moved != tested).Should().BeTrue();
+    }
+
+    [Fact]
+    public void 同じ内容から別々に作ったCursolは異なる文書を指します()
+    {
+        var first = new Cursol("ABC");
+        var second = new Cursol("ABC");
+
+        (first != second).Should().BeTrue();
+    }
 }
