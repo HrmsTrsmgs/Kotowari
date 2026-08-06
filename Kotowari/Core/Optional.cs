@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Marimo.Kotowari.Core;
 
-public struct Optional<T>
+public readonly record struct Optional<T>
     where T : notnull
 {
     public bool IsPresent { get; }
@@ -14,6 +14,8 @@ public struct Optional<T>
     public Optional(bool isPresent, T? value)
     {
         IsPresent = isPresent;
-        Value = value;
+        Value = isPresent
+            ? value ?? throw new ArgumentNullException(nameof(value))
+            : default;
     }
 }
