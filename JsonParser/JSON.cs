@@ -85,7 +85,7 @@ public class JSON
             word => new JSONLiteral(word, LiteralType.Boolean));
 
     static Parser<char> Digit =
-        new ConditionalCharParser(c => char.IsDigit(c));
+        new ConditionalCharParser(char.IsDigit);
 
     static Parser<string> Digits =
         new ParserConverter<IEnumerable<char>, string>(
