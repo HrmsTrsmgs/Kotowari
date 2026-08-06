@@ -15,7 +15,7 @@ public class OneOrMoreParserのテスト
     public void 一つ目の要素のパースに失敗したら失敗です()        {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("b"));
+        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -25,7 +25,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
+        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -34,7 +34,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("a"));
+        var parsed = tested.Parse(new Cursol("a")).Parsed;
 
         parsed.Should().ContainSingle();
         parsed.ElementAt(0).Should().Be('a');
@@ -45,7 +45,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("a"));
+        var cursol = tested.Parse(new Cursol("a")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -55,7 +55,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("aa"));
+        var cursol = tested.Parse(new Cursol("aa")).Cursol;
 
         cursol.Index.Should().Be("aa".Length);
     }
@@ -65,7 +65,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("aa"));
+        var parsed = tested.Parse(new Cursol("aa")).Parsed;
 
         parsed.Count().Should().Be(2);
         parsed.ElementAt(0).Should().Be('a');
@@ -77,7 +77,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("ab"));
+        var isSuccess = tested.Parse(new Cursol("ab")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -87,7 +87,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("ab"));
+        var cursol = tested.Parse(new Cursol("ab")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -97,7 +97,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("ab"));
+        var parsed = tested.Parse(new Cursol("ab")).Parsed;
 
         parsed.Should().ContainSingle();
         parsed.ElementAt(0).Should().Be('a');

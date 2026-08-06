@@ -18,7 +18,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("b"));
+        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -30,7 +30,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("b"));
+        var cursol = tested.Parse(new Cursol("b")).Cursol;
 
         cursol.Index.Should().Be(0);
     }
@@ -42,7 +42,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("b"));
+        var parsed = tested.Parse(new Cursol("b")).Parsed;
 
         parsed.Should().BeEmpty();
     }
@@ -54,7 +54,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
+        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -65,7 +65,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("a"));
+        var cursol = tested.Parse(new Cursol("a")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -76,7 +76,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("a"));
+        var parsed = tested.Parse(new Cursol("a")).Parsed;
 
         parsed.Should().Equal('a');
     }
@@ -87,7 +87,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("a,"));
+        var cursol = tested.Parse(new Cursol("a,")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -99,7 +99,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("a,a"));
+        var parsed = tested.Parse(new Cursol("a,a")).Parsed;
 
         parsed.Should().Equal('a', 'a');
     }

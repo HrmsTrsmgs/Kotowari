@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari.Core;
 
 public class ParserConverter<U, T> : Parser<T>
+    where U : notnull
+    where T : notnull
 {
     Parser<U> Parser { get; }
     Func<U, T> Converter { get; }
@@ -16,10 +18,12 @@ public class ParserConverter<U, T> : Parser<T>
         Converter = converter;
     }
 
-    protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<T> ParseCore(Cursol cursol)
     {
-        var (isSuccess, afterCursol, parsed) = Parser.Parse(cursol);
+        var result = Parser.Parse(cursol);
 
-        return (isSuccess, afterCursol, (isSuccess ? Converter(parsed) : default));
+        return result.IsSuccess
+            ? ParseResult<T>.Success(result.Cursol, Converter(result.Parsed))
+            : ParseResult<T>.Failure(result.Cursol);
     }
 }

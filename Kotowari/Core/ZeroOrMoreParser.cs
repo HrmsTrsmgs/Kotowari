@@ -6,26 +6,27 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari.Core;
 
 public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+    where T : notnull
 {
     Parser<T> Parser { get; }
 
     public ZeroOrMoreParser(Parser<T> parser)
         => Parser = parser;
 
-    protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
         var parseds = new List<T> { };
-        bool isSuccess;
-        T parsed;
         var current = cursol;
         while (true)
         {
-            (isSuccess, current, parsed) = Parser.Parse(current);
-            if (!isSuccess)
+            var result = Parser.Parse(current);
+            if (!result.IsSuccess)
             {
-                return (true, current, parseds);
+                return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);
             }
-            parseds.Add(parsed);
+
+            current = result.Cursol;
+            parseds.Add(result.Parsed);
         }
     }
 }

@@ -9,27 +9,35 @@ using System.Data.SqlTypes;
 namespace Marimo.Kotowari.Core;
 
 public class SequenceParser<T1, T2> : Parser<(T1, T2)>
+    where T1 : notnull
+    where T2 : notnull
 {
     (Parser<T1>, Parser<T2>) Parsers { get; }
     public SequenceParser(Parser<T1> parser1, Parser<T2> parser2)
         => Parsers = (parser1, parser2);
-    protected override (bool isSuccess, Cursol cursol, (T1, T2) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2)> ParseCore(Cursol cursol)
     {
-        var (isSuccess, current, parsed1) = Parsers.Item1.Parse(cursol);
-        if (!isSuccess)
+        var result1 = Parsers.Item1.Parse(cursol);
+        if (!result1.IsSuccess)
         {
-            return (false, cursol, default);
+            return ParseResult<(T1, T2)>.Failure(cursol);
         }
-        T2 parsed2;
-        (isSuccess, current, parsed2) = Parsers.Item2.Parse(current);
-        if (!isSuccess)
+
+        var result2 = Parsers.Item2.Parse(result1.Cursol);
+        if (!result2.IsSuccess)
         {
-            return (false, cursol, default);
+            return ParseResult<(T1, T2)>.Failure(cursol);
         }
-        return (true, current, (parsed1, parsed2));
+
+        return ParseResult<(T1, T2)>.Success(
+            result2.Cursol,
+            (result1.Parsed, result2.Parsed));
     }
 }
 public class SequenceParser<T1, T2, T3> : Parser<(T1, T2, T3)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
 {
     Parser<(T1, T2, T3)> Parser { get; }
     public SequenceParser(Parser<T1> parser1, Parser<T2> parser2, Parser<T3> parser3)
@@ -43,10 +51,14 @@ public class SequenceParser<T1, T2, T3> : Parser<(T1, T2, T3)>
                     parser3)),
             tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2));
     }
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4> : Parser<(T1, T2, T3, T4)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
 {
     Parser<(T1, T2, T3, T4)> Parser { get; }
     public SequenceParser(
@@ -66,11 +78,16 @@ public class SequenceParser<T1, T2, T3, T4> : Parser<(T1, T2, T3, T4)>
             tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2, tuple.Item2.Item3));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 
 public class SequenceParser<T1, T2, T3, T4, T5> : Parser<(T1, T2, T3, T4, T5)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
 {
     Parser<(T1, T2, T3, T4, T5)> Parser { get; }
     public SequenceParser(
@@ -97,11 +114,17 @@ public class SequenceParser<T1, T2, T3, T4, T5> : Parser<(T1, T2, T3, T4, T5)>
                 tuple.Item2.Item4));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 
 public class SequenceParser<T1, T2, T3, T4, T5, T6> : Parser<(T1, T2, T3, T4, T5, T6)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
+    where T6 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6)> Parser { get; }
     public SequenceParser(
@@ -131,11 +154,18 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6> : Parser<(T1, T2, T3, T4, T5
                 tuple.Item2.Item5));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5, T6) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5, T6)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7> : Parser<(T1, T2, T3, T4, T5, T6, T7)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
+    where T6 : notnull
+    where T7 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6, T7)> Parser { get; }
     public SequenceParser(
@@ -168,10 +198,18 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7> : Parser<(T1, T2, T3, T4
                 tuple.Item2.Item6));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5, T6, T7) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5, T6, T7)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
+    where T6 : notnull
+    where T7 : notnull
+    where T8 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6, T7, T8)> Parser { get; }
     public SequenceParser(
@@ -207,10 +245,19 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8> : Parser<(T1, T2, T3
                 tuple.Item2.Item7));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5, T6, T7, T8) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
+    where T6 : notnull
+    where T7 : notnull
+    where T8 : notnull
+    where T9 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9)> Parser { get; }
     public SequenceParser(
@@ -249,10 +296,20 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Parser<(T1, T2
                 tuple.Item2.Item8));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5, T6, T7, T8, T9) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)>
+    where T1 : notnull
+    where T2 : notnull
+    where T3 : notnull
+    where T4 : notnull
+    where T5 : notnull
+    where T6 : notnull
+    where T7 : notnull
+    where T8 : notnull
+    where T9 : notnull
+    where T10 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)> Parser { get; }
     public SequenceParser(
@@ -294,6 +351,6 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T
                 tuple.Item2.Item9));
     }
 
-    protected override (bool isSuccess, Cursol cursol, (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }

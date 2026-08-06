@@ -15,7 +15,7 @@ public class ZeroOrMoreParserのテスト
     public void 一つ目の要素のパースに失敗しても成功です()        {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("b"));
+        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -25,7 +25,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("b"));
+        var cursol = tested.Parse(new Cursol("b")).Cursol;
 
         cursol.Index.Should().Be(0);
     }
@@ -35,7 +35,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("b"));
+        var parsed = tested.Parse(new Cursol("b")).Parsed;
 
         parsed.Should().BeEmpty();
     }
@@ -45,7 +45,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
+        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -55,7 +55,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("a"));
+        var cursol = tested.Parse(new Cursol("a")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -65,7 +65,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("a"));
+        var parsed = tested.Parse(new Cursol("a")).Parsed;
 
         parsed.Should().ContainSingle();
         parsed.ElementAt(0).Should().Be('a');
@@ -76,7 +76,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("aa"));
+        var cursol = tested.Parse(new Cursol("aa")).Cursol;
 
         cursol.Index.Should().Be("aa".Length);
     }
@@ -86,7 +86,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("aa"));
+        var parsed = tested.Parse(new Cursol("aa")).Parsed;
 
         parsed.Count().Should().Be(2);
         parsed.ElementAt(0).Should().Be('a');

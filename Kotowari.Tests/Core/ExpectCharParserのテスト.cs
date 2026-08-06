@@ -17,7 +17,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -29,7 +29,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(cursol);
+        var parsed = tested.Parse(cursol).Parsed;
 
         parsed.Should().Be('p');
     }
@@ -41,7 +41,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('p'));
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -52,7 +52,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("public"));
+        var cursol = tested.Parse(new Cursol("public")).Cursol;
 
         cursol.Index.Should().Be(1);
     }
@@ -63,7 +63,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("public"));
+        var parsed = tested.Parse(new Cursol("public")).Parsed;
 
         parsed.Should().Be('p');
     }

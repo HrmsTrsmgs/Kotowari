@@ -11,11 +11,11 @@ public class ConditionalCharParser : Parser<char>
     public ConditionalCharParser(Func<char, bool> condition)
         => Condition = condition;
 
-    protected override (bool isSuccess, Cursol cursol, char parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<char> ParseCore(Cursol cursol)
         => cursol.Current switch
         {
             var c when (Condition(c))
-                    => (true, cursol.GoFoward(1), c),
-            _ => (false, cursol, default)
+                    => ParseResult<char>.Success(cursol.GoFoward(1), c),
+            _ => ParseResult<char>.Failure(cursol)
         };
 }
