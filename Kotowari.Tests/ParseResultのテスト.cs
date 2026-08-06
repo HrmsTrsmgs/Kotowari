@@ -43,7 +43,7 @@ public class ParseResultのテスト
     [Fact]
     public void 成功結果にnullは指定できません()
     {
-        var action = () => ParseResult<string>.Success(new Cursol("text"), null);
+        var action = () => ParseResult<string>.Success(new Cursol("text"), null!);
 
         action.Should().Throw<ArgumentNullException>();
     }

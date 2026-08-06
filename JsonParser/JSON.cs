@@ -180,9 +180,13 @@ public class JSON
     static Parser<IJSONValue> JValue =
         new OrParser<IJSONValue>(
             new RecursiveParser<IJSONValue>(
-                () => new ParserConverter<JSONArray, IJSONValue>(JArray, array => array)),
+                () => new ParserConverter<JSONArray, IJSONValue>(
+                    JArray ?? throw new InvalidOperationException(),
+                    array => array)),
             new RecursiveParser<IJSONValue>(
-                () => new ParserConverter<JSONObject, IJSONValue>(JObject, obj => obj)),
+                () => new ParserConverter<JSONObject, IJSONValue>(
+                    JObject ?? throw new InvalidOperationException(),
+                    obj => obj)),
             new ParserConverter<JSONLiteral, IJSONValue>(JLiteral, literal => literal));
 
     static Parser<IEnumerable<IJSONValue>> JElements =
@@ -196,7 +200,7 @@ public class JSON
                 BracketOpenSign,
                 JElements,
                 BracketCloseSign),
-            tuple => new JSONArray(tuple.Item2.Any() ? tuple.Item2 : null));
+            tuple => new JSONArray(tuple.Item2));
 
 
     static Parser<KeyValuePair<string, IJSONValue>> JPair =
@@ -205,7 +209,9 @@ public class JSON
                         JString,
                         CollonSign,
                         JValue),
-            tuple => new KeyValuePair<string, IJSONValue>(tuple.Item1.Value, tuple.Item3));
+            tuple => new KeyValuePair<string, IJSONValue>(
+                tuple.Item1.Value ?? throw new InvalidOperationException(),
+                tuple.Item3));
 
     static Parser<JSONObject> JObject =
         new ParserConverter<(char, IEnumerable<KeyValuePair<string, IJSONValue>>, char), JSONObject>(
