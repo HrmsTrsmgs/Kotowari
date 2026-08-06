@@ -15,7 +15,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("abc"));
+        var isSuccess = tested.Parse(new Cursol("abc")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -26,7 +26,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("abc"));
+        var parsed = tested.Parse(new Cursol("abc")).Parsed;
 
         parsed.Should().Be("abc");
     }
@@ -36,7 +36,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("abc"));
+        var cursol = tested.Parse(new Cursol("abc")).Cursol;
 
         cursol.Index.Should().Be("abc".Length);
    }
@@ -46,7 +46,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("ab"));
+        var isSuccess = tested.Parse(new Cursol("ab")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -56,7 +56,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (_, _, parsed) = tested.Parse(new Cursol("abc"));
+        var parsed = tested.Parse(new Cursol("abc")).Parsed;
 
         parsed.Should().Be("abc");
     }
@@ -66,7 +66,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("ab"));
+        var cursol = tested.Parse(new Cursol("ab")).Cursol;
 
         cursol.Index.Should().Be("ab".Length);
     }
@@ -76,7 +76,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (isSuccess, _, _) = tested.Parse(new Cursol("a"));
+        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -86,7 +86,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var (_, cursol, _) = tested.Parse(new Cursol("a"));
+        var cursol = tested.Parse(new Cursol("a")).Cursol;
 
         cursol.Index.Should().Be(0);
     }

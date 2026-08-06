@@ -19,7 +19,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは指定した単語を読み込みます()
@@ -40,7 +40,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.parsed.Should().Be("public");
+        result.Parsed.Should().Be("public");
     }
 
 
@@ -52,7 +52,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(4);
+        result.Cursol.Index.Should().Be(4);
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(0);
+        result.Cursol.Index.Should().Be(0);
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(7);
+        result.Cursol.Index.Should().Be(7);
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class WordParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(7);
+        result.Cursol.Index.Should().Be(7);
     }
 }

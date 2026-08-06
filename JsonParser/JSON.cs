@@ -219,10 +219,10 @@ public class JSON
 
     public static JSONObject Parse(string text)
     {
-        var (isSuccess, _, parsed) = JObject.Parse(new Cursol(text));
-        if(isSuccess)
+        var result = JObject.Parse(new Cursol(text));
+        if(result.IsSuccess)
         {
-            return parsed;
+            return result.Parsed;
         }
         throw new ParseException();
     }

@@ -19,7 +19,7 @@ public class CharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class CharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.parsed.Should().Be('p');
+        result.Parsed.Should().Be('p');
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class CharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public class CharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(1);
+        result.Cursol.Index.Should().Be(1);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class CharParserのテスト
         var cursol = new Cursol("Public");
         var tested = new CharParser('p');
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -72,7 +72,7 @@ public class CharParserのテスト
         var cursol = new Cursol("public");
         var tested = new CharParser('P');
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -83,7 +83,7 @@ public class CharParserのテスト
         var cursol = new Cursol("Public");
         var tested = new CharParser('p', true);
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -94,7 +94,7 @@ public class CharParserのテスト
         var cursol = new Cursol("public");
         var tested = new CharParser('P', true);
 
-        var (isSuccess, _, _) = tested.Parse(cursol);
+        var isSuccess = tested.Parse(cursol).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -105,7 +105,7 @@ public class CharParserのテスト
         var cursol = new Cursol("Public");
         var tested = new CharParser('p', true);
 
-        var (_, _, parsed) = tested.Parse(cursol);
+        var parsed = tested.Parse(cursol).Parsed;
 
         parsed.Should().Be('P');
     }
@@ -116,7 +116,7 @@ public class CharParserのテスト
         var cursol = new Cursol("public");
         var tested = new CharParser('P', true);
 
-        var (_, _, parsed) = tested.Parse(cursol);
+        var parsed = tested.Parse(cursol).Parsed;
 
         parsed.Should().Be('p');
     }

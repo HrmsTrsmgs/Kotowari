@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari.Core;
 
 public class DebugParser<T> : Parser<T>
+    where T : notnull
 {
     Parser<T> Parser { get; }
     Action HasBreakPoint { get; }
@@ -14,7 +15,7 @@ public class DebugParser<T> : Parser<T>
         Parser = parser;
         HasBreakPoint = hasBreakPoint;
     }
-    protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<T> ParseCore(Cursol cursol)
     {
         HasBreakPoint();
         return Parser.Parse(cursol);

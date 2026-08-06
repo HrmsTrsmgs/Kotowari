@@ -8,6 +8,7 @@ using System.Transactions;
 namespace Marimo.Kotowari;
 
 public class WithWhiteSpaceParser<T> : Parser<T>
+    where T : notnull
 {
     Parser<char> WhiteSpace { get; }
     Parser<T> Parser { get; }
@@ -17,14 +18,19 @@ public class WithWhiteSpaceParser<T> : Parser<T>
         Parser = parser;
     }
 
-    protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<T> ParseCore(Cursol cursol)
     {
         var current = cursol;
-        bool isSuccess;
-        do
+        while (true)
         {
-            (isSuccess, current, _) = WhiteSpace.Parse(current);
-        } while (isSuccess);
+            var result = WhiteSpace.Parse(current);
+            if (!result.IsSuccess)
+            {
+                break;
+            }
+
+            current = result.Cursol;
+        }
 
         return Parser.Parse(current);
     }

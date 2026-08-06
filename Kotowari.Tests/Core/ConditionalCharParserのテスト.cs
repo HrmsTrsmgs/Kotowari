@@ -19,7 +19,7 @@ public class ConditionalCharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class ConditionalCharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.parsed.Should().Be('p');
+        result.Parsed.Should().Be('p');
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class ConditionalCharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -52,6 +52,6 @@ public class ConditionalCharParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be(1);
+        result.Cursol.Index.Should().Be(1);
     }
 }

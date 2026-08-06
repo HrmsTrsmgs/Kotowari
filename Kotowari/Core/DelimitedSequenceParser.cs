@@ -7,6 +7,8 @@ using System.Transactions;
 namespace Marimo.Kotowari.Core;
 
 public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
+    where T : notnull
+    where U : notnull
 {
     Parser<T> Sequence { get; }
     Parser<U> Delimiter { get; }
@@ -16,27 +18,29 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         Delimiter = delimiter;
     }
 
-    protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
         var parseds = new List<T>();
         var current = cursol;
-        bool isSuccess;
-        T parsed;
         var beforeDelimiter = current;
         while (true)
         {
-            (isSuccess, current, parsed) = Sequence.Parse(current);
-            if (!isSuccess)
+            var sequenceResult = Sequence.Parse(current);
+            if (!sequenceResult.IsSuccess)
             {
-                return (true, beforeDelimiter, parseds);
+                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
             }
-            parseds.Add(parsed);
+
+            current = sequenceResult.Cursol;
+            parseds.Add(sequenceResult.Parsed);
             beforeDelimiter = current;
-            (isSuccess, current, _) = Delimiter.Parse(current);
-            if (!isSuccess)
+            var delimiterResult = Delimiter.Parse(current);
+            if (!delimiterResult.IsSuccess)
             {
-                return (true, beforeDelimiter, parseds);
+                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
             }
+
+            current = delimiterResult.Cursol;
         }
 
     }

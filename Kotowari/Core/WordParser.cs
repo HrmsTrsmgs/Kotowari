@@ -23,33 +23,34 @@ public class WordParser : Parser<string>
         WhiteSpace = whiteSpace ?? new CharParser(' ');
     }
 
-    protected override (bool isSuccess,Cursol cursol, string parsed)  ParseCore(Cursol cursol)
+    protected override ParseResult<string> ParseCore(Cursol cursol)
     {
         var current = SkipBlankAsync(cursol);
 
         var returnValue = new List<char>();
         foreach (var parser in Parsers)
         {
-            bool isSuccess;
-            char parsed;
-            (isSuccess, current, parsed) = parser.Parse(current);
-            if(!isSuccess)
+            var result = parser.Parse(current);
+            if(!result.IsSuccess)
             {
-                return (false, cursol, null);
+                return ParseResult<string>.Failure(cursol);
             }
-            returnValue.Add(parsed);
+
+            current = result.Cursol;
+            returnValue.Add(result.Parsed);
         }
         current = SkipBlankAsync(current);
-        return (true, current, new string([.. returnValue]));
+        return ParseResult<string>.Success(current, new string([.. returnValue]));
     }
 
     private Cursol SkipBlankAsync(Cursol current)
     {
         while (true)
         {
-            bool isSuccess;
-            (isSuccess, current, _) = WhiteSpace.Parse(current);
-            if (!isSuccess) return current;
+            var result = WhiteSpace.Parse(current);
+            if (!result.IsSuccess) return current;
+
+            current = result.Cursol;
         }
     }
 }

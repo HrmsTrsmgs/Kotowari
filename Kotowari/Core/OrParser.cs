@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari.Core;
 
 public class OrParser<T> : Parser<T>
+    where T : notnull
 {
     Parser<T>[] Parsers { get; }
 
     public OrParser(params Parser<T>[] parsers)
         => Parsers = parsers;
 
-    protected override (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<T> ParseCore(Cursol cursol)
     {
         foreach(var parser in Parsers)
         {
             var result = parser.Parse(cursol);
 
-            if(result.isSuccess)
+            if(result.IsSuccess)
             {
                 return result;
             }
         }
-        return (false, cursol, default);
+        return ParseResult<T>.Failure(cursol);
     }
 }

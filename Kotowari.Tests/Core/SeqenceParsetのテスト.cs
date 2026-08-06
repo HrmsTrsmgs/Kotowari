@@ -27,7 +27,7 @@ public class 要素を2つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -37,7 +37,7 @@ public class 要素を2つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class 要素を2つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class 要素を2つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("public", "static"));
+        result.Parsed.Should().Be(("public", "static"));
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class 要素を2つ持つSeqenceParserのテスト
 
         var result = tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("public static".Length);
+        result.Cursol.Index.Should().Be("public static".Length);
     }
 }
 public class 要素を3つ持つSeqenceParserのテスト
@@ -91,7 +91,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -101,7 +101,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -111,7 +111,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("public", "static", "int"));
+        result.Parsed.Should().Be(("public", "static", "int"));
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class 要素を3つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("public static int".Length);
+        result.Cursol.Index.Should().Be("public static int".Length);
     }
 }
 public class 要素を4つ持つSeqenceParserのテスト
@@ -163,7 +163,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -183,7 +183,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -192,7 +192,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -211,7 +211,7 @@ public class 要素を4つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh"));
     }
 
     [Fact]
@@ -221,7 +221,7 @@ public class 要素を4つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh".Length);
     }
 }
 public class 要素を5つ持つSeqenceParserのテスト
@@ -244,7 +244,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -254,7 +254,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -264,7 +264,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -273,7 +273,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -283,7 +283,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -293,7 +293,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -302,7 +302,7 @@ public class 要素を5つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij"));
     }
 
     [Fact]
@@ -312,7 +312,7 @@ public class 要素を5つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij".Length);
     }
 }
 public class 要素を6つ持つSeqenceParserのテスト
@@ -336,7 +336,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -346,7 +346,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -356,7 +356,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -365,7 +365,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -375,7 +375,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -385,7 +385,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -395,7 +395,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -404,7 +404,7 @@ public class 要素を6つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij kl");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl"));
     }
 
     [Fact]
@@ -414,7 +414,7 @@ public class 要素を6つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij kl".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij kl".Length);
     }
 }
 public class 要素を7つ持つSeqenceParserのテスト
@@ -439,7 +439,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -449,7 +449,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -459,7 +459,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -468,7 +468,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -478,7 +478,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -488,7 +488,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -498,7 +498,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -508,7 +508,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -517,7 +517,7 @@ public class 要素を7つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij kl mn");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn"));
     }
 
     [Fact]
@@ -527,7 +527,7 @@ public class 要素を7つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij kl mn".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij kl mn".Length);
     }
 }
 public class 要素を8つ持つSeqenceParserのテスト
@@ -553,7 +553,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -563,7 +563,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -573,7 +573,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -582,7 +582,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -592,7 +592,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -602,7 +602,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -612,7 +612,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -622,7 +622,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -632,7 +632,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -641,7 +641,7 @@ public class 要素を8つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij kl mn op");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op"));
     }
 
     [Fact]
@@ -651,7 +651,7 @@ public class 要素を8つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij kl mn op".Length);
     }
 }
 public class 要素を9つ持つSeqenceParserのテスト
@@ -678,7 +678,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -688,7 +688,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -698,7 +698,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -707,7 +707,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -717,7 +717,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -727,7 +727,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -737,7 +737,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -747,7 +747,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -757,7 +757,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -767,7 +767,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -776,7 +776,7 @@ public class 要素を9つ持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij kl mn op qr");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr"));
     }
 
     [Fact]
@@ -786,7 +786,7 @@ public class 要素を9つ持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr".Length);
     }
 }
 public class 要素を10持つSeqenceParserのテスト
@@ -814,7 +814,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeTrue();
+        result.IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -824,7 +824,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -834,7 +834,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
@@ -843,7 +843,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -853,7 +853,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -863,7 +863,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -873,7 +873,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -883,7 +883,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -893,7 +893,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -903,7 +903,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -913,7 +913,7 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.isSuccess.Should().BeFalse();
+        result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -922,7 +922,7 @@ public class 要素を10持つSeqenceParserのテスト
         var cursol = new Cursol("ab cd ef gh ij kl mn op qr st");
         var result = Tested.Parse(cursol);
 
-        result.parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr", "st"));
+        result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr", "st"));
     }
 
     [Fact]
@@ -932,6 +932,6 @@ public class 要素を10持つSeqenceParserのテスト
 
         var result = Tested.Parse(cursol);
 
-        result.cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr st".Length);
+        result.Cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr st".Length);
     }
 }

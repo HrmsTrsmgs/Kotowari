@@ -12,9 +12,10 @@ public abstract class Parser
 }
 
 public abstract class Parser<T> : Parser
+    where T : notnull
 {
-    public (bool isSuccess, Cursol cursol, T parsed) Parse(Cursol cursol)
+    public ParseResult<T> Parse(Cursol cursol)
         => ParseCore(cursol);
 
-    protected abstract (bool isSuccess, Cursol cursol, T parsed) ParseCore(Cursol cursol);
+    protected abstract ParseResult<T> ParseCore(Cursol cursol);
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari.Core;
 
 public class OneOrMoreParser<T> : Parser<IEnumerable<T>>
+    where T : notnull
 {
     Parser<IEnumerable<T>> Parser { get; }
 
@@ -20,6 +21,6 @@ public class OneOrMoreParser<T> : Parser<IEnumerable<T>>
                 tuple => new[] { tuple.Item1 }.Concat(tuple.Item2));
     }
 
-    protected override (bool isSuccess, Cursol cursol, IEnumerable<T> parsed) ParseCore(Cursol cursol)
+    protected override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
         => Parser.Parse(cursol);
 }
