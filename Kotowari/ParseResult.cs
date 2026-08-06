@@ -1,5 +1,3 @@
-#nullable enable
-
 using Marimo.Kotowari.Core;
 using System;
 

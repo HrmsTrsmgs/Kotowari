@@ -32,7 +32,10 @@ internal static class PidginJsonParser
         .Or(Pidgin.Parser.String("false").ThenReturn<BenchmarkJson>(new BenchmarkJsonBoolean(false)));
     private static readonly Parser<char, BenchmarkJson> JsonNull = Pidgin.Parser.String("null").ThenReturn<BenchmarkJson>(new BenchmarkJsonNull());
     private static readonly Parser<char, BenchmarkJson> Json = JsonString.Or(JsonBoolean).Or(JsonNull).Or(JsonNumber)
-        .Or(Pidgin.Parser.Rec(() => JsonArray)).Or(Pidgin.Parser.Rec(() => JsonObject));
+        .Or(Pidgin.Parser.Rec(
+            () => JsonArray ?? throw new InvalidOperationException()))
+        .Or(Pidgin.Parser.Rec(
+            () => JsonObject ?? throw new InvalidOperationException()));
     private static readonly Parser<char, BenchmarkJson> Value = Json.Between(WhiteSpaces);
     private static readonly Parser<char, BenchmarkJson> JsonArray = Value.Separated(Pidgin.Parser.Char(','))
         .Between(Pidgin.Parser.Char('['), Pidgin.Parser.Char(']'))
@@ -102,7 +105,10 @@ internal static class SuperpowerJsonParser
         .Or(Superpower.Parsers.Span.EqualTo("false").Select(_ => (BenchmarkJson)new BenchmarkJsonBoolean(false)));
     private static readonly TextParser<BenchmarkJson> JsonNull = Superpower.Parsers.Span.EqualTo("null").Select(_ => (BenchmarkJson)new BenchmarkJsonNull());
     private static readonly TextParser<BenchmarkJson> Json = JsonString.Or(JsonBoolean).Or(JsonNull).Or(JsonNumber)
-        .Or(Superpower.Parse.Ref(() => JsonArray)).Or(Superpower.Parse.Ref(() => JsonObject));
+        .Or(Superpower.Parse.Ref(
+            () => JsonArray ?? throw new InvalidOperationException()))
+        .Or(Superpower.Parse.Ref(
+            () => JsonObject ?? throw new InvalidOperationException()));
     private static readonly TextParser<BenchmarkJson> Value = Json.Between(WhiteSpace.Many(), WhiteSpace.Many());
     private static readonly TextParser<BenchmarkJson> JsonArray = Value.ManyDelimitedBy(Superpower.Parsers.Character.EqualTo(','))
         .Between(Superpower.Parsers.Character.EqualTo('['), Superpower.Parsers.Character.EqualTo(']'))

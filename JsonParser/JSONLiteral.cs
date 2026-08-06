@@ -25,7 +25,7 @@ public class JSONLiteral : IJSONValue
     /// <summary>
     /// A string representation of the value
     /// </summary>
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
     /// <summary>
     /// The type the value is
@@ -45,18 +45,18 @@ public class JSONLiteral : IJSONValue
     /// Returns Value cast as the appropriate type.
     /// </summary>
     /// <returns></returns>
-    public object Get()
+    public object? Get()
     {
         switch (ValueType)
         {
             case LiteralType.String:
-                return Value;
+                return Value ?? throw new InvalidOperationException();
 
             case LiteralType.Number:
-                return Convert.ToDouble(Value);
+                return Convert.ToDouble(Value ?? throw new InvalidOperationException());
 
             case LiteralType.Boolean:
-                return (Value.ToLower() == "true") ? true : false;
+                return (Value ?? throw new InvalidOperationException()).ToLower() == "true";
 
             default:
                 return null;
@@ -79,7 +79,7 @@ public class JSONLiteral : IJSONValue
     /// Returns the Value property
     /// </summary>
     /// <returns>this.Value</returns>
-    public override string ToString() => Value;
+    public override string? ToString() => Value;
 
     public string ToJSON() => throw new NotImplementedException();
 }
@@ -216,12 +216,13 @@ static class JSONMap
     /// <param name="T">The type to which the returned object will be cast</param>
     /// <param name="toMap">The JSONObject to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    static object MapObject(Type T, JSONObject toMap)
+    static object? MapObject(Type T, JSONObject toMap)
     {
         if (T.IsSubclassOf(typeof(IDictionary)))
         {
             //Create an instance of the object as an IDictionary
-            var toReturn = (IDictionary)Activator.CreateInstance(T);
+            var toReturn = Activator.CreateInstance(T) as IDictionary
+                ?? throw new InvalidOperationException($"Cannot create {T}.");
 
             //Treat the object like a dictionary, and add each element to it as a key, value pair.
             foreach (var p in toMap.Pairs)
@@ -234,7 +235,8 @@ static class JSONMap
         else if (T.IsClass)
         {
             //Create an instance of the object
-            var toReturn = Activator.CreateInstance(T);
+            var toReturn = Activator.CreateInstance(T)
+                ?? throw new InvalidOperationException($"Cannot create {T}.");
 
             //Loop through all the properties of the type
             foreach (var p in T.GetProperties())
@@ -280,12 +282,18 @@ static class JSONMap
         else
         {
             //If T is an array, create a new ArrayList, otherwise create a new IList of type T
-            var toReturnList = (T.IsArray) ? new ArrayList() : (IList)Activator.CreateInstance(T);
+            var toReturnList = T.IsArray
+                ? new ArrayList()
+                : Activator.CreateInstance(T) as IList
+                    ?? throw new InvalidOperationException($"Cannot create {T}.");
+
+            var elementType = T.GetElementType()
+                ?? throw new InvalidOperationException($"{T} has no element type.");
 
             //Loop through all the elements of the array, and populate toReturnList with the mapped values of those elements
             foreach (var e in toMap.Elements)
             {
-                toReturnList.Add(MapValue(T.GetElementType(), e));
+                toReturnList.Add(MapValue(elementType, e));
             }
 
             //If T is an array, we need to cast the list as an array, otherwise we can return the list
@@ -293,7 +301,7 @@ static class JSONMap
             {
                 //Create an instance of an array of the appropriate type
                 var c = toReturnList.Count;
-                var toReturn = Array.CreateInstance(T.GetElementType(), c);
+                var toReturn = Array.CreateInstance(elementType, c);
 
                 //Loop through toReturnList and add each element to the array
                 for (int i = 0; i < c; i++)
@@ -313,7 +321,7 @@ static class JSONMap
     /// <param name="T">The type to which the returned object will be cast</param>
     /// <param name="toMap">The JSONLiteral to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    static object MapLiteral(Type T, JSONLiteral toMap)
+    static object? MapLiteral(Type T, JSONLiteral toMap)
     {
         //If the literal is a null, return null IF T is nullable, otherwise throw an exception
         if (toMap.ValueType == LiteralType.Null)
@@ -331,7 +339,7 @@ static class JSONMap
     /// <param name="T">The type to which the returned object will be cast</param>
     /// <param name="toMap">The IJSONValue to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    public static object MapValue(Type T, IJSONValue toMap)
+    public static object? MapValue(Type T, IJSONValue toMap)
         => toMap switch
         {
             JSONObject jsonObject => MapObject(T, jsonObject),

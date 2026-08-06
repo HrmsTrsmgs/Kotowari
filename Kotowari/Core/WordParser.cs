@@ -16,11 +16,21 @@ public class WordParser : Parser<string>
 
     Parser<char> WhiteSpace { get; }
 
-    public WordParser(string word, bool ignoreCase = false, Parser<char> whiteSpace = null)
+    public WordParser(string word, bool ignoreCase = false)
+        : this(word, ignoreCase, new CharParser(' '))
+    {
+    }
+
+    public WordParser(string word, Parser<char> whiteSpace)
+        : this(word, false, whiteSpace)
+    {
+    }
+
+    public WordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     {
         Parsers = word.Select(c => new CharParser(c, ignoreCase));
 
-        WhiteSpace = whiteSpace ?? new CharParser(' ');
+        WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
 
     protected override ParseResult<string> ParseCore(Cursol cursol)

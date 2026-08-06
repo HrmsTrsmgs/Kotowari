@@ -87,4 +87,34 @@ public class WordParserのテスト
 
         result.Cursol.Index.Should().Be(7);
     }
+
+    [Fact]
+    public void 指定した空白パーサーで単語前後を読み飛ばします()
+    {
+        var tested = new WordParser("public", new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("_public_"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Cursol.Index.Should().Be(8);
+    }
+
+    [Fact]
+    public void 大文字小文字を無視して指定した空白パーサーで単語前後を読み飛ばします()
+    {
+        var tested = new WordParser("public", true, new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("_PUBLIC_"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Cursol.Index.Should().Be(8);
+    }
+
+    [Fact]
+    public void 空白パーサーにnullは指定できません()
+    {
+        var action = () => new WordParser("public", false, null!);
+
+        action.Should().Throw<ArgumentNullException>();
+    }
 }
