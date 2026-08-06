@@ -122,12 +122,12 @@ public class JSONObject : IJSONValue
         get
         {
             if (Pairs.ContainsKey(key)) return Pairs[key];
-            else throw new ArgumentException("Key not found: " + key);
+            else throw new ArgumentException($"Key not found: {key}");
         }
         set
         {
             if (Pairs.ContainsKey(key)) Pairs[key] = value;
-            else throw new ArgumentException("Key not found: " + key);
+            else throw new ArgumentException($"Key not found: {key}");
         }
     }
 
@@ -275,7 +275,7 @@ static class JSONMap
         //If the type isn't an array or IList then the JSONArray can't be mapped onto it
         if (!T.IsArray || T.GetInterface("System.Collections.IList") is null)
         {
-            throw new ArgumentException(T + " can't map JSONArray.");
+            throw new ArgumentException($"{T} can't map JSONArray.");
         }
         else
         {
@@ -319,7 +319,7 @@ static class JSONMap
         if (toMap.ValueType == LiteralType.Null)
         {
             if (T.IsClass || Nullable.GetUnderlyingType(T) != null) return null;
-            else throw new ArgumentException(T + " can't be null.");
+            else throw new ArgumentException($"{T} can't be null.");
         }
         //If toMap isn't a literal, toMap.Get() return an object cast as the appropriate type.
         else return toMap.Get();
