@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace Marimo.Kotowari.Core;
 
-public class RecursiveParser<T> : Parser<T>
+public class RecursiveParser<T>(Func<Parser<T>> parserGetter) : Parser<T>
     where T : notnull
 {
-    Func<Parser<T>> ParserGetter { get; }
-    public RecursiveParser(Func<Parser<T>> parserGetter)
-        => ParserGetter = parserGetter;
-
     protected override ParseResult<T> ParseCore(Cursol cursol)
-        => ParserGetter().Parse(cursol);
+        => parserGetter().Parse(cursol);
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Marimo.Kotowari.Core;
 
-public struct Cursol
+public readonly record struct Cursol
 {
     public static char Null = '\0';
 
@@ -25,7 +25,7 @@ public struct Cursol
         }
     }
 
-    public int Index { get; }
+    public int Index { get; private init; }
     public char[] Text { get; }
     public Cursol(string text) : this(text, 0)
     {}
@@ -35,13 +35,8 @@ public struct Cursol
         Index = index;
     }
 
-    private Cursol(char[] text, int index)
-    {
-        Text = text;
-        Index = index;
-    }
+    public Cursol GoFoward(int step)
+        => this with { Index = Math.Min(Index + step, Text.Length) };
 
-    public Cursol GoFoward(int step) => new(Text, Math.Min(Index + step, Text.Length));
-
-    public Cursol Copy() => new(Text, Index);
+    public Cursol Copy() => this with { };
 }
