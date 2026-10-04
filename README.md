@@ -31,7 +31,7 @@ Run the benchmark:
 dotnet run --project Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj -c Release
 ```
 
-Versioned benchmark records are stored in [`Kotowari.Benchmarks/Results`](Kotowari.Benchmarks/Results). Each record includes the input hash, environment, dependency versions, results, and known limitations.
+Versioned benchmark records are listed in [`Kotowari.Benchmarks/Results`](Kotowari.Benchmarks/Results/README.md). Each record includes the input hash, environment, dependency versions, results, and known limitations.
 
 ## License
 

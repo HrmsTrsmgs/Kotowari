@@ -13,6 +13,8 @@
 
 基点は `721906f70471c90f2c41b4c5da8e1ac6712b2cad`、ブランチは `codex/optimize-word-parser`。配列保持のコミット `aecdb93` とC#指示のコミット `721906f` が含まれる。
 
+測定後、同じ直接照合実装と互換性テスト・測定記録をコミット `6db4bcbf6a028230f7e150bb9ac4992c316ed22a` に保存した。再現時は、配列保持版に基点SHA、直接照合版にこの保存SHAを使う。本文中の「未コミット」は測定当時の状態を示す。
+
 - baseline: 基点コミットのWordParser。非公開 `Parser<char>[]` を保持し、`[.. word.Select(c => new CharParser(c, ignoreCase))]` で先行生成する。
 - direct: 未コミットのWordParser。文字パーサー配列を削除し、`Cursol.Current` と `char.ToLower` を使って直接比較する。通常成功経路は `new string(char[], start, length)`、終端・負Indexの非連続経路だけ捕捉配列を使う。
 - Span、Cursol、CharParser、JSON構文、入力、ベンチマーク本体、公開API、依存バージョンは変更していない。
@@ -107,9 +109,10 @@ JSONは既存 `JsonParserBenchmarks.Kotowari` を使用。ファイル読み込�
 
 ## 記録
 
-- [統計CSV](2026-10-04-word-parser-direct-match.csv): 全16集計（JSON4、単体12）。
-- [反復CSV](2026-10-04-word-parser-direct-match-iterations.csv): 480実測反復それぞれのWorkloadActualとWorkloadResult、計960行。同じ反復の生値とオーバーヘッド補正値を2回の独立試行として数えない。
-- [起動別CSV](2026-10-04-word-parser-direct-match-launches.csv): 全48プロセス。時間はWorkloadResult10反復、割り当て・GCは対応する各起動のGC診断から取得。
+- [統計CSV](word-parser/summary.csv): 全16集計（JSON4、単体12）。
+- [反復CSV](word-parser/iterations.csv): 480実測反復それぞれのWorkloadActualとWorkloadResult、計960行。同じ反復の生値とオーバーヘッド補正値を2回の独立試行として数えない。
+- [起動別CSV](word-parser/launches.csv): 全48プロセス。時間はWorkloadResult10反復、割り当て・GCは対応する各起動のGC診断から取得。
+- 上記CSVでは `Experiment=2026-10-04-direct-match` の行を参照する。列と単位の扱いは[測定記録一覧](README.md)にまとめた。
 - 元ログ、HTML、元CSV、完全JSON、固定ソース、一時検証プログラムはGit対象外の `artifacts/word-parser-direct-match-2026-10-04/` に保存。
 - この記録とCSVを追加しただけで、本体・テスト・ベンチマーク・設定の追加変更、ステージ、コミット、pushはしていない。
 

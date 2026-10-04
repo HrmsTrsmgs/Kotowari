@@ -106,12 +106,12 @@ LaunchCount=3、その他は通常測定と同じで、変更前→Bの順に測
 
 ## 記録と検証
 
-Git対象の追加ファイル:
+Gitに残す測定記録とデータ（CSVは `Experiment=2026-10-04-investigation` の行を参照）:
 
 - この調査記録: `2026-10-04-word-parser-investigation.md`。
-- [反復CSV](2026-10-04-word-parser-investigation-iterations.csv): 全200反復。通常120、段階的JIT無効60、プロファイル付き20をMeasurementKindで分離。
-- [プロセス別CSV](2026-10-04-word-parser-investigation-launches.csv): 全20プロセスの平均、標準偏差、最小・最大、GC回数、割り当て。
-- [スタックCSV](2026-10-04-word-parser-investigation-stacks.csv): 各実装の自身・子呼び出し込みの上位50メソッドまで、サンプル数と割合。
+- [反復CSV](word-parser/iterations.csv): 全200反復。通常120、段階的JIT無効60、プロファイル付き20をMeasurementKindで分離。
+- [プロセス別CSV](word-parser/launches.csv): 全20プロセスの平均、標準偏差、最小・最大、GC回数、割り当て。
+- [スタックCSV](word-parser/stacks.csv): 各実装の自身・子呼び出し込みの上位50メソッドまで、サンプル数と割合。
 
 完全なログ・元CSV・nettrace・speedscope・etlx・固定ソース・一時解析プログラムは、Git対象外の `artifacts/word-parser-investigation-2026-10-04/` に残している。ホスト固有の絶対パスをこの記録や集計CSVへ含めていない。
 

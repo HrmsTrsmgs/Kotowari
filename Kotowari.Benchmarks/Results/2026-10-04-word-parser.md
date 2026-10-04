@@ -45,7 +45,7 @@ Release構成、Shortジョブを基にLaunchCount=1、IterationCount=10、Outli
 
 最初はWarmupCount=3・CPU固定なしで実行したが、実行時間の大きな変動があった。論理CPU 2へ固定（`--affinity 4`）してもウォームアップ中に時間が変化したため、主比較はWarmupCount=10に統一した。CPU固定やウォームアップ増加だけでは実行間変動を除去できていない。
 
-全8実行・56ケースの統計と条件を [CSV](2026-10-04-word-parser.csv)、JSON全体の各反復値80件を [反復CSV](2026-10-04-word-parser-json-iterations.csv) に保存した。未固定・ウォームアップ3回の探索結果も残すが、主比較へ混ぜない。完全なログ・HTML・元CSVはGit対象外の `artifacts/performance-word-parser-2026-10-04/` にある。
+全8実行・56ケースの統計と条件を [統計CSV](word-parser/summary.csv)、JSON全体の各反復値80件を [反復CSV](word-parser/iterations.csv) に保存した。いずれも `Experiment=2026-10-04-cache` の行を参照する。未固定・ウォームアップ3回の探索結果も残すが、主比較へ混ぜない。完全なログ・HTML・元CSVはGit対象外の `artifacts/performance-word-parser-2026-10-04/` にある。
 
 実行順は `baseline` → `cached-enumerable` → `baseline-fixed` → `baseline-warmed` → `cached-enumerable-warmed` → `cached-array-warmed` → `baseline-warmed-repeat` → `cached-char-array-warmed`。`baseline*` は変更前、`cached-enumerable*` はA、`cached-array*` はB、`cached-char-array*` はCに対応する。
 
