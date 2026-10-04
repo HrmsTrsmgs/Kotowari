@@ -23,7 +23,8 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-05-accumulation` | [文字蓄積方式の比較](2026-10-05-word-parser-accumulation.md) | 138 | 4,332 | 282 | — |
 | `2026-10-05-production-deferred-array` | [本体のList版と遅延配列版](2026-10-05-word-parser-production-deferred-array.md) | 36 | 576 | 36 | — |
 | `2026-10-05-json-combinators` | [巨大JSON・コンビネーター比較](2026-10-05-json-combinators.md) | 5 | 240 | 15 | — |
-| 合計 | | 251 | 6,388 | 401 | 173 |
+| `2026-10-05-word-parser-json-effect` | [WordParser変更前後の巨大JSON比較](2026-10-05-word-parser-json-effect.md) | 6 | 96 | 6 | — |
+| 合計 | | 257 | 6,484 | 407 | 173 |
 
 各データの粒度:
 
