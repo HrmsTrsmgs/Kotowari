@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Linq;
@@ -36,21 +35,25 @@ public class WordParser : Parser<string>
     protected override ParseResult<string> ParseCore(Cursol cursol)
     {
         var current = SkipBlankAsync(cursol);
-
-        var returnValue = new List<char>();
+        // 単語長が既知なので、Listの拡張と最後の配列化を避ける。
+        // 最初の成功まで確保を遅らせ、先頭失敗では割り当てない。
+        // 短語の比較ではList・ジェネレーター・stackalloc版より速かった。変更時は再比較する。
+        // 測定と採用理由: Kotowari.Benchmarks/Results/2026-10-05-word-parser-production-deferred-array.md
+        char[]? returnValue = null;
+        var index = 0;
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if(!result.IsSuccess)
-            {
-                return ParseResult<string>.Failure(cursol);
-            }
+            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
 
             current = result.Cursol;
-            returnValue.Add(result.Parsed);
+            returnValue ??= new char[Parsers.Length];
+            returnValue[index++] = result.Parsed;
         }
+
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string([.. returnValue]));
+        return ParseResult<string>.Success(current,
+            returnValue is null ? string.Empty : new string(returnValue));
     }
 
     private Cursol SkipBlankAsync(Cursol current)
