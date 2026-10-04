@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Transactions;
 
@@ -11,7 +9,8 @@ namespace Marimo.Kotowari.Core;
 
 public class WordParser : Parser<string>
 {
-    Parser<char>[] Parsers { get; }
+    readonly string word;
+    readonly bool ignoreCase;
     public bool IgnoreCase { get; }
 
     Parser<char> WhiteSpace { get; }
@@ -28,7 +27,9 @@ public class WordParser : Parser<string>
 
     public WordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     {
-        Parsers = [.. word.Select(c => new CharParser(c, ignoreCase))];
+        // 既存のLINQ生成と同じ引数名・検証順を維持する。
+        this.word = word ?? throw new ArgumentNullException("source");
+        this.ignoreCase = ignoreCase;
 
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
@@ -36,21 +37,39 @@ public class WordParser : Parser<string>
     protected override ParseResult<string> ParseCore(Cursol cursol)
     {
         var current = SkipBlankAsync(cursol);
+        var start = current;
 
-        var returnValue = new List<char>();
-        foreach (var parser in Parsers)
+        // 範囲外のCurrentは終端文字を返すため、入力長だけでは失敗と判断できない。
+        char[]? captured = null;
+        if (word.Length > 0 && (start.Index < 0 || word.Length > start.Text.Length - start.Index))
         {
-            var result = parser.Parse(current);
-            if(!result.IsSuccess)
+            captured = new char[word.Length];
+        }
+
+        for (var index = 0; index < word.Length; index++)
+        {
+            var currentChar = current.Current;
+            var expectedChar = word[index];
+            if (ignoreCase
+                ? char.ToLower(currentChar) != char.ToLower(expectedChar)
+                : currentChar != expectedChar)
             {
                 return ParseResult<string>.Failure(cursol);
             }
 
-            current = result.Cursol;
-            returnValue.Add(result.Parsed);
+            captured?[index] = currentChar;
+
+            current = current.GoFoward(1);
         }
+
+        // 末尾の空白パーサーが文書を書き換える前に解析値を確定する。
+        var parsed = word.Length == 0
+            ? string.Empty
+            : captured is null
+                ? new string(start.Text, start.Index, word.Length)
+            : new string(captured);
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string([.. returnValue]));
+        return ParseResult<string>.Success(current, parsed);
     }
 
     private Cursol SkipBlankAsync(Cursol current)
