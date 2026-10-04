@@ -11,7 +11,7 @@ namespace Marimo.Kotowari.Core;
 
 public class WordParser : Parser<string>
 {
-    IEnumerable<Parser<char>> Parsers { get; }
+    Parser<char>[] Parsers { get; }
     public bool IgnoreCase { get; }
 
     Parser<char> WhiteSpace { get; }
@@ -28,7 +28,7 @@ public class WordParser : Parser<string>
 
     public WordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     {
-        Parsers = word.Select(c => new CharParser(c, ignoreCase));
+        Parsers = [.. word.Select(c => new CharParser(c, ignoreCase))];
 
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }

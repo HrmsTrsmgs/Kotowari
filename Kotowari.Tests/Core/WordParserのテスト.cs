@@ -117,4 +117,46 @@ public class WordParserのテスト
 
         action.Should().Throw<ArgumentNullException>();
     }
+
+    [Fact]
+    public void 同じパーサーで失敗後にも別の入力を読み込めます()
+    {
+        var tested = new WordParser("public", true);
+
+        var failure = tested.Parse(new Cursol("publiX,"));
+        var success = tested.Parse(new Cursol("PUBLIC,"));
+
+        failure.IsSuccess.Should().BeFalse();
+        failure.Cursol.Index.Should().Be(0);
+        success.IsSuccess.Should().BeTrue();
+        success.Parsed.Should().Be("PUBLIC");
+        success.Cursol.Index.Should().Be(6);
+    }
+
+    [Fact]
+    public void 同じカーソルの文書が変わった場合にも現在の文字を読み込みます()
+    {
+        var tested = new WordParser("public", true);
+        var cursol = new Cursol("public,");
+
+        var first = tested.Parse(cursol);
+        cursol.Text[0] = 'P';
+        var second = tested.Parse(cursol);
+
+        first.Parsed.Should().Be("public");
+        second.Parsed.Should().Be("Public");
+        second.Cursol.Index.Should().Be(6);
+    }
+
+    [Fact]
+    public void 空の単語でも指定した空白パーサーで読み飛ばします()
+    {
+        var tested = new WordParser("", new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("__x"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeEmpty();
+        result.Cursol.Index.Should().Be(2);
+    }
 }
