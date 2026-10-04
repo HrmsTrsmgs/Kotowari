@@ -7,11 +7,13 @@
 
 - [2026-08-04](2026-08-04-json.md)
 - [2026-09-14の基準値](2026-09-14-json-baseline.md)と[CSV](2026-09-14-json-baseline.csv)
+- [2026-10-05の巨大JSON・パーサーコンビネーター比較](2026-10-05-json-combinators.md)（専用JSONパーサーは測定対象外）
 
 ## WordParserの測定
 
 同じテーマのデータは、測定のたびにCSVを増やさず、`word-parser/` の種類別CSVへ追記する。
 `Experiment` で測定記録を、`Run` でその中の実行を識別する。
+WordParser変更後のJSON全体の性能確認も、この既存データ群に含める。
 
 | Experiment | 測定記録 | summary | iterations | launches | stacks |
 |---|---|---:|---:|---:|---:|
@@ -20,7 +22,8 @@
 | `2026-10-04-direct-match` | [直接照合](2026-10-04-word-parser-direct-match.md) | 16 | 960 | 48 | — |
 | `2026-10-05-accumulation` | [文字蓄積方式の比較](2026-10-05-word-parser-accumulation.md) | 138 | 4,332 | 282 | — |
 | `2026-10-05-production-deferred-array` | [本体のList版と遅延配列版](2026-10-05-word-parser-production-deferred-array.md) | 36 | 576 | 36 | — |
-| 合計 | | 246 | 6,148 | 386 | 173 |
+| `2026-10-05-json-combinators` | [巨大JSON・コンビネーター比較](2026-10-05-json-combinators.md) | 5 | 240 | 15 | — |
+| 合計 | | 251 | 6,388 | 401 | 173 |
 
 各データの粒度:
 
