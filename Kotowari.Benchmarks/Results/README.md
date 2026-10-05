@@ -24,7 +24,11 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-05-production-deferred-array` | [本体のList版と遅延配列版](2026-10-05-word-parser-production-deferred-array.md) | 36 | 576 | 36 | — |
 | `2026-10-05-json-combinators` | [巨大JSON・コンビネーター比較](2026-10-05-json-combinators.md) | 5 | 240 | 15 | — |
 | `2026-10-05-word-parser-json-effect` | [WordParser変更前後の巨大JSON比較](2026-10-05-word-parser-json-effect.md) | 6 | 96 | 6 | — |
-| 合計 | | 257 | 6,484 | 407 | 173 |
+| `2026-10-05-benchmark-variance` | [ばらつき・長時間ウォームアップの調査](2026-10-05-benchmark-variance.md) | 23 | 1,088 | 39 | — |
+| `2026-10-05-pgo-codegen` | [PGOの速度帯・Tier 1生成コード比較](2026-10-05-pgo-codegen.md) | 32 | 1,024 | 32 | — |
+| `2026-10-05-pgo-callsite` | [内部呼び出し位置への型profile分離](2026-10-05-pgo-callsite.md) | 34 | 1,088 | 34 | — |
+| `2026-10-05-measurement-method` | [PGO有効での測定条件・所要時間の検証](2026-10-05-pgo-callsite.md#測定方法の追加検証) | 52 | 1,088 | 52 | — |
+| 合計 | | 398 | 10,772 | 564 | 173 |
 
 各データの粒度:
 
