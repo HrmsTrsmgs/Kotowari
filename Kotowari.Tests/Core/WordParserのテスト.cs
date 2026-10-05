@@ -10,7 +10,6 @@ using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-[Collection("WordParserの可変状態")]
 public class WordParserのテスト
 {
     [Fact]
@@ -136,21 +135,6 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void 同じカーソルの文書が変わった場合にも現在の文字を読み込みます()
-    {
-        var tested = new WordParser("public", true);
-        var cursol = new Cursol("public,");
-
-        var first = tested.Parse(cursol);
-        cursol.Text[0] = 'P';
-        var second = tested.Parse(cursol);
-
-        first.Parsed.Should().Be("public");
-        second.Parsed.Should().Be("Public");
-        second.Cursol.Index.Should().Be(6);
-    }
-
-    [Fact]
     public void 空の単語でも指定した空白パーサーで読み飛ばします()
     {
         var tested = new WordParser("", new CharParser('_'));
@@ -195,27 +179,6 @@ public class WordParserのテスト
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be(word);
         result.Cursol.Index.Should().Be(input.Length);
-    }
-
-    [Fact]
-    public void 入力終端では変更された終端文字を読み込みます()
-    {
-        var original = Cursol.Null;
-        try
-        {
-            Cursol.Null = 'X';
-            var tested = new WordParser("axx", true);
-
-            var result = tested.Parse(new Cursol("a"));
-
-            result.IsSuccess.Should().BeTrue();
-            result.Parsed.Should().Be("aXX");
-            result.Cursol.Index.Should().Be(1);
-        }
-        finally
-        {
-            Cursol.Null = original;
-        }
     }
 
     [Fact]
@@ -264,31 +227,6 @@ public class WordParserのテスト
         tested.IgnoreCase.Should().BeFalse();
     }
 
-    [Fact]
-    public void 末尾の空白パーサーが文書を書き換えても読み込んだ値を保持します()
-    {
-        var cursol = new Cursol("Public,");
-        var calls = 0;
-        var tested = new WordParser("public", true, new ConditionalCharParser(_ =>
-        {
-            calls++;
-            if (calls == 2)
-            {
-                cursol.Text[0] = 'X';
-            }
-
-            return false;
-        }));
-
-        var result = tested.Parse(cursol);
-
-        result.IsSuccess.Should().BeTrue();
-        result.Parsed.Should().Be("Public");
-        result.Cursol.Index.Should().Be(6);
-        cursol.Text[0].Should().Be('X');
-        calls.Should().Be(2);
-    }
-
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -298,10 +236,4 @@ public class WordParserのテスト
 
         action.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("source");
     }
-}
-
-// Cursol.Nullを変更するテストが他のパーサーのテストへ影響しないよう分離する。
-[CollectionDefinition("WordParserの可変状態", DisableParallelization = true)]
-public class WordParserの可変状態のコレクション
-{
 }

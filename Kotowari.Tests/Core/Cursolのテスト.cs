@@ -22,7 +22,7 @@ public class Cursolのテスト
     {
         var text = "ABC";
         var tested = new Cursol(text);
-        tested.Text.Should().Equal(text);
+        new string(tested.Text).Should().Be(text);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class Cursolのテスト
     public void Copyは同じTextを持つCursolを返します()
     {
         var tested = new Cursol("ABC");
-        tested.Copy().Text.Should().Equal("ABC");
+        new string(tested.Copy().Text).Should().Be("ABC");
     }
 
     [Fact]
