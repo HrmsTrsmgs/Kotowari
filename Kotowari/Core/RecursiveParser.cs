@@ -9,6 +9,6 @@ namespace Marimo.Kotowari.Core;
 public class RecursiveParser<T>(Func<Parser<T>> parserGetter) : Parser<T>
     where T : notnull
 {
-    protected override ParseResult<T> ParseCore(Cursol cursol)
-        => parserGetter().Parse(cursol);
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
+        => parserGetter().ParseCore(cursol);
 }

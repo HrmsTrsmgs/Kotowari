@@ -92,4 +92,41 @@ public class ZeroOrMoreParserのテスト
         parsed.ElementAt(0).Should().Be('a');
         parsed.ElementAt(1).Should().Be('a');
     }
+
+    [Fact]
+    public void 外部派生パーサーの成功値と失敗時の消費位置を引き継ぎます()
+    {
+        var 呼び出し位置 = new List<int>();
+        var tested = new ZeroOrMoreParser<char>(new 外部派生パーサー(it =>
+        {
+            呼び出し位置.Add(it.Index);
+            return it.Current == 'a'
+                ? ParseResult<char>.Success(it.GoFoward(1), 'A')
+                : ParseResult<char>.Failure(it.GoFoward(1));
+        }));
+
+        var parsed = tested.Parse(new Cursol("a!"));
+
+        parsed.IsSuccess.Should().BeTrue();
+        parsed.Parsed.Should().Equal('A');
+        parsed.Cursol.Index.Should().Be(2);
+        呼び出し位置.Should().Equal(0, 1);
+    }
+
+    [Fact]
+    public void 外部派生パーサーの例外をそのまま伝播します()
+    {
+        var exception = new InvalidOperationException();
+        var tested = new ZeroOrMoreParser<char>(new 外部派生パーサー(_ => throw exception));
+
+        var parse = () => tested.Parse(new Cursol("a"));
+
+        parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
+    }
+
+    sealed class 外部派生パーサー(Func<Cursol, ParseResult<char>> parse) : Parser<char>
+    {
+        protected override ParseResult<char> ParseCore(Cursol cursol)
+            => parse(cursol);
+    }
 }

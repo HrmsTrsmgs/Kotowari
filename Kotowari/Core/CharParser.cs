@@ -17,7 +17,7 @@ public class CharParser : Parser<char>
         IgnoreCase = ignoreCase;
     }
 
-    protected override ParseResult<char> ParseCore(Cursol cursol)
+    protected internal override ParseResult<char> ParseCore(Cursol cursol)
         => cursol.Current switch
         {
             var c when (IgnoreCase  ? char.ToLower(c) == char.ToLower(Char) : c == Char)

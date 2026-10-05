@@ -12,9 +12,9 @@ public class OptionalParser<T> : Parser<Optional<T>>
     public OptionalParser(Parser<T> parser)
         => Parser = parser;
 
-    protected override ParseResult<Optional<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<Optional<T>> ParseCore(Cursol cursol)
     {
-        var result = Parser.Parse(cursol);
+        var result = Parser.ParseCore(cursol);
         var parsed = result.IsSuccess ? result.Parsed : default;
 
         return ParseResult<Optional<T>>.Success(

@@ -18,9 +18,9 @@ public class ParserConverter<U, T> : Parser<T>
         Converter = converter;
     }
 
-    protected override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
-        var result = Parser.Parse(cursol);
+        var result = Parser.ParseCore(cursol);
 
         return result.IsSuccess
             ? ParseResult<T>.Success(result.Cursol, Converter(result.Parsed))

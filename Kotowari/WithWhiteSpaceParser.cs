@@ -18,12 +18,12 @@ public class WithWhiteSpaceParser<T> : Parser<T>
         Parser = parser;
     }
 
-    protected override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
         var current = cursol;
         while (true)
         {
-            var result = WhiteSpace.Parse(current);
+            var result = WhiteSpace.ParseCore(current);
             if (!result.IsSuccess)
             {
                 break;
@@ -32,6 +32,6 @@ public class WithWhiteSpaceParser<T> : Parser<T>
             current = result.Cursol;
         }
 
-        return Parser.Parse(current);
+        return Parser.ParseCore(current);
     }
 }

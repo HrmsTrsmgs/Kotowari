@@ -18,14 +18,14 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         Delimiter = delimiter;
     }
 
-    protected override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
         var parseds = new List<T>();
         var current = cursol;
         var beforeDelimiter = current;
         while (true)
         {
-            var sequenceResult = Sequence.Parse(current);
+            var sequenceResult = Sequence.ParseCore(current);
             if (!sequenceResult.IsSuccess)
             {
                 return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
@@ -34,7 +34,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
             current = sequenceResult.Cursol;
             parseds.Add(sequenceResult.Parsed);
             beforeDelimiter = current;
-            var delimiterResult = Delimiter.Parse(current);
+            var delimiterResult = Delimiter.ParseCore(current);
             if (!delimiterResult.IsSuccess)
             {
                 return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);

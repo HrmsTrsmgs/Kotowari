@@ -13,11 +13,11 @@ public class OrParser<T> : Parser<T>
     public OrParser(params Parser<T>[] parsers)
         => Parsers = parsers;
 
-    protected override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
         foreach(var parser in Parsers)
         {
-            var result = parser.Parse(cursol);
+            var result = parser.ParseCore(cursol);
 
             if(result.IsSuccess)
             {
