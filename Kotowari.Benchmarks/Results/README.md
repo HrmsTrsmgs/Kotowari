@@ -29,7 +29,8 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-05-pgo-codegen` | [PGOの速度帯・Tier 1生成コード比較](2026-10-05-pgo-codegen.md) | 32 | 1,024 | 32 | — |
 | `2026-10-05-pgo-callsite` | [内部呼び出し位置への型profile分離](2026-10-05-pgo-callsite.md) | 34 | 1,088 | 34 | — |
 | `2026-10-05-measurement-method` | [PGO有効での測定条件・所要時間の検証](2026-10-05-pgo-callsite.md#測定方法の追加検証) | 52 | 1,088 | 52 | — |
-| 合計 | | 414 | 11,028 | 580 | 173 |
+| `2026-10-06-cursol-string-document-json` | [Cursolの文字列Document化・巨大JSON全体測定](2026-10-06-cursol-string-document-json.md) | 16 | 256 | 16 | — |
+| 合計 | | 430 | 11,284 | 596 | 173 |
 
 各データの粒度:
 
