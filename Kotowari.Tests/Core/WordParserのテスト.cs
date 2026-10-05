@@ -219,12 +219,29 @@ public class WordParserのテスト
         }
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void IgnoreCaseはコンストラクターで指定した値を返します(bool ignoreCase)
+    {
+        var tested = new WordParser("public", ignoreCase, new CharParser('_'));
+
+        tested.IgnoreCase.Should().Be(ignoreCase);
+    }
+
     [Fact]
-    public void IgnoreCaseは大文字小文字を無視する指定でもfalseを返す既存の値を維持します()
+    public void IgnoreCaseは空白パーサーを省略しても大文字小文字を無視する指定を返します()
     {
         var tested = new WordParser("public", true);
 
-        tested.IgnoreCase.Should().BeFalse();
+        tested.IgnoreCase.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IgnoreCaseは大文字小文字の指定を省略するとfalseを返します()
+    {
+        new WordParser("public").IgnoreCase.Should().BeFalse();
+        new WordParser("public", new CharParser('_')).IgnoreCase.Should().BeFalse();
     }
 
     [Theory]

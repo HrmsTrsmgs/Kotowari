@@ -28,6 +28,7 @@ public class WordParser : Parser<string>
     public WordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     {
         Parsers = [.. word.Select(c => new CharParser(c, ignoreCase))];
+        IgnoreCase = ignoreCase;
 
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
