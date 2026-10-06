@@ -53,21 +53,28 @@ public readonly record struct Cursol
     /// <summary>
     /// 入力の読み取り・位置計算と、Cursol間で共有する文書の同一性を担う。
     /// </summary>
-    sealed class Document(string text)
+    sealed class Document
     {
-        readonly string input = text;
+        readonly string input;
         readonly ReadOnlyMemory<byte>? utf8;
 
-        public Document(ReadOnlyMemory<byte> utf8) : this(string.Empty)
+        public Document(string text)
         {
+            input = text;
+            // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
+            Length = text.Length;
+        }
+
+        public Document(ReadOnlyMemory<byte> utf8)
+        {
+            input = string.Empty;
             this.utf8 = utf8;
             Length = utf8.Length;
         }
 
         public ReadOnlySpan<char> Text => input;
 
-        // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
-        public int Length { get; } = text.Length;
+        public int Length { get; }
 
         public char this[int index]
         {
