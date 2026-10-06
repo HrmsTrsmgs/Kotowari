@@ -22,13 +22,13 @@ public readonly record struct Cursol
     {}
     Cursol(string text, int index)
     {
-        document = new(text);
+        document = new StringDocument(text);
         Index = index;
     }
 
     Cursol(ReadOnlyMemory<byte> utf8)
     {
-        document = new(utf8);
+        document = new Utf8Document(utf8);
         Index = 0;
     }
 
@@ -53,43 +53,26 @@ public readonly record struct Cursol
     /// <summary>
     /// 入力の読み取り・位置計算と、Cursol間で共有する文書の同一性を担う。
     /// </summary>
-    sealed class Document
+    abstract class Document
     {
-        readonly string input;
-        readonly ReadOnlyMemory<byte>? utf8;
+        public abstract ReadOnlySpan<char> Text { get; }
+        public abstract char this[int index] { get; }
+        public abstract int GoFoward(int index, int step);
+    }
 
-        public Document(string text)
-        {
-            input = text;
-            // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
-            Length = text.Length;
-        }
+    sealed class StringDocument(string text) : Document
+    {
+        readonly string input = text;
 
-        public Document(ReadOnlyMemory<byte> utf8)
-        {
-            input = string.Empty;
-            this.utf8 = utf8;
-            Length = utf8.Length;
-        }
+        public override ReadOnlySpan<char> Text => input;
 
-        public ReadOnlySpan<char> Text => input;
+        // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
+        public int Length { get; } = text.Length;
 
-        public int Length { get; }
-
-        public char this[int index]
+        public override char this[int index]
         {
             get
             {
-                if (utf8 is { } bytes)
-                {
-                    if (index < 0 || index >= Length) return NullCharacter;
-
-                    var remaining = bytes.Span[index..];
-                    Span<char> current = stackalloc char[1];
-                    Encoding.UTF8.GetChars(remaining[..Utf8CharacterLength(remaining)], current);
-                    return current[0];
-                }
-
                 try
                 {
                     return input[index];
@@ -101,13 +84,36 @@ public readonly record struct Cursol
             }
         }
 
-        public int GoFoward(int index, int step)
-        {
-            if (utf8 is not { } bytes) return Math.Min(index + step, Length);
+        public override int GoFoward(int index, int step)
+            => Math.Min(index + step, Length);
+    }
 
+    sealed class Utf8Document(ReadOnlyMemory<byte> input) : Document
+    {
+        readonly ReadOnlyMemory<byte> utf8 = input;
+
+        public override ReadOnlySpan<char> Text => default;
+
+        public int Length { get; } = input.Length;
+
+        public override char this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Length) return NullCharacter;
+
+                var remaining = utf8.Span[index..];
+                Span<char> current = stackalloc char[1];
+                Encoding.UTF8.GetChars(remaining[..Utf8CharacterLength(remaining)], current);
+                return current[0];
+            }
+        }
+
+        public override int GoFoward(int index, int step)
+        {
             while (step > 0 && index < Length)
             {
-                index += Utf8CharacterLength(bytes.Span[index..]);
+                index += Utf8CharacterLength(utf8.Span[index..]);
                 step--;
             }
             return index;

@@ -30,7 +30,9 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-05-pgo-callsite` | [内部呼び出し位置への型profile分離](2026-10-05-pgo-callsite.md) | 34 | 1,088 | 34 | — |
 | `2026-10-05-measurement-method` | [PGO有効での測定条件・所要時間の検証](2026-10-05-pgo-callsite.md#測定方法の追加検証) | 52 | 1,088 | 52 | — |
 | `2026-10-06-cursol-string-document-json` | [Cursolの文字列Document化・巨大JSON全体測定](2026-10-06-cursol-string-document-json.md) | 16 | 256 | 16 | — |
-| 合計 | | 430 | 11,284 | 596 | 173 |
+| `2026-10-06-cursol-document-inheritance-json` | [Cursolの継承分離・巨大JSON全体測定](2026-10-06-cursol-document-inheritance-json.md) | 18 | 288 | 18 | — |
+| `2026-10-06-cursol-utf8-three-way-json` | [UTF-8対応前・分岐版・継承版の巨大JSON全体測定](2026-10-06-cursol-utf8-three-way-json.md) | 24 | 384 | 24 | — |
+| 合計 | | 472 | 11,956 | 638 | 173 |
 
 各データの粒度:
 
