@@ -27,12 +27,12 @@ public readonly record struct Cursol
     }
 
     public Cursol GoFoward(int step)
-        => this with { Index = Math.Min(Index + step, document.Length) };
+        => this with { Index = document.GoFoward(Index, step) };
 
     public Cursol Copy() => this with { };
 
     /// <summary>
-    /// 入力文字列の読み取りと、Cursol間で共有する文書の同一性を担う。
+    /// 入力文字列の読み取り・位置計算と、Cursol間で共有する文書の同一性を担う。
     /// </summary>
     sealed class Document(string text)
     {
@@ -57,5 +57,8 @@ public readonly record struct Cursol
                 }
             }
         }
+
+        public int GoFoward(int index, int step)
+            => Math.Min(index + step, Length);
     }
 }
