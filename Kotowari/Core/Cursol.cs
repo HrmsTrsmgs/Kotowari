@@ -7,28 +7,17 @@ namespace Marimo.Kotowari.Core;
 
 public readonly record struct Cursol
 {
-    public const char Null = '\0';
+    /// <summary>
+    /// 範囲外の文字読み取りで返すヌル文字（U+0000）。
+    /// </summary>
+    public const char NullCharacter = '\0';
 
     readonly Document document;
 
-    public char Current
-    {
-        get
-        {
-
-            try
-            {
-                return document.Text[Index];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return Null;
-            }
-        }
-    }
+    public char Current => document[Index];
 
     public int Index { get; private init; }
-    public ReadOnlySpan<char> Text => document?.Text;
+    public ReadOnlySpan<char> Text => document is null ? default : document.Text;
     public Cursol(string text) : this(text, 0)
     {}
     Cursol(string text, int index)
@@ -43,20 +32,30 @@ public readonly record struct Cursol
     public Cursol Copy() => this with { };
 
     /// <summary>
-    /// 入力文字列を保持し、Cursol間で共有する文書の同一性を表す。
+    /// 入力文字列の読み取りと、Cursol間で共有する文書の同一性を担う。
     /// </summary>
-    /// <remarks>
-    /// 文書の同一性はこのオブジェクトの参照で表し、Cursolの等価性は文書と位置で決まる。
-    /// コピーや移動で生成したCursolは同じDocumentを共有し、位置も同じなら等価になる。
-    /// 一方、同じstringから別々に生成したCursolは異なるDocumentを持ち、別文書として扱う。
-    /// stringを直接フィールドに持つと内容による等価比較になり、この区別を失う。
-    /// 文書を参照で識別するため、record化や内容によるEqualsの実装は行わない。
-    /// </remarks>
     sealed class Document(string text)
     {
-        public string Text { get; } = text;
+        readonly string input = text;
+
+        public ReadOnlySpan<char> Text => input;
 
         // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
         public int Length { get; } = text.Length;
+
+        public char this[int index]
+        {
+            get
+            {
+                try
+                {
+                    return input[index];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return NullCharacter;
+                }
+            }
+        }
     }
 }
