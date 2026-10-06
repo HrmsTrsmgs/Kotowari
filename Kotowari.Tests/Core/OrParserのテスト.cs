@@ -90,4 +90,46 @@ public class OrParserのテスト
 
         cursol.Index.Should().Be(0);
     }
+
+    [Fact]
+    public void UTF8入力でシーケンスの途中失敗後も次の候補を開始位置から読めます()
+    {
+        var tested = new OrParser<(char, char)>(
+            SequenceParser.Create(new CharParser('あ'), new CharParser('x')),
+            SequenceParser.Create(new CharParser('あ'), new CharParser('é')));
+        var utf16Start = new Cursol("前あéb").GoFoward(1);
+        var utf8Start = Cursol.FromUtf8(Encoding.UTF8.GetBytes("前あéb")).GoFoward(1);
+
+        var utf16 = tested.Parse(utf16Start);
+        var utf8 = tested.Parse(utf8Start);
+
+        utf16.IsSuccess.Should().BeTrue();
+        utf16.Parsed.Should().Be(('あ', 'é'));
+        utf16.Cursol.Index.Should().Be(3);
+        utf8.IsSuccess.Should().BeTrue();
+        utf8.Parsed.Should().Be(utf16.Parsed);
+        utf8.Cursol.Should().Be(utf8Start.GoFoward(2));
+        utf8.Cursol.Index.Should().Be(8);
+        utf8.Cursol.Current.Should().Be('b');
+    }
+
+    [Fact]
+    public void UTF8入力で全シーケンスが途中失敗すると元の文書と開始位置を返します()
+    {
+        var tested = new OrParser<(char, char)>(
+            SequenceParser.Create(new CharParser('あ'), new CharParser('x')),
+            SequenceParser.Create(new CharParser('あ'), new CharParser('é')));
+        var utf16Start = new Cursol("前あいb").GoFoward(1);
+        var utf8Start = Cursol.FromUtf8(Encoding.UTF8.GetBytes("前あいb")).GoFoward(1);
+
+        var utf16 = tested.Parse(utf16Start);
+        var utf8 = tested.Parse(utf8Start);
+
+        utf16.IsSuccess.Should().BeFalse();
+        utf16.Cursol.Should().Be(utf16Start);
+        utf8.IsSuccess.Should().BeFalse();
+        utf8.Cursol.Should().Be(utf8Start);
+        utf8.Cursol.Index.Should().Be(3);
+        utf8.Cursol.Current.Should().Be('あ');
+    }
 }
