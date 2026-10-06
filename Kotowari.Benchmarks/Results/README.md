@@ -9,6 +9,7 @@
 - [2026-09-14の基準値](2026-09-14-json-baseline.md)と[CSV](2026-09-14-json-baseline.csv)
 - [2026-10-05の巨大JSON・パーサーコンビネーター比較](2026-10-05-json-combinators.md)（専用JSONパーサーは測定対象外）
 - [2026-10-07の文字列・UTF-8入力経路比較](2026-10-07-utf8-stream-json.md)
+- [2026-10-07のUTF-8カーソル二重復号削除](2026-10-07-utf8-cursor-single-decode.md)
 
 ## WordParserの測定
 
@@ -34,7 +35,8 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-06-cursol-document-inheritance-json` | [Cursolの継承分離・巨大JSON全体測定](2026-10-06-cursol-document-inheritance-json.md) | 18 | 288 | 18 | — |
 | `2026-10-06-cursol-utf8-three-way-json` | [UTF-8対応前・分岐版・継承版の巨大JSON全体測定](2026-10-06-cursol-utf8-three-way-json.md) | 24 | 384 | 24 | — |
 | `2026-10-07-utf8-stream-json` | [文字列・UTF-8入力の比較](2026-10-07-utf8-stream-json.md) | 16 | 256 | 16 | — |
-| 合計 | | 488 | 12,212 | 654 | 173 |
+| `2026-10-07-utf8-cursor-single-decode` | [UTF-8カーソルの二重復号削除](2026-10-07-utf8-cursor-single-decode.md) | 24 | 384 | 24 | 171 |
+| 合計 | | 512 | 12,596 | 678 | 344 |
 
 各データの粒度:
 

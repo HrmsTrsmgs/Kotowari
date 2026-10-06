@@ -103,9 +103,13 @@ public readonly record struct Cursol
                 if (index < 0 || index >= Length) return NullCharacter;
 
                 var remaining = utf8.Span[index..];
-                Span<char> current = stackalloc char[1];
-                Encoding.UTF8.GetChars(remaining[..Utf8CharacterLength(remaining)], current);
-                return current[0];
+                Rune.DecodeFromUtf8(remaining, out var current, out var consumed);
+                if (current.IsBmp) return (char)current.Value;
+
+                // 補助平面文字は一文字のcharに収まらないため、UTF-16への変換で拒否する。
+                Span<char> destination = stackalloc char[1];
+                Encoding.UTF8.GetChars(remaining[..consumed], destination);
+                return destination[0];
             }
         }
 
