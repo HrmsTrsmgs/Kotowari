@@ -253,4 +253,35 @@ public class WordParserのテスト
 
         action.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("source");
     }
+
+    [Fact]
+    public void UTF8入力も同じ単語パーサーで空白を読み飛ばして読み込めます()
+    {
+        Parser<string> tested = new WordParser("éあb");
+
+        var utf16 = tested.Parse(new Cursol(" éあb ,"));
+        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(" éあb ,")));
+
+        utf16.IsSuccess.Should().BeTrue();
+        utf16.Parsed.Should().Be("éあb");
+        utf16.Cursol.Index.Should().Be(5);
+        utf8.IsSuccess.Should().BeTrue();
+        utf8.Parsed.Should().Be("éあb");
+        utf8.Cursol.Index.Should().Be(8);
+        utf8.Cursol.Current.Should().Be(',');
+    }
+
+    [Fact]
+    public void UTF8入力で単語が一致しなければ元のカーソルを返します()
+    {
+        var cursol = Cursol.FromUtf8(Encoding.UTF8.GetBytes("é あc,")).GoFoward(1);
+        var tested = new WordParser("あb");
+
+        var result = tested.Parse(cursol);
+
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Should().Be(cursol);
+        result.Cursol.Index.Should().Be(2);
+        result.Cursol.Current.Should().Be(' ');
+    }
 }

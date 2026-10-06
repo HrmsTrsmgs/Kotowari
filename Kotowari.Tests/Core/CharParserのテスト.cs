@@ -120,4 +120,38 @@ public class CharParserのテスト
 
         parsed.Should().Be('p');
     }
+
+    [Theory]
+    [InlineData("ab", 'a', 1)]
+    [InlineData("éb", 'é', 2)]
+    [InlineData("あb", 'あ', 3)]
+    public void UTF8入力も同じ文字パーサーで読み込めます(string input, char first, int nextIndex)
+    {
+        Parser<char> tested = new CharParser(first);
+
+        var utf16 = tested.Parse(new Cursol(input));
+        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(input)));
+
+        utf16.IsSuccess.Should().BeTrue();
+        utf16.Parsed.Should().Be(first);
+        utf16.Cursol.Index.Should().Be(1);
+        utf8.IsSuccess.Should().BeTrue();
+        utf8.Parsed.Should().Be(first);
+        utf8.Cursol.Index.Should().Be(nextIndex);
+        utf8.Cursol.Current.Should().Be('b');
+    }
+
+    [Fact]
+    public void UTF8入力で文字が一致しなければ元のカーソルを返します()
+    {
+        var cursol = Cursol.FromUtf8(Encoding.UTF8.GetBytes("あb"));
+        var tested = new CharParser('い');
+
+        var result = tested.Parse(cursol);
+
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Should().Be(cursol);
+        result.Cursol.Index.Should().Be(0);
+        result.Cursol.Current.Should().Be('あ');
+    }
 }

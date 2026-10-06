@@ -99,4 +99,69 @@ public class Cursolのテスト
 
         (first != second).Should().BeTrue();
     }
+
+    [Theory]
+    [InlineData("ab", 'a')]
+    [InlineData("éb", 'é')]
+    [InlineData("あb", 'あ')]
+    public void UTF8入力の先頭文字を読み取れます(string input, char first)
+    {
+        var tested = Cursol.FromUtf8(Encoding.UTF8.GetBytes(input));
+
+        tested.Index.Should().Be(0);
+        tested.Current.Should().Be(first);
+    }
+
+    [Theory]
+    [InlineData("ab", 1)]
+    [InlineData("éb", 2)]
+    [InlineData("あb", 3)]
+    public void UTF8入力は一文字進むと次の文字のバイト位置になります(string input, int nextIndex)
+    {
+        var tested = Cursol.FromUtf8(Encoding.UTF8.GetBytes(input));
+
+        var moved = tested.GoFoward(1);
+
+        moved.Index.Should().Be(nextIndex);
+        moved.Current.Should().Be('b');
+        (moved != tested).Should().BeTrue();
+        tested.Index.Should().Be(0);
+        tested.Current.Should().Be(input[0]);
+    }
+
+    [Theory]
+    [InlineData(1, 3, 'あ')]
+    [InlineData(2, 6, 'b')]
+    [InlineData(10, 7, '\0')]
+    public void UTF8入力は現在位置から文字数だけ進み終端を越えません(int step, int nextIndex, char next)
+    {
+        var tested = Cursol.FromUtf8(Encoding.UTF8.GetBytes("aéあb")).GoFoward(1);
+
+        var moved = tested.GoFoward(step);
+
+        moved.Index.Should().Be(nextIndex);
+        moved.Current.Should().Be(next);
+    }
+
+    [Fact]
+    public void UTF8入力のCopyは同じ文書と位置を指します()
+    {
+        var tested = Cursol.FromUtf8(Encoding.UTF8.GetBytes("あb")).GoFoward(1);
+
+        var copied = tested.Copy();
+
+        (copied == tested).Should().BeTrue();
+        copied.Index.Should().Be(3);
+        copied.Current.Should().Be('b');
+    }
+
+    [Fact]
+    public void 同じUTF8入力から別々に作ったCursolは異なる文書を指します()
+    {
+        var input = Encoding.UTF8.GetBytes("あb");
+        var first = Cursol.FromUtf8(input);
+        var second = Cursol.FromUtf8(input);
+
+        (first != second).Should().BeTrue();
+    }
 }
