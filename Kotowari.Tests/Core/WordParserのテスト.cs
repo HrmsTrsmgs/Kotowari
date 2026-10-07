@@ -15,7 +15,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -26,7 +26,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは指定していない単語を読み込みに失敗します()
     {
-        var cursol = new Cursol("publi");
+        var cursol = Cursol.FromString("publi");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -36,7 +36,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みます()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -48,7 +48,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
-        var cursol = new Cursol("void");
+        var cursol = Cursol.FromString("void");
         var tested = new WordParser("void");
 
         var result = tested.Parse(cursol);
@@ -59,7 +59,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに失敗した場合には進んでいないカーソルを返します()
     {
-        var cursol = new Cursol("publi");
+        var cursol = Cursol.FromString("publi");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -70,7 +70,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは単語前のスペースを読み飛ばします()
     {
-        var cursol = new Cursol(" public");
+        var cursol = Cursol.FromString(" public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -81,7 +81,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは単語後のスペースを読み飛ばします()
     {
-        var cursol = new Cursol("public ");
+        var cursol = Cursol.FromString("public ");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -94,7 +94,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", new CharParser('_'));
 
-        var result = tested.Parse(new Cursol("_public_"));
+        var result = tested.Parse(Cursol.FromString("_public_"));
 
         result.IsSuccess.Should().BeTrue();
         result.Cursol.Index.Should().Be(8);
@@ -105,7 +105,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", true, new CharParser('_'));
 
-        var result = tested.Parse(new Cursol("_PUBLIC_"));
+        var result = tested.Parse(Cursol.FromString("_PUBLIC_"));
 
         result.IsSuccess.Should().BeTrue();
         result.Cursol.Index.Should().Be(8);
@@ -124,8 +124,8 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", true);
 
-        var failure = tested.Parse(new Cursol("publiX,"));
-        var success = tested.Parse(new Cursol("PUBLIC,"));
+        var failure = tested.Parse(Cursol.FromString("publiX,"));
+        var success = tested.Parse(Cursol.FromString("PUBLIC,"));
 
         failure.IsSuccess.Should().BeFalse();
         failure.Cursol.Index.Should().Be(0);
@@ -139,7 +139,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("", new CharParser('_'));
 
-        var result = tested.Parse(new Cursol("__x"));
+        var result = tested.Parse(Cursol.FromString("__x"));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().BeEmpty();
@@ -151,19 +151,19 @@ public class WordParserのテスト
     {
         var tested = new WordParser("Public");
 
-        tested.Parse(new Cursol("public,")).IsSuccess.Should().BeFalse();
+        tested.Parse(Cursol.FromString("public,")).IsSuccess.Should().BeFalse();
     }
 
     [Fact]
     public void 先頭の空白を読み飛ばした後に失敗した場合も元のカーソルを返します()
     {
-        var cursol = new Cursol("x__publiX").GoFoward(1);
+        var cursol = Cursol.FromString("x__publiX").GoFoward(1);
         var tested = new WordParser("public", new CharParser('_'));
 
         var result = tested.Parse(cursol);
 
         result.IsSuccess.Should().BeFalse();
-        result.Cursol.Should().Be(cursol);
+        (result.Cursol == cursol).Should().BeTrue();
     }
 
     [Theory]
@@ -174,7 +174,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser(word);
 
-        var result = tested.Parse(new Cursol(input));
+        var result = tested.Parse(Cursol.FromString(input));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be(word);
@@ -186,7 +186,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("\0\0ab");
 
-        var result = tested.Parse(new Cursol("ab,").GoFoward(-2));
+        var result = tested.Parse(Cursol.FromString("ab,").GoFoward(-2));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be("\0\0ab");
@@ -203,9 +203,9 @@ public class WordParserのテスト
             var tested = new WordParser("I", true);
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
 
-            var turkish = tested.Parse(new Cursol("ı,"));
+            var turkish = tested.Parse(Cursol.FromString("ı,"));
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-            var english = tested.Parse(new Cursol("ı,"));
+            var english = tested.Parse(Cursol.FromString("ı,"));
 
             turkish.IsSuccess.Should().BeTrue();
             turkish.Parsed.Should().Be("ı");
@@ -259,7 +259,7 @@ public class WordParserのテスト
     {
         Parser<string> tested = new WordParser("éあb");
 
-        var utf16 = tested.Parse(new Cursol(" éあb ,"));
+        var utf16 = tested.Parse(Cursol.FromString(" éあb ,"));
         var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(" éあb ,")));
 
         utf16.IsSuccess.Should().BeTrue();
@@ -280,7 +280,7 @@ public class WordParserのテスト
         var result = tested.Parse(cursol);
 
         result.IsSuccess.Should().BeFalse();
-        result.Cursol.Should().Be(cursol);
+        (result.Cursol == cursol).Should().BeTrue();
         result.Cursol.Index.Should().Be(2);
         result.Cursol.Current.Should().Be(' ');
     }

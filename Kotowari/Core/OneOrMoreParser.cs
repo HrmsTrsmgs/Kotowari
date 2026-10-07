@@ -21,6 +21,6 @@ public class OneOrMoreParser<T> : Parser<IEnumerable<T>>
                 tuple => new[] { tuple.Item1 }.Concat(tuple.Item2));
     }
 
-    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<IEnumerable<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }

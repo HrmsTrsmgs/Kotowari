@@ -45,7 +45,7 @@ internal static class WordParserAccumulationInputs
 public abstract class WordParserAccumulationBenchmarkBase
 {
     WordParserAccumulationParser[] parsers = [];
-    Cursol cursol;
+    Cursol<StringDocument> cursol;
 
     public abstract WordParserAccumulationCase Case { get; set; }
 
@@ -53,7 +53,7 @@ public abstract class WordParserAccumulationBenchmarkBase
     public void Setup()
     {
         var (word, text, succeeds) = WordParserAccumulationInputs.Get(Case);
-        cursol = new Cursol(text);
+        cursol = Cursol.FromString(text);
         parsers = [.. Enum.GetValues<WordParserAccumulationStrategy>()
             .Select(it => WordParserAccumulationCandidates.Create(it, word, true))];
 
@@ -71,34 +71,34 @@ public abstract class WordParserAccumulationBenchmarkBase
 
     // All candidates have the same array lookup and Parser<string>.Parse dispatch.
     [Benchmark(Baseline = true)]
-    public ParseResult<string> List() => parsers[(int)WordParserAccumulationStrategy.List].Parse(cursol);
+    public ParseResult<string, StringDocument> List() => parsers[(int)WordParserAccumulationStrategy.List].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> ListCapacity() => parsers[(int)WordParserAccumulationStrategy.ListCapacity].Parse(cursol);
+    public ParseResult<string, StringDocument> ListCapacity() => parsers[(int)WordParserAccumulationStrategy.ListCapacity].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> StringBuilder() => parsers[(int)WordParserAccumulationStrategy.StringBuilder].Parse(cursol);
+    public ParseResult<string, StringDocument> StringBuilder() => parsers[(int)WordParserAccumulationStrategy.StringBuilder].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> StringBuilderCapacity() => parsers[(int)WordParserAccumulationStrategy.StringBuilderCapacity].Parse(cursol);
+    public ParseResult<string, StringDocument> StringBuilderCapacity() => parsers[(int)WordParserAccumulationStrategy.StringBuilderCapacity].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> IteratorConcat() => parsers[(int)WordParserAccumulationStrategy.IteratorConcat].Parse(cursol);
+    public ParseResult<string, StringDocument> IteratorConcat() => parsers[(int)WordParserAccumulationStrategy.IteratorConcat].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> IteratorArray() => parsers[(int)WordParserAccumulationStrategy.IteratorArray].Parse(cursol);
+    public ParseResult<string, StringDocument> IteratorArray() => parsers[(int)WordParserAccumulationStrategy.IteratorArray].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> ResultLambda() => parsers[(int)WordParserAccumulationStrategy.ResultLambda].Parse(cursol);
+    public ParseResult<string, StringDocument> ResultLambda() => parsers[(int)WordParserAccumulationStrategy.ResultLambda].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> Array() => parsers[(int)WordParserAccumulationStrategy.Array].Parse(cursol);
+    public ParseResult<string, StringDocument> Array() => parsers[(int)WordParserAccumulationStrategy.Array].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> DeferredArray() => parsers[(int)WordParserAccumulationStrategy.DeferredArray].Parse(cursol);
+    public ParseResult<string, StringDocument> DeferredArray() => parsers[(int)WordParserAccumulationStrategy.DeferredArray].Parse(cursol);
 
     [Benchmark]
-    public ParseResult<string> StackBuffer() => parsers[(int)WordParserAccumulationStrategy.StackBuffer].Parse(cursol);
+    public ParseResult<string, StringDocument> StackBuffer() => parsers[(int)WordParserAccumulationStrategy.StackBuffer].Parse(cursol);
 }
 
 [MemoryDiagnoser]

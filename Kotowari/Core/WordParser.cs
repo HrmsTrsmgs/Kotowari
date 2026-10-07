@@ -33,7 +33,7 @@ public class WordParser : Parser<string>
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
 
-    protected internal override ParseResult<string> ParseCore(Cursol cursol)
+    protected internal override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         // 単語長が既知なので、Listの拡張と最後の配列化を避ける。
@@ -45,7 +45,7 @@ public class WordParser : Parser<string>
         foreach (var parser in Parsers)
         {
             var result = parser.ParseCore(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue ??= new char[Parsers.Length];
@@ -53,11 +53,12 @@ public class WordParser : Parser<string>
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current,
+        return ParseResult<string, TDocument>.Success(current,
             returnValue is null ? string.Empty : new string(returnValue));
     }
 
-    private Cursol SkipBlankAsync(Cursol current)
+    Cursol<TDocument> SkipBlankAsync<TDocument>(Cursol<TDocument> current)
+        where TDocument : IDocument, allows ref struct
     {
         while (true)
         {

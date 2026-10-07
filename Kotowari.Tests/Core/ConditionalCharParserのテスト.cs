@@ -14,7 +14,7 @@ public class ConditionalCharParserのテスト
     [Fact]
     public void ParseAsyncは指定した文字を読み込みに成功します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ConditionalCharParser(c => c == 'p');
 
         var result = tested.Parse(cursol);
@@ -25,7 +25,7 @@ public class ConditionalCharParserのテスト
     [Fact]
     public void ParseAsyncは指定した文字を読み込みます()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ConditionalCharParser(c => c == 'p');
 
         var result = tested.Parse(cursol);
@@ -36,7 +36,7 @@ public class ConditionalCharParserのテスト
     [Fact]
     public void ParseAsyncは指定していない文字を読み込みに失敗します()
     {
-        var cursol = new Cursol("internal");
+        var cursol = Cursol.FromString("internal");
         var tested = new ConditionalCharParser(c => c == 'p');
 
         var result = tested.Parse(cursol);
@@ -47,7 +47,7 @@ public class ConditionalCharParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに成功した場合にその分進んだカーソルを返します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ConditionalCharParser(c => c == 'p');
 
         var result = tested.Parse(cursol);

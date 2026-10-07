@@ -15,7 +15,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("abc")).IsSuccess;
+        var isSuccess = tested.Parse(Cursol.FromString("abc")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -26,7 +26,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var parsed = tested.Parse(new Cursol("abc")).Parsed;
+        var parsed = tested.Parse(Cursol.FromString("abc")).Parsed;
 
         parsed.Should().Be("abc");
     }
@@ -36,7 +36,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var cursol = tested.Parse(new Cursol("abc")).Cursol;
+        var cursol = tested.Parse(Cursol.FromString("abc")).Cursol;
 
         cursol.Index.Should().Be("abc".Length);
    }
@@ -46,7 +46,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("ab")).IsSuccess;
+        var isSuccess = tested.Parse(Cursol.FromString("ab")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -56,7 +56,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var parsed = tested.Parse(new Cursol("abc")).Parsed;
+        var parsed = tested.Parse(Cursol.FromString("abc")).Parsed;
 
         parsed.Should().Be("abc");
     }
@@ -66,7 +66,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var cursol = tested.Parse(new Cursol("ab")).Cursol;
+        var cursol = tested.Parse(Cursol.FromString("ab")).Cursol;
 
         cursol.Index.Should().Be("ab".Length);
     }
@@ -76,7 +76,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
+        var isSuccess = tested.Parse(Cursol.FromString("a")).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -86,7 +86,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var cursol = tested.Parse(new Cursol("a")).Cursol;
+        var cursol = tested.Parse(Cursol.FromString("a")).Cursol;
 
         cursol.Index.Should().Be(0);
     }
@@ -97,7 +97,7 @@ public class OrParserのテスト
         var tested = new OrParser<(char, char)>(
             SequenceParser.Create(new CharParser('あ'), new CharParser('x')),
             SequenceParser.Create(new CharParser('あ'), new CharParser('é')));
-        var utf16Start = new Cursol("前あéb").GoFoward(1);
+        var utf16Start = Cursol.FromString("前あéb").GoFoward(1);
         var utf8Start = Cursol.FromUtf8(Encoding.UTF8.GetBytes("前あéb")).GoFoward(1);
 
         var utf16 = tested.Parse(utf16Start);
@@ -108,7 +108,7 @@ public class OrParserのテスト
         utf16.Cursol.Index.Should().Be(3);
         utf8.IsSuccess.Should().BeTrue();
         utf8.Parsed.Should().Be(utf16.Parsed);
-        utf8.Cursol.Should().Be(utf8Start.GoFoward(2));
+        (utf8.Cursol == utf8Start.GoFoward(2)).Should().BeTrue();
         utf8.Cursol.Index.Should().Be(8);
         utf8.Cursol.Current.Should().Be('b');
     }
@@ -119,16 +119,16 @@ public class OrParserのテスト
         var tested = new OrParser<(char, char)>(
             SequenceParser.Create(new CharParser('あ'), new CharParser('x')),
             SequenceParser.Create(new CharParser('あ'), new CharParser('é')));
-        var utf16Start = new Cursol("前あいb").GoFoward(1);
+        var utf16Start = Cursol.FromString("前あいb").GoFoward(1);
         var utf8Start = Cursol.FromUtf8(Encoding.UTF8.GetBytes("前あいb")).GoFoward(1);
 
         var utf16 = tested.Parse(utf16Start);
         var utf8 = tested.Parse(utf8Start);
 
         utf16.IsSuccess.Should().BeFalse();
-        utf16.Cursol.Should().Be(utf16Start);
+        (utf16.Cursol == utf16Start).Should().BeTrue();
         utf8.IsSuccess.Should().BeFalse();
-        utf8.Cursol.Should().Be(utf8Start);
+        (utf8.Cursol == utf8Start).Should().BeTrue();
         utf8.Cursol.Index.Should().Be(3);
         utf8.Cursol.Current.Should().Be('あ');
     }

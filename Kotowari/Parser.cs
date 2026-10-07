@@ -14,7 +14,8 @@ public abstract class Parser
 public abstract class Parser<T> : Parser
     where T : notnull
 {
-    public ParseResult<T> Parse(Cursol cursol)
+    public ParseResult<T, TDocument> Parse<TDocument>(Cursol<TDocument> cursol)
+        where TDocument : IDocument, allows ref struct
         => ParseCore(cursol);
 
     /// <summary>
@@ -91,5 +92,6 @@ public abstract class Parser<T> : Parser
     /// Kotowari.Benchmarks/Results/2026-10-05-pgo-callsite.md、および各報告の証拠JSONに記録しています。
     /// </para>
     /// </remarks>
-    protected internal abstract ParseResult<T> ParseCore(Cursol cursol);
+    protected internal abstract ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+        where TDocument : IDocument, allows ref struct;
 }

@@ -56,7 +56,8 @@ internal abstract class WordParserAccumulationParser(string word, bool ignoreCas
     public bool IgnoreCase { get; }
     Parser<char> WhiteSpace { get; } = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
 
-    protected Cursol SkipBlankAsync(Cursol current)
+    protected Cursol<TDocument> SkipBlankAsync<TDocument>(Cursol<TDocument> current)
+        where TDocument : IDocument, allows ref struct
     {
         while (true)
         {
@@ -72,7 +73,7 @@ internal abstract class WordParserAccumulationParser(string word, bool ignoreCas
 internal sealed class ListWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
 
@@ -82,84 +83,84 @@ internal sealed class ListWordParser(string word, bool ignoreCase, Parser<char> 
             var result = parser.Parse(current);
             if (!result.IsSuccess)
             {
-                return ParseResult<string>.Failure(cursol);
+                return ParseResult<string, TDocument>.Failure(cursol);
             }
 
             current = result.Cursol;
             returnValue.Add(result.Parsed);
         }
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string([.. returnValue]));
+        return ParseResult<string, TDocument>.Success(current, new string([.. returnValue]));
     }
 }
 
 internal sealed class CapacityListWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var returnValue = new List<char>(Parsers.Length);
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue.Add(result.Parsed);
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string([.. returnValue]));
+        return ParseResult<string, TDocument>.Success(current, new string([.. returnValue]));
     }
 }
 
 internal sealed class StringBuilderWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var returnValue = new StringBuilder();
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue.Append(result.Parsed);
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, returnValue.ToString());
+        return ParseResult<string, TDocument>.Success(current, returnValue.ToString());
     }
 }
 
 internal sealed class CapacityStringBuilderWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var returnValue = new StringBuilder(Parsers.Length);
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue.Append(result.Parsed);
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, returnValue.ToString());
+        return ParseResult<string, TDocument>.Success(current, returnValue.ToString());
     }
 }
 
 internal sealed class IteratorConcatWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var isSuccess = true;
@@ -181,17 +182,17 @@ internal sealed class IteratorConcatWordParser(string word, bool ignoreCase, Par
         }
 
         var returnValue = string.Concat(ParseCharacters());
-        if (!isSuccess) return ParseResult<string>.Failure(cursol);
+        if (!isSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, returnValue);
+        return ParseResult<string, TDocument>.Success(current, returnValue);
     }
 }
 
 internal sealed class IteratorArrayWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var isSuccess = true;
@@ -213,21 +214,21 @@ internal sealed class IteratorArrayWordParser(string word, bool ignoreCase, Pars
         }
 
         char[] returnValue = [.. ParseCharacters()];
-        if (!isSuccess) return ParseResult<string>.Failure(cursol);
+        if (!isSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string(returnValue));
+        return ParseResult<string, TDocument>.Success(current, new string(returnValue));
     }
 }
 
 internal sealed class ResultLambdaWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
 
-        IEnumerable<ParseResult<char>> ParseCharacters()
+        IEnumerable<ParseResult<char, TDocument>> ParseCharacters()
         {
             foreach (var parser in Parsers)
             {
@@ -247,7 +248,7 @@ internal sealed class ResultLambdaWordParser(string word, bool ignoreCase, Parse
         var index = 0;
         foreach (var result in ParseCharacters())
         {
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             var previous = write;
             var character = result.Parsed;
@@ -260,7 +261,7 @@ internal sealed class ResultLambdaWordParser(string word, bool ignoreCase, Parse
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current,
+        return ParseResult<string, TDocument>.Success(current,
             string.Create(Parsers.Length, write, static (span, action) => action?.Invoke(span)));
     }
 }
@@ -268,7 +269,7 @@ internal sealed class ResultLambdaWordParser(string word, bool ignoreCase, Parse
 internal sealed class ArrayWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         var returnValue = new char[Parsers.Length];
@@ -276,21 +277,21 @@ internal sealed class ArrayWordParser(string word, bool ignoreCase, Parser<char>
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue[index++] = result.Parsed;
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string(returnValue));
+        return ParseResult<string, TDocument>.Success(current, new string(returnValue));
     }
 }
 
 internal sealed class DeferredArrayWordParser(string word, bool ignoreCase, Parser<char> whiteSpace)
     : WordParserAccumulationParser(word, ignoreCase, whiteSpace)
 {
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         char[]? returnValue = null;
@@ -298,7 +299,7 @@ internal sealed class DeferredArrayWordParser(string word, bool ignoreCase, Pars
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue ??= new char[Parsers.Length];
@@ -306,7 +307,7 @@ internal sealed class DeferredArrayWordParser(string word, bool ignoreCase, Pars
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, returnValue is null ? string.Empty : new string(returnValue));
+        return ParseResult<string, TDocument>.Success(current, returnValue is null ? string.Empty : new string(returnValue));
     }
 }
 
@@ -315,7 +316,7 @@ internal sealed class StackBufferWordParser(string word, bool ignoreCase, Parser
 {
     internal const int StackBufferLimit = 256;
 
-    protected override ParseResult<string> ParseCore(Cursol cursol)
+    protected override ParseResult<string, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = SkipBlankAsync(cursol);
         Span<char> returnValue = Parsers.Length <= StackBufferLimit
@@ -325,13 +326,13 @@ internal sealed class StackBufferWordParser(string word, bool ignoreCase, Parser
         foreach (var parser in Parsers)
         {
             var result = parser.Parse(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!result.IsSuccess) return ParseResult<string, TDocument>.Failure(cursol);
 
             current = result.Cursol;
             returnValue[index++] = result.Parsed;
         }
 
         current = SkipBlankAsync(current);
-        return ParseResult<string>.Success(current, new string(returnValue));
+        return ParseResult<string, TDocument>.Success(current, new string(returnValue));
     }
 }

@@ -18,7 +18,7 @@ public class WithWhiteSpaceParser<T> : Parser<T>
         Parser = parser;
     }
 
-    protected internal override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var current = cursol;
         while (true)

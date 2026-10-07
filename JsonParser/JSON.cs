@@ -225,7 +225,7 @@ public class JSON
 
     public static JSONObject Parse(string text)
     {
-        var result = JObject.Parse(new Cursol(text));
+        var result = JObject.Parse(Cursol.FromString(text));
         if(result.IsSuccess)
         {
             return result.Parsed;
@@ -240,12 +240,13 @@ public class JSON
     /// <returns>解析したJSONオブジェクト。</returns>
     /// <exception cref="ParseException">入力がJSONオブジェクトの文法に一致しない場合。</exception>
     /// <remarks>
-    /// 指定範囲をbyte配列へコピーし、全文をstringへ変換せずに解析します。
+    /// 指定範囲を同期解析中に借用し、byte配列へのコピーや全文のstring変換を行いません。
+    /// 呼び出し中は入力の基になるメモリを有効に保ち、変更しないでください。
     /// 補助平面文字および不正なUTF-8入力には対応していません。
     /// </remarks>
     public static JSONObject Parse(ReadOnlySpan<byte> utf8)
     {
-        var result = JObject.Parse(Cursol.FromUtf8((byte[])[.. utf8]));
+        var result = JObject.Parse(Cursol.FromUtf8(utf8));
         return result.IsSuccess ? result.Parsed : throw new ParseException();
     }
 }

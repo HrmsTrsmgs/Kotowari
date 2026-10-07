@@ -13,7 +13,7 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
     public ZeroOrMoreParser(Parser<T> parser)
         => Parser = parser;
 
-    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<IEnumerable<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var parseds = new List<T> { };
         var current = cursol;
@@ -22,7 +22,7 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
             var result = Parser.ParseCore(current);
             if (!result.IsSuccess)
             {
-                return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);
+                return ParseResult<IEnumerable<T>, TDocument>.Success(result.Cursol, parseds);
             }
 
             current = result.Cursol;

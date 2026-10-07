@@ -10,32 +10,30 @@ public class ParseResultのテスト
     [Fact]
     public void 成功結果は値とカーソルを保持します()
     {
-        var cursol = new Cursol("text");
+        var cursol = Cursol.FromString("text");
 
-        var result = ParseResult<string>.Success(cursol, "parsed");
+        var result = ParseResult<string, StringDocument>.Success(cursol, "parsed");
 
         result.IsSuccess.Should().BeTrue();
-        result.Cursol.Should().Be(cursol);
+        (result.Cursol == cursol).Should().BeTrue();
         result.Parsed.Should().Be("parsed");
     }
 
     [Fact]
     public void 失敗結果はカーソルを保持します()
     {
-        var cursol = new Cursol("text");
+        var cursol = Cursol.FromString("text");
 
-        var result = ParseResult<string>.Failure(cursol);
+        var result = ParseResult<string, StringDocument>.Failure(cursol);
 
         result.IsSuccess.Should().BeFalse();
-        result.Cursol.Should().Be(cursol);
+        (result.Cursol == cursol).Should().BeTrue();
     }
 
     [Fact]
     public void 失敗結果から値は取得できません()
     {
-        var result = ParseResult<string>.Failure(new Cursol("text"));
-
-        var action = () => result.Parsed;
+        var action = () => ParseResult<string, StringDocument>.Failure(Cursol.FromString("text")).Parsed;
 
         action.Should().Throw<InvalidOperationException>();
     }
@@ -43,7 +41,7 @@ public class ParseResultのテスト
     [Fact]
     public void 成功結果にnullは指定できません()
     {
-        var action = () => ParseResult<string>.Success(new Cursol("text"), null!);
+        Action action = () => ParseResult<string, StringDocument>.Success(Cursol.FromString("text"), null!);
 
         action.Should().Throw<ArgumentNullException>();
     }

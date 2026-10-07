@@ -19,12 +19,12 @@ public class ParserConverterのテスト
 
     [Fact]
     public void パースします()
-        => Tested.Parse(new Cursol("123"));
+        => Tested.Parse(Cursol.FromString("123"));
 
     [Fact]
     public void 指定したパーサーと同じ条件で成功します()
     {
-        var isSuccess = Tested.Parse(new Cursol("123")).IsSuccess;
+        var isSuccess = Tested.Parse(Cursol.FromString("123")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -32,7 +32,7 @@ public class ParserConverterのテスト
     [Fact]
     public void 指定したパーサーと同じ条件で失敗します()
     {
-        var isSuccess = Tested.Parse(new Cursol("124")).IsSuccess;
+        var isSuccess = Tested.Parse(Cursol.FromString("124")).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -40,7 +40,7 @@ public class ParserConverterのテスト
     [Fact]
     public void 指定した通り変換がなされます()
     {
-        var parsed = Tested.Parse(new Cursol("123")).Parsed;
+        var parsed = Tested.Parse(Cursol.FromString("123")).Parsed;
 
         parsed.Should().Be(123);
     }
@@ -48,14 +48,14 @@ public class ParserConverterのテスト
     [Fact]
     public void 成功した時はカーソルが進みます()
     {
-        var cursol = Tested.Parse(new Cursol("123")).Cursol;
+        var cursol = Tested.Parse(Cursol.FromString("123")).Cursol;
 
         cursol.Index.Should().Be(3);
     }
     [Fact]
     public void 失敗した時はカーソルが進みません()
     {
-        var cursol = Tested.Parse(new Cursol("124")).Cursol;
+        var cursol = Tested.Parse(Cursol.FromString("124")).Cursol;
 
         cursol.Index.Should().Be(0);
     }

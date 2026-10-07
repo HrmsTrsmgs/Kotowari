@@ -18,7 +18,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         Delimiter = delimiter;
     }
 
-    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<IEnumerable<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var parseds = new List<T>();
         var current = cursol;
@@ -28,7 +28,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
             var sequenceResult = Sequence.ParseCore(current);
             if (!sequenceResult.IsSuccess)
             {
-                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
+                return ParseResult<IEnumerable<T>, TDocument>.Success(beforeDelimiter, parseds);
             }
 
             current = sequenceResult.Cursol;
@@ -37,7 +37,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
             var delimiterResult = Delimiter.ParseCore(current);
             if (!delimiterResult.IsSuccess)
             {
-                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
+                return ParseResult<IEnumerable<T>, TDocument>.Success(beforeDelimiter, parseds);
             }
 
             current = delimiterResult.Cursol;

@@ -15,21 +15,21 @@ public class SequenceParser<T1, T2> : Parser<(T1, T2)>
     (Parser<T1>, Parser<T2>) Parsers { get; }
     public SequenceParser(Parser<T1> parser1, Parser<T2> parser2)
         => Parsers = (parser1, parser2);
-    protected internal override ParseResult<(T1, T2)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var result1 = Parsers.Item1.ParseCore(cursol);
         if (!result1.IsSuccess)
         {
-            return ParseResult<(T1, T2)>.Failure(cursol);
+            return ParseResult<(T1, T2), TDocument>.Failure(cursol);
         }
 
         var result2 = Parsers.Item2.ParseCore(result1.Cursol);
         if (!result2.IsSuccess)
         {
-            return ParseResult<(T1, T2)>.Failure(cursol);
+            return ParseResult<(T1, T2), TDocument>.Failure(cursol);
         }
 
-        return ParseResult<(T1, T2)>.Success(
+        return ParseResult<(T1, T2), TDocument>.Success(
             result2.Cursol,
             (result1.Parsed, result2.Parsed));
     }
@@ -51,7 +51,7 @@ public class SequenceParser<T1, T2, T3> : Parser<(T1, T2, T3)>
                     parser3)),
             tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2));
     }
-    protected internal override ParseResult<(T1, T2, T3)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4> : Parser<(T1, T2, T3, T4)>
@@ -78,7 +78,7 @@ public class SequenceParser<T1, T2, T3, T4> : Parser<(T1, T2, T3, T4)>
             tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2, tuple.Item2.Item3));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 
@@ -114,7 +114,7 @@ public class SequenceParser<T1, T2, T3, T4, T5> : Parser<(T1, T2, T3, T4, T5)>
                 tuple.Item2.Item4));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 
@@ -154,7 +154,7 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6> : Parser<(T1, T2, T3, T4, T5
                 tuple.Item2.Item5));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 
@@ -198,7 +198,7 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7> : Parser<(T1, T2, T3, T4
                 tuple.Item2.Item6));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8)>
@@ -245,7 +245,7 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8> : Parser<(T1, T2, T3
                 tuple.Item2.Item7));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9)>
@@ -296,7 +296,7 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9> : Parser<(T1, T2
                 tuple.Item2.Item8));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)>
@@ -351,6 +351,6 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T
                 tuple.Item2.Item9));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)> ParseCore(Cursol cursol)
+    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
         => Parser.ParseCore(cursol);
 }

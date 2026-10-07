@@ -18,12 +18,12 @@ public class ParserConverter<U, T> : Parser<T>
         Converter = converter;
     }
 
-    protected internal override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var result = Parser.ParseCore(cursol);
 
         return result.IsSuccess
-            ? ParseResult<T>.Success(result.Cursol, Converter(result.Parsed))
-            : ParseResult<T>.Failure(result.Cursol);
+            ? ParseResult<T, TDocument>.Success(result.Cursol, Converter(result.Parsed))
+            : ParseResult<T, TDocument>.Failure(result.Cursol);
     }
 }

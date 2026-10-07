@@ -13,7 +13,7 @@ public class ExpectCharParserのテスト
     [Fact]
     public void ParseAsyncは指定ていない文字を読み込みに成功します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
@@ -25,7 +25,7 @@ public class ExpectCharParserのテスト
     [Fact]
     public void ParseAsyncは指定していない文字を読み込みます()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
@@ -37,7 +37,7 @@ public class ExpectCharParserのテスト
     [Fact]
     public void ParseAsyncは指定した文字を読み込みに失敗します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var tested = new ExpectCharParser(
             new CharParser('p'));
 
@@ -52,7 +52,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var cursol = tested.Parse(new Cursol("public")).Cursol;
+        var cursol = tested.Parse(Cursol.FromString("public")).Cursol;
 
         cursol.Index.Should().Be(1);
     }
@@ -63,7 +63,7 @@ public class ExpectCharParserのテスト
         var tested = new ExpectCharParser(
             new CharParser('a'));
 
-        var parsed = tested.Parse(new Cursol("public")).Parsed;
+        var parsed = tested.Parse(Cursol.FromString("public")).Parsed;
 
         parsed.Should().Be('p');
     }

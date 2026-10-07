@@ -13,17 +13,28 @@ public class RecursiveParserのテスト
     [Fact]
     public void ParseAsyncは内部パーサーと同じように成功します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var parser = new CharParser('p');
         var tested = new RecursiveParser<char>(() => parser);
-        tested.Parse(cursol).Should().Be(parser.Parse(cursol));
+        var result = tested.Parse(cursol);
+        var expected = parser.Parse(cursol);
+        result.IsSuccess.Should().Be(expected.IsSuccess);
+        (result.Cursol == expected.Cursol).Should().BeTrue();
+        result.Parsed.Should().Be(expected.Parsed);
     }
     [Fact]
     public void ParseAsyncは内部パーサーと同じように失敗します()
     {
-        var cursol = new Cursol("public");
+        var cursol = Cursol.FromString("public");
         var parser = new CharParser('a');
         var tested = new RecursiveParser<char>(() => parser);
-        tested.Parse(cursol).Should().Be(parser.Parse(cursol));
+        var result = tested.Parse(cursol);
+        var expected = parser.Parse(cursol);
+        result.IsSuccess.Should().Be(expected.IsSuccess);
+        (result.Cursol == expected.Cursol).Should().BeTrue();
+        var readParsed = () => tested.Parse(Cursol.FromString("public")).Parsed;
+        var readExpected = () => parser.Parse(Cursol.FromString("public")).Parsed;
+        readParsed.Should().Throw<InvalidOperationException>();
+        readExpected.Should().Throw<InvalidOperationException>();
     }
 }

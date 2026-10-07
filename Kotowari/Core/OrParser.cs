@@ -13,7 +13,7 @@ public class OrParser<T> : Parser<T>
     public OrParser(params Parser<T>[] parsers)
         => Parsers = parsers;
 
-    protected internal override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         foreach(var parser in Parsers)
         {
@@ -24,6 +24,6 @@ public class OrParser<T> : Parser<T>
                 return result;
             }
         }
-        return ParseResult<T>.Failure(cursol);
+        return ParseResult<T, TDocument>.Failure(cursol);
     }
 }

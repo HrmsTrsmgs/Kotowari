@@ -12,12 +12,12 @@ public class OptionalParser<T> : Parser<Optional<T>>
     public OptionalParser(Parser<T> parser)
         => Parser = parser;
 
-    protected internal override ParseResult<Optional<T>> ParseCore(Cursol cursol)
+    protected internal override ParseResult<Optional<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
     {
         var result = Parser.ParseCore(cursol);
         var parsed = result.IsSuccess ? result.Parsed : default;
 
-        return ParseResult<Optional<T>>.Success(
+        return ParseResult<Optional<T>, TDocument>.Success(
             result.Cursol,
             new Optional<T>(result.IsSuccess, parsed));
     }
