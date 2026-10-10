@@ -10,6 +10,14 @@
 - [2026-10-05の巨大JSON・パーサーコンビネーター比較](2026-10-05-json-combinators.md)（専用JSONパーサーは測定対象外）
 - [2026-10-07の文字列・UTF-8入力経路比較](2026-10-07-utf8-stream-json.md)
 - [2026-10-07のUTF-8カーソル二重復号削除](2026-10-07-utf8-cursor-single-decode.md)
+- [2026-10-07のUTF-8カーソル・次の候補の調査](2026-10-07-utf8-cursor-next-investigation.md)（実装変更前のCPUサンプル・生成コード確認）
+- [2026-10-07のASCII文字幅直接取得の評価](2026-10-07-utf8-cursor-ascii-width.md)（通常計時では改善を確認できず、実験変更を取り消し）
+- [2026-10-07のUTF-8 Span借用・巨大JSON比較](2026-10-07-utf8-span-borrowing.md)（全文コピーは撤去できたが、両経路で大幅な速度低下）
+- [2026-10-07のSpan借用後の速度低下・原因切り分け](2026-10-07-utf8-span-regression.md)（Tier 1生成コードと、型宣言・同サイズのデータ表現を分けた対照実験）
+- [2026-10-07のSpan借用カーソル・値渡しの本体修正](2026-10-07-utf8-cursor-flat-fix.md)（中間コピー列と大幅な後退を縮小、対応前文字列版の速度目標と安定化は未達）
+- [2026-10-09のExecution共通化・JSON性能評価](2026-10-09-execution-commonization.md)（転送・キャッシュ・空白処理を共通化、性能同等性は未確認）
+- [2026-10-10のカーソル引数のscoped in化の評価](2026-10-10-cursor-in-parameter.md)（CPU／JIT調査に基づくコピー削減候補を、PGO有効・MemoryStream込みで評価）
+- [2026-10-10のUTF-8文書の入力保持方法の比較](2026-10-10-utf8-document-layout.md)（独立した8組の確認測定で約5.2%短縮、対応前文字列版の1.10倍以内という目標は未達）
 
 ## WordParserの測定
 
@@ -36,7 +44,12 @@ WordParser変更後のJSON全体の性能確認も、この既存データ群に
 | `2026-10-06-cursol-utf8-three-way-json` | [UTF-8対応前・分岐版・継承版の巨大JSON全体測定](2026-10-06-cursol-utf8-three-way-json.md) | 24 | 384 | 24 | — |
 | `2026-10-07-utf8-stream-json` | [文字列・UTF-8入力の比較](2026-10-07-utf8-stream-json.md) | 16 | 256 | 16 | — |
 | `2026-10-07-utf8-cursor-single-decode` | [UTF-8カーソルの二重復号削除](2026-10-07-utf8-cursor-single-decode.md) | 24 | 384 | 24 | 171 |
-| 合計 | | 512 | 12,596 | 678 | 344 |
+| `2026-10-07-utf8-cursor-next-investigation` | [次の候補のCPUサンプル・生成コード調査](2026-10-07-utf8-cursor-next-investigation.md) | — | — | — | 185 |
+| `2026-10-07-utf8-cursor-ascii-width` | [ASCII文字幅直接取得の評価](2026-10-07-utf8-cursor-ascii-width.md) | 24 | 384 | 24 | — |
+| `2026-10-07-utf8-span-borrowing` | [UTF-8 Span借用の実装前後比較](2026-10-07-utf8-span-borrowing.md) | 32 | 512 | 32 | — |
+| `2026-10-07-utf8-span-regression` | [Span借用後の速度低下・原因切り分け](2026-10-07-utf8-span-regression.md) | 24 | 384 | 24 | 206 |
+| `2026-10-07-utf8-cursor-flat-fix` | [Span借用カーソル・値渡しの本体修正](2026-10-07-utf8-cursor-flat-fix.md) | 20 | 320 | 20 | — |
+| 合計 | | 612 | 14,196 | 778 | 735 |
 
 各データの粒度:
 
