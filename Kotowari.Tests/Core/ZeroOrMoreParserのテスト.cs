@@ -97,7 +97,7 @@ public class ZeroOrMoreParserのテスト
     public void 外部派生パーサーの成功値と失敗時の消費位置を引き継ぎます()
     {
         var 呼び出し位置 = new List<int>();
-        var tested = new ZeroOrMoreParser<char>(new 外部派生パーサー((current, index) =>
+        var tested = new ZeroOrMoreParser<char>(new CallbackCharParser((current, index) =>
         {
             呼び出し位置.Add(index);
             return (current == 'a', 'A', 1);
@@ -115,21 +115,26 @@ public class ZeroOrMoreParserのテスト
     public void 外部派生パーサーの例外をそのまま伝播します()
     {
         var exception = new InvalidOperationException();
-        var tested = new ZeroOrMoreParser<char>(new 外部派生パーサー((_, _) => throw exception));
+        var tested = new ZeroOrMoreParser<char>(new CallbackCharParser((_, _) => throw exception));
 
         Action parse = () => tested.Parse(Cursol.FromString("a"));
 
         parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
     }
 
-    sealed class 外部派生パーサー(Func<char, int, (bool IsSuccess, char Parsed, int Step)> parse) : Parser<char>
+    [Fact]
+    public void 組み合わせから呼んでも派生反復パーサーの処理と基底実装を使います()
     {
-        protected override ParseResult<char, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        {
-            var (isSuccess, parsed, step) = parse(cursol.Current, cursol.Index);
-            return isSuccess
-                ? ParseResult<char, TDocument>.Success(cursol.GoFoward(step), parsed)
-                : ParseResult<char, TDocument>.Failure(cursol.GoFoward(step));
-        }
+        var parser = new UpperCaseZeroOrMoreParser();
+        var tested = new OrParser<IEnumerable<char>>(parser);
+
+        var utf16 = tested.Parse(Cursol.FromString("aa!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8("aa!"u8));
+
+        utf16.Parsed.Should().Equal('A', 'A');
+        utf16.Cursol.Index.Should().Be(2);
+        utf8.Parsed.Should().Equal('A', 'A');
+        utf8.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(2);
     }
 }

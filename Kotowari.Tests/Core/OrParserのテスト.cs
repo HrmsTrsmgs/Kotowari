@@ -132,4 +132,56 @@ public class OrParserのテスト
         utf8.Cursol.Index.Should().Be(3);
         utf8.Cursol.Current.Should().Be('あ');
     }
+
+    [Fact]
+    public void 渡した候補配列の差し替えは解析後も両入力へ反映されます()
+    {
+        Parser<char>[] parsers = [new CharParser('a')];
+        var tested = new ZeroOrMoreParser<char>(new OrParser<char>(parsers));
+
+        tested.Parse(Cursol.FromString("a!")).Parsed.Should().Equal('a');
+        tested.Parse(Cursol.FromUtf8("a!"u8)).Parsed.Should().Equal('a');
+        parsers[0] = new CharParser('あ');
+
+        var utf16 = tested.Parse(Cursol.FromString("あ!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8("あ!"u8));
+
+        utf16.Parsed.Should().Equal('あ');
+        utf16.Cursol.Index.Should().Be(1);
+        utf8.Parsed.Should().Equal('あ');
+        utf8.Cursol.Index.Should().Be(3);
+    }
+
+    [Fact]
+    public void 後の候補の子がnullでも到達するまで例外を出しません()
+    {
+        var tested = new OrParser<IEnumerable<char>>(
+            new OneOrMoreParser<char>(new CharParser('a')),
+            new ZeroOrMoreParser<char>(null!));
+
+        tested.Parse(Cursol.FromString("a!")).Parsed.Should().Equal('a');
+        tested.Parse(Cursol.FromUtf8("a!"u8)).Parsed.Should().Equal('a');
+
+        Action parseUtf16 = () => tested.Parse(Cursol.FromString("b"));
+        Action parseUtf8 = () => tested.Parse(Cursol.FromUtf8("b"u8));
+
+        parseUtf16.Should().Throw<NullReferenceException>();
+        parseUtf8.Should().Throw<NullReferenceException>();
+    }
+
+    [Fact]
+    public void 組み合わせから呼んでも派生選択パーサーの処理と基底実装を使います()
+    {
+        var parser = new UpperCaseOrParser();
+        var tested = new ZeroOrMoreParser<char>(parser);
+
+        var utf16 = tested.Parse(Cursol.FromString("ab!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8("ab!"u8));
+
+        utf16.Parsed.Should().Equal('A', 'B');
+        utf16.Cursol.Index.Should().Be(2);
+        utf8.Parsed.Should().Equal('A', 'B');
+        utf8.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(6);
+    }
 }

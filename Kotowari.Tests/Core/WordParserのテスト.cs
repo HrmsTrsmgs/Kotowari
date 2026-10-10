@@ -101,6 +101,34 @@ public class WordParserのテスト
     }
 
     [Fact]
+    public void 空白パーサーが消費して失敗しても前後とも失敗前の位置を使います()
+    {
+        var 呼び出し位置 = new List<int>();
+        var tested = new WordParser("あ", new CallbackCharParser((current, index) =>
+        {
+            呼び出し位置.Add(index);
+            return (current == '_', current, 1);
+        }));
+
+        var utf16 = tested.Parse(Cursol.FromString("_あ_!"));
+
+        utf16.IsSuccess.Should().BeTrue();
+        utf16.Parsed.Should().Be("あ");
+        utf16.Cursol.Index.Should().Be(3);
+        utf16.Cursol.Current.Should().Be('!');
+        呼び出し位置.Should().Equal(0, 1, 2, 3);
+        呼び出し位置.Clear();
+
+        var utf8 = tested.Parse(Cursol.FromUtf8("_あ_!"u8));
+
+        utf8.IsSuccess.Should().BeTrue();
+        utf8.Parsed.Should().Be("あ");
+        utf8.Cursol.Index.Should().Be(5);
+        utf8.Cursol.Current.Should().Be('!');
+        呼び出し位置.Should().Equal(0, 1, 4, 5);
+    }
+
+    [Fact]
     public void 大文字小文字を無視して指定した空白パーサーで単語前後を読み飛ばします()
     {
         var tested = new WordParser("public", true, new CharParser('_'));

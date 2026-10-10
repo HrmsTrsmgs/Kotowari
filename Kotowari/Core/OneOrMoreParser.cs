@@ -22,5 +22,15 @@ public class OneOrMoreParser<T> : Parser<IEnumerable<T>>
     }
 
     protected internal override ParseResult<IEnumerable<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        => Parser.ParseCore(cursol);
+        => GetExecution<TDocument>().ParseCore(cursol);
+
+    internal override ParserExecution<IEnumerable<T>, TDocument> CreateExecution<TDocument>()
+        => GetType() == typeof(OneOrMoreParser<T>)
+            ? GetExecution<TDocument>()
+            : base.CreateExecution<TDocument>();
+
+    ForwardingExecution<IEnumerable<T>, TDocument> GetExecution<TDocument>()
+        where TDocument : IDocument, allows ref struct
+        => ParserExecutionCache<OneOrMoreParser<T>, ForwardingExecution<IEnumerable<T>, TDocument>>.Get(
+            this, static it => new(it, it.Parser.CreateExecution<TDocument>()));
 }

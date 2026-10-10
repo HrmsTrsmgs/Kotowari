@@ -44,7 +44,7 @@ public abstract class Parser<T> : Parser
     sealed class FallbackExecution<TDocument>(Parser<T> parser) : ParserExecution<T, TDocument>(parser)
         where TDocument : IDocument, allows ref struct
     {
-        internal override ParseResult<T, TDocument> ParseCore(scoped in Cursol<TDocument> cursol)
+        internal override ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
             => Definition.ParseCore(cursol);
     }
 

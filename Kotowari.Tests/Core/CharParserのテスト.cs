@@ -154,4 +154,21 @@ public class CharParserのテスト
         result.Cursol.Index.Should().Be(0);
         result.Cursol.Current.Should().Be('あ');
     }
+
+    [Fact]
+    public void 組み合わせから呼んでも派生文字パーサーの処理と基底実装を使います()
+    {
+        var parser = new UpperCaseCharParser();
+        var tested = new ZeroOrMoreParser<char>(
+            new OrParser<char>(parser, new CharParser('b')));
+
+        var utf16 = tested.Parse(Cursol.FromString("ab!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8("ab!"u8));
+
+        utf16.Parsed.Should().Equal('A', 'b');
+        utf16.Cursol.Index.Should().Be(2);
+        utf8.Parsed.Should().Equal('A', 'b');
+        utf8.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(6);
+    }
 }
