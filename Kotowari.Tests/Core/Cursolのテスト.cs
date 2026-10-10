@@ -113,6 +113,14 @@ public class Cursolのテスト
     }
 
     [Fact]
+    public void UTF8入力の補助平面文字は読み取り時に拒否します()
+    {
+        var read = () => Cursol.FromUtf8("😀"u8).Current;
+
+        read.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
     public void UTF8入力はスタック上のスライスをコピーせず読み取ります()
     {
         Span<byte> input = stackalloc byte[4];
