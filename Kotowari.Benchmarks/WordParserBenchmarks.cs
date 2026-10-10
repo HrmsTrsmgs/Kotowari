@@ -9,7 +9,6 @@ public class WordParserBenchmarks
 {
     const string Word = "false";
     readonly WordParser wordParser = new(Word, true);
-    Cursol<StringDocument> cursol;
 
     [Params("false,", "0,", "falsX,")]
     public string Text { get; set; } = "";
@@ -17,7 +16,7 @@ public class WordParserBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        cursol = Cursol.FromString(Text);
+        var cursol = Cursol.FromString(Text);
         var result = wordParser.Parse(cursol);
         var succeeds = Text == "false,";
         if (result.IsSuccess != succeeds
@@ -28,11 +27,12 @@ public class WordParserBenchmarks
         }
     }
 
+    // Unlike the saved-cursor measurements, both methods include cursor creation and its input-state allocation.
     [Benchmark]
     public ParseResult<string, StringDocument> ParseReused()
-        => wordParser.Parse(cursol);
+        => wordParser.Parse(Cursol.FromString(Text));
 
     [Benchmark]
     public ParseResult<string, StringDocument> ConstructAndParse()
-        => new WordParser(Word, true).Parse(cursol);
+        => new WordParser(Word, true).Parse(Cursol.FromString(Text));
 }

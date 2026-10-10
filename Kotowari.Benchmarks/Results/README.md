@@ -25,6 +25,11 @@
 `Experiment` で測定記録を、`Run` でその中の実行を識別する。
 WordParser変更後のJSON全体の性能確認も、この既存データ群に含める。
 
+現行の文字蓄積比較は `List`、`ListCapacity`、`StringBuilder`、`StringBuilderCapacity`、`Array`、`DeferredArray`、`StackBuffer` の7方式を対象とする。
+`IteratorConcat`、`IteratorArray`、`ResultLambda` は、現在の `ref struct` カーソル・解析結果をイテレーターへ保持できないため現行対象から除外した。
+旧10方式はコミット `8562efc0757e9c936693b3cb2ced3aef1febe511` と [2026-10-05の測定記録](2026-10-05-word-parser-accumulation.md) の条件から再現する。過去のCSVは当時の記録のまま変更しない。
+現行の単体・文字蓄積ベンチマークには呼び出しごとのカーソル生成と入力状態の割り当てを含むため、保存済みカーソルを使った旧測定の絶対値とは直接比較しない。
+
 | Experiment | 測定記録 | summary | iterations | launches | stacks |
 |---|---|---:|---:|---:|---:|
 | `2026-10-04-cache` | [先行生成・配列保持](2026-10-04-word-parser.md) | 56 | 80 | — | — |

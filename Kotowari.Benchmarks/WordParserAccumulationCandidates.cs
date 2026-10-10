@@ -1,4 +1,5 @@
 using Marimo.Kotowari.Core;
+using System;
 
 namespace Marimo.Kotowari.Benchmarks;
 
@@ -20,9 +21,6 @@ internal static class WordParserAccumulationCandidates
             WordParserAccumulationStrategy.ListCapacity => new CapacityListWordParser(word, ignoreCase, whiteSpace),
             WordParserAccumulationStrategy.StringBuilder => new StringBuilderWordParser(word, ignoreCase, whiteSpace),
             WordParserAccumulationStrategy.StringBuilderCapacity => new CapacityStringBuilderWordParser(word, ignoreCase, whiteSpace),
-            WordParserAccumulationStrategy.IteratorConcat => new IteratorConcatWordParser(word, ignoreCase, whiteSpace),
-            WordParserAccumulationStrategy.IteratorArray => new IteratorArrayWordParser(word, ignoreCase, whiteSpace),
-            WordParserAccumulationStrategy.ResultLambda => new ResultLambdaWordParser(word, ignoreCase, whiteSpace),
             WordParserAccumulationStrategy.Array => new ArrayWordParser(word, ignoreCase, whiteSpace),
             WordParserAccumulationStrategy.DeferredArray => new DeferredArrayWordParser(word, ignoreCase, whiteSpace),
             WordParserAccumulationStrategy.StackBuffer => new StackBufferWordParser(word, ignoreCase, whiteSpace),

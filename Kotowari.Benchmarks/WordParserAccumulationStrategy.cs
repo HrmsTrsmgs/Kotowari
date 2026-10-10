@@ -13,9 +13,6 @@ internal enum WordParserAccumulationStrategy
     ListCapacity,
     StringBuilder,
     StringBuilderCapacity,
-    IteratorConcat,
-    IteratorArray,
-    ResultLambda,
     Array,
     DeferredArray,
     StackBuffer
