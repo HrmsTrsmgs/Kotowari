@@ -30,7 +30,7 @@ public class CharParser : Parser<char>
         => cursol.Current switch
         {
             var c when (IgnoreCase ? char.ToLower(c) == char.ToLower(Char) : c == Char)
-                    => ParseResult<char, TDocument>.Success(cursol.AdvanceReadCharacter(c), c),
+                    => ParseResult<char, TDocument>.Success(cursol.GoFoward(1), c),
             _ => ParseResult<char, TDocument>.Failure(cursol)
         };
 
