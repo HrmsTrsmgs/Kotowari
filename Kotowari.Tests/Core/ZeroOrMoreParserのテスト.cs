@@ -11,6 +11,80 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class ZeroOrMoreParserのテスト
 {
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(8)]
+    [InlineData(9)]
+    [InlineData(16)]
+    [InlineData(17)]
+    [InlineData(65)]
+    [InlineData(257)]
+    public void UTF16とUTF8で列の順序と終端位置を保ち再解析しても結果は変わりません(int length)
+    {
+        var text = new string(
+            [.. from index in Enumerable.Range(0, length) select "abあ"[index % 3]]);
+        var tested = new ZeroOrMoreParser<char>(
+            new OrParser<char>(new CharParser('a'), new CharParser('b'), new CharParser('あ')));
+
+        var utf16 = tested.Parse(Cursol.FromString(text + "!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!")));
+        tested.Parse(Cursol.FromString(new string('b', length) + "!"));
+        tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(new string('a', length) + "!")));
+
+        utf16.Parsed.Should().Equal(text);
+        utf16.Cursol.Index.Should().Be(text.Length);
+        utf16.Cursol.Current.Should().Be('!');
+        utf8.Parsed.Should().Equal(text);
+        utf8.Cursol.Index.Should().Be(Encoding.UTF8.GetByteCount(text));
+        utf8.Cursol.Current.Should().Be('!');
+        utf16.Parsed.Should().Equal(text);
+        utf8.Parsed.Should().Equal(text);
+    }
+
+    [Fact]
+    public void 参照型の列も解析後に繰り返し列挙でき別の解析結果と混ざりません()
+    {
+        var tested = new ZeroOrMoreParser<string>(
+            new ParserConverter<char, string>(
+                new ConditionalCharParser(char.IsLetter),
+                it => it.ToString()));
+        var text = string.Concat(Enumerable.Repeat("abあ", 100));
+
+        var utf16 = tested.Parse(Cursol.FromString(text + "!"));
+        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!")));
+        tested.Parse(Cursol.FromString(new string('z', text.Length) + "!"));
+
+        utf16.Parsed.Should().Equal(from character in text select character.ToString());
+        utf8.Parsed.Should().Equal(from character in text select character.ToString());
+        utf16.Parsed.Should().Equal(from character in text select character.ToString());
+        utf8.Parsed.Should().Equal(from character in text select character.ToString());
+    }
+
+    [Fact]
+    public void 長い列の途中の例外を伝播し同じパーサーで再解析できます()
+    {
+        var exception = new InvalidOperationException();
+        var 例外を発生させる = true;
+        var tested = new ZeroOrMoreParser<char>(new CallbackCharParser((current, index) =>
+        {
+            if (例外を発生させる && index == 65)
+            {
+                throw exception;
+            }
+
+            return (current == 'a', current, 1);
+        }));
+        var text = new string('a', 100);
+        Action parse = () => tested.Parse(Cursol.FromString(text + "!"));
+
+        parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
+        例外を発生させる = false;
+
+        tested.Parse(Cursol.FromString(text + "!")).Parsed.Should().Equal(text);
+        tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!"))).Parsed.Should().Equal(text);
+    }
+
     [Fact]
     public void 一つ目の要素のパースに失敗しても成功です()        {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
