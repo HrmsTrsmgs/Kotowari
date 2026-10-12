@@ -7,46 +7,11 @@ using System.Threading.Tasks;
 
 namespace Marimo.Kotowari;
 
-
 public abstract class Parser<T> : Parser
     where T : notnull
 {
-    public ParseResult<T, TDocument> Parse<TDocument>(Cursol<TDocument> cursol)
-        where TDocument : IDocument, allows ref struct
+    public ParseResult<T> Parse(Cursol cursol)
         => ParseCore(cursol);
-
-    /// <summary>
-    /// 入力型に対応する内部実行器を構成します。
-    /// </summary>
-    /// <remarks>
-    /// 固定した子では、このジェネリックvirtual呼び出しを構成時だけに行います。
-    /// 再帰getterが返す動的な定義はParseDynamicCoreで解析し、一時的な変換定義の実行器は構成しません。
-    /// 専用の実行器を持たない型や利用側の派生型では、既存のParseCoreを呼んで契約を保ちます。
-    /// getterは再帰実行器の構成時には評価しません。
-    /// </remarks>
-    internal virtual ParserExecution<T, TDocument> CreateExecution<TDocument>()
-        where TDocument : IDocument, allows ref struct
-        => new FallbackExecution<TDocument>(this);
-
-    /// <summary>
-    /// 再帰getterがその都度返した文法定義を解析します。
-    /// </summary>
-    /// <remarks>
-    /// 固定した子の反復ではなく、動的な文法を評価する入口だけで使います。
-    /// 通常は既存のParseCoreへ委譲して、利用側の派生型を含む解析契約を保ちます。
-    /// 変換パーサーだけは、新しく返された定義に実行器を作らず、固定した子の実行器を使います。
-    /// このジェネリックvirtual呼び出しは再帰境界に残りますが、文字ごとの固定した子の呼び出しには使いません。
-    /// </remarks>
-    internal virtual ParseResult<T, TDocument> ParseDynamicCore<TDocument>(Cursol<TDocument> cursol)
-        where TDocument : IDocument, allows ref struct
-        => ParseCore(cursol);
-
-    sealed class FallbackExecution<TDocument>(Parser<T> parser) : ParserExecution<T, TDocument>(parser)
-        where TDocument : IDocument, allows ref struct
-    {
-        internal override ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
-            => Definition.ParseCore(cursol);
-    }
 
     /// <summary>
     /// 指定位置からの解析を実装します。
@@ -54,16 +19,6 @@ public abstract class Parser<T> : Parser
     /// <param name="cursol">解析を開始する文書と位置。</param>
     /// <returns>成否、解析後のカーソル、および成功時の値。</returns>
     /// <remarks>
-    /// <para>
-    /// 入力型別カーソルでは、このメソッド自身がジェネリックvirtualになります。
-    /// .NET 10.0.12での比較では、この呼び出し形態で子の型profileとインライン化が失われました。
-    /// JSON解析で使う組み込みコンビネーターは入力型別の内部実行器へ処理を分け、
-    /// 固定した子の反復中は非ジェネリックvirtualのParseCoreを直接呼びます。
-    /// 処理本体を文字列版とUTF-8版へ複製するのではなく、実行器の型引数で入力を区別します。
-    /// 利用側の派生型と専用実行器を持たない型は、従来どおりこのメソッドへ委譲します。
-    /// 以下の2026-10-05の説明は入力型を導入する前の調査結果であり、
-    /// ジェネリックvirtualでも同じ最適化が働くことを保証するものではありません。
-    /// </para>
     /// <para>
     /// 通常は、子パーサーを呼ぶ場合もParseを使います。
     /// 以下の直接呼び出しは、型profileの混在と性能改善を実測で確認した今回のPGO対策に限る特例です。
@@ -132,6 +87,5 @@ public abstract class Parser<T> : Parser
     /// Kotowari.Benchmarks/Results/2026-10-05-pgo-callsite.md、および各報告の証拠JSONに記録しています。
     /// </para>
     /// </remarks>
-    protected internal abstract ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        where TDocument : IDocument, allows ref struct;
+    protected internal abstract ParseResult<T> ParseCore(Cursol cursol);
 }

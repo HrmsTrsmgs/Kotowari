@@ -18,31 +18,20 @@ public class WithWhiteSpaceParser<T> : Parser<T>
         Parser = parser;
     }
 
-    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        => Execution<TDocument>.Get(this).ParseCore(cursol);
-
-    internal override ParserExecution<T, TDocument> CreateExecution<TDocument>()
-        => GetType() == typeof(WithWhiteSpaceParser<T>)
-            ? Execution<TDocument>.Get(this)
-            : base.CreateExecution<TDocument>();
-
-    sealed class Execution<TDocument> : ParserExecution<T, TDocument>
-        where TDocument : IDocument, allows ref struct
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
-        readonly ParserExecution<char, TDocument> whiteSpace;
-        readonly ParserExecution<T, TDocument> parser;
-
-        Execution(WithWhiteSpaceParser<T> definition) : base(definition)
+        var current = cursol;
+        while (true)
         {
-            whiteSpace = definition.WhiteSpace.CreateExecution<TDocument>();
-            parser = definition.Parser.CreateExecution<TDocument>();
+            var result = WhiteSpace.ParseCore(current);
+            if (!result.IsSuccess)
+            {
+                break;
+            }
+
+            current = result.Cursol;
         }
 
-        internal static Execution<TDocument> Get(WithWhiteSpaceParser<T> definition)
-            => ParserExecutionCache<WithWhiteSpaceParser<T>, Execution<TDocument>>.Get(
-                definition, static it => new Execution<TDocument>(it));
-
-        internal override ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
-            => parser.ParseCore(WhiteSpaceExecution.Skip(whiteSpace, cursol));
+        return Parser.ParseCore(current);
     }
 }

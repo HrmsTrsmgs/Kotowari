@@ -11,11 +11,11 @@ internal sealed class UpperCaseZeroOrMoreParser() : ZeroOrMoreParser<char>(new C
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<IEnumerable<char>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+    protected override ParseResult<IEnumerable<char>> ParseCore(Cursol cursol)
     {
         呼び出し回数++;
         var result = base.ParseCore(cursol);
-        return ParseResult<IEnumerable<char>, TDocument>.Success(
+        return ParseResult<IEnumerable<char>>.Success(
             result.Cursol,
             result.Parsed.Select(char.ToUpper));
     }

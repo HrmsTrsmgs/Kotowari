@@ -39,7 +39,7 @@ PrependからOrの文脈分離までの6候補は、いずれも速度改善の�
 WordParser変更後のJSON全体の性能確認も、この既存データ群に含める。
 
 現行の文字蓄積比較は `List`、`ListCapacity`、`StringBuilder`、`StringBuilderCapacity`、`Array`、`DeferredArray`、`StackBuffer` の7方式を対象とする。
-`IteratorConcat`、`IteratorArray`、`ResultLambda` は、現在の `ref struct` カーソル・解析結果をイテレーターへ保持できないため現行対象から除外した。
+`IteratorConcat`、`IteratorArray`、`ResultLambda` は、UTF-8試作時の `ref struct` カーソル・解析結果をイテレーターへ保持できないため比較対象から除外した。文字列専用実装への復帰後も、合意済みの7方式を維持し、旧3方式は再追加していない。
 旧10方式はコミット `8562efc0757e9c936693b3cb2ced3aef1febe511` と [2026-10-05の測定記録](2026-10-05-word-parser-accumulation.md) の条件から再現する。過去のCSVは当時の記録のまま変更しない。
 現行の単体・文字蓄積ベンチマークには呼び出しごとのカーソル生成と入力状態の割り当てを含むため、保存済みカーソルを使った旧測定の絶対値とは直接比較しない。
 

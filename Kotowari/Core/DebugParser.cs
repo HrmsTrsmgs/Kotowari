@@ -8,7 +8,7 @@ namespace Marimo.Kotowari.Core;
 public class DebugParser<T>(Parser<T> parser, Action hasBreakPoint) : Parser<T>
     where T : notnull
 {
-    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
         hasBreakPoint();
         return parser.ParseCore(cursol);

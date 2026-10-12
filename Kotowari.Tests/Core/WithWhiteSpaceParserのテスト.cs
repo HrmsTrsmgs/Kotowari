@@ -19,21 +19,12 @@ public class WithWhiteSpaceParserのテスト
             return (current == '_', current, 1);
         }), new CharParser('あ'));
 
-        var utf16 = tested.Parse(Cursol.FromString("_あ_!"));
+        var result = tested.Parse(new Cursol("_あ_!"));
 
-        utf16.IsSuccess.Should().BeTrue();
-        utf16.Parsed.Should().Be('あ');
-        utf16.Cursol.Index.Should().Be(2);
-        utf16.Cursol.Current.Should().Be('_');
-        呼び出し位置.Should().Equal(0, 1);
-        呼び出し位置.Clear();
-
-        var utf8 = tested.Parse(Cursol.FromUtf8("_あ_!"u8));
-
-        utf8.IsSuccess.Should().BeTrue();
-        utf8.Parsed.Should().Be('あ');
-        utf8.Cursol.Index.Should().Be(4);
-        utf8.Cursol.Current.Should().Be('_');
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be('あ');
+        result.Cursol.Index.Should().Be(2);
+        result.Cursol.Current.Should().Be('_');
         呼び出し位置.Should().Equal(0, 1);
     }
 
@@ -44,14 +35,10 @@ public class WithWhiteSpaceParserのテスト
             new CharParser('_'),
             new CallbackCharParser((_, _) => (false, '?', 1)));
 
-        var utf16 = tested.Parse(Cursol.FromString("_あ!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8("_あ!"u8));
+        var result = tested.Parse(new Cursol("_あ!"));
 
-        utf16.IsSuccess.Should().BeFalse();
-        utf16.Cursol.Index.Should().Be(2);
-        utf16.Cursol.Current.Should().Be('!');
-        utf8.IsSuccess.Should().BeFalse();
-        utf8.Cursol.Index.Should().Be(4);
-        utf8.Cursol.Current.Should().Be('!');
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Index.Should().Be(2);
+        result.Cursol.Current.Should().Be('!');
     }
 }

@@ -11,7 +11,7 @@ internal sealed class UpperCaseCharParser() : CharParser('a')
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<char, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+    protected override ParseResult<char> ParseCore(Cursol cursol)
     {
         呼び出し回数++;
         return TestParseResults.ConvertSuccessfulValue(base.ParseCore(cursol), char.ToUpper);

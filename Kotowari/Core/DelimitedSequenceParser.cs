@@ -18,54 +18,30 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         Delimiter = delimiter;
     }
 
-    protected internal override ParseResult<IEnumerable<T>, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        => Execution<TDocument>.Get(this).ParseCore(cursol);
-
-    internal override ParserExecution<IEnumerable<T>, TDocument> CreateExecution<TDocument>()
-        => GetType() == typeof(DelimitedSequenceParser<T, U>)
-            ? Execution<TDocument>.Get(this)
-            : base.CreateExecution<TDocument>();
-
-    sealed class Execution<TDocument> : ParserExecution<IEnumerable<T>, TDocument>
-        where TDocument : IDocument, allows ref struct
+    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
-        readonly ParserExecution<T, TDocument> sequence;
-        readonly ParserExecution<U, TDocument> delimiter;
-
-        Execution(DelimitedSequenceParser<T, U> definition) : base(definition)
+        var parseds = new List<T>();
+        var current = cursol;
+        var beforeDelimiter = current;
+        while (true)
         {
-            sequence = definition.Sequence.CreateExecution<TDocument>();
-            delimiter = definition.Delimiter.CreateExecution<TDocument>();
-        }
-
-        internal static Execution<TDocument> Get(DelimitedSequenceParser<T, U> definition)
-            => ParserExecutionCache<DelimitedSequenceParser<T, U>, Execution<TDocument>>.Get(
-                definition, static it => new Execution<TDocument>(it));
-
-        internal override ParseResult<IEnumerable<T>, TDocument> ParseCore(Cursol<TDocument> cursol)
-        {
-            var parseds = new List<T>();
-            var current = cursol;
-            var beforeDelimiter = current;
-            while (true)
+            var sequenceResult = Sequence.ParseCore(current);
+            if (!sequenceResult.IsSuccess)
             {
-                var sequenceResult = sequence.ParseCore(current);
-                if (!sequenceResult.IsSuccess)
-                {
-                    return ParseResult<IEnumerable<T>, TDocument>.Success(beforeDelimiter, parseds);
-                }
-
-                current = sequenceResult.Cursol;
-                parseds.Add(sequenceResult.Parsed);
-                beforeDelimiter = current;
-                var delimiterResult = delimiter.ParseCore(current);
-                if (!delimiterResult.IsSuccess)
-                {
-                    return ParseResult<IEnumerable<T>, TDocument>.Success(beforeDelimiter, parseds);
-                }
-
-                current = delimiterResult.Cursol;
+                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
             }
+
+            current = sequenceResult.Cursol;
+            parseds.Add(sequenceResult.Parsed);
+            beforeDelimiter = current;
+            var delimiterResult = Delimiter.ParseCore(current);
+            if (!delimiterResult.IsSuccess)
+            {
+                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
+            }
+
+            current = delimiterResult.Cursol;
         }
+
     }
 }

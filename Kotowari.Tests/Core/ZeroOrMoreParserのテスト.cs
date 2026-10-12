@@ -20,26 +20,20 @@ public class ZeroOrMoreParserのテスト
     [InlineData(17)]
     [InlineData(65)]
     [InlineData(257)]
-    public void UTF16とUTF8で列の順序と終端位置を保ち再解析しても結果は変わりません(int length)
+    public void 文字列で列の順序と終端位置を保ち再解析しても結果は変わりません(int length)
     {
         var text = new string(
             [.. from index in Enumerable.Range(0, length) select "abあ"[index % 3]]);
         var tested = new ZeroOrMoreParser<char>(
             new OrParser<char>(new CharParser('a'), new CharParser('b'), new CharParser('あ')));
 
-        var utf16 = tested.Parse(Cursol.FromString(text + "!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!")));
-        tested.Parse(Cursol.FromString(new string('b', length) + "!"));
-        tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(new string('a', length) + "!")));
+        var result = tested.Parse(new Cursol(text + "!"));
+        tested.Parse(new Cursol(new string('b', length) + "!"));
 
-        utf16.Parsed.Should().Equal(text);
-        utf16.Cursol.Index.Should().Be(text.Length);
-        utf16.Cursol.Current.Should().Be('!');
-        utf8.Parsed.Should().Equal(text);
-        utf8.Cursol.Index.Should().Be(Encoding.UTF8.GetByteCount(text));
-        utf8.Cursol.Current.Should().Be('!');
-        utf16.Parsed.Should().Equal(text);
-        utf8.Parsed.Should().Equal(text);
+        result.Parsed.Should().Equal(text);
+        result.Cursol.Index.Should().Be(text.Length);
+        result.Cursol.Current.Should().Be('!');
+        result.Parsed.Should().Equal(text);
     }
 
     [Fact]
@@ -51,14 +45,11 @@ public class ZeroOrMoreParserのテスト
                 it => it.ToString()));
         var text = string.Concat(Enumerable.Repeat("abあ", 100));
 
-        var utf16 = tested.Parse(Cursol.FromString(text + "!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!")));
-        tested.Parse(Cursol.FromString(new string('z', text.Length) + "!"));
+        var result = tested.Parse(new Cursol(text + "!"));
+        tested.Parse(new Cursol(new string('z', text.Length) + "!"));
 
-        utf16.Parsed.Should().Equal(from character in text select character.ToString());
-        utf8.Parsed.Should().Equal(from character in text select character.ToString());
-        utf16.Parsed.Should().Equal(from character in text select character.ToString());
-        utf8.Parsed.Should().Equal(from character in text select character.ToString());
+        result.Parsed.Should().Equal(from character in text select character.ToString());
+        result.Parsed.Should().Equal(from character in text select character.ToString());
     }
 
     [Fact]
@@ -76,20 +67,19 @@ public class ZeroOrMoreParserのテスト
             return (current == 'a', current, 1);
         }));
         var text = new string('a', 100);
-        Action parse = () => tested.Parse(Cursol.FromString(text + "!"));
+        Action parse = () => tested.Parse(new Cursol(text + "!"));
 
         parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
         例外を発生させる = false;
 
-        tested.Parse(Cursol.FromString(text + "!")).Parsed.Should().Equal(text);
-        tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(text + "!"))).Parsed.Should().Equal(text);
+        tested.Parse(new Cursol(text + "!")).Parsed.Should().Equal(text);
     }
 
     [Fact]
     public void 一つ目の要素のパースに失敗しても成功です()        {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(Cursol.FromString("b")).IsSuccess;
+        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -99,7 +89,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var cursol = tested.Parse(Cursol.FromString("b")).Cursol;
+        var cursol = tested.Parse(new Cursol("b")).Cursol;
 
         cursol.Index.Should().Be(0);
     }
@@ -109,7 +99,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var parsed = tested.Parse(Cursol.FromString("b")).Parsed;
+        var parsed = tested.Parse(new Cursol("b")).Parsed;
 
         parsed.Should().BeEmpty();
     }
@@ -119,7 +109,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(Cursol.FromString("a")).IsSuccess;
+        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -129,7 +119,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var cursol = tested.Parse(Cursol.FromString("a")).Cursol;
+        var cursol = tested.Parse(new Cursol("a")).Cursol;
 
         cursol.Index.Should().Be("a".Length);
     }
@@ -139,7 +129,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var parsed = tested.Parse(Cursol.FromString("a")).Parsed;
+        var parsed = tested.Parse(new Cursol("a")).Parsed;
 
         parsed.Should().ContainSingle();
         parsed.ElementAt(0).Should().Be('a');
@@ -150,7 +140,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var cursol = tested.Parse(Cursol.FromString("aa")).Cursol;
+        var cursol = tested.Parse(new Cursol("aa")).Cursol;
 
         cursol.Index.Should().Be("aa".Length);
     }
@@ -160,7 +150,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var parsed = tested.Parse(Cursol.FromString("aa")).Parsed;
+        var parsed = tested.Parse(new Cursol("aa")).Parsed;
 
         parsed.Count().Should().Be(2);
         parsed.ElementAt(0).Should().Be('a');
@@ -177,7 +167,7 @@ public class ZeroOrMoreParserのテスト
             return (current == 'a', 'A', 1);
         }));
 
-        var parsed = tested.Parse(Cursol.FromString("a!"));
+        var parsed = tested.Parse(new Cursol("a!"));
 
         parsed.IsSuccess.Should().BeTrue();
         parsed.Parsed.Should().Equal('A');
@@ -191,7 +181,7 @@ public class ZeroOrMoreParserのテスト
         var exception = new InvalidOperationException();
         var tested = new ZeroOrMoreParser<char>(new CallbackCharParser((_, _) => throw exception));
 
-        Action parse = () => tested.Parse(Cursol.FromString("a"));
+        Action parse = () => tested.Parse(new Cursol("a"));
 
         parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
     }
@@ -202,13 +192,10 @@ public class ZeroOrMoreParserのテスト
         var parser = new UpperCaseZeroOrMoreParser();
         var tested = new OrParser<IEnumerable<char>>(parser);
 
-        var utf16 = tested.Parse(Cursol.FromString("aa!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8("aa!"u8));
+        var result = tested.Parse(new Cursol("aa!"));
 
-        utf16.Parsed.Should().Equal('A', 'A');
-        utf16.Cursol.Index.Should().Be(2);
-        utf8.Parsed.Should().Equal('A', 'A');
-        utf8.Cursol.Index.Should().Be(2);
-        parser.呼び出し回数.Should().Be(2);
+        result.Parsed.Should().Equal('A', 'A');
+        result.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(1);
     }
 }

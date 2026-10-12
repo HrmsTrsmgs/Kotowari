@@ -10,28 +10,12 @@ namespace Marimo.Parser.Test;
 
 public class JSONのテスト
 {
-    public enum 入力形式
-    {
-        文字列,
-        UTF8
-    }
-
-    static JSONObject Parse(string text, 入力形式 inputFormat)
-        => inputFormat switch
-        {
-            入力形式.文字列 => JSON.Parse(text),
-            入力形式.UTF8 => JSON.Parse((ReadOnlySpan<byte>)Encoding.UTF8.GetBytes(text)),
-            _ => throw new ArgumentOutOfRangeException(nameof(inputFormat))
-        };
-
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void ASCIIとBMPを含むネストしたJSONを期待した値へ解析します(入力形式 inputFormat)
+    [Fact]
+    public void ASCIIとBMPを含むネストしたJSONを期待した値へ解析します()
     {
         const string text = """{"ascii":"plain","名前":"éあ","nested":{"values":[12,true,false,null,{"文字":"中"}]}}""";
 
-        var tested = Parse(text, inputFormat);
+        var tested = JSON.Parse(text);
 
         tested.Should().BeEquivalentTo(new JSONObject
         {
@@ -63,59 +47,37 @@ public class JSONのテスト
         });
     }
 
-    [Fact]
-    public void UTF8はReadOnlySpanで指定した範囲だけを解析します()
-    {
-        var bytes = Encoding.UTF8.GetBytes("!{\"名\":\"é\"}?");
-        ReadOnlySpan<byte> utf8 = bytes.AsSpan(1, bytes.Length - 2);
-
-        var tested = JSON.Parse(utf8);
-
-        tested.Should().BeEquivalentTo(new JSONObject
-        {
-            Pairs = { ["名"] = new JSONLiteral("é", LiteralType.String) }
-        });
-    }
-
     [Theory]
-    [InlineData(入力形式.文字列, "")]
-    [InlineData(入力形式.UTF8, "")]
-    [InlineData(入力形式.文字列, "{")]
-    [InlineData(入力形式.UTF8, "{")]
-    public void 空入力と不正オブジェクトはParseExceptionになります(入力形式 inputFormat, string text)
+    [InlineData("")]
+    [InlineData("{")]
+    public void 空入力と不正オブジェクトはParseExceptionになります(string text)
     {
-        var parse = () => Parse(text, inputFormat);
+        var parse = () => JSON.Parse(text);
 
         parse.Should().Throw<ParseException>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 空のオブジェクトを識別します(入力形式 inputFormat)
+    [Fact]
+    public void 空のオブジェクトを識別します()
     {
-        var result = Parse("{}", inputFormat);
+        var result = JSON.Parse("{}");
 
         result.Pairs.Should().BeEmpty();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの中身の値を識別します(入力形式 inputFormat)
+    [Fact]
+    public void オブジェクトの中身の値を識別します()
     {
-        var result = Parse(@"{""a"":1}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1}");
 
         result.Pairs.Should().ContainSingle();
         var value = result["a"];
         value.Should().BeOfType<JSONLiteral>();
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの中身は複数持てます(入力形式 inputFormat)
+    [Fact]
+    public void オブジェクトの中身は複数持てます()
     {
-        var result = Parse(@"{""a"":1,""b"":2}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1,""b"":2}");
 
         result.Pairs.Count.Should().Be(2);
         var value = result["a"];
@@ -124,12 +86,10 @@ public class JSONのテスト
         value2.Should().BeOfType<JSONLiteral>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値はマイナスを識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値はマイナスを識別します()
     {
-        var result = Parse(@"{""a"":-1}", inputFormat);
+        var result = JSON.Parse(@"{""a"":-1}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -137,12 +97,10 @@ public class JSONのテスト
         value.Value.Should().Be("-1");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は複数桁を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値は複数桁を識別します()
     {
-        var result = Parse(@"{""a"":123}", inputFormat);
+        var result = JSON.Parse(@"{""a"":123}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -150,12 +108,10 @@ public class JSONのテスト
         value.Value.Should().Be("123");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は0から9を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値は0から9を識別します()
     {
-        var result = Parse(@"{""a"":1234567890}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1234567890}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -163,12 +119,10 @@ public class JSONのテスト
         value.Value.Should().Be("1234567890");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は小数を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値は小数を識別します()
     {
-        var result = Parse(@"{""a"":1.2}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1.2}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -176,12 +130,10 @@ public class JSONのテスト
         value.Value.Should().Be("1.2");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は小数点以下複数桁を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値は小数点以下複数桁を識別します()
     {
-        var result = Parse(@"{""a"":1.234}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1.234}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -189,129 +141,105 @@ public class JSONのテスト
         value.Value.Should().Be("1.234");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は小数で整数部の数字が必要です(入力形式 inputFormat)
+    [Fact]
+    public void 数値は小数で整数部の数字が必要です()
     {
-        var parse = () => Parse(@"{""a"":.1}", inputFormat);
+        var parse = () => JSON.Parse(@"{""a"":.1}");
 
         parse.Should().Throw<ParseException>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は小数で小数部の数字が必要です(入力形式 inputFormat)
+    [Fact]
+    public void 数値は小数で小数部の数字が必要です()
     {
-        var parse = () => Parse(@"{""a"":0.}", inputFormat);
+        var parse = () => JSON.Parse(@"{""a"":0.}");
 
         parse.Should().Throw<ParseException>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値は指数部を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値は指数部を識別します()
     {
-        var result = Parse(@"{""a"":1e0}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1e0}");
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Number);
         value.Value.Should().Be("1e0");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部Eは大文字でも小文字でも識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部Eは大文字でも小文字でも識別します()
     {
-        var lower = (JSONLiteral)Parse(@"{""a"":1e0}", inputFormat)["a"];
-        var upper = (JSONLiteral)Parse(@"{""a"":1E0}", inputFormat)["a"];
+        var lower = (JSONLiteral)JSON.Parse(@"{""a"":1e0}")["a"];
+        var upper = (JSONLiteral)JSON.Parse(@"{""a"":1E0}")["a"];
 
         lower.Value.Should().Be("1e0");
         upper.Value.Should().Be("1E0");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部のプラスを識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部のプラスを識別します()
     {
-        var result = Parse(@"{""a"":1e+0}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1e+0}");
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Number);
         value.Value.Should().Be("1e+0");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部のマイナスを識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部のマイナスを識別します()
     {
-        var result = Parse(@"{""a"":1e-0}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1e-0}");
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Number);
         value.Value.Should().Be("1e-0");
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部の数値を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部の数値を識別します()
     {
-        var result = Parse(@"{""a"":1e0}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1e0}");
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Number);
         value.Value.Should().Be("1e0");
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部の複数の数字を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部の複数の数字を識別します()
     {
-        var result = Parse(@"{""a"":1e+10}", inputFormat);
+        var result = JSON.Parse(@"{""a"":1e+10}");
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Number);
         value.Value.Should().Be("1e+10");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部のプラスマイナスが数字の後だと認識しません(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部のプラスマイナスが数字の後だと認識しません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":e10+}", inputFormat));
+            () => JSON.Parse(@"{""a"":e10+}"));
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の指数部のプラスマイナスがeの前だと認識しません(入力形式 inputFormat)
+    [Fact]
+    public void 数値の指数部のプラスマイナスがeの前だと認識しません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":+e10}", inputFormat));
+            () => JSON.Parse(@"{""a"":+e10}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 値が何もない場合は読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 値が何もない場合は読み込みません()
     {
-        var parse = () => Parse(@"{""a"":}", inputFormat);
+        var parse = () => JSON.Parse(@"{""a"":}");
 
         parse.Should().Throw<ParseException>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 文字列の値を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 文字列の値を識別します()
     {
-        var result = Parse(@"{""a"":""b""}", inputFormat);
+        var result = JSON.Parse(@"{""a"":""b""}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -319,12 +247,10 @@ public class JSONのテスト
         value.Value.Should().Be("b");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 文字列の複数文字を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 文字列の複数文字を識別します()
     {
-        var result = Parse(@"{""a"":""bc""}", inputFormat);
+        var result = JSON.Parse(@"{""a"":""bc""}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -332,24 +258,20 @@ public class JSONのテスト
         value.Value.Should().Be("bc");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 文字列のエスケープ文字を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 文字列のエスケープ文字を識別します()
     {
-        var result = Parse("{\"a\":\"\\\\\\\"\\b\\f\\n\\r\\t\"}", inputFormat);
+        var result = JSON.Parse("{\"a\":\"\\\\\\\"\\b\\f\\n\\r\\t\"}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.String);
         value.Value.Should().Be("\\\"\b\f\n\r\t");
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 真偽値の値を識別します(入力形式 inputFormat)
+    [Fact]
+    public void 真偽値の値を識別します()
     {
-        var result = Parse(@"{""a"":true}", inputFormat);
+        var result = JSON.Parse(@"{""a"":true}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -357,12 +279,10 @@ public class JSONのテスト
         value.Value.Should().Be("true");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 真偽値はtrueとfalseが可能です(入力形式 inputFormat)
+    [Fact]
+    public void 真偽値はtrueとfalseが可能です()
     {
-        var result = Parse(@"{""a"":true,""b"":false}", inputFormat);
+        var result = JSON.Parse(@"{""a"":true,""b"":false}");
 
         result.Pairs.Count.Should().Be(2);
         var trueValue = (JSONLiteral)result["a"];
@@ -373,12 +293,10 @@ public class JSONのテスト
         falseValue.Value.Should().Be("false");
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 真偽値は大文字と小文字を区別せずに識別します(入力形式 inputFormat)
+    [Fact]
+    public void 真偽値は大文字と小文字を区別せずに識別します()
     {
-        var result = Parse(@"{""a"":TRUE,""b"":FALSE}", inputFormat);
+        var result = JSON.Parse(@"{""a"":TRUE,""b"":FALSE}");
 
         result.Pairs.Count.Should().Be(2);
         var trueValue = (JSONLiteral)result["a"];
@@ -388,12 +306,10 @@ public class JSONのテスト
         falseValue.ValueType.Should().Be(LiteralType.Boolean);
         falseValue.Value.Should().Be("FALSE");
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void Nullの値を識別します(入力形式 inputFormat)
+    [Fact]
+    public void Nullの値を識別します()
     {
-        var result = Parse(@"{""a"":null}", inputFormat);
+        var result = JSON.Parse(@"{""a"":null}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
@@ -401,58 +317,48 @@ public class JSONのテスト
         value.Value.Should().BeNull();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void Nullの値の識別は大文字小文字を区別しません(入力形式 inputFormat)
+    [Fact]
+    public void Nullの値の識別は大文字小文字を区別しません()
     {
-        var result = Parse(@"{""a"":NULL}", inputFormat);
+        var result = JSON.Parse(@"{""a"":NULL}");
 
         result.Pairs.Should().ContainSingle();
         var value = (JSONLiteral)result["a"];
         value.ValueType.Should().Be(LiteralType.Null);
         value.Value.Should().BeNull();
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの中身の配列を識別します(入力形式 inputFormat)
+    [Fact]
+    public void オブジェクトの中身の配列を識別します()
     {
-        var result = Parse(@"{""a"":[]}", inputFormat);
+        var result = JSON.Parse(@"{""a"":[]}");
 
         result.Pairs.Should().ContainSingle();
         var value = result["a"];
         value.Should().BeOfType<JSONArray>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 空の配列に要素はありません(入力形式 inputFormat)
+    [Fact]
+    public void 空の配列に要素はありません()
     {
-        var array = (JSONArray)Parse(@"{""a"":[]}", inputFormat)["a"];
+        var array = (JSONArray)JSON.Parse(@"{""a"":[]}")["a"];
 
         array.Elements.Should().BeEmpty();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの中身の配列の中身を識別します(入力形式 inputFormat)
+    [Fact]
+    public void オブジェクトの中身の配列の中身を識別します()
     {
-        var result = Parse(@"{""a"":[1]}", inputFormat);
+        var result = JSON.Parse(@"{""a"":[1]}");
 
         result.Pairs.Should().ContainSingle();
         var array = (JSONArray)result["a"];
         array.Elements.Should().ContainSingle();
         array.Elements[0].Should().BeOfType<JSONLiteral>();
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 配列は複数の要素を持ちます(入力形式 inputFormat)
+    [Fact]
+    public void 配列は複数の要素を持ちます()
     {
-        var result = Parse(@"{""a"":[1,2]}", inputFormat);
+        var result = JSON.Parse(@"{""a"":[1,2]}");
 
         result.Pairs.Should().ContainSingle();
         var array = (JSONArray)result["a"];
@@ -460,167 +366,121 @@ public class JSONのテスト
         array.Elements[0].Should().BeOfType<JSONLiteral>();
         array.Elements[1].Should().BeOfType<JSONLiteral>();
     }
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの中身のオブジェクトを識別します(入力形式 inputFormat)
+    [Fact]
+    public void オブジェクトの中身のオブジェクトを識別します()
     {
-        var result = Parse(@"{""a"":{}}", inputFormat);
+        var result = JSON.Parse(@"{""a"":{}}");
 
         result.Pairs.Should().ContainSingle();
         var value = result["a"];
         value.Should().BeOfType<JSONObject>();
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクトの前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@" {}", inputFormat);
+    [Fact]
+    public void オブジェクトの前に空白があっても読み込みます()
+        => JSON.Parse(@" {}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void タブ記号も空白として読み飛ばします(入力形式 inputFormat)
-        => Parse("\t{}", inputFormat);
+    [Fact]
+    public void タブ記号も空白として読み飛ばします()
+        => JSON.Parse("\t{}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void CR記号も空白として読み飛ばします(入力形式 inputFormat)
-        => Parse("\r{}", inputFormat);
+    [Fact]
+    public void CR記号も空白として読み飛ばします()
+        => JSON.Parse("\r{}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void LF記号も空白として読み飛ばします(入力形式 inputFormat)
-        => Parse("\n{}", inputFormat);
+    [Fact]
+    public void LF記号も空白として読み飛ばします()
+        => JSON.Parse("\n{}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクト終了の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{ }", inputFormat);
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 配列の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"": []}", inputFormat);
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 配列終了の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"":[ ]}", inputFormat);
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクト区切りのコロンの前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"" :1}", inputFormat);
+    [Fact]
+    public void オブジェクト終了の前に空白があっても読み込みます()
+        => JSON.Parse(@"{ }");
+    [Fact]
+    public void 配列の前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"": []}");
+    [Fact]
+    public void 配列終了の前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"":[ ]}");
+    [Fact]
+    public void オブジェクト区切りのコロンの前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"" :1}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void オブジェクト区切りのカンマの前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"":1 ,""b"":1}", inputFormat);
+    [Fact]
+    public void オブジェクト区切りのカンマの前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"":1 ,""b"":1}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 配列区切りのカンマの前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"":[1 ,2]}", inputFormat);
+    [Fact]
+    public void 配列区切りのカンマの前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"":[1 ,2]}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void Nullの前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"": null}", inputFormat);
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 真偽値の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"": true}", inputFormat);
+    [Fact]
+    public void Nullの前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"": null}");
+    [Fact]
+    public void 真偽値の前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"": true}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数値の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"": 1}", inputFormat);
+    [Fact]
+    public void 数値の前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"": 1}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 符号と数字の間に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 符号と数字の間に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":- 1}", inputFormat));
+            () => JSON.Parse(@"{""a"":- 1}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 数字と数字の間に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 数字と数字の間に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1 0}", inputFormat));
+            () => JSON.Parse(@"{""a"":1 0}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 小数点の前に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 小数点の前に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1 .}", inputFormat));
+            () => JSON.Parse(@"{""a"":1 .}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 少数部の前に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 少数部の前に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1. 0}", inputFormat));
+            () => JSON.Parse(@"{""a"":1. 0}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 指数部の前に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 指数部の前に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1.0 e}", inputFormat));
+            () => JSON.Parse(@"{""a"":1.0 e}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 指数部の符号の前に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 指数部の符号の前に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1.0e +}", inputFormat));
+            () => JSON.Parse(@"{""a"":1.0e +}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 指数部の数字の前に空白があったら読み込みません(入力形式 inputFormat)
+    [Fact]
+    public void 指数部の数字の前に空白があったら読み込みません()
     {
         Assert.Throws<ParseException>(
-            () => Parse(@"{""a"":1.0e+ 1}", inputFormat));
+            () => JSON.Parse(@"{""a"":1.0e+ 1}"));
     }
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 文字列の前に空白があっても読み込みます(入力形式 inputFormat)
-        => Parse(@"{""a"": ""b""}", inputFormat);
+    [Fact]
+    public void 文字列の前に空白があっても読み込みます()
+        => JSON.Parse(@"{""a"": ""b""}");
 
-    [Theory]
-    [InlineData(入力形式.文字列)]
-    [InlineData(入力形式.UTF8)]
-    public void 文字列の中の空白は文字列として読み込みます(入力形式 inputFormat)
+    [Fact]
+    public void 文字列の中の空白は文字列として読み込みます()
     {
-        var result = Parse(@"{""a"":"" b ""}", inputFormat);
+        var result = JSON.Parse(@"{""a"":"" b ""}");
 
         result.Pairs.Should().ContainSingle();
         var str = (JSONLiteral)result["a"];

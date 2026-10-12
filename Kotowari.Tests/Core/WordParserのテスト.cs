@@ -12,71 +12,11 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class WordParserのテスト
 {
-    [Theory]
-    [InlineData("éあb", "éあb!", false, "éあb", 6)]
-    [InlineData("true", "TrUe!", true, "TrUe", 4)]
-    [InlineData("éa", "ÉA!", true, "ÉA", 3)]
-    [InlineData("", "!", false, "", 0)]
-    [InlineData("a\0\0", "a", false, "a\0\0", 1)]
-    [InlineData("\0", "", false, "\0", 0)]
-    [InlineData("a\0", "a\0", false, "a\0", 2)]
-    public void UTF8単語照合は入力の表記と終端位置を保ちます(
-        string word, string input, bool ignoreCase, string parsed, int nextIndex)
-    {
-        var tested = new WordParser(word, ignoreCase);
-
-        var result = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(input)));
-
-        result.IsSuccess.Should().BeTrue();
-        result.Parsed.Should().Be(parsed);
-        result.Cursol.Index.Should().Be(nextIndex);
-    }
-
-    [Fact]
-    public void UTF8単語照合は単独サロゲートの定義を置換文字に一致させません()
-    {
-        var tested = new WordParser("\ud800");
-
-        tested.Parse(Cursol.FromUtf8("\ufffd"u8)).IsSuccess.Should().BeFalse();
-    }
-
-    [Fact]
-    public void UTF8単語照合の途中でも補助平面文字の読み取りを拒否します()
-    {
-        var tested = new WordParser("ab");
-        var parse = () => tested.Parse(Cursol.FromUtf8("a😀"u8)).IsSuccess;
-
-        parse.Should().Throw<ArgumentException>();
-    }
-
-    [Fact]
-    public void UTF8単語照合の大小文字比較は解析時のカルチャーを使います()
-    {
-        var original = CultureInfo.CurrentCulture;
-        try
-        {
-            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-            var tested = new WordParser("I", true);
-            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
-
-            var turkish = tested.Parse(Cursol.FromUtf8("ı!"u8));
-            turkish.IsSuccess.Should().BeTrue();
-            turkish.Parsed.Should().Be("ı");
-            turkish.Cursol.Index.Should().Be(2);
-
-            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-            tested.Parse(Cursol.FromUtf8("ı!"u8)).IsSuccess.Should().BeFalse();
-        }
-        finally
-        {
-            CultureInfo.CurrentCulture = original;
-        }
-    }
 
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
-        var cursol = Cursol.FromString("public");
+        var cursol = new Cursol("public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -87,7 +27,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは指定していない単語を読み込みに失敗します()
     {
-        var cursol = Cursol.FromString("publi");
+        var cursol = new Cursol("publi");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -97,7 +37,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みます()
     {
-        var cursol = Cursol.FromString("public");
+        var cursol = new Cursol("public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -105,11 +45,10 @@ public class WordParserのテスト
         result.Parsed.Should().Be("public");
     }
 
-
     [Fact]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
-        var cursol = Cursol.FromString("void");
+        var cursol = new Cursol("void");
         var tested = new WordParser("void");
 
         var result = tested.Parse(cursol);
@@ -120,7 +59,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに失敗した場合には進んでいないカーソルを返します()
     {
-        var cursol = Cursol.FromString("publi");
+        var cursol = new Cursol("publi");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -131,7 +70,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは単語前のスペースを読み飛ばします()
     {
-        var cursol = Cursol.FromString(" public");
+        var cursol = new Cursol(" public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -142,7 +81,7 @@ public class WordParserのテスト
     [Fact]
     public void ParseAsyncは単語後のスペースを読み飛ばします()
     {
-        var cursol = Cursol.FromString("public ");
+        var cursol = new Cursol("public ");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
@@ -155,7 +94,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", new CharParser('_'));
 
-        var result = tested.Parse(Cursol.FromString("_public_"));
+        var result = tested.Parse(new Cursol("_public_"));
 
         result.IsSuccess.Should().BeTrue();
         result.Cursol.Index.Should().Be(8);
@@ -171,22 +110,13 @@ public class WordParserのテスト
             return (current == '_', current, 1);
         }));
 
-        var utf16 = tested.Parse(Cursol.FromString("_あ_!"));
+        var result = tested.Parse(new Cursol("_あ_!"));
 
-        utf16.IsSuccess.Should().BeTrue();
-        utf16.Parsed.Should().Be("あ");
-        utf16.Cursol.Index.Should().Be(3);
-        utf16.Cursol.Current.Should().Be('!');
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("あ");
+        result.Cursol.Index.Should().Be(3);
+        result.Cursol.Current.Should().Be('!');
         呼び出し位置.Should().Equal(0, 1, 2, 3);
-        呼び出し位置.Clear();
-
-        var utf8 = tested.Parse(Cursol.FromUtf8("_あ_!"u8));
-
-        utf8.IsSuccess.Should().BeTrue();
-        utf8.Parsed.Should().Be("あ");
-        utf8.Cursol.Index.Should().Be(5);
-        utf8.Cursol.Current.Should().Be('!');
-        呼び出し位置.Should().Equal(0, 1, 4, 5);
     }
 
     [Fact]
@@ -194,7 +124,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", true, new CharParser('_'));
 
-        var result = tested.Parse(Cursol.FromString("_PUBLIC_"));
+        var result = tested.Parse(new Cursol("_PUBLIC_"));
 
         result.IsSuccess.Should().BeTrue();
         result.Cursol.Index.Should().Be(8);
@@ -213,8 +143,8 @@ public class WordParserのテスト
     {
         var tested = new WordParser("public", true);
 
-        var failure = tested.Parse(Cursol.FromString("publiX,"));
-        var success = tested.Parse(Cursol.FromString("PUBLIC,"));
+        var failure = tested.Parse(new Cursol("publiX,"));
+        var success = tested.Parse(new Cursol("PUBLIC,"));
 
         failure.IsSuccess.Should().BeFalse();
         failure.Cursol.Index.Should().Be(0);
@@ -228,7 +158,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("", new CharParser('_'));
 
-        var result = tested.Parse(Cursol.FromString("__x"));
+        var result = tested.Parse(new Cursol("__x"));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().BeEmpty();
@@ -240,13 +170,13 @@ public class WordParserのテスト
     {
         var tested = new WordParser("Public");
 
-        tested.Parse(Cursol.FromString("public,")).IsSuccess.Should().BeFalse();
+        tested.Parse(new Cursol("public,")).IsSuccess.Should().BeFalse();
     }
 
     [Fact]
     public void 先頭の空白を読み飛ばした後に失敗した場合も元のカーソルを返します()
     {
-        var cursol = Cursol.FromString("x__publiX").GoFoward(1);
+        var cursol = new Cursol("x__publiX").GoFoward(1);
         var tested = new WordParser("public", new CharParser('_'));
 
         var result = tested.Parse(cursol);
@@ -263,7 +193,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser(word);
 
-        var result = tested.Parse(Cursol.FromString(input));
+        var result = tested.Parse(new Cursol(input));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be(word);
@@ -275,7 +205,7 @@ public class WordParserのテスト
     {
         var tested = new WordParser("\0\0ab");
 
-        var result = tested.Parse(Cursol.FromString("ab,").GoFoward(-2));
+        var result = tested.Parse(new Cursol("ab,").GoFoward(-2));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be("\0\0ab");
@@ -292,9 +222,9 @@ public class WordParserのテスト
             var tested = new WordParser("I", true);
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
 
-            var turkish = tested.Parse(Cursol.FromString("ı,"));
+            var turkish = tested.Parse(new Cursol("ı,"));
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-            var english = tested.Parse(Cursol.FromString("ı,"));
+            var english = tested.Parse(new Cursol("ı,"));
 
             turkish.IsSuccess.Should().BeTrue();
             turkish.Parsed.Should().Be("ı");
@@ -344,33 +274,15 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void UTF8入力も同じ単語パーサーで空白を読み飛ばして読み込めます()
+    public void 文字列入力を同じ単語パーサーで空白を読み飛ばして読み込めます()
     {
         Parser<string> tested = new WordParser("éあb");
 
-        var utf16 = tested.Parse(Cursol.FromString(" éあb ,"));
-        var utf8 = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(" éあb ,")));
+        var result = tested.Parse(new Cursol(" éあb ,"));
 
-        utf16.IsSuccess.Should().BeTrue();
-        utf16.Parsed.Should().Be("éあb");
-        utf16.Cursol.Index.Should().Be(5);
-        utf8.IsSuccess.Should().BeTrue();
-        utf8.Parsed.Should().Be("éあb");
-        utf8.Cursol.Index.Should().Be(8);
-        utf8.Cursol.Current.Should().Be(',');
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("éあb");
+        result.Cursol.Index.Should().Be(5);
     }
 
-    [Fact]
-    public void UTF8入力で単語が一致しなければ元のカーソルを返します()
-    {
-        var cursol = Cursol.FromUtf8(Encoding.UTF8.GetBytes("é あc,")).GoFoward(1);
-        var tested = new WordParser("あb");
-
-        var result = tested.Parse(cursol);
-
-        result.IsSuccess.Should().BeFalse();
-        (result.Cursol == cursol).Should().BeTrue();
-        result.Cursol.Index.Should().Be(2);
-        result.Cursol.Current.Should().Be(' ');
-    }
 }

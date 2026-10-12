@@ -21,11 +21,10 @@ public class 要素を3つ持つSeqenceParserのテスト
             new WordParser("int"));
     }
 
-
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
-        var cursol = Cursol.FromString("public static int");
+        var cursol = new Cursol("public static int");
 
         var result = Tested.Parse(cursol);
 
@@ -35,7 +34,7 @@ public class 要素を3つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("publica static int");
+        var cursol = new Cursol("publica static int");
 
         var result = Tested.Parse(cursol);
 
@@ -45,7 +44,7 @@ public class 要素を3つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("public statiac int");
+        var cursol = new Cursol("public statiac int");
 
         var result = Tested.Parse(cursol);
 
@@ -55,7 +54,7 @@ public class 要素を3つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("public statiac innt");
+        var cursol = new Cursol("public statiac innt");
 
         var result = Tested.Parse(cursol);
 
@@ -65,7 +64,7 @@ public class 要素を3つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みます()
     {
-        var cursol = Cursol.FromString("public static int");
+        var cursol = new Cursol("public static int");
 
         var result = Tested.Parse(cursol);
 
@@ -75,7 +74,7 @@ public class 要素を3つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
-        var cursol = Cursol.FromString("public static int");
+        var cursol = new Cursol("public static int");
 
         var result = Tested.Parse(cursol);
 

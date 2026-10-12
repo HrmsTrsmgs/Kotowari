@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Marimo.Kotowari.Benchmarks;
 
-
 public abstract class WordParserAccumulationBenchmarkBase
 {
     WordParserAccumulationParser[] parsers = [];
@@ -18,7 +17,7 @@ public abstract class WordParserAccumulationBenchmarkBase
     {
         var (word, text, succeeds) = WordParserAccumulationInputs.Get(Case);
         this.text = text;
-        var cursol = Cursol.FromString(text);
+        var cursol = new Cursol(text);
         parsers = [.. Enum.GetValues<WordParserAccumulationStrategy>()
             .Select(it => WordParserAccumulationCandidates.Create(it, word, true))];
 
@@ -37,30 +36,30 @@ public abstract class WordParserAccumulationBenchmarkBase
     // All candidates have the same array lookup and Parser<string>.Parse dispatch.
     // Unlike the saved-cursor measurements, every call includes cursor creation and its input-state allocation.
     [Benchmark(Baseline = true)]
-    public ParseResult<string, StringDocument> List()
-        => parsers[(int)WordParserAccumulationStrategy.List].Parse(Cursol.FromString(text));
+    public ParseResult<string> List()
+        => parsers[(int)WordParserAccumulationStrategy.List].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> ListCapacity()
-        => parsers[(int)WordParserAccumulationStrategy.ListCapacity].Parse(Cursol.FromString(text));
+    public ParseResult<string> ListCapacity()
+        => parsers[(int)WordParserAccumulationStrategy.ListCapacity].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> StringBuilder()
-        => parsers[(int)WordParserAccumulationStrategy.StringBuilder].Parse(Cursol.FromString(text));
+    public ParseResult<string> StringBuilder()
+        => parsers[(int)WordParserAccumulationStrategy.StringBuilder].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> StringBuilderCapacity()
-        => parsers[(int)WordParserAccumulationStrategy.StringBuilderCapacity].Parse(Cursol.FromString(text));
+    public ParseResult<string> StringBuilderCapacity()
+        => parsers[(int)WordParserAccumulationStrategy.StringBuilderCapacity].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> Array()
-        => parsers[(int)WordParserAccumulationStrategy.Array].Parse(Cursol.FromString(text));
+    public ParseResult<string> Array()
+        => parsers[(int)WordParserAccumulationStrategy.Array].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> DeferredArray()
-        => parsers[(int)WordParserAccumulationStrategy.DeferredArray].Parse(Cursol.FromString(text));
+    public ParseResult<string> DeferredArray()
+        => parsers[(int)WordParserAccumulationStrategy.DeferredArray].Parse(new Cursol(text));
 
     [Benchmark]
-    public ParseResult<string, StringDocument> StackBuffer()
-        => parsers[(int)WordParserAccumulationStrategy.StackBuffer].Parse(Cursol.FromString(text));
+    public ParseResult<string> StackBuffer()
+        => parsers[(int)WordParserAccumulationStrategy.StackBuffer].Parse(new Cursol(text));
 }

@@ -11,7 +11,7 @@ internal sealed class UpperCaseSequenceParser() : SequenceParser<char, char>(new
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<(char, char), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+    protected override ParseResult<(char, char)> ParseCore(Cursol cursol)
     {
         呼び出し回数++;
         return TestParseResults.ConvertSuccessfulValue(

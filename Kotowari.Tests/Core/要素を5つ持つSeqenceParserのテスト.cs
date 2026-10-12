@@ -25,7 +25,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
-        var cursol = Cursol.FromString("ab cd ef gh ij");
+        var cursol = new Cursol("ab cd ef gh ij");
 
         var result = Tested.Parse(cursol);
 
@@ -35,7 +35,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("abc cd ef gh ij");
+        var cursol = new Cursol("abc cd ef gh ij");
 
         var result = Tested.Parse(cursol);
 
@@ -45,7 +45,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("ab cde ef gh ij");
+        var cursol = new Cursol("ab cde ef gh ij");
 
         var result = Tested.Parse(cursol);
 
@@ -54,7 +54,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("ab cd efg gh ij");
+        var cursol = new Cursol("ab cd efg gh ij");
 
         var result = Tested.Parse(cursol);
 
@@ -64,7 +64,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは4つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("ab cd ef ghi ij");
+        var cursol = new Cursol("ab cd ef ghi ij");
 
         var result = Tested.Parse(cursol);
 
@@ -74,7 +74,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは5つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = Cursol.FromString("ab cd ef gh i");
+        var cursol = new Cursol("ab cd ef gh i");
 
         var result = Tested.Parse(cursol);
 
@@ -84,7 +84,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは指定した単語を読み込みます()
     {
-        var cursol = Cursol.FromString("ab cd ef gh ij");
+        var cursol = new Cursol("ab cd ef gh ij");
         var result = Tested.Parse(cursol);
 
         result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij"));
@@ -93,7 +93,7 @@ public class 要素を5つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
-        var cursol = Cursol.FromString("ab cd ef gh ij");
+        var cursol = new Cursol("ab cd ef gh ij");
 
         var result = Tested.Parse(cursol);
 

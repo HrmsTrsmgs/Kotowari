@@ -13,52 +13,17 @@ public class OrParser<T> : Parser<T>
     public OrParser(params Parser<T>[] parsers)
         => Parsers = parsers;
 
-    protected internal override ParseResult<T, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        => Execution<TDocument>.Get(this).ParseCore(cursol);
-
-    internal override ParserExecution<T, TDocument> CreateExecution<TDocument>()
-        => GetType() == typeof(OrParser<T>)
-            ? Execution<TDocument>.Get(this)
-            : base.CreateExecution<TDocument>();
-
-    internal sealed class Execution<TDocument> : ParserExecution<T, TDocument>
-        where TDocument : IDocument, allows ref struct
+    protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
-        readonly Parser<T>[] parsers;
-        readonly ParserExecution<T, TDocument>?[] executions;
-
-        Execution(OrParser<T> parser) : base(parser)
+        foreach (var parser in Parsers)
         {
-            parsers = parser.Parsers;
-            executions = new ParserExecution<T, TDocument>?[parsers.Length];
-        }
+            var result = parser.ParseCore(cursol);
 
-        internal static Execution<TDocument> Get(OrParser<T> parser)
-            => ParserExecutionCache<OrParser<T>, Execution<TDocument>>.Get(
-                parser, static it => new Execution<TDocument>(it));
-
-        internal override ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
-        {
-            for (var index = 0; index < parsers.Length; index++)
+            if (result.IsSuccess)
             {
-                var parser = parsers[index];
-                var execution = executions[index];
-
-                // 元の候補配列は呼び出し側でも差し替え可能。到達した候補だけを構成する。
-                if (execution is null || !ReferenceEquals(execution.Definition, parser))
-                {
-                    execution = parser.CreateExecution<TDocument>();
-                    executions[index] = execution;
-                }
-
-                var result = execution.ParseCore(cursol);
-                if (result.IsSuccess)
-                {
-                    return result;
-                }
+                return result;
             }
-
-            return ParseResult<T, TDocument>.Failure(cursol);
         }
+        return ParseResult<T>.Failure(cursol);
     }
 }

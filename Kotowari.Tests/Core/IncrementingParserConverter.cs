@@ -11,7 +11,7 @@ internal sealed class IncrementingParserConverter() : ParserConverter<char, int>
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<int, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+    protected override ParseResult<int> ParseCore(Cursol cursol)
     {
         呼び出し回数++;
         return TestParseResults.ConvertSuccessfulValue(base.ParseCore(cursol), static it => it + 1);

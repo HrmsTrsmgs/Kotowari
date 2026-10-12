@@ -13,7 +13,7 @@ public class DebugParserのテスト
     [Fact]
     public void ParseAsyncは内部パーサーと同じように成功します()
     {
-        var cursol = Cursol.FromString("public");
+        var cursol = new Cursol("public");
         var parser = new CharParser('p');
         var tested = new DebugParser<char>(parser, () => { });
         var result = tested.Parse(cursol);
@@ -25,15 +25,15 @@ public class DebugParserのテスト
     [Fact]
     public void ParseAsyncは内部パーサーと同じように失敗します()
     {
-        var cursol = Cursol.FromString("public");
+        var cursol = new Cursol("public");
         var parser = new CharParser('a');
         var tested = new DebugParser<char>(parser, () => { });
         var result = tested.Parse(cursol);
         var expected = parser.Parse(cursol);
         result.IsSuccess.Should().Be(expected.IsSuccess);
         (result.Cursol == expected.Cursol).Should().BeTrue();
-        var readParsed = () => tested.Parse(Cursol.FromString("public")).Parsed;
-        var readExpected = () => parser.Parse(Cursol.FromString("public")).Parsed;
+        var readParsed = () => tested.Parse(new Cursol("public")).Parsed;
+        var readExpected = () => parser.Parse(new Cursol("public")).Parsed;
         readParsed.Should().Throw<InvalidOperationException>();
         readExpected.Should().Throw<InvalidOperationException>();
     }
@@ -42,7 +42,7 @@ public class DebugParserのテスト
     public void ParseAsyncは指定したActionを呼びます()
     {
         bool isActioned = false;
-        var cursol = Cursol.FromString("public");
+        var cursol = new Cursol("public");
         var parser = new CharParser('a');
         var tested = new DebugParser<char>(parser, () => isActioned = true);
 

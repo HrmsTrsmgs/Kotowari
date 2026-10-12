@@ -17,14 +17,11 @@ public class ParserConverterのテスト
         var parser = new IncrementingParserConverter();
         var tested = new ZeroOrMoreParser<int>(parser);
 
-        var utf16 = tested.Parse(Cursol.FromString("aa!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8("aa!"u8));
+        var result = tested.Parse(new Cursol("aa!"));
 
-        utf16.Parsed.Should().Equal(98, 98);
-        utf16.Cursol.Index.Should().Be(2);
-        utf8.Parsed.Should().Equal(98, 98);
-        utf8.Cursol.Index.Should().Be(2);
-        parser.呼び出し回数.Should().Be(6);
+        result.Parsed.Should().Equal(98, 98);
+        result.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(3);
     }
 
     [Fact]
@@ -38,15 +35,12 @@ public class ParserConverterのテスト
             return parser;
         }));
 
-        var utf16 = tested.Parse(Cursol.FromString("aa!"));
-        var utf8 = tested.Parse(Cursol.FromUtf8("aa!"u8));
+        var result = tested.Parse(new Cursol("aa!"));
 
-        utf16.Parsed.Should().Equal(98, 98);
-        utf16.Cursol.Index.Should().Be(2);
-        utf8.Parsed.Should().Equal(98, 98);
-        utf8.Cursol.Index.Should().Be(2);
-        parser.呼び出し回数.Should().Be(6);
-        getter呼び出し回数.Should().Be(6);
+        result.Parsed.Should().Equal(98, 98);
+        result.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(3);
+        getter呼び出し回数.Should().Be(3);
     }
 
     ParserConverter<string, int> Tested { get; }
@@ -54,15 +48,14 @@ public class ParserConverterのテスト
     public ParserConverterのテスト()
         => Tested = ParserConverter.Create(new WordParser("123"), s => int.Parse(s));
 
-
     [Fact]
     public void パースします()
-        => Tested.Parse(Cursol.FromString("123"));
+        => Tested.Parse(new Cursol("123"));
 
     [Fact]
     public void 指定したパーサーと同じ条件で成功します()
     {
-        var isSuccess = Tested.Parse(Cursol.FromString("123")).IsSuccess;
+        var isSuccess = Tested.Parse(new Cursol("123")).IsSuccess;
 
         isSuccess.Should().BeTrue();
     }
@@ -70,7 +63,7 @@ public class ParserConverterのテスト
     [Fact]
     public void 指定したパーサーと同じ条件で失敗します()
     {
-        var isSuccess = Tested.Parse(Cursol.FromString("124")).IsSuccess;
+        var isSuccess = Tested.Parse(new Cursol("124")).IsSuccess;
 
         isSuccess.Should().BeFalse();
     }
@@ -78,7 +71,7 @@ public class ParserConverterのテスト
     [Fact]
     public void 指定した通り変換がなされます()
     {
-        var parsed = Tested.Parse(Cursol.FromString("123")).Parsed;
+        var parsed = Tested.Parse(new Cursol("123")).Parsed;
 
         parsed.Should().Be(123);
     }
@@ -86,14 +79,14 @@ public class ParserConverterのテスト
     [Fact]
     public void 成功した時はカーソルが進みます()
     {
-        var cursol = Tested.Parse(Cursol.FromString("123")).Cursol;
+        var cursol = Tested.Parse(new Cursol("123")).Cursol;
 
         cursol.Index.Should().Be(3);
     }
     [Fact]
     public void 失敗した時はカーソルが進みません()
     {
-        var cursol = Tested.Parse(Cursol.FromString("124")).Cursol;
+        var cursol = Tested.Parse(new Cursol("124")).Cursol;
 
         cursol.Index.Should().Be(0);
     }

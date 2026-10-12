@@ -40,16 +40,6 @@ public class SequenceParser<T1, T2, T3, T4, T5> : Parser<(T1, T2, T3, T4, T5)>
                 tuple.Item2.Item4));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5), TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
-        => GetExecution<TDocument>().ParseCore(cursol);
-
-    internal override ParserExecution<(T1, T2, T3, T4, T5), TDocument> CreateExecution<TDocument>()
-        => GetType() == typeof(SequenceParser<T1, T2, T3, T4, T5>)
-            ? GetExecution<TDocument>()
-            : base.CreateExecution<TDocument>();
-
-    ForwardingExecution<(T1, T2, T3, T4, T5), TDocument> GetExecution<TDocument>()
-        where TDocument : IDocument, allows ref struct
-        => ParserExecutionCache<SequenceParser<T1, T2, T3, T4, T5>, ForwardingExecution<(T1, T2, T3, T4, T5), TDocument>>.Get(
-            this, static it => new(it, it.Parser.CreateExecution<TDocument>()));
+    protected internal override ParseResult<(T1, T2, T3, T4, T5)> ParseCore(Cursol cursol)
+        => Parser.ParseCore(cursol);
 }
