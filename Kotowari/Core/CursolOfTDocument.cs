@@ -43,9 +43,12 @@ public readonly ref struct Cursol<TDocument>
     /// 同じカーソルのCurrentから得た文字だけを渡してください。
     /// </remarks>
     internal Cursol<TDocument> AdvanceReadCharacter(char current)
-        => typeof(TDocument) == typeof(Utf8Document) && current > '\0' && current < '\x80'
-            ? AdvanceUtf8Bytes(1)
-            : GoFoward(1);
+        => this with
+        {
+            Index = typeof(TDocument) == typeof(Utf8Document) && current > '\0' && current < '\x80'
+                ? Index + 1
+                : document.GoFoward(Index, 1)
+        };
 
     public Cursol<TDocument> Copy() => this with { };
 
