@@ -34,6 +34,19 @@ public readonly ref struct Cursol<TDocument>
     public Cursol<TDocument> GoFoward(int step)
         => this with { Index = document.GoFoward(Index, step) };
 
+    /// <summary>
+    /// Currentで読み取った一文字を消費します。
+    /// </summary>
+    /// <remarks>
+    /// UTF-8のASCII文字は読み取り結果から1バイトと分かるため、文字幅を再取得しません。
+    /// ヌル文字は入力終端の戻り値ともなるので、通常の位置計算へ戻します。
+    /// 同じカーソルのCurrentから得た文字だけを渡してください。
+    /// </remarks>
+    internal Cursol<TDocument> AdvanceReadCharacter(char current)
+        => typeof(TDocument) == typeof(Utf8Document) && current > '\0' && current < '\x80'
+            ? AdvanceUtf8Bytes(1)
+            : GoFoward(1);
+
     public Cursol<TDocument> Copy() => this with { };
 
     /// <summary>
