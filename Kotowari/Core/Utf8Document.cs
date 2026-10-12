@@ -28,7 +28,7 @@ public readonly ref struct Utf8Document : IDocument
     /// Spanフィールドへ戻す場合やランタイム更新時には、全体測定で再評価する。
     /// 根拠と条件はKotowari.Benchmarks/Results/2026-10-10-utf8-document-layout.mdを参照。
     /// </remarks>
-    ReadOnlySpan<byte> Utf8
+    internal ReadOnlySpan<byte> Utf8
         => MemoryMarshal.CreateReadOnlySpan(in utf8Reference, utf8Length);
 
     internal Utf8Document(ReadOnlySpan<byte> utf8)
