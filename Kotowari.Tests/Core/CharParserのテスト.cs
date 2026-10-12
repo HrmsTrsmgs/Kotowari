@@ -3,6 +3,7 @@ using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,6 +12,67 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class CharParserのテスト
 {
+    [Theory]
+    [InlineData("ab", 'a', false, 'a', 1)]
+    [InlineData("éb", 'é', false, 'é', 2)]
+    [InlineData("あb", 'あ', false, 'あ', 3)]
+    [InlineData("Ab", 'a', true, 'A', 1)]
+    [InlineData("Éb", 'é', true, 'É', 2)]
+    [InlineData("\0b", '\0', false, '\0', 1)]
+    [InlineData("", '\0', false, '\0', 0)]
+    public void UTF8照合は入力の文字と消費バイト数を返します(
+        string input, char expected, bool ignoreCase, char parsed, int nextIndex)
+    {
+        var tested = new CharParser(expected, ignoreCase);
+
+        var result = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(input)));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(parsed);
+        result.Cursol.Index.Should().Be(nextIndex);
+    }
+
+    [Fact]
+    public void UTF8入力の置換文字は定義した単独サロゲートに一致しません()
+    {
+        var tested = new CharParser('\ud800');
+
+        tested.Parse(Cursol.FromUtf8("\ufffd"u8)).IsSuccess.Should().BeFalse();
+    }
+
+    [Fact]
+    public void UTF8文字照合でも補助平面文字の読み取りを拒否します()
+    {
+        var tested = new CharParser('a');
+        var parse = () => tested.Parse(Cursol.FromUtf8("😀"u8)).IsSuccess;
+
+        parse.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void UTF8文字照合の大小文字比較は解析時のカルチャーを使います()
+    {
+        var original = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            var tested = new CharParser('I', true);
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+
+            var turkish = tested.Parse(Cursol.FromUtf8("ı!"u8));
+            turkish.IsSuccess.Should().BeTrue();
+            turkish.Parsed.Should().Be('ı');
+            turkish.Cursol.Index.Should().Be(2);
+
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            tested.Parse(Cursol.FromUtf8("ı!"u8)).IsSuccess.Should().BeFalse();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = original;
+        }
+    }
+
     [Fact]
     public void ParseAsyncは指定した文字を読み込みに成功します()
     {

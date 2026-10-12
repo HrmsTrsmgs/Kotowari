@@ -12,6 +12,67 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class WordParserのテスト
 {
+    [Theory]
+    [InlineData("éあb", "éあb!", false, "éあb", 6)]
+    [InlineData("true", "TrUe!", true, "TrUe", 4)]
+    [InlineData("éa", "ÉA!", true, "ÉA", 3)]
+    [InlineData("", "!", false, "", 0)]
+    [InlineData("a\0\0", "a", false, "a\0\0", 1)]
+    [InlineData("\0", "", false, "\0", 0)]
+    [InlineData("a\0", "a\0", false, "a\0", 2)]
+    public void UTF8単語照合は入力の表記と終端位置を保ちます(
+        string word, string input, bool ignoreCase, string parsed, int nextIndex)
+    {
+        var tested = new WordParser(word, ignoreCase);
+
+        var result = tested.Parse(Cursol.FromUtf8(Encoding.UTF8.GetBytes(input)));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(parsed);
+        result.Cursol.Index.Should().Be(nextIndex);
+    }
+
+    [Fact]
+    public void UTF8単語照合は単独サロゲートの定義を置換文字に一致させません()
+    {
+        var tested = new WordParser("\ud800");
+
+        tested.Parse(Cursol.FromUtf8("\ufffd"u8)).IsSuccess.Should().BeFalse();
+    }
+
+    [Fact]
+    public void UTF8単語照合の途中でも補助平面文字の読み取りを拒否します()
+    {
+        var tested = new WordParser("ab");
+        var parse = () => tested.Parse(Cursol.FromUtf8("a😀"u8)).IsSuccess;
+
+        parse.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void UTF8単語照合の大小文字比較は解析時のカルチャーを使います()
+    {
+        var original = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            var tested = new WordParser("I", true);
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+
+            var turkish = tested.Parse(Cursol.FromUtf8("ı!"u8));
+            turkish.IsSuccess.Should().BeTrue();
+            turkish.Parsed.Should().Be("ı");
+            turkish.Cursol.Index.Should().Be(2);
+
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            tested.Parse(Cursol.FromUtf8("ı!"u8)).IsSuccess.Should().BeFalse();
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = original;
+        }
+    }
+
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
