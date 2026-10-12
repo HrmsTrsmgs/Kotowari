@@ -18,6 +18,7 @@
 - [2026-10-09のExecution共通化・JSON性能評価](2026-10-09-execution-commonization.md)（転送・キャッシュ・空白処理を共通化、性能同等性は未確認）
 - [2026-10-10のカーソル引数のscoped in化の評価](2026-10-10-cursor-in-parameter.md)（CPU／JIT調査に基づくコピー削減候補を、PGO有効・MemoryStream込みで評価）
 - [2026-10-10のUTF-8文書の入力保持方法の比較](2026-10-10-utf8-document-layout.md)（独立した8組の確認測定で約5.2%短縮、対応前文字列版の1.10倍以内という目標は未達）
+- [2026-10-10のOneOrMore連結処理の評価](2026-10-10-one-or-more-prepend.md)（中間配列の削減では速度改善を確認できず不採用、電源イベントの留保付き）
 
 ## WordParserの測定
 
