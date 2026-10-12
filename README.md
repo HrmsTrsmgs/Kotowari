@@ -33,6 +33,8 @@ dotnet run --project Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj -c Re
 
 Versioned benchmark records are listed in [`Kotowari.Benchmarks/Results`](Kotowari.Benchmarks/Results/README.md). Each record includes the input hash, environment, dependency versions, results, and known limitations.
 
+The suspended UTF-8 work, saved Git tags, and measurement baselines are indexed in the [UTF-8 experiment archive](docs/utf8-experiment-archive.md).
+
 ## License
 
 Kotowari is licensed under the Apache License 2.0.
