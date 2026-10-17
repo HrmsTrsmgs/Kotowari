@@ -4,7 +4,7 @@
 指示文書の導入・編集だけの依頼中には実行しない。
 
 ```text
-このリポジトリの docs/ai-instructions/tdd-context/run.md を入口に、次の要求を進めてください。
+$kotowari-tdd このプロジェクトで次の要求を実装してください。
 
 要求：〈今回の要求〉
 
