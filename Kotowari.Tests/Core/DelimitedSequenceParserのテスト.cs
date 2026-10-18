@@ -11,6 +11,73 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class DelimitedSequenceParserのテスト
 {
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(8)]
+    [InlineData(9)]
+    [InlineData(17)]
+    [InlineData(65)]
+    public void 参照型の列の順序と終端位置を保ち再解析後も繰り返し列挙できます(int length)
+    {
+        var values = from index in Enumerable.Range(0, length) select "abあ"[index % 3].ToString();
+        var text = string.Join(",", values);
+        var tested = new DelimitedSequenceParser<string, char>(
+            new ParserConverter<char, string>(
+                new ConditionalCharParser(char.IsLetter), it => it.ToString()),
+            new CharParser(','));
+
+        var result = tested.Parse(new Cursol(text + ",!"));
+        result.Parsed.Should().Equal(values);
+        tested.Parse(new Cursol("z,z!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal(values);
+        result.Cursol.Index.Should().Be(text.Length);
+        result.Cursol.Current.Should().Be(',');
+    }
+
+    [Theory]
+    [InlineData("a,!")]
+    [InlineData("a!")]
+    public void 要素や区切り子が消費して失敗しても最後の要素の直後を返します(string input)
+    {
+        var tested = new DelimitedSequenceParser<char, char>(
+            new CallbackCharParser((current, _) => (current == 'a', 'A', 1)),
+            new CallbackCharParser((current, _) => (current == ',', current, 1)));
+
+        var result = tested.Parse(new Cursol(input));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal('A');
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
+    public void 長い列の途中の例外を伝播し同じパーサーで再解析できます()
+    {
+        var exception = new InvalidOperationException();
+        var 例外を発生させる = true;
+        var tested = new DelimitedSequenceParser<char, char>(
+            new CallbackCharParser((current, index) =>
+            {
+                if (例外を発生させる && index == 128)
+                {
+                    throw exception;
+                }
+
+                return (current == 'a', current, 1);
+            }),
+            new CharParser(','));
+        var text = string.Join(",", Enumerable.Repeat("a", 65));
+        var parse = () => tested.Parse(new Cursol(text + "!"));
+
+        parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
+        例外を発生させる = false;
+
+        tested.Parse(new Cursol(text + "!")).Parsed.Should().Equal(Enumerable.Repeat('a', 65));
+    }
+
     [Fact]
     public void 最初の要素のパースに失敗しても成功です()
     {

@@ -20,28 +20,38 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
 
     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
-        var parseds = new List<T>();
-        var current = cursol;
-        var beforeDelimiter = current;
-        while (true)
+        // 短い列ではList本体と成長途中の配列を確保せず、結果だけを独立した配列にする。
+        // 結果に借用領域を含めず、子パーサーが例外を投げた場合もfinallyで返却する。
+        // 測定・採否: Kotowari.Benchmarks/Results/2026-10-19-string-tuning.md。
+        var scratch = new ParsedValueScratchBuffer<T>();
+        var parseds = new ParsedValueBuffer<T>(scratch);
+        try
         {
-            var sequenceResult = Sequence.ParseCore(current);
-            if (!sequenceResult.IsSuccess)
+            var current = cursol;
+            var beforeDelimiter = current;
+            while (true)
             {
-                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
-            }
+                var sequenceResult = Sequence.ParseCore(current);
+                if (!sequenceResult.IsSuccess)
+                {
+                    return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds.ToArray());
+                }
 
-            current = sequenceResult.Cursol;
-            parseds.Add(sequenceResult.Parsed);
-            beforeDelimiter = current;
-            var delimiterResult = Delimiter.ParseCore(current);
-            if (!delimiterResult.IsSuccess)
-            {
-                return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds);
-            }
+                current = sequenceResult.Cursol;
+                parseds.Add(sequenceResult.Parsed);
+                beforeDelimiter = current;
+                var delimiterResult = Delimiter.ParseCore(current);
+                if (!delimiterResult.IsSuccess)
+                {
+                    return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds.ToArray());
+                }
 
-            current = delimiterResult.Cursol;
+                current = delimiterResult.Cursol;
+            }
         }
-
+        finally
+        {
+            parseds.Dispose();
+        }
     }
 }
