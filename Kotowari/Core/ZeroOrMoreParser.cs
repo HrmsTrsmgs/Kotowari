@@ -15,18 +15,27 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
 
     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
-        var parseds = new List<T> { };
-        var current = cursol;
-        while (true)
+        var scratch = new ParsedValueScratchBuffer<T>();
+        var parseds = new ParsedValueBuffer<T>(scratch);
+        try
         {
-            var result = Parser.ParseCore(current);
-            if (!result.IsSuccess)
+            var current = cursol;
+            while (true)
             {
-                return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);
-            }
+                var result = Parser.ParseCore(current);
+                if (!result.IsSuccess)
+                {
+                    return ParseResult<IEnumerable<T>>.Success(
+                        result.Cursol, parseds.ToArray());
+                }
 
-            current = result.Cursol;
-            parseds.Add(result.Parsed);
+                current = result.Cursol;
+                parseds.Add(result.Parsed);
+            }
+        }
+        finally
+        {
+            parseds.Dispose();
         }
     }
 }

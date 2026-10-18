@@ -3070,5 +3070,4529 @@
       "DoNotStartTimingUntilParentReady": false
     },
     "Decision": "Not adopted; confirmation not run because exploration CI upper bound did not meet predeclared < 1 criterion."
+  },
+  "Case02": {
+    "Name": "02-pooled-repetition",
+    "BaselineCommit": "66993d59f029e6d7549634ea17adebbde0a55be5",
+    "BaselineLibrarySourceCommit": "ab7a35b (same library source; 66993d5 adds evidence/docs only)",
+    "CandidateDescription": "Replace ZeroOrMoreParser's List<T> collection with pooled ParsedValueBuffer<T> and ParsedValueScratchBuffer<T> helpers.",
+    "CandidateSourceCommitAtFreeze": "uncommitted candidate on 66993d5; DLL built from these exact frozen source bytes.",
+    "Input": {
+      "Bytes": 4172062,
+      "SHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+    },
+    "Conditions": {
+      "TieredPGO": 1,
+      "AffinityMask": 4,
+      "WarmupCount": 16,
+      "IterationCount": 8,
+      "InvocationCount": 4,
+      "UnrollFactor": 1,
+      "OutlierMode": "DontRemove",
+      "LaunchCount": 1,
+      "FreshProcesses": true,
+      "Method": "Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks.StringInput"
+    },
+    "BuildAndTests": "Candidate Release non-incremental analyzer build succeeded in 10.61 s; 288 tests passed; six existing SARIF diagnostics. Format check exited 1 only for the existing ZeroOrMore constructor primary-constructor suggestion.",
+    "FinalAdoptionBuildAndTests": "After adoption-only XML remarks were added, Release non-incremental analyzer build succeeded in 12.96 s; all 288 tests passed. Frozen executable source was mechanically verified identical after excluding five XML remark lines; no execution statement changed.",
+    "FinalAdoptionNote": "Parent adopted after both batches met the predeclared criterion. Only five performance/revalidation XML remark lines were added after measurement; those comments are not mixed into the frozen candidate source snapshot. Final build/test succeeded.",
+    "Validation": {
+      "Baseline": "Success: full input consumption, System.Text.Json-equivalent tree, 100001 nodes.",
+      "Candidate": "Success: full input consumption, System.Text.Json-equivalent tree, 100001 nodes.",
+      "BaselineLog": "baseline/host/validation-pooled.log",
+      "CandidateLog": "candidate/host/validation-pooled.log"
+    },
+    "FrozenKotowariDLL": {
+      "Baseline": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+      "Candidate": "046BAFC9B76DD238A04476AA96582D9A4E3240BD2BF46333F258151B75151E5F"
+    },
+    "FrozenPDB": {
+      "Baseline": "22F11914667C1058E616ADFC2DD686E9A7A07094297803F989CC68AC6C453841",
+      "Candidate": "74FA7F930C1C6EDCBD8FE50E171DBF124517EF7DD487960328F023B582D1FF00"
+    },
+    "DLLManifest": {
+      "SHA256": "3372A6283A01DDAE82C214B8707ADDE10D5687BD37D1702CD281B29020246D68",
+      "Entries": [
+        {
+          "Name": "BenchmarkDotNet.Annotations.dll",
+          "BaselineSHA256": "4B5D273032CAE7C8FC97E16713B8D4F1EE3A2AA28A0E2BD0695232FB9DD7D558",
+          "CandidateSHA256": "4B5D273032CAE7C8FC97E16713B8D4F1EE3A2AA28A0E2BD0695232FB9DD7D558",
+          "Same": true
+        },
+        {
+          "Name": "BenchmarkDotNet.dll",
+          "BaselineSHA256": "D460626B2E1A9FA2F786E09E6C85CDF4D7B73DECA636450A0E23892C8CE6192B",
+          "CandidateSHA256": "D460626B2E1A9FA2F786E09E6C85CDF4D7B73DECA636450A0E23892C8CE6192B",
+          "Same": true
+        },
+        {
+          "Name": "CommandLine.dll",
+          "BaselineSHA256": "8A55501CD1A1590A4BD93A17C6FDD2C01A0ED5BFF1AEA9036BDC78D98C9A3FAD",
+          "CandidateSHA256": "8A55501CD1A1590A4BD93A17C6FDD2C01A0ED5BFF1AEA9036BDC78D98C9A3FAD",
+          "Same": true
+        },
+        {
+          "Name": "Dia2Lib.dll",
+          "BaselineSHA256": "6C4CAC68010FE032218EFE5E9FCF46EEF9F77BFAA5F3BD33F03C5FF77D5A8FAC",
+          "CandidateSHA256": "6C4CAC68010FE032218EFE5E9FCF46EEF9F77BFAA5F3BD33F03C5FF77D5A8FAC",
+          "Same": true
+        },
+        {
+          "Name": "Gee.External.Capstone.dll",
+          "BaselineSHA256": "6DFDA67784598DE9677173B89D0692593935F1A4024D36040C95DEA48C1B5965",
+          "CandidateSHA256": "6DFDA67784598DE9677173B89D0692593935F1A4024D36040C95DEA48C1B5965",
+          "Same": true
+        },
+        {
+          "Name": "Iced.dll",
+          "BaselineSHA256": "F058C01321B4CDFC9B9151879E88E59571C8D0BA176FBCF95BC936A8F3D073ED",
+          "CandidateSHA256": "F058C01321B4CDFC9B9151879E88E59571C8D0BA176FBCF95BC936A8F3D073ED",
+          "Same": true
+        },
+        {
+          "Name": "Marimo.Kotowari.dll",
+          "BaselineSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "CandidateSHA256": "046BAFC9B76DD238A04476AA96582D9A4E3240BD2BF46333F258151B75151E5F",
+          "Same": false
+        },
+        {
+          "Name": "Marimo.Parser.dll",
+          "BaselineSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB",
+          "CandidateSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.CodeAnalysis.CSharp.dll",
+          "BaselineSHA256": "53302ACCA07700E9BB10DCF21034435D6E0454C8EEBF2481164EC13E520004C9",
+          "CandidateSHA256": "53302ACCA07700E9BB10DCF21034435D6E0454C8EEBF2481164EC13E520004C9",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.CodeAnalysis.dll",
+          "BaselineSHA256": "395736B2D0E02BE77BEDC3847B269DA7A93BF8E49CD3431A4A8E68D2C52D5846",
+          "CandidateSHA256": "395736B2D0E02BE77BEDC3847B269DA7A93BF8E49CD3431A4A8E68D2C52D5846",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Diagnostics.FastSerialization.dll",
+          "BaselineSHA256": "83E89BAF0BBECCA8CFA194CFF13365F716849E22EFC374B669206F26998A019F",
+          "CandidateSHA256": "83E89BAF0BBECCA8CFA194CFF13365F716849E22EFC374B669206F26998A019F",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Diagnostics.NETCore.Client.dll",
+          "BaselineSHA256": "BAED2D25CA5BC53A3447C237D5572C92EAC1FD842807B3E72602A711749B1B22",
+          "CandidateSHA256": "BAED2D25CA5BC53A3447C237D5572C92EAC1FD842807B3E72602A711749B1B22",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Diagnostics.Runtime.dll",
+          "BaselineSHA256": "06F9910C8A37F8D4D758538E6DD307DE58BCFB3BB13E83658142C08087A25382",
+          "CandidateSHA256": "06F9910C8A37F8D4D758538E6DD307DE58BCFB3BB13E83658142C08087A25382",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Diagnostics.Tracing.TraceEvent.dll",
+          "BaselineSHA256": "401E948DAC99D0F9756EF96D5A8B8E4736E19E9F82CE8CDD744495951E3A94BB",
+          "CandidateSHA256": "401E948DAC99D0F9756EF96D5A8B8E4736E19E9F82CE8CDD744495951E3A94BB",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.DotNet.PlatformAbstractions.dll",
+          "BaselineSHA256": "B1F4AD169FB192747F5D2D3111C01DB4257E3EC1F7F18F301F7FC4BE3B869FF3",
+          "CandidateSHA256": "B1F4AD169FB192747F5D2D3111C01DB4257E3EC1F7F18F301F7FC4BE3B869FF3",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+          "BaselineSHA256": "9CCD830351AA28BC683D4F8D1CEFD9E724161F972D25BFB64EEE5BF55C48C5E3",
+          "CandidateSHA256": "9CCD830351AA28BC683D4F8D1CEFD9E724161F972D25BFB64EEE5BF55C48C5E3",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.DependencyInjection.dll",
+          "BaselineSHA256": "2AA8182B5356A8CC5C35FC3641A87E814857D8D9BE399AC78F260343754D09E0",
+          "CandidateSHA256": "2AA8182B5356A8CC5C35FC3641A87E814857D8D9BE399AC78F260343754D09E0",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.Logging.Abstractions.dll",
+          "BaselineSHA256": "D575C9D1543CA726CE14DBDFFD103E93EA527CD46BB28316DA1F4122DBC55D56",
+          "CandidateSHA256": "D575C9D1543CA726CE14DBDFFD103E93EA527CD46BB28316DA1F4122DBC55D56",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.Logging.dll",
+          "BaselineSHA256": "183650081B551DFAD967A7CBF79946A229CB79458B8D04A12DB7C44B03BB9AB7",
+          "CandidateSHA256": "183650081B551DFAD967A7CBF79946A229CB79458B8D04A12DB7C44B03BB9AB7",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.Options.dll",
+          "BaselineSHA256": "786112CB2F6646EF1170219A8C0BB813C9F14A6781E67C6266414F55A679565D",
+          "CandidateSHA256": "786112CB2F6646EF1170219A8C0BB813C9F14A6781E67C6266414F55A679565D",
+          "Same": true
+        },
+        {
+          "Name": "Microsoft.Extensions.Primitives.dll",
+          "BaselineSHA256": "8CE9A85927EC7507B11FFE90080E7A811D51304A9E8B1DA20C350159BA403902",
+          "CandidateSHA256": "8CE9A85927EC7507B11FFE90080E7A811D51304A9E8B1DA20C350159BA403902",
+          "Same": true
+        },
+        {
+          "Name": "Perfolizer.dll",
+          "BaselineSHA256": "22A4A336DB943465CBDFC8D0A8E23E89DF3024D39F1C5954D97554B3DA39E300",
+          "CandidateSHA256": "22A4A336DB943465CBDFC8D0A8E23E89DF3024D39F1C5954D97554B3DA39E300",
+          "Same": true
+        },
+        {
+          "Name": "Pragmastat.dll",
+          "BaselineSHA256": "E9B3FC36000E7FE3FB11D3EA6A65F3C9C7B17E03C9F5034306437D65972E8C51",
+          "CandidateSHA256": "E9B3FC36000E7FE3FB11D3EA6A65F3C9C7B17E03C9F5034306437D65972E8C51",
+          "Same": true
+        },
+        {
+          "Name": "StringExecutionRecovery.ChildHarness.dll",
+          "BaselineSHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateSHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "Same": true
+        },
+        {
+          "Name": "StringExecutionRecovery.Measurement.dll",
+          "BaselineSHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "CandidateSHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "Same": true
+        },
+        {
+          "Name": "System.CodeDom.dll",
+          "BaselineSHA256": "8D0CF191C86FEEA81C9875652C06E454ABE8DBFF66BEA9E4CB5F8AA2DC02F32A",
+          "CandidateSHA256": "8D0CF191C86FEEA81C9875652C06E454ABE8DBFF66BEA9E4CB5F8AA2DC02F32A",
+          "Same": true
+        },
+        {
+          "Name": "System.Management.dll",
+          "BaselineSHA256": "0BE24B09DA5ABAD0B20EFCB58FAB14B0DEDC79B09D4FBDCB894BE268105A2195",
+          "CandidateSHA256": "0BE24B09DA5ABAD0B20EFCB58FAB14B0DEDC79B09D4FBDCB894BE268105A2195",
+          "Same": true
+        },
+        {
+          "Name": "TraceReloggerLib.dll",
+          "BaselineSHA256": "6830C0F1D3F3C17719181E73DD5CFA8CCBB3F3C575329D2120576545103467B5",
+          "CandidateSHA256": "6830C0F1D3F3C17719181E73DD5CFA8CCBB3F3C575329D2120576545103467B5",
+          "Same": true
+        }
+      ],
+      "OnlyDifference": "Marimo.Kotowari.dll; all 27 other DLL hashes match."
+    },
+    "SourceHashes": {
+      "Baseline": [
+        {
+          "Path": "JsonParser/IJSONValue.cs",
+          "SHA256": "EEFE3E1CE965243BC072EAFF12CC62796AD05CAC171A16F1AF1566A409689393"
+        },
+        {
+          "Path": "JsonParser/JSON.cs",
+          "SHA256": "C56824F58723477202B8960655B31CB353E337611C533644F5DA46FF44C03CAA"
+        },
+        {
+          "Path": "JsonParser/JSONArray.cs",
+          "SHA256": "7C37D7B7848F27C84595046B0A43C334E3EF813361F632617C7741FEFEA882E8"
+        },
+        {
+          "Path": "JsonParser/JSONLiteral.cs",
+          "SHA256": "D66B1E04A1F0047278D454B9E232C2946D686A25354FBF376086251A5C33E633"
+        },
+        {
+          "Path": "JsonParser/JSONMap.cs",
+          "SHA256": "88291EED5CEC06AD950D195C1FDC6040AF2840DD942048B76BD3E7E3FEBC1C04"
+        },
+        {
+          "Path": "JsonParser/JSONObject.cs",
+          "SHA256": "2D7528625795B2E80C69EF53A97FB9F282C69DB0333CEE3615711DFECFE06DDE"
+        },
+        {
+          "Path": "JsonParser/JsonParser.csproj",
+          "SHA256": "17295E13A557E7334A816CC6A83FB4CE16FE19B3D214FCBC91FCBA9E36BE967D"
+        },
+        {
+          "Path": "JsonParser/LiteralType.cs",
+          "SHA256": "32FE784B7B28FC86218B1344C949ADA1C4B3B844A99E5C85007EDE7C87BB728F"
+        },
+        {
+          "Path": "JsonParser/ParseException.cs",
+          "SHA256": "E1DAAF598E67AB8C0F20B7510CA582B5088A3CF0F194C5D976707193A5221E6C"
+        },
+        {
+          "Path": "Kotowari/.editorconfig",
+          "SHA256": "B0D248BCB1250D3CB1C3D3A63C01B1D8C15CEC3BF5A5DCDC3645ADE44A1482CA"
+        },
+        {
+          "Path": "Kotowari/Core/CharParser.cs",
+          "SHA256": "E8417CF8D1948B0CCF4AD753D92C860E2AE201D603022C1CC129AC8FC6ADC8D4"
+        },
+        {
+          "Path": "Kotowari/Core/ConditionalCharParser.cs",
+          "SHA256": "68C5EFC6322E7FB21288542A55FF068555D703DA1D9AE0860BE277168EEA6FA2"
+        },
+        {
+          "Path": "Kotowari/Core/Cursol.cs",
+          "SHA256": "1CD72974C11574218C1CD7B5465BFF4AA3C993F533CE21F8A1EF83542F7238CF"
+        },
+        {
+          "Path": "Kotowari/Core/DebugParser.cs",
+          "SHA256": "3BFEEEB7E1303F1D4FFD726BB438BFE41926C79206218A14080EDDF67CF2D91E"
+        },
+        {
+          "Path": "Kotowari/Core/DelimitedSequenceParser.cs",
+          "SHA256": "B83D67B4CAB1D59A9A0EDE31572DF1857636FC41440EDB7360F655C9E3E7D8A2"
+        },
+        {
+          "Path": "Kotowari/Core/ExpectCharParser.cs",
+          "SHA256": "9A716A409575AE69FDCF3EE0A8779F0FE4930859F1D68C1486278F6BF676D467"
+        },
+        {
+          "Path": "Kotowari/Core/OneOrMoreParser.cs",
+          "SHA256": "769297FCF7C85F82D00BF20CAB3047325F62D8A3C77952FB67EE9394693DC32F"
+        },
+        {
+          "Path": "Kotowari/Core/Optional.cs",
+          "SHA256": "00BA91276E2EE9552FE4E5A3647B2E8D7FE9D7935C9A8384BE3B581E14600DC1"
+        },
+        {
+          "Path": "Kotowari/Core/OptionalParser.cs",
+          "SHA256": "E5A83D7BDC504A1A4593CB29DCACC68311F2A479D2C61BD843821457FF7880B1"
+        },
+        {
+          "Path": "Kotowari/Core/OrParser.cs",
+          "SHA256": "3D841DF3895729CD437D9E64FCCFBA1D2E2C265A643220CC97CABDA0E0B3B3AB"
+        },
+        {
+          "Path": "Kotowari/Core/ParserConverter.cs",
+          "SHA256": "26DBA8CCF00F8D68D58512A4DD6E90613050E147969414A5FECD3747CAF6EB37"
+        },
+        {
+          "Path": "Kotowari/Core/RecursiveParser.cs",
+          "SHA256": "B0DF71B492510CC095CA1B73250DDDD2CF5A7690BD6DDEE5636B5AD401179D49"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser10.cs",
+          "SHA256": "B2BD95547F397884C013FCBF197BD7ABA7945B6F77601A2ED2622951BF82B1E8"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser2.cs",
+          "SHA256": "1BDFBE91A2B1EFBB10775E829FF31DDD8C27F8109071E5F6FFCA2FB379D86D48"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser3.cs",
+          "SHA256": "16608F0873DAF941D7F485AD9E4EF163B7A85700853E3C009ACE9021F18B94BF"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser4.cs",
+          "SHA256": "74ABB8EC12880A1E99944B77DE93BC28132340A43DC772684DDFB360C6AC2ED9"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser5.cs",
+          "SHA256": "AC08F8B9BE84FAFAB977D2F69D08433BBE5CCFF83D35407CD44243910E224434"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser6.cs",
+          "SHA256": "938913FD3FD284BD8814585C42025C270A0385B697E5D3BFBF0857BD393DF639"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser7.cs",
+          "SHA256": "ACE23CCA292C224B69F77A73DBFA59B7253B4995FFD1C06DE3FA1C92E828CA07"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser8.cs",
+          "SHA256": "78DAF95F9045D9781D1F666EBF8412F2272ECA97422AF2889F62B4D40FEA6DF8"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser9.cs",
+          "SHA256": "10214C10C2AE29B4C7FF5F995197C0A337C2B15F6C9DC7D74C0F41969C294D14"
+        },
+        {
+          "Path": "Kotowari/Core/WordParser.cs",
+          "SHA256": "F32A7EB3881E4A9902007E95645AFA5234DC4243D49E51F806D1A9B27B00D77E"
+        },
+        {
+          "Path": "Kotowari/Core/ZeroOrMoreParser.cs",
+          "SHA256": "2F3AA61DC4235D62977C1DB816C37ED69B7FE73B8F11F4B3F445D9CCDB229B63"
+        },
+        {
+          "Path": "Kotowari/Marimo.Kotowari.csproj",
+          "SHA256": "9E3F391585776526DECFDE4FA4B9FCE79A7530A2E1136732ACB093C7F9774798"
+        },
+        {
+          "Path": "Kotowari/OptionalParser.cs",
+          "SHA256": "86C64691CFC1C90CEA5873846AB6447170401A8C55E621EA9453422CE77976C5"
+        },
+        {
+          "Path": "Kotowari/Parser.cs",
+          "SHA256": "1EEB0D5433CD937E1409F91B9924328ADFF7C022D8DE23D05F78F88040E56981"
+        },
+        {
+          "Path": "Kotowari/ParserConverter.cs",
+          "SHA256": "D80129274CB6E99EC7F0F8C40B7B0AC904D21756E7436371D3BF5C884E4728A2"
+        },
+        {
+          "Path": "Kotowari/ParseResult.cs",
+          "SHA256": "1EFEF464DE0C2D27DECCC42A5DE9AE1A500018307B5EFC0905ED52B26F28E9A1"
+        },
+        {
+          "Path": "Kotowari/ParserOfT.cs",
+          "SHA256": "A469C70DB68B9BEDF66932635BE6191634292A716399C81BB1FCF9A4326BCBBC"
+        },
+        {
+          "Path": "Kotowari/SequenceParser.cs",
+          "SHA256": "28A31454785C0032533DC76C23996E535ECF8C34A488388C4B81C3163FA43C1C"
+        },
+        {
+          "Path": "Kotowari/WithWhiteSpaceParser.cs",
+          "SHA256": "C5A7CAE81934FCD8965545542CDC2285A529E2DA5D3D893F874E3947C2D1215A"
+        }
+      ],
+      "Candidate": [
+        {
+          "Path": "JsonParser/IJSONValue.cs",
+          "SHA256": "EEFE3E1CE965243BC072EAFF12CC62796AD05CAC171A16F1AF1566A409689393"
+        },
+        {
+          "Path": "JsonParser/JSON.cs",
+          "SHA256": "C56824F58723477202B8960655B31CB353E337611C533644F5DA46FF44C03CAA"
+        },
+        {
+          "Path": "JsonParser/JSONArray.cs",
+          "SHA256": "7C37D7B7848F27C84595046B0A43C334E3EF813361F632617C7741FEFEA882E8"
+        },
+        {
+          "Path": "JsonParser/JSONLiteral.cs",
+          "SHA256": "D66B1E04A1F0047278D454B9E232C2946D686A25354FBF376086251A5C33E633"
+        },
+        {
+          "Path": "JsonParser/JSONMap.cs",
+          "SHA256": "88291EED5CEC06AD950D195C1FDC6040AF2840DD942048B76BD3E7E3FEBC1C04"
+        },
+        {
+          "Path": "JsonParser/JSONObject.cs",
+          "SHA256": "2D7528625795B2E80C69EF53A97FB9F282C69DB0333CEE3615711DFECFE06DDE"
+        },
+        {
+          "Path": "JsonParser/JsonParser.csproj",
+          "SHA256": "17295E13A557E7334A816CC6A83FB4CE16FE19B3D214FCBC91FCBA9E36BE967D"
+        },
+        {
+          "Path": "JsonParser/LiteralType.cs",
+          "SHA256": "32FE784B7B28FC86218B1344C949ADA1C4B3B844A99E5C85007EDE7C87BB728F"
+        },
+        {
+          "Path": "JsonParser/ParseException.cs",
+          "SHA256": "E1DAAF598E67AB8C0F20B7510CA582B5088A3CF0F194C5D976707193A5221E6C"
+        },
+        {
+          "Path": "Kotowari/.editorconfig",
+          "SHA256": "B0D248BCB1250D3CB1C3D3A63C01B1D8C15CEC3BF5A5DCDC3645ADE44A1482CA"
+        },
+        {
+          "Path": "Kotowari/Core/CharParser.cs",
+          "SHA256": "E8417CF8D1948B0CCF4AD753D92C860E2AE201D603022C1CC129AC8FC6ADC8D4"
+        },
+        {
+          "Path": "Kotowari/Core/ConditionalCharParser.cs",
+          "SHA256": "68C5EFC6322E7FB21288542A55FF068555D703DA1D9AE0860BE277168EEA6FA2"
+        },
+        {
+          "Path": "Kotowari/Core/Cursol.cs",
+          "SHA256": "1CD72974C11574218C1CD7B5465BFF4AA3C993F533CE21F8A1EF83542F7238CF"
+        },
+        {
+          "Path": "Kotowari/Core/DebugParser.cs",
+          "SHA256": "3BFEEEB7E1303F1D4FFD726BB438BFE41926C79206218A14080EDDF67CF2D91E"
+        },
+        {
+          "Path": "Kotowari/Core/DelimitedSequenceParser.cs",
+          "SHA256": "B83D67B4CAB1D59A9A0EDE31572DF1857636FC41440EDB7360F655C9E3E7D8A2"
+        },
+        {
+          "Path": "Kotowari/Core/ExpectCharParser.cs",
+          "SHA256": "9A716A409575AE69FDCF3EE0A8779F0FE4930859F1D68C1486278F6BF676D467"
+        },
+        {
+          "Path": "Kotowari/Core/OneOrMoreParser.cs",
+          "SHA256": "769297FCF7C85F82D00BF20CAB3047325F62D8A3C77952FB67EE9394693DC32F"
+        },
+        {
+          "Path": "Kotowari/Core/Optional.cs",
+          "SHA256": "00BA91276E2EE9552FE4E5A3647B2E8D7FE9D7935C9A8384BE3B581E14600DC1"
+        },
+        {
+          "Path": "Kotowari/Core/OptionalParser.cs",
+          "SHA256": "E5A83D7BDC504A1A4593CB29DCACC68311F2A479D2C61BD843821457FF7880B1"
+        },
+        {
+          "Path": "Kotowari/Core/OrParser.cs",
+          "SHA256": "3D841DF3895729CD437D9E64FCCFBA1D2E2C265A643220CC97CABDA0E0B3B3AB"
+        },
+        {
+          "Path": "Kotowari/Core/ParsedValueBuffer.cs",
+          "SHA256": "D9F4E9C3D5869F9038C82F36C5D7644C366872C6F03295D18703547BC2E860ED"
+        },
+        {
+          "Path": "Kotowari/Core/ParsedValueScratchBuffer.cs",
+          "SHA256": "B3F1674B57EE29A88DB260DDC626C75ADF332A19C3451087F16AAE0C6ABFE5AE"
+        },
+        {
+          "Path": "Kotowari/Core/ParserConverter.cs",
+          "SHA256": "26DBA8CCF00F8D68D58512A4DD6E90613050E147969414A5FECD3747CAF6EB37"
+        },
+        {
+          "Path": "Kotowari/Core/RecursiveParser.cs",
+          "SHA256": "B0DF71B492510CC095CA1B73250DDDD2CF5A7690BD6DDEE5636B5AD401179D49"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser10.cs",
+          "SHA256": "B2BD95547F397884C013FCBF197BD7ABA7945B6F77601A2ED2622951BF82B1E8"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser2.cs",
+          "SHA256": "1BDFBE91A2B1EFBB10775E829FF31DDD8C27F8109071E5F6FFCA2FB379D86D48"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser3.cs",
+          "SHA256": "16608F0873DAF941D7F485AD9E4EF163B7A85700853E3C009ACE9021F18B94BF"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser4.cs",
+          "SHA256": "74ABB8EC12880A1E99944B77DE93BC28132340A43DC772684DDFB360C6AC2ED9"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser5.cs",
+          "SHA256": "AC08F8B9BE84FAFAB977D2F69D08433BBE5CCFF83D35407CD44243910E224434"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser6.cs",
+          "SHA256": "938913FD3FD284BD8814585C42025C270A0385B697E5D3BFBF0857BD393DF639"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser7.cs",
+          "SHA256": "ACE23CCA292C224B69F77A73DBFA59B7253B4995FFD1C06DE3FA1C92E828CA07"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser8.cs",
+          "SHA256": "78DAF95F9045D9781D1F666EBF8412F2272ECA97422AF2889F62B4D40FEA6DF8"
+        },
+        {
+          "Path": "Kotowari/Core/SequenceParser9.cs",
+          "SHA256": "10214C10C2AE29B4C7FF5F995197C0A337C2B15F6C9DC7D74C0F41969C294D14"
+        },
+        {
+          "Path": "Kotowari/Core/WordParser.cs",
+          "SHA256": "F32A7EB3881E4A9902007E95645AFA5234DC4243D49E51F806D1A9B27B00D77E"
+        },
+        {
+          "Path": "Kotowari/Core/ZeroOrMoreParser.cs",
+          "SHA256": "D1AC42519F89E519BCF50FA8C3EBDE6A5613F6B15B191B4C5B5F16B0A8D3727C"
+        },
+        {
+          "Path": "Kotowari/Marimo.Kotowari.csproj",
+          "SHA256": "9E3F391585776526DECFDE4FA4B9FCE79A7530A2E1136732ACB093C7F9774798"
+        },
+        {
+          "Path": "Kotowari/OptionalParser.cs",
+          "SHA256": "86C64691CFC1C90CEA5873846AB6447170401A8C55E621EA9453422CE77976C5"
+        },
+        {
+          "Path": "Kotowari/Parser.cs",
+          "SHA256": "1EEB0D5433CD937E1409F91B9924328ADFF7C022D8DE23D05F78F88040E56981"
+        },
+        {
+          "Path": "Kotowari/ParserConverter.cs",
+          "SHA256": "D80129274CB6E99EC7F0F8C40B7B0AC904D21756E7436371D3BF5C884E4728A2"
+        },
+        {
+          "Path": "Kotowari/ParseResult.cs",
+          "SHA256": "1EFEF464DE0C2D27DECCC42A5DE9AE1A500018307B5EFC0905ED52B26F28E9A1"
+        },
+        {
+          "Path": "Kotowari/ParserOfT.cs",
+          "SHA256": "A469C70DB68B9BEDF66932635BE6191634292A716399C81BB1FCF9A4326BCBBC"
+        },
+        {
+          "Path": "Kotowari/SequenceParser.cs",
+          "SHA256": "28A31454785C0032533DC76C23996E535ECF8C34A488388C4B81C3163FA43C1C"
+        },
+        {
+          "Path": "Kotowari/WithWhiteSpaceParser.cs",
+          "SHA256": "C5A7CAE81934FCD8965545542CDC2285A529E2DA5D3D893F874E3947C2D1215A"
+        }
+      ]
+    },
+    "CandidatePatchDiff": "diff --git a/artifacts/string-reapplication-four-2026-10-18/02-pooled-repetition/baseline/source/Kotowari/Core/ZeroOrMoreParser.cs b/artifacts/string-reapplication-four-2026-10-18/02-pooled-repetition/candidate/source/Kotowari/Core/ZeroOrMoreParser.cs\nindex 2211cb3..a3ab629 100644\n--- a/artifacts/string-reapplication-four-2026-10-18/02-pooled-repetition/baseline/source/Kotowari/Core/ZeroOrMoreParser.cs\n+++ b/artifacts/string-reapplication-four-2026-10-18/02-pooled-repetition/candidate/source/Kotowari/Core/ZeroOrMoreParser.cs\n@@ -15,18 +15,27 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>\n \n     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)\n     {\n-        var parseds = new List<T> { };\n-        var current = cursol;\n-        while (true)\n+        var scratch = new ParsedValueScratchBuffer<T>();\n+        var parseds = new ParsedValueBuffer<T>(scratch);\n+        try\n         {\n-            var result = Parser.ParseCore(current);\n-            if (!result.IsSuccess)\n+            var current = cursol;\n+            while (true)\n             {\n-                return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);\n-            }\n+                var result = Parser.ParseCore(current);\n+                if (!result.IsSuccess)\n+                {\n+                    return ParseResult<IEnumerable<T>>.Success(\n+                        result.Cursol, parseds.ToArray());\n+                }\n \n-            current = result.Cursol;\n-            parseds.Add(result.Parsed);\n+                current = result.Cursol;\n+                parseds.Add(result.Parsed);\n+            }\n+        }\n+        finally\n+        {\n+            parseds.Dispose();\n         }\n     }\n }",
+    "CandidateSourceFilesExactBytes": [
+      {
+        "Path": "Kotowari/Core/ZeroOrMoreParser.cs",
+        "SHA256": "D1AC42519F89E519BCF50FA8C3EBDE6A5613F6B15B191B4C5B5F16B0A8D3727C",
+        "Bytes": 1102,
+        "ContentBase64": "77u/dXNpbmcgU3lzdGVtOw0KdXNpbmcgU3lzdGVtLkNvbGxlY3Rpb25zLkdlbmVyaWM7DQp1c2luZyBTeXN0ZW0uVGV4dDsNCnVzaW5nIFN5c3RlbS5UaHJlYWRpbmcuVGFza3M7DQoNCm5hbWVzcGFjZSBNYXJpbW8uS290b3dhcmkuQ29yZTsNCg0KcHVibGljIGNsYXNzIFplcm9Pck1vcmVQYXJzZXI8VD4gOiBQYXJzZXI8SUVudW1lcmFibGU8VD4+DQogICAgd2hlcmUgVCA6IG5vdG51bGwNCnsNCiAgICBQYXJzZXI8VD4gUGFyc2VyIHsgZ2V0OyB9DQoNCiAgICBwdWJsaWMgWmVyb09yTW9yZVBhcnNlcihQYXJzZXI8VD4gcGFyc2VyKQ0KICAgICAgICA9PiBQYXJzZXIgPSBwYXJzZXI7DQoNCiAgICBwcm90ZWN0ZWQgaW50ZXJuYWwgb3ZlcnJpZGUgUGFyc2VSZXN1bHQ8SUVudW1lcmFibGU8VD4+IFBhcnNlQ29yZShDdXJzb2wgY3Vyc29sKQ0KICAgIHsNCiAgICAgICAgdmFyIHNjcmF0Y2ggPSBuZXcgUGFyc2VkVmFsdWVTY3JhdGNoQnVmZmVyPFQ+KCk7DQogICAgICAgIHZhciBwYXJzZWRzID0gbmV3IFBhcnNlZFZhbHVlQnVmZmVyPFQ+KHNjcmF0Y2gpOw0KICAgICAgICB0cnkNCiAgICAgICAgew0KICAgICAgICAgICAgdmFyIGN1cnJlbnQgPSBjdXJzb2w7DQogICAgICAgICAgICB3aGlsZSAodHJ1ZSkNCiAgICAgICAgICAgIHsNCiAgICAgICAgICAgICAgICB2YXIgcmVzdWx0ID0gUGFyc2VyLlBhcnNlQ29yZShjdXJyZW50KTsNCiAgICAgICAgICAgICAgICBpZiAoIXJlc3VsdC5Jc1N1Y2Nlc3MpDQogICAgICAgICAgICAgICAgew0KICAgICAgICAgICAgICAgICAgICByZXR1cm4gUGFyc2VSZXN1bHQ8SUVudW1lcmFibGU8VD4+LlN1Y2Nlc3MoDQogICAgICAgICAgICAgICAgICAgICAgICByZXN1bHQuQ3Vyc29sLCBwYXJzZWRzLlRvQXJyYXkoKSk7DQogICAgICAgICAgICAgICAgfQ0KDQogICAgICAgICAgICAgICAgY3VycmVudCA9IHJlc3VsdC5DdXJzb2w7DQogICAgICAgICAgICAgICAgcGFyc2Vkcy5BZGQocmVzdWx0LlBhcnNlZCk7DQogICAgICAgICAgICB9DQogICAgICAgIH0NCiAgICAgICAgZmluYWxseQ0KICAgICAgICB7DQogICAgICAgICAgICBwYXJzZWRzLkRpc3Bvc2UoKTsNCiAgICAgICAgfQ0KICAgIH0NCn0NCg=="
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueBuffer.cs",
+        "SHA256": "D9F4E9C3D5869F9038C82F36C5D7644C366872C6F03295D18703547BC2E860ED",
+        "Bytes": 1928,
+        "ContentBase64": "77u/dXNpbmcgU3lzdGVtOw0KdXNpbmcgU3lzdGVtLkJ1ZmZlcnM7DQp1c2luZyBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzOw0KDQpuYW1lc3BhY2UgTWFyaW1vLktvdG93YXJpLkNvcmU7DQoNCi8vLyA8c3VtbWFyeT7lj43lvqnop6PmnpDjga7kuIDmmYLlgKTjgpLpm4bjgoHjgIHlgJ/nlKjpoJjln5/jgajni6znq4vjgZfjgZ/ntZDmnpzphY3liJfjgpLkvZzjgovjgII8L3N1bW1hcnk+DQovLy8gPHJlbWFya3M+DQovLy8g5ZG844Gz5Ye644GX5YG044Gu5bCP44GV44Gq6aCY5Z+f44GL44KJ5aeL44KB44CB5LiN6Laz44GX44Gf5aC05ZCI44Gg44GR6YWN5YiX44KS5YCf44KK44Gm5ouh5by144GZ44KL44CCDQovLy8gVG9BcnJheeOBr+eiuuWumuOBl+OBn+WApOOCkuaJgOacieOBmeOCi+aWsOOBl+OBhOmFjeWIl+OCkui/lOOBl+OAgeWAn+eUqOOBl+OBn+mFjeWIl+OCkuWklumDqOOBuOa4oeOBleOBquOBhOOAgg0KLy8vIOWtkOODkeODvOOCteODvOOChOe1kOaenOmFjeWIl+OBrueUn+aIkOOBp+S+i+WkluOBjOWHuuOCi+WgtOWQiOOCguOAgeWRvOOBs+WHuuOBl+WBtOOBrmZpbmFsbHnjgadEaXNwb3Nl44GZ44KL44CCDQovLy8g5Y+C54Wn44KS5ZCr44KA6YWN5YiX44Gv6L+U5Y205pmC44Gr44Kv44Oq44Ki44GX44CB6Kej5p6Q57WQ5p6c44KScG9vbOOBq+S/neaMgeOBleOBm+OBquOBhOOAgg0KLy8vIDwvcmVtYXJrcz4NCnJlZiBzdHJ1Y3QgUGFyc2VkVmFsdWVCdWZmZXI8VD4NCnsNCiAgICBTcGFuPFQ+IGJ1ZmZlcjsNCiAgICBUW10/IHJlbnRlZDsNCiAgICBpbnQgY291bnQ7DQoNCiAgICBpbnRlcm5hbCBQYXJzZWRWYWx1ZUJ1ZmZlcihTcGFuPFQ+IGluaXRpYWxCdWZmZXIpDQogICAgICAgID0+IGJ1ZmZlciA9IGluaXRpYWxCdWZmZXI7DQoNCiAgICBpbnRlcm5hbCB2b2lkIEFkZChUIHZhbHVlKQ0KICAgIHsNCiAgICAgICAgaWYgKGNvdW50ID09IGJ1ZmZlci5MZW5ndGgpDQogICAgICAgIHsNCiAgICAgICAgICAgIEdyb3coKTsNCiAgICAgICAgfQ0KDQogICAgICAgIGJ1ZmZlcltjb3VudCsrXSA9IHZhbHVlOw0KICAgIH0NCg0KICAgIGludGVybmFsIHJlYWRvbmx5IFRbXSBUb0FycmF5KCkNCiAgICAgICAgPT4gWy4uIGJ1ZmZlclsuLmNvdW50XV07DQoNCiAgICBpbnRlcm5hbCB2b2lkIERpc3Bvc2UoKQ0KICAgIHsNCiAgICAgICAgaWYgKHJlbnRlZCBpcyBub3QgbnVsbCkNCiAgICAgICAgew0KICAgICAgICAgICAgQXJyYXlQb29sPFQ+LlNoYXJlZC5SZXR1cm4ocmVudGVkLCBSdW50aW1lSGVscGVycy5Jc1JlZmVyZW5jZU9yQ29udGFpbnNSZWZlcmVuY2VzPFQ+KCkpOw0KICAgICAgICB9DQoNCiAgICAgICAgcmVudGVkID0gbnVsbDsNCiAgICAgICAgYnVmZmVyID0gZGVmYXVsdDsNCiAgICAgICAgY291bnQgPSAwOw0KICAgIH0NCg0KICAgIHZvaWQgR3JvdygpDQogICAgew0KICAgICAgICB2YXIgY2FwYWNpdHkgPSAoaW50KU1hdGguTWluKE1hdGguTWF4KDE2TCwgYnVmZmVyLkxlbmd0aCAqIDJMKSwgQXJyYXkuTWF4TGVuZ3RoKTsNCiAgICAgICAgaWYgKGNhcGFjaXR5IDw9IGNvdW50KQ0KICAgICAgICB7DQogICAgICAgICAgICB0aHJvdyBuZXcgT3V0T2ZNZW1vcnlFeGNlcHRpb24oKTsNCiAgICAgICAgfQ0KDQogICAgICAgIHZhciBuZXh0ID0gQXJyYXlQb29sPFQ+LlNoYXJlZC5SZW50KGNhcGFjaXR5KTsNCiAgICAgICAgYnVmZmVyLkNvcHlUbyhuZXh0KTsNCiAgICAgICAgaWYgKHJlbnRlZCBpcyBub3QgbnVsbCkNCiAgICAgICAgew0KICAgICAgICAgICAgQXJyYXlQb29sPFQ+LlNoYXJlZC5SZXR1cm4ocmVudGVkLCBSdW50aW1lSGVscGVycy5Jc1JlZmVyZW5jZU9yQ29udGFpbnNSZWZlcmVuY2VzPFQ+KCkpOw0KICAgICAgICB9DQoNCiAgICAgICAgcmVudGVkID0gbmV4dDsNCiAgICAgICAgYnVmZmVyID0gbmV4dDsNCiAgICB9DQp9DQo="
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueScratchBuffer.cs",
+        "SHA256": "B3F1674B57EE29A88DB260DDC626C75ADF332A19C3451087F16AAE0C6ABFE5AE",
+        "Bytes": 266,
+        "ContentBase64": "77u/dXNpbmcgU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlczsNCg0KbmFtZXNwYWNlIE1hcmltby5Lb3Rvd2FyaS5Db3JlOw0KDQovLyDlhaXlipvplbfjgavmr5TkvovjgZnjgotzdGFja2FsbG9j44Gv6KGM44KP44Ga44CB5aSn44GN44Gq5YCk5Z6L44Gr44KC5L2/44GG44Gf44KBOOimgee0oOOBq+WItumZkOOBmeOCi+OAgg0KW0lubGluZUFycmF5KDgpXQ0Kc3RydWN0IFBhcnNlZFZhbHVlU2NyYXRjaEJ1ZmZlcjxUPg0Kew0KICAgIFQgZmlyc3Q7DQp9DQo="
+      }
+    ],
+    "AddedSourceFiles": [
+      {
+        "Path": "Kotowari/Core/ParsedValueBuffer.cs",
+        "SHA256": "D9F4E9C3D5869F9038C82F36C5D7644C366872C6F03295D18703547BC2E860ED",
+        "Bytes": 1928,
+        "ContentBase64": "77u/dXNpbmcgU3lzdGVtOw0KdXNpbmcgU3lzdGVtLkJ1ZmZlcnM7DQp1c2luZyBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2VzOw0KDQpuYW1lc3BhY2UgTWFyaW1vLktvdG93YXJpLkNvcmU7DQoNCi8vLyA8c3VtbWFyeT7lj43lvqnop6PmnpDjga7kuIDmmYLlgKTjgpLpm4bjgoHjgIHlgJ/nlKjpoJjln5/jgajni6znq4vjgZfjgZ/ntZDmnpzphY3liJfjgpLkvZzjgovjgII8L3N1bW1hcnk+DQovLy8gPHJlbWFya3M+DQovLy8g5ZG844Gz5Ye644GX5YG044Gu5bCP44GV44Gq6aCY5Z+f44GL44KJ5aeL44KB44CB5LiN6Laz44GX44Gf5aC05ZCI44Gg44GR6YWN5YiX44KS5YCf44KK44Gm5ouh5by144GZ44KL44CCDQovLy8gVG9BcnJheeOBr+eiuuWumuOBl+OBn+WApOOCkuaJgOacieOBmeOCi+aWsOOBl+OBhOmFjeWIl+OCkui/lOOBl+OAgeWAn+eUqOOBl+OBn+mFjeWIl+OCkuWklumDqOOBuOa4oeOBleOBquOBhOOAgg0KLy8vIOWtkOODkeODvOOCteODvOOChOe1kOaenOmFjeWIl+OBrueUn+aIkOOBp+S+i+WkluOBjOWHuuOCi+WgtOWQiOOCguOAgeWRvOOBs+WHuuOBl+WBtOOBrmZpbmFsbHnjgadEaXNwb3Nl44GZ44KL44CCDQovLy8g5Y+C54Wn44KS5ZCr44KA6YWN5YiX44Gv6L+U5Y205pmC44Gr44Kv44Oq44Ki44GX44CB6Kej5p6Q57WQ5p6c44KScG9vbOOBq+S/neaMgeOBleOBm+OBquOBhOOAgg0KLy8vIDwvcmVtYXJrcz4NCnJlZiBzdHJ1Y3QgUGFyc2VkVmFsdWVCdWZmZXI8VD4NCnsNCiAgICBTcGFuPFQ+IGJ1ZmZlcjsNCiAgICBUW10/IHJlbnRlZDsNCiAgICBpbnQgY291bnQ7DQoNCiAgICBpbnRlcm5hbCBQYXJzZWRWYWx1ZUJ1ZmZlcihTcGFuPFQ+IGluaXRpYWxCdWZmZXIpDQogICAgICAgID0+IGJ1ZmZlciA9IGluaXRpYWxCdWZmZXI7DQoNCiAgICBpbnRlcm5hbCB2b2lkIEFkZChUIHZhbHVlKQ0KICAgIHsNCiAgICAgICAgaWYgKGNvdW50ID09IGJ1ZmZlci5MZW5ndGgpDQogICAgICAgIHsNCiAgICAgICAgICAgIEdyb3coKTsNCiAgICAgICAgfQ0KDQogICAgICAgIGJ1ZmZlcltjb3VudCsrXSA9IHZhbHVlOw0KICAgIH0NCg0KICAgIGludGVybmFsIHJlYWRvbmx5IFRbXSBUb0FycmF5KCkNCiAgICAgICAgPT4gWy4uIGJ1ZmZlclsuLmNvdW50XV07DQoNCiAgICBpbnRlcm5hbCB2b2lkIERpc3Bvc2UoKQ0KICAgIHsNCiAgICAgICAgaWYgKHJlbnRlZCBpcyBub3QgbnVsbCkNCiAgICAgICAgew0KICAgICAgICAgICAgQXJyYXlQb29sPFQ+LlNoYXJlZC5SZXR1cm4ocmVudGVkLCBSdW50aW1lSGVscGVycy5Jc1JlZmVyZW5jZU9yQ29udGFpbnNSZWZlcmVuY2VzPFQ+KCkpOw0KICAgICAgICB9DQoNCiAgICAgICAgcmVudGVkID0gbnVsbDsNCiAgICAgICAgYnVmZmVyID0gZGVmYXVsdDsNCiAgICAgICAgY291bnQgPSAwOw0KICAgIH0NCg0KICAgIHZvaWQgR3JvdygpDQogICAgew0KICAgICAgICB2YXIgY2FwYWNpdHkgPSAoaW50KU1hdGguTWluKE1hdGguTWF4KDE2TCwgYnVmZmVyLkxlbmd0aCAqIDJMKSwgQXJyYXkuTWF4TGVuZ3RoKTsNCiAgICAgICAgaWYgKGNhcGFjaXR5IDw9IGNvdW50KQ0KICAgICAgICB7DQogICAgICAgICAgICB0aHJvdyBuZXcgT3V0T2ZNZW1vcnlFeGNlcHRpb24oKTsNCiAgICAgICAgfQ0KDQogICAgICAgIHZhciBuZXh0ID0gQXJyYXlQb29sPFQ+LlNoYXJlZC5SZW50KGNhcGFjaXR5KTsNCiAgICAgICAgYnVmZmVyLkNvcHlUbyhuZXh0KTsNCiAgICAgICAgaWYgKHJlbnRlZCBpcyBub3QgbnVsbCkNCiAgICAgICAgew0KICAgICAgICAgICAgQXJyYXlQb29sPFQ+LlNoYXJlZC5SZXR1cm4ocmVudGVkLCBSdW50aW1lSGVscGVycy5Jc1JlZmVyZW5jZU9yQ29udGFpbnNSZWZlcmVuY2VzPFQ+KCkpOw0KICAgICAgICB9DQoNCiAgICAgICAgcmVudGVkID0gbmV4dDsNCiAgICAgICAgYnVmZmVyID0gbmV4dDsNCiAgICB9DQp9DQo="
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueScratchBuffer.cs",
+        "SHA256": "B3F1674B57EE29A88DB260DDC626C75ADF332A19C3451087F16AAE0C6ABFE5AE",
+        "Bytes": 266,
+        "ContentBase64": "77u/dXNpbmcgU3lzdGVtLlJ1bnRpbWUuQ29tcGlsZXJTZXJ2aWNlczsNCg0KbmFtZXNwYWNlIE1hcmltby5Lb3Rvd2FyaS5Db3JlOw0KDQovLyDlhaXlipvplbfjgavmr5TkvovjgZnjgotzdGFja2FsbG9j44Gv6KGM44KP44Ga44CB5aSn44GN44Gq5YCk5Z6L44Gr44KC5L2/44GG44Gf44KBOOimgee0oOOBq+WItumZkOOBmeOCi+OAgg0KW0lubGluZUFycmF5KDgpXQ0Kc3RydWN0IFBhcnNlZFZhbHVlU2NyYXRjaEJ1ZmZlcjxUPg0Kew0KICAgIFQgZmlyc3Q7DQp9DQo="
+      }
+    ],
+    "EnvironmentSummary": [
+      {
+        "Stage": "before",
+        "TimestampUTC": "2026-10-18T11:48:14.8483346Z",
+        "ACLineStatus": 1,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "ActiveDotnetProcesses": 0,
+        "ActiveCimProcesses": 35,
+        "CimSamplingError": null
+      },
+      {
+        "Stage": "before",
+        "TimestampUTC": "2026-10-18T11:55:11.6317305Z",
+        "ACLineStatus": 1,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "ActiveDotnetProcesses": 0,
+        "ActiveCimProcesses": 31,
+        "CimSamplingError": null
+      },
+      {
+        "Stage": "after",
+        "TimestampUTC": "2026-10-18T12:01:35.5883399Z",
+        "ACLineStatus": 1,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "ActiveDotnetProcesses": 0,
+        "ActiveCimProcesses": 49,
+        "CimSamplingError": null
+      }
+    ],
+    "Versions": {
+      "SDKSelected": "10.0.401",
+      "GlobalJsonRequested": "10.0.302",
+      "RollForward": "latestFeature",
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8"
+    },
+    "Exploration": {
+      "Experiment": "string-reapplication-four-02-pooled-repetition-2026-10-18",
+      "PairCount": 8,
+      "DegreesOfFreedom": 7,
+      "PairedLogRatioMean": -0.06648914611396402,
+      "PairedLogRatioSampleStandardDeviation": 0.028654800346636727,
+      "PairedLogRatioStandardError": 0.01013100181932673,
+      "PairedGeometricMeanRatio": 0.9356730714901015,
+      "Confidence95": {
+        "Lower": 0.9135244313920129,
+        "Upper": 0.9583587111925107
+      },
+      "BaselineMeanMs": 167.47401171875,
+      "CandidateMeanMs": 156.682737109375,
+      "Pairs": [
+        {
+          "Block": 1,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 171656946.875,
+          "CandidateMeanNs": 154524071.875,
+          "CandidateOverBaseline": 0.9001911934710333,
+          "LogCandidateOverBaseline": -0.10514810102937397,
+          "BaselineAllocatedBytesPerOperation": 64503852,
+          "CandidateAllocatedBytesPerOperation": 55344092
+        },
+        {
+          "Block": 2,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 160486634.375,
+          "CandidateMeanNs": 151581834.375,
+          "CandidateOverBaseline": 0.9445137594499449,
+          "LogCandidateOverBaseline": -0.05708502417427085,
+          "BaselineAllocatedBytesPerOperation": 64504148,
+          "CandidateAllocatedBytesPerOperation": 55343516
+        },
+        {
+          "Block": 3,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 175343350,
+          "CandidateMeanNs": 159949487.5,
+          "CandidateOverBaseline": 0.9122073206654259,
+          "LogCandidateOverBaseline": -0.09188798945124735,
+          "BaselineAllocatedBytesPerOperation": 64503770,
+          "CandidateAllocatedBytesPerOperation": 55345306
+        },
+        {
+          "Block": 4,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 166572212.5,
+          "CandidateMeanNs": 155769084.375,
+          "CandidateOverBaseline": 0.9351444760031629,
+          "LogCandidateOverBaseline": -0.06705424184092408,
+          "BaselineAllocatedBytesPerOperation": 64503814,
+          "CandidateAllocatedBytesPerOperation": 55346472
+        },
+        {
+          "Block": 5,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 166720975,
+          "CandidateMeanNs": 154977787.5,
+          "CandidateOverBaseline": 0.9295638266270936,
+          "LogCandidateOverBaseline": -0.07303980647821763,
+          "BaselineAllocatedBytesPerOperation": 64503476,
+          "CandidateAllocatedBytesPerOperation": 55344544
+        },
+        {
+          "Block": 6,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 167948915.625,
+          "CandidateMeanNs": 165300484.375,
+          "CandidateOverBaseline": 0.9842307332551437,
+          "LogCandidateOverBaseline": -0.015894924401808133,
+          "BaselineAllocatedBytesPerOperation": 64502972,
+          "CandidateAllocatedBytesPerOperation": 55344876
+        },
+        {
+          "Block": 7,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 170927465.625,
+          "CandidateMeanNs": 157538768.75,
+          "CandidateOverBaseline": 0.921670301340724,
+          "LogCandidateOverBaseline": -0.08156771011309849,
+          "BaselineAllocatedBytesPerOperation": 64504414,
+          "CandidateAllocatedBytesPerOperation": 55343950
+        },
+        {
+          "Block": 8,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 160135593.75,
+          "CandidateMeanNs": 153820378.125,
+          "CandidateOverBaseline": 0.9605633233866846,
+          "LogCandidateOverBaseline": -0.040235371422771636,
+          "BaselineAllocatedBytesPerOperation": 64503166,
+          "CandidateAllocatedBytesPerOperation": 55343142
+        }
+      ]
+    },
+    "IndependentConfirmation": {
+      "Experiment": "string-reapplication-four-02-pooled-repetition-2026-10-18",
+      "PairCount": 8,
+      "DegreesOfFreedom": 7,
+      "PairedLogRatioMean": -0.03158876703752012,
+      "PairedLogRatioSampleStandardDeviation": 0.020165821116251148,
+      "PairedLogRatioStandardError": 0.0071296944297480295,
+      "PairedGeometricMeanRatio": 0.9689049458146628,
+      "Confidence95": {
+        "Lower": 0.9527070546563257,
+        "Upper": 0.985378232937263
+      },
+      "BaselineMeanMs": 163.85191328125,
+      "CandidateMeanMs": 158.760385546875,
+      "Pairs": [
+        {
+          "Block": 1,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 170971428.125,
+          "CandidateMeanNs": 165027303.125,
+          "CandidateOverBaseline": 0.9652332260121607,
+          "LogCandidateOverBaseline": -0.03538552185756765,
+          "BaselineAllocatedBytesPerOperation": 64503626,
+          "CandidateAllocatedBytesPerOperation": 55343868
+        },
+        {
+          "Block": 2,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 165650837.5,
+          "CandidateMeanNs": 157834981.25,
+          "CandidateOverBaseline": 0.9528172850318369,
+          "LogCandidateOverBaseline": -0.04833211980434189,
+          "BaselineAllocatedBytesPerOperation": 64503112,
+          "CandidateAllocatedBytesPerOperation": 55343744
+        },
+        {
+          "Block": 3,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 160068453.125,
+          "CandidateMeanNs": 160315046.875,
+          "CandidateOverBaseline": 1.001540551840077,
+          "LogCandidateOverBaseline": 0.0015393664074152234,
+          "BaselineAllocatedBytesPerOperation": 64502202,
+          "CandidateAllocatedBytesPerOperation": 55345170
+        },
+        {
+          "Block": 4,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 163478634.375,
+          "CandidateMeanNs": 158575481.25,
+          "CandidateOverBaseline": 0.9700073765373354,
+          "LogCandidateOverBaseline": -0.030451602835958626,
+          "BaselineAllocatedBytesPerOperation": 64502360,
+          "CandidateAllocatedBytesPerOperation": 55343398
+        },
+        {
+          "Block": 5,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 162144312.5,
+          "CandidateMeanNs": 161367946.875,
+          "CandidateOverBaseline": 0.9952118849373763,
+          "LogCandidateOverBaseline": -0.00479961480830486,
+          "BaselineAllocatedBytesPerOperation": 64502360,
+          "CandidateAllocatedBytesPerOperation": 55344300
+        },
+        {
+          "Block": 6,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 160958390.625,
+          "CandidateMeanNs": 153954518.75,
+          "CandidateOverBaseline": 0.9564864444294949,
+          "LogCandidateOverBaseline": -0.04448866225714691,
+          "BaselineAllocatedBytesPerOperation": 64504592,
+          "CandidateAllocatedBytesPerOperation": 55343620
+        },
+        {
+          "Block": 7,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 163046071.875,
+          "CandidateMeanNs": 157326912.5,
+          "CandidateOverBaseline": 0.964923047153294,
+          "LogCandidateOverBaseline": -0.03570692470546044,
+          "BaselineAllocatedBytesPerOperation": 64503672,
+          "CandidateAllocatedBytesPerOperation": 55344732
+        },
+        {
+          "Block": 8,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 164497178.125,
+          "CandidateMeanNs": 155680893.75,
+          "CandidateOverBaseline": 0.9464046467210484,
+          "LogCandidateOverBaseline": -0.05508505643879583,
+          "BaselineAllocatedBytesPerOperation": 64503660,
+          "CandidateAllocatedBytesPerOperation": 55345632
+        }
+      ]
+    },
+    "MeanAllocatedBytesPerOperation": {
+      "Exploration": {
+        "Baseline": 64503701.5,
+        "Candidate": 55344487.25
+      },
+      "IndependentConfirmation": {
+        "Baseline": 64503198,
+        "Candidate": 55344308
+      }
+    },
+    "Launches": [
+      {
+        "Batch": "exploration",
+        "Run": "01-baseline",
+        "Variant": "baseline",
+        "MeanNs": 171656946.875,
+        "AllocatedBytesPerOperation": 64503852,
+        "ProcessId": 13152,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 667331100,
+            "Operations": 4,
+            "NsPerOperation": 166832775,
+            "DisplayNsPerOperation": 166832800
+          },
+          {
+            "BdnNanoseconds": 690502100,
+            "Operations": 4,
+            "NsPerOperation": 172625525,
+            "DisplayNsPerOperation": 172625500
+          },
+          {
+            "BdnNanoseconds": 618127100,
+            "Operations": 4,
+            "NsPerOperation": 154531775,
+            "DisplayNsPerOperation": 154531800
+          },
+          {
+            "BdnNanoseconds": 711260000,
+            "Operations": 4,
+            "NsPerOperation": 177815000,
+            "DisplayNsPerOperation": 177815000
+          },
+          {
+            "BdnNanoseconds": 679844100,
+            "Operations": 4,
+            "NsPerOperation": 169961025,
+            "DisplayNsPerOperation": 169961000
+          },
+          {
+            "BdnNanoseconds": 843219100,
+            "Operations": 4,
+            "NsPerOperation": 210804775,
+            "DisplayNsPerOperation": 210804800
+          },
+          {
+            "BdnNanoseconds": 603362700,
+            "Operations": 4,
+            "NsPerOperation": 150840675,
+            "DisplayNsPerOperation": 150840700
+          },
+          {
+            "BdnNanoseconds": 679377700,
+            "Operations": 4,
+            "NsPerOperation": 169844425,
+            "DisplayNsPerOperation": 169844400
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 667330900,
+            "Operations": 4,
+            "NsPerOperation": 166832725,
+            "DisplayNsPerOperation": 166832700
+          },
+          {
+            "BdnNanoseconds": 690501900,
+            "Operations": 4,
+            "NsPerOperation": 172625475,
+            "DisplayNsPerOperation": 172625500
+          },
+          {
+            "BdnNanoseconds": 618126900,
+            "Operations": 4,
+            "NsPerOperation": 154531725,
+            "DisplayNsPerOperation": 154531700
+          },
+          {
+            "BdnNanoseconds": 711259800,
+            "Operations": 4,
+            "NsPerOperation": 177814950,
+            "DisplayNsPerOperation": 177815000
+          },
+          {
+            "BdnNanoseconds": 679843900,
+            "Operations": 4,
+            "NsPerOperation": 169960975,
+            "DisplayNsPerOperation": 169961000
+          },
+          {
+            "BdnNanoseconds": 843218900,
+            "Operations": 4,
+            "NsPerOperation": 210804725,
+            "DisplayNsPerOperation": 210804700
+          },
+          {
+            "BdnNanoseconds": 603362500,
+            "Operations": 4,
+            "NsPerOperation": 150840625,
+            "DisplayNsPerOperation": 150840600
+          },
+          {
+            "BdnNanoseconds": 679377500,
+            "Operations": 4,
+            "NsPerOperation": 169844375,
+            "DisplayNsPerOperation": 169844400
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "01-candidate",
+        "Variant": "candidate",
+        "MeanNs": 154524071.875,
+        "AllocatedBytesPerOperation": 55344092,
+        "ProcessId": 32272,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 616231100,
+            "Operations": 4,
+            "NsPerOperation": 154057775,
+            "DisplayNsPerOperation": 154057800
+          },
+          {
+            "BdnNanoseconds": 617744400,
+            "Operations": 4,
+            "NsPerOperation": 154436100,
+            "DisplayNsPerOperation": 154436100
+          },
+          {
+            "BdnNanoseconds": 642898000,
+            "Operations": 4,
+            "NsPerOperation": 160724500,
+            "DisplayNsPerOperation": 160724500
+          },
+          {
+            "BdnNanoseconds": 605698500,
+            "Operations": 4,
+            "NsPerOperation": 151424625,
+            "DisplayNsPerOperation": 151424600
+          },
+          {
+            "BdnNanoseconds": 618372700,
+            "Operations": 4,
+            "NsPerOperation": 154593175,
+            "DisplayNsPerOperation": 154593200
+          },
+          {
+            "BdnNanoseconds": 615085300,
+            "Operations": 4,
+            "NsPerOperation": 153771325,
+            "DisplayNsPerOperation": 153771300
+          },
+          {
+            "BdnNanoseconds": 614207700,
+            "Operations": 4,
+            "NsPerOperation": 153551925,
+            "DisplayNsPerOperation": 153551900
+          },
+          {
+            "BdnNanoseconds": 614534200,
+            "Operations": 4,
+            "NsPerOperation": 153633550,
+            "DisplayNsPerOperation": 153633600
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 616230900,
+            "Operations": 4,
+            "NsPerOperation": 154057725,
+            "DisplayNsPerOperation": 154057700
+          },
+          {
+            "BdnNanoseconds": 617744200,
+            "Operations": 4,
+            "NsPerOperation": 154436050,
+            "DisplayNsPerOperation": 154436100
+          },
+          {
+            "BdnNanoseconds": 642897800,
+            "Operations": 4,
+            "NsPerOperation": 160724450,
+            "DisplayNsPerOperation": 160724500
+          },
+          {
+            "BdnNanoseconds": 605698300,
+            "Operations": 4,
+            "NsPerOperation": 151424575,
+            "DisplayNsPerOperation": 151424600
+          },
+          {
+            "BdnNanoseconds": 618372500,
+            "Operations": 4,
+            "NsPerOperation": 154593125,
+            "DisplayNsPerOperation": 154593100
+          },
+          {
+            "BdnNanoseconds": 615085100,
+            "Operations": 4,
+            "NsPerOperation": 153771275,
+            "DisplayNsPerOperation": 153771300
+          },
+          {
+            "BdnNanoseconds": 614207500,
+            "Operations": 4,
+            "NsPerOperation": 153551875,
+            "DisplayNsPerOperation": 153551900
+          },
+          {
+            "BdnNanoseconds": 614534000,
+            "Operations": 4,
+            "NsPerOperation": 153633500,
+            "DisplayNsPerOperation": 153633500
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "02-baseline",
+        "Variant": "baseline",
+        "MeanNs": 160486634.375,
+        "AllocatedBytesPerOperation": 64504148,
+        "ProcessId": 26260,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 648366200,
+            "Operations": 4,
+            "NsPerOperation": 162091550,
+            "DisplayNsPerOperation": 162091600
+          },
+          {
+            "BdnNanoseconds": 650419900,
+            "Operations": 4,
+            "NsPerOperation": 162604975,
+            "DisplayNsPerOperation": 162605000
+          },
+          {
+            "BdnNanoseconds": 615765500,
+            "Operations": 4,
+            "NsPerOperation": 153941375,
+            "DisplayNsPerOperation": 153941400
+          },
+          {
+            "BdnNanoseconds": 663256500,
+            "Operations": 4,
+            "NsPerOperation": 165814125,
+            "DisplayNsPerOperation": 165814100
+          },
+          {
+            "BdnNanoseconds": 633109400,
+            "Operations": 4,
+            "NsPerOperation": 158277350,
+            "DisplayNsPerOperation": 158277400
+          },
+          {
+            "BdnNanoseconds": 631001400,
+            "Operations": 4,
+            "NsPerOperation": 157750350,
+            "DisplayNsPerOperation": 157750400
+          },
+          {
+            "BdnNanoseconds": 644215700,
+            "Operations": 4,
+            "NsPerOperation": 161053925,
+            "DisplayNsPerOperation": 161053900
+          },
+          {
+            "BdnNanoseconds": 649439300,
+            "Operations": 4,
+            "NsPerOperation": 162359825,
+            "DisplayNsPerOperation": 162359800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 648366000,
+            "Operations": 4,
+            "NsPerOperation": 162091500,
+            "DisplayNsPerOperation": 162091500
+          },
+          {
+            "BdnNanoseconds": 650419700,
+            "Operations": 4,
+            "NsPerOperation": 162604925,
+            "DisplayNsPerOperation": 162604900
+          },
+          {
+            "BdnNanoseconds": 615765300,
+            "Operations": 4,
+            "NsPerOperation": 153941325,
+            "DisplayNsPerOperation": 153941300
+          },
+          {
+            "BdnNanoseconds": 663256300,
+            "Operations": 4,
+            "NsPerOperation": 165814075,
+            "DisplayNsPerOperation": 165814100
+          },
+          {
+            "BdnNanoseconds": 633109200,
+            "Operations": 4,
+            "NsPerOperation": 158277300,
+            "DisplayNsPerOperation": 158277300
+          },
+          {
+            "BdnNanoseconds": 631001200,
+            "Operations": 4,
+            "NsPerOperation": 157750300,
+            "DisplayNsPerOperation": 157750300
+          },
+          {
+            "BdnNanoseconds": 644215500,
+            "Operations": 4,
+            "NsPerOperation": 161053875,
+            "DisplayNsPerOperation": 161053900
+          },
+          {
+            "BdnNanoseconds": 649439100,
+            "Operations": 4,
+            "NsPerOperation": 162359775,
+            "DisplayNsPerOperation": 162359800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "02-candidate",
+        "Variant": "candidate",
+        "MeanNs": 151581834.375,
+        "AllocatedBytesPerOperation": 55343516,
+        "ProcessId": 30040,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 614643400,
+            "Operations": 4,
+            "NsPerOperation": 153660850,
+            "DisplayNsPerOperation": 153660900
+          },
+          {
+            "BdnNanoseconds": 617377000,
+            "Operations": 4,
+            "NsPerOperation": 154344250,
+            "DisplayNsPerOperation": 154344300
+          },
+          {
+            "BdnNanoseconds": 637908700,
+            "Operations": 4,
+            "NsPerOperation": 159477175,
+            "DisplayNsPerOperation": 159477200
+          },
+          {
+            "BdnNanoseconds": 538853100,
+            "Operations": 4,
+            "NsPerOperation": 134713275,
+            "DisplayNsPerOperation": 134713300
+          },
+          {
+            "BdnNanoseconds": 543437100,
+            "Operations": 4,
+            "NsPerOperation": 135859275,
+            "DisplayNsPerOperation": 135859300
+          },
+          {
+            "BdnNanoseconds": 546807200,
+            "Operations": 4,
+            "NsPerOperation": 136701800,
+            "DisplayNsPerOperation": 136701800
+          },
+          {
+            "BdnNanoseconds": 688998000,
+            "Operations": 4,
+            "NsPerOperation": 172249500,
+            "DisplayNsPerOperation": 172249500
+          },
+          {
+            "BdnNanoseconds": 662595800,
+            "Operations": 4,
+            "NsPerOperation": 165648950,
+            "DisplayNsPerOperation": 165649000
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 614643200,
+            "Operations": 4,
+            "NsPerOperation": 153660800,
+            "DisplayNsPerOperation": 153660800
+          },
+          {
+            "BdnNanoseconds": 617376800,
+            "Operations": 4,
+            "NsPerOperation": 154344200,
+            "DisplayNsPerOperation": 154344200
+          },
+          {
+            "BdnNanoseconds": 637908500,
+            "Operations": 4,
+            "NsPerOperation": 159477125,
+            "DisplayNsPerOperation": 159477100
+          },
+          {
+            "BdnNanoseconds": 538852900,
+            "Operations": 4,
+            "NsPerOperation": 134713225,
+            "DisplayNsPerOperation": 134713200
+          },
+          {
+            "BdnNanoseconds": 543436900,
+            "Operations": 4,
+            "NsPerOperation": 135859225,
+            "DisplayNsPerOperation": 135859200
+          },
+          {
+            "BdnNanoseconds": 546807000,
+            "Operations": 4,
+            "NsPerOperation": 136701750,
+            "DisplayNsPerOperation": 136701800
+          },
+          {
+            "BdnNanoseconds": 688997800,
+            "Operations": 4,
+            "NsPerOperation": 172249450,
+            "DisplayNsPerOperation": 172249500
+          },
+          {
+            "BdnNanoseconds": 662595600,
+            "Operations": 4,
+            "NsPerOperation": 165648900,
+            "DisplayNsPerOperation": 165648900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "03-baseline",
+        "Variant": "baseline",
+        "MeanNs": 175343350,
+        "AllocatedBytesPerOperation": 64503770,
+        "ProcessId": 27356,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 740664100,
+            "Operations": 4,
+            "NsPerOperation": 185166025,
+            "DisplayNsPerOperation": 185166000
+          },
+          {
+            "BdnNanoseconds": 738556500,
+            "Operations": 4,
+            "NsPerOperation": 184639125,
+            "DisplayNsPerOperation": 184639100
+          },
+          {
+            "BdnNanoseconds": 677313000,
+            "Operations": 4,
+            "NsPerOperation": 169328250,
+            "DisplayNsPerOperation": 169328300
+          },
+          {
+            "BdnNanoseconds": 657075500,
+            "Operations": 4,
+            "NsPerOperation": 164268875,
+            "DisplayNsPerOperation": 164268900
+          },
+          {
+            "BdnNanoseconds": 668595400,
+            "Operations": 4,
+            "NsPerOperation": 167148850,
+            "DisplayNsPerOperation": 167148900
+          },
+          {
+            "BdnNanoseconds": 756982900,
+            "Operations": 4,
+            "NsPerOperation": 189245725,
+            "DisplayNsPerOperation": 189245700
+          },
+          {
+            "BdnNanoseconds": 677047900,
+            "Operations": 4,
+            "NsPerOperation": 169261975,
+            "DisplayNsPerOperation": 169262000
+          },
+          {
+            "BdnNanoseconds": 694753500,
+            "Operations": 4,
+            "NsPerOperation": 173688375,
+            "DisplayNsPerOperation": 173688400
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 740663900,
+            "Operations": 4,
+            "NsPerOperation": 185165975,
+            "DisplayNsPerOperation": 185166000
+          },
+          {
+            "BdnNanoseconds": 738556300,
+            "Operations": 4,
+            "NsPerOperation": 184639075,
+            "DisplayNsPerOperation": 184639100
+          },
+          {
+            "BdnNanoseconds": 677312800,
+            "Operations": 4,
+            "NsPerOperation": 169328200,
+            "DisplayNsPerOperation": 169328200
+          },
+          {
+            "BdnNanoseconds": 657075300,
+            "Operations": 4,
+            "NsPerOperation": 164268825,
+            "DisplayNsPerOperation": 164268800
+          },
+          {
+            "BdnNanoseconds": 668595200,
+            "Operations": 4,
+            "NsPerOperation": 167148800,
+            "DisplayNsPerOperation": 167148800
+          },
+          {
+            "BdnNanoseconds": 756982700,
+            "Operations": 4,
+            "NsPerOperation": 189245675,
+            "DisplayNsPerOperation": 189245700
+          },
+          {
+            "BdnNanoseconds": 677047700,
+            "Operations": 4,
+            "NsPerOperation": 169261925,
+            "DisplayNsPerOperation": 169261900
+          },
+          {
+            "BdnNanoseconds": 694753300,
+            "Operations": 4,
+            "NsPerOperation": 173688325,
+            "DisplayNsPerOperation": 173688300
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "03-candidate",
+        "Variant": "candidate",
+        "MeanNs": 159949487.5,
+        "AllocatedBytesPerOperation": 55345306,
+        "ProcessId": 29572,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 614920600,
+            "Operations": 4,
+            "NsPerOperation": 153730150,
+            "DisplayNsPerOperation": 153730200
+          },
+          {
+            "BdnNanoseconds": 616383800,
+            "Operations": 4,
+            "NsPerOperation": 154095950,
+            "DisplayNsPerOperation": 154096000
+          },
+          {
+            "BdnNanoseconds": 675658300,
+            "Operations": 4,
+            "NsPerOperation": 168914575,
+            "DisplayNsPerOperation": 168914600
+          },
+          {
+            "BdnNanoseconds": 627970200,
+            "Operations": 4,
+            "NsPerOperation": 156992550,
+            "DisplayNsPerOperation": 156992600
+          },
+          {
+            "BdnNanoseconds": 613870000,
+            "Operations": 4,
+            "NsPerOperation": 153467500,
+            "DisplayNsPerOperation": 153467500
+          },
+          {
+            "BdnNanoseconds": 633335300,
+            "Operations": 4,
+            "NsPerOperation": 158333825,
+            "DisplayNsPerOperation": 158333800
+          },
+          {
+            "BdnNanoseconds": 720867700,
+            "Operations": 4,
+            "NsPerOperation": 180216925,
+            "DisplayNsPerOperation": 180216900
+          },
+          {
+            "BdnNanoseconds": 615379300,
+            "Operations": 4,
+            "NsPerOperation": 153844825,
+            "DisplayNsPerOperation": 153844800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 614920400,
+            "Operations": 4,
+            "NsPerOperation": 153730100,
+            "DisplayNsPerOperation": 153730100
+          },
+          {
+            "BdnNanoseconds": 616383600,
+            "Operations": 4,
+            "NsPerOperation": 154095900,
+            "DisplayNsPerOperation": 154095900
+          },
+          {
+            "BdnNanoseconds": 675658100,
+            "Operations": 4,
+            "NsPerOperation": 168914525,
+            "DisplayNsPerOperation": 168914500
+          },
+          {
+            "BdnNanoseconds": 627970000,
+            "Operations": 4,
+            "NsPerOperation": 156992500,
+            "DisplayNsPerOperation": 156992500
+          },
+          {
+            "BdnNanoseconds": 613869800,
+            "Operations": 4,
+            "NsPerOperation": 153467450,
+            "DisplayNsPerOperation": 153467500
+          },
+          {
+            "BdnNanoseconds": 633335100,
+            "Operations": 4,
+            "NsPerOperation": 158333775,
+            "DisplayNsPerOperation": 158333800
+          },
+          {
+            "BdnNanoseconds": 720867500,
+            "Operations": 4,
+            "NsPerOperation": 180216875,
+            "DisplayNsPerOperation": 180216900
+          },
+          {
+            "BdnNanoseconds": 615379100,
+            "Operations": 4,
+            "NsPerOperation": 153844775,
+            "DisplayNsPerOperation": 153844800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "04-baseline",
+        "Variant": "baseline",
+        "MeanNs": 166572212.5,
+        "AllocatedBytesPerOperation": 64503814,
+        "ProcessId": 9092,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 694914700,
+            "Operations": 4,
+            "NsPerOperation": 173728675,
+            "DisplayNsPerOperation": 173728700
+          },
+          {
+            "BdnNanoseconds": 647808000,
+            "Operations": 4,
+            "NsPerOperation": 161952000,
+            "DisplayNsPerOperation": 161952000
+          },
+          {
+            "BdnNanoseconds": 662288100,
+            "Operations": 4,
+            "NsPerOperation": 165572025,
+            "DisplayNsPerOperation": 165572000
+          },
+          {
+            "BdnNanoseconds": 663162100,
+            "Operations": 4,
+            "NsPerOperation": 165790525,
+            "DisplayNsPerOperation": 165790500
+          },
+          {
+            "BdnNanoseconds": 663095400,
+            "Operations": 4,
+            "NsPerOperation": 165773850,
+            "DisplayNsPerOperation": 165773900
+          },
+          {
+            "BdnNanoseconds": 680349000,
+            "Operations": 4,
+            "NsPerOperation": 170087250,
+            "DisplayNsPerOperation": 170087300
+          },
+          {
+            "BdnNanoseconds": 649607400,
+            "Operations": 4,
+            "NsPerOperation": 162401850,
+            "DisplayNsPerOperation": 162401900
+          },
+          {
+            "BdnNanoseconds": 669087700,
+            "Operations": 4,
+            "NsPerOperation": 167271925,
+            "DisplayNsPerOperation": 167271900
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 694914500,
+            "Operations": 4,
+            "NsPerOperation": 173728625,
+            "DisplayNsPerOperation": 173728600
+          },
+          {
+            "BdnNanoseconds": 647807800,
+            "Operations": 4,
+            "NsPerOperation": 161951950,
+            "DisplayNsPerOperation": 161952000
+          },
+          {
+            "BdnNanoseconds": 662287900,
+            "Operations": 4,
+            "NsPerOperation": 165571975,
+            "DisplayNsPerOperation": 165572000
+          },
+          {
+            "BdnNanoseconds": 663161900,
+            "Operations": 4,
+            "NsPerOperation": 165790475,
+            "DisplayNsPerOperation": 165790500
+          },
+          {
+            "BdnNanoseconds": 663095200,
+            "Operations": 4,
+            "NsPerOperation": 165773800,
+            "DisplayNsPerOperation": 165773800
+          },
+          {
+            "BdnNanoseconds": 680348800,
+            "Operations": 4,
+            "NsPerOperation": 170087200,
+            "DisplayNsPerOperation": 170087200
+          },
+          {
+            "BdnNanoseconds": 649607200,
+            "Operations": 4,
+            "NsPerOperation": 162401800,
+            "DisplayNsPerOperation": 162401800
+          },
+          {
+            "BdnNanoseconds": 669087500,
+            "Operations": 4,
+            "NsPerOperation": 167271875,
+            "DisplayNsPerOperation": 167271900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "04-candidate",
+        "Variant": "candidate",
+        "MeanNs": 155769084.375,
+        "AllocatedBytesPerOperation": 55346472,
+        "ProcessId": 7252,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 618632700,
+            "Operations": 4,
+            "NsPerOperation": 154658175,
+            "DisplayNsPerOperation": 154658200
+          },
+          {
+            "BdnNanoseconds": 631138900,
+            "Operations": 4,
+            "NsPerOperation": 157784725,
+            "DisplayNsPerOperation": 157784700
+          },
+          {
+            "BdnNanoseconds": 612260900,
+            "Operations": 4,
+            "NsPerOperation": 153065225,
+            "DisplayNsPerOperation": 153065200
+          },
+          {
+            "BdnNanoseconds": 638570800,
+            "Operations": 4,
+            "NsPerOperation": 159642700,
+            "DisplayNsPerOperation": 159642700
+          },
+          {
+            "BdnNanoseconds": 628335000,
+            "Operations": 4,
+            "NsPerOperation": 157083750,
+            "DisplayNsPerOperation": 157083800
+          },
+          {
+            "BdnNanoseconds": 631158800,
+            "Operations": 4,
+            "NsPerOperation": 157789700,
+            "DisplayNsPerOperation": 157789700
+          },
+          {
+            "BdnNanoseconds": 608650600,
+            "Operations": 4,
+            "NsPerOperation": 152162650,
+            "DisplayNsPerOperation": 152162700
+          },
+          {
+            "BdnNanoseconds": 615864600,
+            "Operations": 4,
+            "NsPerOperation": 153966150,
+            "DisplayNsPerOperation": 153966200
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 618632500,
+            "Operations": 4,
+            "NsPerOperation": 154658125,
+            "DisplayNsPerOperation": 154658100
+          },
+          {
+            "BdnNanoseconds": 631138700,
+            "Operations": 4,
+            "NsPerOperation": 157784675,
+            "DisplayNsPerOperation": 157784700
+          },
+          {
+            "BdnNanoseconds": 612260700,
+            "Operations": 4,
+            "NsPerOperation": 153065175,
+            "DisplayNsPerOperation": 153065200
+          },
+          {
+            "BdnNanoseconds": 638570600,
+            "Operations": 4,
+            "NsPerOperation": 159642650,
+            "DisplayNsPerOperation": 159642700
+          },
+          {
+            "BdnNanoseconds": 628334800,
+            "Operations": 4,
+            "NsPerOperation": 157083700,
+            "DisplayNsPerOperation": 157083700
+          },
+          {
+            "BdnNanoseconds": 631158600,
+            "Operations": 4,
+            "NsPerOperation": 157789650,
+            "DisplayNsPerOperation": 157789700
+          },
+          {
+            "BdnNanoseconds": 608650400,
+            "Operations": 4,
+            "NsPerOperation": 152162600,
+            "DisplayNsPerOperation": 152162600
+          },
+          {
+            "BdnNanoseconds": 615864400,
+            "Operations": 4,
+            "NsPerOperation": 153966100,
+            "DisplayNsPerOperation": 153966100
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "05-baseline",
+        "Variant": "baseline",
+        "MeanNs": 166720975,
+        "AllocatedBytesPerOperation": 64503476,
+        "ProcessId": 35676,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 664483100,
+            "Operations": 4,
+            "NsPerOperation": 166120775,
+            "DisplayNsPerOperation": 166120800
+          },
+          {
+            "BdnNanoseconds": 679085900,
+            "Operations": 4,
+            "NsPerOperation": 169771475,
+            "DisplayNsPerOperation": 169771500
+          },
+          {
+            "BdnNanoseconds": 648092300,
+            "Operations": 4,
+            "NsPerOperation": 162023075,
+            "DisplayNsPerOperation": 162023100
+          },
+          {
+            "BdnNanoseconds": 665918800,
+            "Operations": 4,
+            "NsPerOperation": 166479700,
+            "DisplayNsPerOperation": 166479700
+          },
+          {
+            "BdnNanoseconds": 664433900,
+            "Operations": 4,
+            "NsPerOperation": 166108475,
+            "DisplayNsPerOperation": 166108500
+          },
+          {
+            "BdnNanoseconds": 667269300,
+            "Operations": 4,
+            "NsPerOperation": 166817325,
+            "DisplayNsPerOperation": 166817300
+          },
+          {
+            "BdnNanoseconds": 669446100,
+            "Operations": 4,
+            "NsPerOperation": 167361525,
+            "DisplayNsPerOperation": 167361500
+          },
+          {
+            "BdnNanoseconds": 676343400,
+            "Operations": 4,
+            "NsPerOperation": 169085850,
+            "DisplayNsPerOperation": 169085900
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 664482900,
+            "Operations": 4,
+            "NsPerOperation": 166120725,
+            "DisplayNsPerOperation": 166120700
+          },
+          {
+            "BdnNanoseconds": 679085700,
+            "Operations": 4,
+            "NsPerOperation": 169771425,
+            "DisplayNsPerOperation": 169771400
+          },
+          {
+            "BdnNanoseconds": 648092100,
+            "Operations": 4,
+            "NsPerOperation": 162023025,
+            "DisplayNsPerOperation": 162023000
+          },
+          {
+            "BdnNanoseconds": 665918600,
+            "Operations": 4,
+            "NsPerOperation": 166479650,
+            "DisplayNsPerOperation": 166479700
+          },
+          {
+            "BdnNanoseconds": 664433700,
+            "Operations": 4,
+            "NsPerOperation": 166108425,
+            "DisplayNsPerOperation": 166108400
+          },
+          {
+            "BdnNanoseconds": 667269100,
+            "Operations": 4,
+            "NsPerOperation": 166817275,
+            "DisplayNsPerOperation": 166817300
+          },
+          {
+            "BdnNanoseconds": 669445900,
+            "Operations": 4,
+            "NsPerOperation": 167361475,
+            "DisplayNsPerOperation": 167361500
+          },
+          {
+            "BdnNanoseconds": 676343200,
+            "Operations": 4,
+            "NsPerOperation": 169085800,
+            "DisplayNsPerOperation": 169085800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "05-candidate",
+        "Variant": "candidate",
+        "MeanNs": 154977787.5,
+        "AllocatedBytesPerOperation": 55344544,
+        "ProcessId": 25292,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 614181400,
+            "Operations": 4,
+            "NsPerOperation": 153545350,
+            "DisplayNsPerOperation": 153545400
+          },
+          {
+            "BdnNanoseconds": 611730500,
+            "Operations": 4,
+            "NsPerOperation": 152932625,
+            "DisplayNsPerOperation": 152932600
+          },
+          {
+            "BdnNanoseconds": 672348100,
+            "Operations": 4,
+            "NsPerOperation": 168087025,
+            "DisplayNsPerOperation": 168087000
+          },
+          {
+            "BdnNanoseconds": 601911100,
+            "Operations": 4,
+            "NsPerOperation": 150477775,
+            "DisplayNsPerOperation": 150477800
+          },
+          {
+            "BdnNanoseconds": 602759800,
+            "Operations": 4,
+            "NsPerOperation": 150689950,
+            "DisplayNsPerOperation": 150690000
+          },
+          {
+            "BdnNanoseconds": 614559100,
+            "Operations": 4,
+            "NsPerOperation": 153639775,
+            "DisplayNsPerOperation": 153639800
+          },
+          {
+            "BdnNanoseconds": 626650300,
+            "Operations": 4,
+            "NsPerOperation": 156662575,
+            "DisplayNsPerOperation": 156662600
+          },
+          {
+            "BdnNanoseconds": 615150100,
+            "Operations": 4,
+            "NsPerOperation": 153787525,
+            "DisplayNsPerOperation": 153787500
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 614181250,
+            "Operations": 4,
+            "NsPerOperation": 153545312.5,
+            "DisplayNsPerOperation": 153545300
+          },
+          {
+            "BdnNanoseconds": 611730350,
+            "Operations": 4,
+            "NsPerOperation": 152932587.5,
+            "DisplayNsPerOperation": 152932600
+          },
+          {
+            "BdnNanoseconds": 672347950,
+            "Operations": 4,
+            "NsPerOperation": 168086987.5,
+            "DisplayNsPerOperation": 168087000
+          },
+          {
+            "BdnNanoseconds": 601910950,
+            "Operations": 4,
+            "NsPerOperation": 150477737.5,
+            "DisplayNsPerOperation": 150477700
+          },
+          {
+            "BdnNanoseconds": 602759650,
+            "Operations": 4,
+            "NsPerOperation": 150689912.5,
+            "DisplayNsPerOperation": 150689900
+          },
+          {
+            "BdnNanoseconds": 614558950,
+            "Operations": 4,
+            "NsPerOperation": 153639737.5,
+            "DisplayNsPerOperation": 153639700
+          },
+          {
+            "BdnNanoseconds": 626650150,
+            "Operations": 4,
+            "NsPerOperation": 156662537.5,
+            "DisplayNsPerOperation": 156662500
+          },
+          {
+            "BdnNanoseconds": 615149950,
+            "Operations": 4,
+            "NsPerOperation": 153787487.5,
+            "DisplayNsPerOperation": 153787500
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "06-baseline",
+        "Variant": "baseline",
+        "MeanNs": 167948915.625,
+        "AllocatedBytesPerOperation": 64502972,
+        "ProcessId": 19672,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 615023700,
+            "Operations": 4,
+            "NsPerOperation": 153755925,
+            "DisplayNsPerOperation": 153755900
+          },
+          {
+            "BdnNanoseconds": 631414000,
+            "Operations": 4,
+            "NsPerOperation": 157853500,
+            "DisplayNsPerOperation": 157853500
+          },
+          {
+            "BdnNanoseconds": 705020500,
+            "Operations": 4,
+            "NsPerOperation": 176255125,
+            "DisplayNsPerOperation": 176255100
+          },
+          {
+            "BdnNanoseconds": 664125600,
+            "Operations": 4,
+            "NsPerOperation": 166031400,
+            "DisplayNsPerOperation": 166031400
+          },
+          {
+            "BdnNanoseconds": 634484100,
+            "Operations": 4,
+            "NsPerOperation": 158621025,
+            "DisplayNsPerOperation": 158621000
+          },
+          {
+            "BdnNanoseconds": 648806700,
+            "Operations": 4,
+            "NsPerOperation": 162201675,
+            "DisplayNsPerOperation": 162201700
+          },
+          {
+            "BdnNanoseconds": 805762100,
+            "Operations": 4,
+            "NsPerOperation": 201440525,
+            "DisplayNsPerOperation": 201440500
+          },
+          {
+            "BdnNanoseconds": 669729800,
+            "Operations": 4,
+            "NsPerOperation": 167432450,
+            "DisplayNsPerOperation": 167432500
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 615023550,
+            "Operations": 4,
+            "NsPerOperation": 153755887.5,
+            "DisplayNsPerOperation": 153755900
+          },
+          {
+            "BdnNanoseconds": 631413850,
+            "Operations": 4,
+            "NsPerOperation": 157853462.5,
+            "DisplayNsPerOperation": 157853500
+          },
+          {
+            "BdnNanoseconds": 705020350,
+            "Operations": 4,
+            "NsPerOperation": 176255087.5,
+            "DisplayNsPerOperation": 176255100
+          },
+          {
+            "BdnNanoseconds": 664125450,
+            "Operations": 4,
+            "NsPerOperation": 166031362.5,
+            "DisplayNsPerOperation": 166031400
+          },
+          {
+            "BdnNanoseconds": 634483950,
+            "Operations": 4,
+            "NsPerOperation": 158620987.5,
+            "DisplayNsPerOperation": 158621000
+          },
+          {
+            "BdnNanoseconds": 648806550,
+            "Operations": 4,
+            "NsPerOperation": 162201637.5,
+            "DisplayNsPerOperation": 162201600
+          },
+          {
+            "BdnNanoseconds": 805761950,
+            "Operations": 4,
+            "NsPerOperation": 201440487.5,
+            "DisplayNsPerOperation": 201440500
+          },
+          {
+            "BdnNanoseconds": 669729650,
+            "Operations": 4,
+            "NsPerOperation": 167432412.5,
+            "DisplayNsPerOperation": 167432400
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "06-candidate",
+        "Variant": "candidate",
+        "MeanNs": 165300484.375,
+        "AllocatedBytesPerOperation": 55344876,
+        "ProcessId": 22568,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 609112300,
+            "Operations": 4,
+            "NsPerOperation": 152278075,
+            "DisplayNsPerOperation": 152278100
+          },
+          {
+            "BdnNanoseconds": 664758200,
+            "Operations": 4,
+            "NsPerOperation": 166189550,
+            "DisplayNsPerOperation": 166189600
+          },
+          {
+            "BdnNanoseconds": 746417900,
+            "Operations": 4,
+            "NsPerOperation": 186604475,
+            "DisplayNsPerOperation": 186604500
+          },
+          {
+            "BdnNanoseconds": 680081000,
+            "Operations": 4,
+            "NsPerOperation": 170020250,
+            "DisplayNsPerOperation": 170020300
+          },
+          {
+            "BdnNanoseconds": 752312400,
+            "Operations": 4,
+            "NsPerOperation": 188078100,
+            "DisplayNsPerOperation": 188078100
+          },
+          {
+            "BdnNanoseconds": 613062500,
+            "Operations": 4,
+            "NsPerOperation": 153265625,
+            "DisplayNsPerOperation": 153265600
+          },
+          {
+            "BdnNanoseconds": 611817000,
+            "Operations": 4,
+            "NsPerOperation": 152954250,
+            "DisplayNsPerOperation": 152954300
+          },
+          {
+            "BdnNanoseconds": 612055800,
+            "Operations": 4,
+            "NsPerOperation": 153013950,
+            "DisplayNsPerOperation": 153014000
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 609112100,
+            "Operations": 4,
+            "NsPerOperation": 152278025,
+            "DisplayNsPerOperation": 152278000
+          },
+          {
+            "BdnNanoseconds": 664758000,
+            "Operations": 4,
+            "NsPerOperation": 166189500,
+            "DisplayNsPerOperation": 166189500
+          },
+          {
+            "BdnNanoseconds": 746417700,
+            "Operations": 4,
+            "NsPerOperation": 186604425,
+            "DisplayNsPerOperation": 186604400
+          },
+          {
+            "BdnNanoseconds": 680080800,
+            "Operations": 4,
+            "NsPerOperation": 170020200,
+            "DisplayNsPerOperation": 170020200
+          },
+          {
+            "BdnNanoseconds": 752312200,
+            "Operations": 4,
+            "NsPerOperation": 188078050,
+            "DisplayNsPerOperation": 188078100
+          },
+          {
+            "BdnNanoseconds": 613062300,
+            "Operations": 4,
+            "NsPerOperation": 153265575,
+            "DisplayNsPerOperation": 153265600
+          },
+          {
+            "BdnNanoseconds": 611816800,
+            "Operations": 4,
+            "NsPerOperation": 152954200,
+            "DisplayNsPerOperation": 152954200
+          },
+          {
+            "BdnNanoseconds": 612055600,
+            "Operations": 4,
+            "NsPerOperation": 153013900,
+            "DisplayNsPerOperation": 153013900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "07-baseline",
+        "Variant": "baseline",
+        "MeanNs": 170927465.625,
+        "AllocatedBytesPerOperation": 64504414,
+        "ProcessId": 19268,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 752014400,
+            "Operations": 4,
+            "NsPerOperation": 188003600,
+            "DisplayNsPerOperation": 188003600
+          },
+          {
+            "BdnNanoseconds": 749398000,
+            "Operations": 4,
+            "NsPerOperation": 187349500,
+            "DisplayNsPerOperation": 187349500
+          },
+          {
+            "BdnNanoseconds": 724910500,
+            "Operations": 4,
+            "NsPerOperation": 181227625,
+            "DisplayNsPerOperation": 181227600
+          },
+          {
+            "BdnNanoseconds": 621878700,
+            "Operations": 4,
+            "NsPerOperation": 155469675,
+            "DisplayNsPerOperation": 155469700
+          },
+          {
+            "BdnNanoseconds": 636639900,
+            "Operations": 4,
+            "NsPerOperation": 159159975,
+            "DisplayNsPerOperation": 159160000
+          },
+          {
+            "BdnNanoseconds": 665355900,
+            "Operations": 4,
+            "NsPerOperation": 166338975,
+            "DisplayNsPerOperation": 166339000
+          },
+          {
+            "BdnNanoseconds": 663268300,
+            "Operations": 4,
+            "NsPerOperation": 165817075,
+            "DisplayNsPerOperation": 165817100
+          },
+          {
+            "BdnNanoseconds": 656214800,
+            "Operations": 4,
+            "NsPerOperation": 164053700,
+            "DisplayNsPerOperation": 164053700
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 752014200,
+            "Operations": 4,
+            "NsPerOperation": 188003550,
+            "DisplayNsPerOperation": 188003600
+          },
+          {
+            "BdnNanoseconds": 749397800,
+            "Operations": 4,
+            "NsPerOperation": 187349450,
+            "DisplayNsPerOperation": 187349500
+          },
+          {
+            "BdnNanoseconds": 724910300,
+            "Operations": 4,
+            "NsPerOperation": 181227575,
+            "DisplayNsPerOperation": 181227600
+          },
+          {
+            "BdnNanoseconds": 621878500,
+            "Operations": 4,
+            "NsPerOperation": 155469625,
+            "DisplayNsPerOperation": 155469600
+          },
+          {
+            "BdnNanoseconds": 636639700,
+            "Operations": 4,
+            "NsPerOperation": 159159925,
+            "DisplayNsPerOperation": 159159900
+          },
+          {
+            "BdnNanoseconds": 665355700,
+            "Operations": 4,
+            "NsPerOperation": 166338925,
+            "DisplayNsPerOperation": 166338900
+          },
+          {
+            "BdnNanoseconds": 663268100,
+            "Operations": 4,
+            "NsPerOperation": 165817025,
+            "DisplayNsPerOperation": 165817000
+          },
+          {
+            "BdnNanoseconds": 656214600,
+            "Operations": 4,
+            "NsPerOperation": 164053650,
+            "DisplayNsPerOperation": 164053700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "07-candidate",
+        "Variant": "candidate",
+        "MeanNs": 157538768.75,
+        "AllocatedBytesPerOperation": 55343950,
+        "ProcessId": 29308,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 640373800,
+            "Operations": 4,
+            "NsPerOperation": 160093450,
+            "DisplayNsPerOperation": 160093500
+          },
+          {
+            "BdnNanoseconds": 615500600,
+            "Operations": 4,
+            "NsPerOperation": 153875150,
+            "DisplayNsPerOperation": 153875200
+          },
+          {
+            "BdnNanoseconds": 673311500,
+            "Operations": 4,
+            "NsPerOperation": 168327875,
+            "DisplayNsPerOperation": 168327900
+          },
+          {
+            "BdnNanoseconds": 618082500,
+            "Operations": 4,
+            "NsPerOperation": 154520625,
+            "DisplayNsPerOperation": 154520600
+          },
+          {
+            "BdnNanoseconds": 617125000,
+            "Operations": 4,
+            "NsPerOperation": 154281250,
+            "DisplayNsPerOperation": 154281300
+          },
+          {
+            "BdnNanoseconds": 636546500,
+            "Operations": 4,
+            "NsPerOperation": 159136625,
+            "DisplayNsPerOperation": 159136600
+          },
+          {
+            "BdnNanoseconds": 622499000,
+            "Operations": 4,
+            "NsPerOperation": 155624750,
+            "DisplayNsPerOperation": 155624800
+          },
+          {
+            "BdnNanoseconds": 617803300,
+            "Operations": 4,
+            "NsPerOperation": 154450825,
+            "DisplayNsPerOperation": 154450800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 640373600,
+            "Operations": 4,
+            "NsPerOperation": 160093400,
+            "DisplayNsPerOperation": 160093400
+          },
+          {
+            "BdnNanoseconds": 615500400,
+            "Operations": 4,
+            "NsPerOperation": 153875100,
+            "DisplayNsPerOperation": 153875100
+          },
+          {
+            "BdnNanoseconds": 673311300,
+            "Operations": 4,
+            "NsPerOperation": 168327825,
+            "DisplayNsPerOperation": 168327800
+          },
+          {
+            "BdnNanoseconds": 618082300,
+            "Operations": 4,
+            "NsPerOperation": 154520575,
+            "DisplayNsPerOperation": 154520600
+          },
+          {
+            "BdnNanoseconds": 617124800,
+            "Operations": 4,
+            "NsPerOperation": 154281200,
+            "DisplayNsPerOperation": 154281200
+          },
+          {
+            "BdnNanoseconds": 636546300,
+            "Operations": 4,
+            "NsPerOperation": 159136575,
+            "DisplayNsPerOperation": 159136600
+          },
+          {
+            "BdnNanoseconds": 622498800,
+            "Operations": 4,
+            "NsPerOperation": 155624700,
+            "DisplayNsPerOperation": 155624700
+          },
+          {
+            "BdnNanoseconds": 617803100,
+            "Operations": 4,
+            "NsPerOperation": 154450775,
+            "DisplayNsPerOperation": 154450800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "08-baseline",
+        "Variant": "baseline",
+        "MeanNs": 160135593.75,
+        "AllocatedBytesPerOperation": 64503166,
+        "ProcessId": 18408,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 637009400,
+            "Operations": 4,
+            "NsPerOperation": 159252350,
+            "DisplayNsPerOperation": 159252400
+          },
+          {
+            "BdnNanoseconds": 646638200,
+            "Operations": 4,
+            "NsPerOperation": 161659550,
+            "DisplayNsPerOperation": 161659600
+          },
+          {
+            "BdnNanoseconds": 685134100,
+            "Operations": 4,
+            "NsPerOperation": 171283525,
+            "DisplayNsPerOperation": 171283500
+          },
+          {
+            "BdnNanoseconds": 621527500,
+            "Operations": 4,
+            "NsPerOperation": 155381875,
+            "DisplayNsPerOperation": 155381900
+          },
+          {
+            "BdnNanoseconds": 619972500,
+            "Operations": 4,
+            "NsPerOperation": 154993125,
+            "DisplayNsPerOperation": 154993100
+          },
+          {
+            "BdnNanoseconds": 633323300,
+            "Operations": 4,
+            "NsPerOperation": 158330825,
+            "DisplayNsPerOperation": 158330800
+          },
+          {
+            "BdnNanoseconds": 641317500,
+            "Operations": 4,
+            "NsPerOperation": 160329375,
+            "DisplayNsPerOperation": 160329400
+          },
+          {
+            "BdnNanoseconds": 639418100,
+            "Operations": 4,
+            "NsPerOperation": 159854525,
+            "DisplayNsPerOperation": 159854500
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 637009200,
+            "Operations": 4,
+            "NsPerOperation": 159252300,
+            "DisplayNsPerOperation": 159252300
+          },
+          {
+            "BdnNanoseconds": 646638000,
+            "Operations": 4,
+            "NsPerOperation": 161659500,
+            "DisplayNsPerOperation": 161659500
+          },
+          {
+            "BdnNanoseconds": 685133900,
+            "Operations": 4,
+            "NsPerOperation": 171283475,
+            "DisplayNsPerOperation": 171283500
+          },
+          {
+            "BdnNanoseconds": 621527300,
+            "Operations": 4,
+            "NsPerOperation": 155381825,
+            "DisplayNsPerOperation": 155381800
+          },
+          {
+            "BdnNanoseconds": 619972300,
+            "Operations": 4,
+            "NsPerOperation": 154993075,
+            "DisplayNsPerOperation": 154993100
+          },
+          {
+            "BdnNanoseconds": 633323100,
+            "Operations": 4,
+            "NsPerOperation": 158330775,
+            "DisplayNsPerOperation": 158330800
+          },
+          {
+            "BdnNanoseconds": 641317300,
+            "Operations": 4,
+            "NsPerOperation": 160329325,
+            "DisplayNsPerOperation": 160329300
+          },
+          {
+            "BdnNanoseconds": 639417900,
+            "Operations": 4,
+            "NsPerOperation": 159854475,
+            "DisplayNsPerOperation": 159854500
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "exploration",
+        "Run": "08-candidate",
+        "Variant": "candidate",
+        "MeanNs": 153820378.125,
+        "AllocatedBytesPerOperation": 55343142,
+        "ProcessId": 25612,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 615694500,
+            "Operations": 4,
+            "NsPerOperation": 153923625,
+            "DisplayNsPerOperation": 153923600
+          },
+          {
+            "BdnNanoseconds": 626177100,
+            "Operations": 4,
+            "NsPerOperation": 156544275,
+            "DisplayNsPerOperation": 156544300
+          },
+          {
+            "BdnNanoseconds": 609204600,
+            "Operations": 4,
+            "NsPerOperation": 152301150,
+            "DisplayNsPerOperation": 152301200
+          },
+          {
+            "BdnNanoseconds": 617953500,
+            "Operations": 4,
+            "NsPerOperation": 154488375,
+            "DisplayNsPerOperation": 154488400
+          },
+          {
+            "BdnNanoseconds": 617580800,
+            "Operations": 4,
+            "NsPerOperation": 154395200,
+            "DisplayNsPerOperation": 154395200
+          },
+          {
+            "BdnNanoseconds": 616096800,
+            "Operations": 4,
+            "NsPerOperation": 154024200,
+            "DisplayNsPerOperation": 154024200
+          },
+          {
+            "BdnNanoseconds": 601567200,
+            "Operations": 4,
+            "NsPerOperation": 150391800,
+            "DisplayNsPerOperation": 150391800
+          },
+          {
+            "BdnNanoseconds": 617979200,
+            "Operations": 4,
+            "NsPerOperation": 154494800,
+            "DisplayNsPerOperation": 154494800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 615694300,
+            "Operations": 4,
+            "NsPerOperation": 153923575,
+            "DisplayNsPerOperation": 153923600
+          },
+          {
+            "BdnNanoseconds": 626176900,
+            "Operations": 4,
+            "NsPerOperation": 156544225,
+            "DisplayNsPerOperation": 156544200
+          },
+          {
+            "BdnNanoseconds": 609204400,
+            "Operations": 4,
+            "NsPerOperation": 152301100,
+            "DisplayNsPerOperation": 152301100
+          },
+          {
+            "BdnNanoseconds": 617953300,
+            "Operations": 4,
+            "NsPerOperation": 154488325,
+            "DisplayNsPerOperation": 154488300
+          },
+          {
+            "BdnNanoseconds": 617580600,
+            "Operations": 4,
+            "NsPerOperation": 154395150,
+            "DisplayNsPerOperation": 154395200
+          },
+          {
+            "BdnNanoseconds": 616096600,
+            "Operations": 4,
+            "NsPerOperation": 154024150,
+            "DisplayNsPerOperation": 154024200
+          },
+          {
+            "BdnNanoseconds": 601567000,
+            "Operations": 4,
+            "NsPerOperation": 150391750,
+            "DisplayNsPerOperation": 150391800
+          },
+          {
+            "BdnNanoseconds": 617979000,
+            "Operations": 4,
+            "NsPerOperation": 154494750,
+            "DisplayNsPerOperation": 154494800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "01-baseline",
+        "Variant": "baseline",
+        "MeanNs": 170971428.125,
+        "AllocatedBytesPerOperation": 64503626,
+        "ProcessId": 25692,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 651682000,
+            "Operations": 4,
+            "NsPerOperation": 162920500,
+            "DisplayNsPerOperation": 162920500
+          },
+          {
+            "BdnNanoseconds": 647549900,
+            "Operations": 4,
+            "NsPerOperation": 161887475,
+            "DisplayNsPerOperation": 161887500
+          },
+          {
+            "BdnNanoseconds": 808007700,
+            "Operations": 4,
+            "NsPerOperation": 202001925,
+            "DisplayNsPerOperation": 202001900
+          },
+          {
+            "BdnNanoseconds": 659598400,
+            "Operations": 4,
+            "NsPerOperation": 164899600,
+            "DisplayNsPerOperation": 164899600
+          },
+          {
+            "BdnNanoseconds": 676545500,
+            "Operations": 4,
+            "NsPerOperation": 169136375,
+            "DisplayNsPerOperation": 169136400
+          },
+          {
+            "BdnNanoseconds": 638567200,
+            "Operations": 4,
+            "NsPerOperation": 159641800,
+            "DisplayNsPerOperation": 159641800
+          },
+          {
+            "BdnNanoseconds": 712249000,
+            "Operations": 4,
+            "NsPerOperation": 178062250,
+            "DisplayNsPerOperation": 178062300
+          },
+          {
+            "BdnNanoseconds": 676887600,
+            "Operations": 4,
+            "NsPerOperation": 169221900,
+            "DisplayNsPerOperation": 169221900
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 651681800,
+            "Operations": 4,
+            "NsPerOperation": 162920450,
+            "DisplayNsPerOperation": 162920500
+          },
+          {
+            "BdnNanoseconds": 647549700,
+            "Operations": 4,
+            "NsPerOperation": 161887425,
+            "DisplayNsPerOperation": 161887400
+          },
+          {
+            "BdnNanoseconds": 808007500,
+            "Operations": 4,
+            "NsPerOperation": 202001875,
+            "DisplayNsPerOperation": 202001900
+          },
+          {
+            "BdnNanoseconds": 659598200,
+            "Operations": 4,
+            "NsPerOperation": 164899550,
+            "DisplayNsPerOperation": 164899600
+          },
+          {
+            "BdnNanoseconds": 676545300,
+            "Operations": 4,
+            "NsPerOperation": 169136325,
+            "DisplayNsPerOperation": 169136300
+          },
+          {
+            "BdnNanoseconds": 638567000,
+            "Operations": 4,
+            "NsPerOperation": 159641750,
+            "DisplayNsPerOperation": 159641800
+          },
+          {
+            "BdnNanoseconds": 712248800,
+            "Operations": 4,
+            "NsPerOperation": 178062200,
+            "DisplayNsPerOperation": 178062200
+          },
+          {
+            "BdnNanoseconds": 676887400,
+            "Operations": 4,
+            "NsPerOperation": 169221850,
+            "DisplayNsPerOperation": 169221900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "01-candidate",
+        "Variant": "candidate",
+        "MeanNs": 165027303.125,
+        "AllocatedBytesPerOperation": 55343868,
+        "ProcessId": 28168,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 660098400,
+            "Operations": 4,
+            "NsPerOperation": 165024600,
+            "DisplayNsPerOperation": 165024600
+          },
+          {
+            "BdnNanoseconds": 662775000,
+            "Operations": 4,
+            "NsPerOperation": 165693750,
+            "DisplayNsPerOperation": 165693800
+          },
+          {
+            "BdnNanoseconds": 643138600,
+            "Operations": 4,
+            "NsPerOperation": 160784650,
+            "DisplayNsPerOperation": 160784700
+          },
+          {
+            "BdnNanoseconds": 675102200,
+            "Operations": 4,
+            "NsPerOperation": 168775550,
+            "DisplayNsPerOperation": 168775600
+          },
+          {
+            "BdnNanoseconds": 652178300,
+            "Operations": 4,
+            "NsPerOperation": 163044575,
+            "DisplayNsPerOperation": 163044600
+          },
+          {
+            "BdnNanoseconds": 658146600,
+            "Operations": 4,
+            "NsPerOperation": 164536650,
+            "DisplayNsPerOperation": 164536700
+          },
+          {
+            "BdnNanoseconds": 662910500,
+            "Operations": 4,
+            "NsPerOperation": 165727625,
+            "DisplayNsPerOperation": 165727600
+          },
+          {
+            "BdnNanoseconds": 666525700,
+            "Operations": 4,
+            "NsPerOperation": 166631425,
+            "DisplayNsPerOperation": 166631400
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 660098200,
+            "Operations": 4,
+            "NsPerOperation": 165024550,
+            "DisplayNsPerOperation": 165024600
+          },
+          {
+            "BdnNanoseconds": 662774800,
+            "Operations": 4,
+            "NsPerOperation": 165693700,
+            "DisplayNsPerOperation": 165693700
+          },
+          {
+            "BdnNanoseconds": 643138400,
+            "Operations": 4,
+            "NsPerOperation": 160784600,
+            "DisplayNsPerOperation": 160784600
+          },
+          {
+            "BdnNanoseconds": 675102000,
+            "Operations": 4,
+            "NsPerOperation": 168775500,
+            "DisplayNsPerOperation": 168775500
+          },
+          {
+            "BdnNanoseconds": 652178100,
+            "Operations": 4,
+            "NsPerOperation": 163044525,
+            "DisplayNsPerOperation": 163044500
+          },
+          {
+            "BdnNanoseconds": 658146400,
+            "Operations": 4,
+            "NsPerOperation": 164536600,
+            "DisplayNsPerOperation": 164536600
+          },
+          {
+            "BdnNanoseconds": 662910300,
+            "Operations": 4,
+            "NsPerOperation": 165727575,
+            "DisplayNsPerOperation": 165727600
+          },
+          {
+            "BdnNanoseconds": 666525500,
+            "Operations": 4,
+            "NsPerOperation": 166631375,
+            "DisplayNsPerOperation": 166631400
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "02-baseline",
+        "Variant": "baseline",
+        "MeanNs": 165650837.5,
+        "AllocatedBytesPerOperation": 64503112,
+        "ProcessId": 25568,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 650010000,
+            "Operations": 4,
+            "NsPerOperation": 162502500,
+            "DisplayNsPerOperation": 162502500
+          },
+          {
+            "BdnNanoseconds": 664557600,
+            "Operations": 4,
+            "NsPerOperation": 166139400,
+            "DisplayNsPerOperation": 166139400
+          },
+          {
+            "BdnNanoseconds": 684987700,
+            "Operations": 4,
+            "NsPerOperation": 171246925,
+            "DisplayNsPerOperation": 171246900
+          },
+          {
+            "BdnNanoseconds": 659191200,
+            "Operations": 4,
+            "NsPerOperation": 164797800,
+            "DisplayNsPerOperation": 164797800
+          },
+          {
+            "BdnNanoseconds": 681742500,
+            "Operations": 4,
+            "NsPerOperation": 170435625,
+            "DisplayNsPerOperation": 170435600
+          },
+          {
+            "BdnNanoseconds": 648189000,
+            "Operations": 4,
+            "NsPerOperation": 162047250,
+            "DisplayNsPerOperation": 162047300
+          },
+          {
+            "BdnNanoseconds": 659321100,
+            "Operations": 4,
+            "NsPerOperation": 164830275,
+            "DisplayNsPerOperation": 164830300
+          },
+          {
+            "BdnNanoseconds": 652829300,
+            "Operations": 4,
+            "NsPerOperation": 163207325,
+            "DisplayNsPerOperation": 163207300
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 650009800,
+            "Operations": 4,
+            "NsPerOperation": 162502450,
+            "DisplayNsPerOperation": 162502500
+          },
+          {
+            "BdnNanoseconds": 664557400,
+            "Operations": 4,
+            "NsPerOperation": 166139350,
+            "DisplayNsPerOperation": 166139400
+          },
+          {
+            "BdnNanoseconds": 684987500,
+            "Operations": 4,
+            "NsPerOperation": 171246875,
+            "DisplayNsPerOperation": 171246900
+          },
+          {
+            "BdnNanoseconds": 659191000,
+            "Operations": 4,
+            "NsPerOperation": 164797750,
+            "DisplayNsPerOperation": 164797800
+          },
+          {
+            "BdnNanoseconds": 681742300,
+            "Operations": 4,
+            "NsPerOperation": 170435575,
+            "DisplayNsPerOperation": 170435600
+          },
+          {
+            "BdnNanoseconds": 648188800,
+            "Operations": 4,
+            "NsPerOperation": 162047200,
+            "DisplayNsPerOperation": 162047200
+          },
+          {
+            "BdnNanoseconds": 659320900,
+            "Operations": 4,
+            "NsPerOperation": 164830225,
+            "DisplayNsPerOperation": 164830200
+          },
+          {
+            "BdnNanoseconds": 652829100,
+            "Operations": 4,
+            "NsPerOperation": 163207275,
+            "DisplayNsPerOperation": 163207300
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "02-candidate",
+        "Variant": "candidate",
+        "MeanNs": 157834981.25,
+        "AllocatedBytesPerOperation": 55343744,
+        "ProcessId": 21748,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 650660300,
+            "Operations": 4,
+            "NsPerOperation": 162665075,
+            "DisplayNsPerOperation": 162665100
+          },
+          {
+            "BdnNanoseconds": 613323200,
+            "Operations": 4,
+            "NsPerOperation": 153330800,
+            "DisplayNsPerOperation": 153330800
+          },
+          {
+            "BdnNanoseconds": 613413400,
+            "Operations": 4,
+            "NsPerOperation": 153353350,
+            "DisplayNsPerOperation": 153353400
+          },
+          {
+            "BdnNanoseconds": 675282800,
+            "Operations": 4,
+            "NsPerOperation": 168820700,
+            "DisplayNsPerOperation": 168820700
+          },
+          {
+            "BdnNanoseconds": 612002000,
+            "Operations": 4,
+            "NsPerOperation": 153000500,
+            "DisplayNsPerOperation": 153000500
+          },
+          {
+            "BdnNanoseconds": 625284600,
+            "Operations": 4,
+            "NsPerOperation": 156321150,
+            "DisplayNsPerOperation": 156321200
+          },
+          {
+            "BdnNanoseconds": 631879900,
+            "Operations": 4,
+            "NsPerOperation": 157969975,
+            "DisplayNsPerOperation": 157970000
+          },
+          {
+            "BdnNanoseconds": 628874800,
+            "Operations": 4,
+            "NsPerOperation": 157218700,
+            "DisplayNsPerOperation": 157218700
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 650660100,
+            "Operations": 4,
+            "NsPerOperation": 162665025,
+            "DisplayNsPerOperation": 162665000
+          },
+          {
+            "BdnNanoseconds": 613323000,
+            "Operations": 4,
+            "NsPerOperation": 153330750,
+            "DisplayNsPerOperation": 153330800
+          },
+          {
+            "BdnNanoseconds": 613413200,
+            "Operations": 4,
+            "NsPerOperation": 153353300,
+            "DisplayNsPerOperation": 153353300
+          },
+          {
+            "BdnNanoseconds": 675282600,
+            "Operations": 4,
+            "NsPerOperation": 168820650,
+            "DisplayNsPerOperation": 168820700
+          },
+          {
+            "BdnNanoseconds": 612001800,
+            "Operations": 4,
+            "NsPerOperation": 153000450,
+            "DisplayNsPerOperation": 153000500
+          },
+          {
+            "BdnNanoseconds": 625284400,
+            "Operations": 4,
+            "NsPerOperation": 156321100,
+            "DisplayNsPerOperation": 156321100
+          },
+          {
+            "BdnNanoseconds": 631879700,
+            "Operations": 4,
+            "NsPerOperation": 157969925,
+            "DisplayNsPerOperation": 157969900
+          },
+          {
+            "BdnNanoseconds": 628874600,
+            "Operations": 4,
+            "NsPerOperation": 157218650,
+            "DisplayNsPerOperation": 157218700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "03-baseline",
+        "Variant": "baseline",
+        "MeanNs": 160068453.125,
+        "AllocatedBytesPerOperation": 64502202,
+        "ProcessId": 2964,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 634203500,
+            "Operations": 4,
+            "NsPerOperation": 158550875,
+            "DisplayNsPerOperation": 158550900
+          },
+          {
+            "BdnNanoseconds": 620763500,
+            "Operations": 4,
+            "NsPerOperation": 155190875,
+            "DisplayNsPerOperation": 155190900
+          },
+          {
+            "BdnNanoseconds": 682019700,
+            "Operations": 4,
+            "NsPerOperation": 170504925,
+            "DisplayNsPerOperation": 170504900
+          },
+          {
+            "BdnNanoseconds": 634177600,
+            "Operations": 4,
+            "NsPerOperation": 158544400,
+            "DisplayNsPerOperation": 158544400
+          },
+          {
+            "BdnNanoseconds": 644575700,
+            "Operations": 4,
+            "NsPerOperation": 161143925,
+            "DisplayNsPerOperation": 161143900
+          },
+          {
+            "BdnNanoseconds": 635036600,
+            "Operations": 4,
+            "NsPerOperation": 158759150,
+            "DisplayNsPerOperation": 158759200
+          },
+          {
+            "BdnNanoseconds": 636080700,
+            "Operations": 4,
+            "NsPerOperation": 159020175,
+            "DisplayNsPerOperation": 159020200
+          },
+          {
+            "BdnNanoseconds": 635334800,
+            "Operations": 4,
+            "NsPerOperation": 158833700,
+            "DisplayNsPerOperation": 158833700
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 634203300,
+            "Operations": 4,
+            "NsPerOperation": 158550825,
+            "DisplayNsPerOperation": 158550800
+          },
+          {
+            "BdnNanoseconds": 620763300,
+            "Operations": 4,
+            "NsPerOperation": 155190825,
+            "DisplayNsPerOperation": 155190800
+          },
+          {
+            "BdnNanoseconds": 682019500,
+            "Operations": 4,
+            "NsPerOperation": 170504875,
+            "DisplayNsPerOperation": 170504900
+          },
+          {
+            "BdnNanoseconds": 634177400,
+            "Operations": 4,
+            "NsPerOperation": 158544350,
+            "DisplayNsPerOperation": 158544400
+          },
+          {
+            "BdnNanoseconds": 644575500,
+            "Operations": 4,
+            "NsPerOperation": 161143875,
+            "DisplayNsPerOperation": 161143900
+          },
+          {
+            "BdnNanoseconds": 635036400,
+            "Operations": 4,
+            "NsPerOperation": 158759100,
+            "DisplayNsPerOperation": 158759100
+          },
+          {
+            "BdnNanoseconds": 636080500,
+            "Operations": 4,
+            "NsPerOperation": 159020125,
+            "DisplayNsPerOperation": 159020100
+          },
+          {
+            "BdnNanoseconds": 635334600,
+            "Operations": 4,
+            "NsPerOperation": 158833650,
+            "DisplayNsPerOperation": 158833700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "03-candidate",
+        "Variant": "candidate",
+        "MeanNs": 160315046.875,
+        "AllocatedBytesPerOperation": 55345170,
+        "ProcessId": 10224,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 641336700,
+            "Operations": 4,
+            "NsPerOperation": 160334175,
+            "DisplayNsPerOperation": 160334200
+          },
+          {
+            "BdnNanoseconds": 654299200,
+            "Operations": 4,
+            "NsPerOperation": 163574800,
+            "DisplayNsPerOperation": 163574800
+          },
+          {
+            "BdnNanoseconds": 641134300,
+            "Operations": 4,
+            "NsPerOperation": 160283575,
+            "DisplayNsPerOperation": 160283600
+          },
+          {
+            "BdnNanoseconds": 643741200,
+            "Operations": 4,
+            "NsPerOperation": 160935300,
+            "DisplayNsPerOperation": 160935300
+          },
+          {
+            "BdnNanoseconds": 623612700,
+            "Operations": 4,
+            "NsPerOperation": 155903175,
+            "DisplayNsPerOperation": 155903200
+          },
+          {
+            "BdnNanoseconds": 701160200,
+            "Operations": 4,
+            "NsPerOperation": 175290050,
+            "DisplayNsPerOperation": 175290100
+          },
+          {
+            "BdnNanoseconds": 606387800,
+            "Operations": 4,
+            "NsPerOperation": 151596950,
+            "DisplayNsPerOperation": 151597000
+          },
+          {
+            "BdnNanoseconds": 618411000,
+            "Operations": 4,
+            "NsPerOperation": 154602750,
+            "DisplayNsPerOperation": 154602800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 641336500,
+            "Operations": 4,
+            "NsPerOperation": 160334125,
+            "DisplayNsPerOperation": 160334100
+          },
+          {
+            "BdnNanoseconds": 654299000,
+            "Operations": 4,
+            "NsPerOperation": 163574750,
+            "DisplayNsPerOperation": 163574800
+          },
+          {
+            "BdnNanoseconds": 641134100,
+            "Operations": 4,
+            "NsPerOperation": 160283525,
+            "DisplayNsPerOperation": 160283500
+          },
+          {
+            "BdnNanoseconds": 643741000,
+            "Operations": 4,
+            "NsPerOperation": 160935250,
+            "DisplayNsPerOperation": 160935300
+          },
+          {
+            "BdnNanoseconds": 623612500,
+            "Operations": 4,
+            "NsPerOperation": 155903125,
+            "DisplayNsPerOperation": 155903100
+          },
+          {
+            "BdnNanoseconds": 701160000,
+            "Operations": 4,
+            "NsPerOperation": 175290000,
+            "DisplayNsPerOperation": 175290000
+          },
+          {
+            "BdnNanoseconds": 606387600,
+            "Operations": 4,
+            "NsPerOperation": 151596900,
+            "DisplayNsPerOperation": 151596900
+          },
+          {
+            "BdnNanoseconds": 618410800,
+            "Operations": 4,
+            "NsPerOperation": 154602700,
+            "DisplayNsPerOperation": 154602700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "04-baseline",
+        "Variant": "baseline",
+        "MeanNs": 163478634.375,
+        "AllocatedBytesPerOperation": 64502360,
+        "ProcessId": 33180,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 660333300,
+            "Operations": 4,
+            "NsPerOperation": 165083325,
+            "DisplayNsPerOperation": 165083300
+          },
+          {
+            "BdnNanoseconds": 622611500,
+            "Operations": 4,
+            "NsPerOperation": 155652875,
+            "DisplayNsPerOperation": 155652900
+          },
+          {
+            "BdnNanoseconds": 707125200,
+            "Operations": 4,
+            "NsPerOperation": 176781300,
+            "DisplayNsPerOperation": 176781300
+          },
+          {
+            "BdnNanoseconds": 650832100,
+            "Operations": 4,
+            "NsPerOperation": 162708025,
+            "DisplayNsPerOperation": 162708000
+          },
+          {
+            "BdnNanoseconds": 645551300,
+            "Operations": 4,
+            "NsPerOperation": 161387825,
+            "DisplayNsPerOperation": 161387800
+          },
+          {
+            "BdnNanoseconds": 637250700,
+            "Operations": 4,
+            "NsPerOperation": 159312675,
+            "DisplayNsPerOperation": 159312700
+          },
+          {
+            "BdnNanoseconds": 662154500,
+            "Operations": 4,
+            "NsPerOperation": 165538625,
+            "DisplayNsPerOperation": 165538600
+          },
+          {
+            "BdnNanoseconds": 645459300,
+            "Operations": 4,
+            "NsPerOperation": 161364825,
+            "DisplayNsPerOperation": 161364800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 660333100,
+            "Operations": 4,
+            "NsPerOperation": 165083275,
+            "DisplayNsPerOperation": 165083300
+          },
+          {
+            "BdnNanoseconds": 622611300,
+            "Operations": 4,
+            "NsPerOperation": 155652825,
+            "DisplayNsPerOperation": 155652800
+          },
+          {
+            "BdnNanoseconds": 707125000,
+            "Operations": 4,
+            "NsPerOperation": 176781250,
+            "DisplayNsPerOperation": 176781300
+          },
+          {
+            "BdnNanoseconds": 650831900,
+            "Operations": 4,
+            "NsPerOperation": 162707975,
+            "DisplayNsPerOperation": 162708000
+          },
+          {
+            "BdnNanoseconds": 645551100,
+            "Operations": 4,
+            "NsPerOperation": 161387775,
+            "DisplayNsPerOperation": 161387800
+          },
+          {
+            "BdnNanoseconds": 637250500,
+            "Operations": 4,
+            "NsPerOperation": 159312625,
+            "DisplayNsPerOperation": 159312600
+          },
+          {
+            "BdnNanoseconds": 662154300,
+            "Operations": 4,
+            "NsPerOperation": 165538575,
+            "DisplayNsPerOperation": 165538600
+          },
+          {
+            "BdnNanoseconds": 645459100,
+            "Operations": 4,
+            "NsPerOperation": 161364775,
+            "DisplayNsPerOperation": 161364800
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "04-candidate",
+        "Variant": "candidate",
+        "MeanNs": 158575481.25,
+        "AllocatedBytesPerOperation": 55343398,
+        "ProcessId": 19484,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 628353100,
+            "Operations": 4,
+            "NsPerOperation": 157088275,
+            "DisplayNsPerOperation": 157088300
+          },
+          {
+            "BdnNanoseconds": 715757200,
+            "Operations": 4,
+            "NsPerOperation": 178939300,
+            "DisplayNsPerOperation": 178939300
+          },
+          {
+            "BdnNanoseconds": 684937600,
+            "Operations": 4,
+            "NsPerOperation": 171234400,
+            "DisplayNsPerOperation": 171234400
+          },
+          {
+            "BdnNanoseconds": 605394900,
+            "Operations": 4,
+            "NsPerOperation": 151348725,
+            "DisplayNsPerOperation": 151348700
+          },
+          {
+            "BdnNanoseconds": 615805500,
+            "Operations": 4,
+            "NsPerOperation": 153951375,
+            "DisplayNsPerOperation": 153951400
+          },
+          {
+            "BdnNanoseconds": 613823300,
+            "Operations": 4,
+            "NsPerOperation": 153455825,
+            "DisplayNsPerOperation": 153455800
+          },
+          {
+            "BdnNanoseconds": 607512200,
+            "Operations": 4,
+            "NsPerOperation": 151878050,
+            "DisplayNsPerOperation": 151878100
+          },
+          {
+            "BdnNanoseconds": 602833200,
+            "Operations": 4,
+            "NsPerOperation": 150708300,
+            "DisplayNsPerOperation": 150708300
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 628352900,
+            "Operations": 4,
+            "NsPerOperation": 157088225,
+            "DisplayNsPerOperation": 157088200
+          },
+          {
+            "BdnNanoseconds": 715757000,
+            "Operations": 4,
+            "NsPerOperation": 178939250,
+            "DisplayNsPerOperation": 178939300
+          },
+          {
+            "BdnNanoseconds": 684937400,
+            "Operations": 4,
+            "NsPerOperation": 171234350,
+            "DisplayNsPerOperation": 171234400
+          },
+          {
+            "BdnNanoseconds": 605394700,
+            "Operations": 4,
+            "NsPerOperation": 151348675,
+            "DisplayNsPerOperation": 151348700
+          },
+          {
+            "BdnNanoseconds": 615805300,
+            "Operations": 4,
+            "NsPerOperation": 153951325,
+            "DisplayNsPerOperation": 153951300
+          },
+          {
+            "BdnNanoseconds": 613823100,
+            "Operations": 4,
+            "NsPerOperation": 153455775,
+            "DisplayNsPerOperation": 153455800
+          },
+          {
+            "BdnNanoseconds": 607512000,
+            "Operations": 4,
+            "NsPerOperation": 151878000,
+            "DisplayNsPerOperation": 151878000
+          },
+          {
+            "BdnNanoseconds": 602833000,
+            "Operations": 4,
+            "NsPerOperation": 150708250,
+            "DisplayNsPerOperation": 150708300
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "05-baseline",
+        "Variant": "baseline",
+        "MeanNs": 162144312.5,
+        "AllocatedBytesPerOperation": 64502360,
+        "ProcessId": 9388,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 644550200,
+            "Operations": 4,
+            "NsPerOperation": 161137550,
+            "DisplayNsPerOperation": 161137600
+          },
+          {
+            "BdnNanoseconds": 646909700,
+            "Operations": 4,
+            "NsPerOperation": 161727425,
+            "DisplayNsPerOperation": 161727400
+          },
+          {
+            "BdnNanoseconds": 649535400,
+            "Operations": 4,
+            "NsPerOperation": 162383850,
+            "DisplayNsPerOperation": 162383900
+          },
+          {
+            "BdnNanoseconds": 648975200,
+            "Operations": 4,
+            "NsPerOperation": 162243800,
+            "DisplayNsPerOperation": 162243800
+          },
+          {
+            "BdnNanoseconds": 650073100,
+            "Operations": 4,
+            "NsPerOperation": 162518275,
+            "DisplayNsPerOperation": 162518300
+          },
+          {
+            "BdnNanoseconds": 650225000,
+            "Operations": 4,
+            "NsPerOperation": 162556250,
+            "DisplayNsPerOperation": 162556300
+          },
+          {
+            "BdnNanoseconds": 647705900,
+            "Operations": 4,
+            "NsPerOperation": 161926475,
+            "DisplayNsPerOperation": 161926500
+          },
+          {
+            "BdnNanoseconds": 650645100,
+            "Operations": 4,
+            "NsPerOperation": 162661275,
+            "DisplayNsPerOperation": 162661300
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 644550000,
+            "Operations": 4,
+            "NsPerOperation": 161137500,
+            "DisplayNsPerOperation": 161137500
+          },
+          {
+            "BdnNanoseconds": 646909500,
+            "Operations": 4,
+            "NsPerOperation": 161727375,
+            "DisplayNsPerOperation": 161727400
+          },
+          {
+            "BdnNanoseconds": 649535200,
+            "Operations": 4,
+            "NsPerOperation": 162383800,
+            "DisplayNsPerOperation": 162383800
+          },
+          {
+            "BdnNanoseconds": 648975000,
+            "Operations": 4,
+            "NsPerOperation": 162243750,
+            "DisplayNsPerOperation": 162243800
+          },
+          {
+            "BdnNanoseconds": 650072900,
+            "Operations": 4,
+            "NsPerOperation": 162518225,
+            "DisplayNsPerOperation": 162518200
+          },
+          {
+            "BdnNanoseconds": 650224800,
+            "Operations": 4,
+            "NsPerOperation": 162556200,
+            "DisplayNsPerOperation": 162556200
+          },
+          {
+            "BdnNanoseconds": 647705700,
+            "Operations": 4,
+            "NsPerOperation": 161926425,
+            "DisplayNsPerOperation": 161926400
+          },
+          {
+            "BdnNanoseconds": 650644900,
+            "Operations": 4,
+            "NsPerOperation": 162661225,
+            "DisplayNsPerOperation": 162661200
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "05-candidate",
+        "Variant": "candidate",
+        "MeanNs": 161367946.875,
+        "AllocatedBytesPerOperation": 55344300,
+        "ProcessId": 30444,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 652482100,
+            "Operations": 4,
+            "NsPerOperation": 163120525,
+            "DisplayNsPerOperation": 163120500
+          },
+          {
+            "BdnNanoseconds": 584473500,
+            "Operations": 4,
+            "NsPerOperation": 146118375,
+            "DisplayNsPerOperation": 146118400
+          },
+          {
+            "BdnNanoseconds": 677654400,
+            "Operations": 4,
+            "NsPerOperation": 169413600,
+            "DisplayNsPerOperation": 169413600
+          },
+          {
+            "BdnNanoseconds": 646934400,
+            "Operations": 4,
+            "NsPerOperation": 161733600,
+            "DisplayNsPerOperation": 161733600
+          },
+          {
+            "BdnNanoseconds": 645123600,
+            "Operations": 4,
+            "NsPerOperation": 161280900,
+            "DisplayNsPerOperation": 161280900
+          },
+          {
+            "BdnNanoseconds": 655334700,
+            "Operations": 4,
+            "NsPerOperation": 163833675,
+            "DisplayNsPerOperation": 163833700
+          },
+          {
+            "BdnNanoseconds": 645761500,
+            "Operations": 4,
+            "NsPerOperation": 161440375,
+            "DisplayNsPerOperation": 161440400
+          },
+          {
+            "BdnNanoseconds": 656011700,
+            "Operations": 4,
+            "NsPerOperation": 164002925,
+            "DisplayNsPerOperation": 164002900
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 652481900,
+            "Operations": 4,
+            "NsPerOperation": 163120475,
+            "DisplayNsPerOperation": 163120500
+          },
+          {
+            "BdnNanoseconds": 584473300,
+            "Operations": 4,
+            "NsPerOperation": 146118325,
+            "DisplayNsPerOperation": 146118300
+          },
+          {
+            "BdnNanoseconds": 677654200,
+            "Operations": 4,
+            "NsPerOperation": 169413550,
+            "DisplayNsPerOperation": 169413600
+          },
+          {
+            "BdnNanoseconds": 646934200,
+            "Operations": 4,
+            "NsPerOperation": 161733550,
+            "DisplayNsPerOperation": 161733600
+          },
+          {
+            "BdnNanoseconds": 645123400,
+            "Operations": 4,
+            "NsPerOperation": 161280850,
+            "DisplayNsPerOperation": 161280900
+          },
+          {
+            "BdnNanoseconds": 655334500,
+            "Operations": 4,
+            "NsPerOperation": 163833625,
+            "DisplayNsPerOperation": 163833600
+          },
+          {
+            "BdnNanoseconds": 645761300,
+            "Operations": 4,
+            "NsPerOperation": 161440325,
+            "DisplayNsPerOperation": 161440300
+          },
+          {
+            "BdnNanoseconds": 656011500,
+            "Operations": 4,
+            "NsPerOperation": 164002875,
+            "DisplayNsPerOperation": 164002900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "06-baseline",
+        "Variant": "baseline",
+        "MeanNs": 160958390.625,
+        "AllocatedBytesPerOperation": 64504592,
+        "ProcessId": 14896,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 636413000,
+            "Operations": 4,
+            "NsPerOperation": 159103250,
+            "DisplayNsPerOperation": 159103300
+          },
+          {
+            "BdnNanoseconds": 634002900,
+            "Operations": 4,
+            "NsPerOperation": 158500725,
+            "DisplayNsPerOperation": 158500700
+          },
+          {
+            "BdnNanoseconds": 700855700,
+            "Operations": 4,
+            "NsPerOperation": 175213925,
+            "DisplayNsPerOperation": 175213900
+          },
+          {
+            "BdnNanoseconds": 653156800,
+            "Operations": 4,
+            "NsPerOperation": 163289200,
+            "DisplayNsPerOperation": 163289200
+          },
+          {
+            "BdnNanoseconds": 622057100,
+            "Operations": 4,
+            "NsPerOperation": 155514275,
+            "DisplayNsPerOperation": 155514300
+          },
+          {
+            "BdnNanoseconds": 651719400,
+            "Operations": 4,
+            "NsPerOperation": 162929850,
+            "DisplayNsPerOperation": 162929900
+          },
+          {
+            "BdnNanoseconds": 627452800,
+            "Operations": 4,
+            "NsPerOperation": 156863200,
+            "DisplayNsPerOperation": 156863200
+          },
+          {
+            "BdnNanoseconds": 625012400,
+            "Operations": 4,
+            "NsPerOperation": 156253100,
+            "DisplayNsPerOperation": 156253100
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 636412800,
+            "Operations": 4,
+            "NsPerOperation": 159103200,
+            "DisplayNsPerOperation": 159103200
+          },
+          {
+            "BdnNanoseconds": 634002700,
+            "Operations": 4,
+            "NsPerOperation": 158500675,
+            "DisplayNsPerOperation": 158500700
+          },
+          {
+            "BdnNanoseconds": 700855500,
+            "Operations": 4,
+            "NsPerOperation": 175213875,
+            "DisplayNsPerOperation": 175213900
+          },
+          {
+            "BdnNanoseconds": 653156600,
+            "Operations": 4,
+            "NsPerOperation": 163289150,
+            "DisplayNsPerOperation": 163289200
+          },
+          {
+            "BdnNanoseconds": 622056900,
+            "Operations": 4,
+            "NsPerOperation": 155514225,
+            "DisplayNsPerOperation": 155514200
+          },
+          {
+            "BdnNanoseconds": 651719200,
+            "Operations": 4,
+            "NsPerOperation": 162929800,
+            "DisplayNsPerOperation": 162929800
+          },
+          {
+            "BdnNanoseconds": 627452600,
+            "Operations": 4,
+            "NsPerOperation": 156863150,
+            "DisplayNsPerOperation": 156863200
+          },
+          {
+            "BdnNanoseconds": 625012200,
+            "Operations": 4,
+            "NsPerOperation": 156253050,
+            "DisplayNsPerOperation": 156253100
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "06-candidate",
+        "Variant": "candidate",
+        "MeanNs": 153954518.75,
+        "AllocatedBytesPerOperation": 55343620,
+        "ProcessId": 13524,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 609485400,
+            "Operations": 4,
+            "NsPerOperation": 152371350,
+            "DisplayNsPerOperation": 152371400
+          },
+          {
+            "BdnNanoseconds": 620048500,
+            "Operations": 4,
+            "NsPerOperation": 155012125,
+            "DisplayNsPerOperation": 155012100
+          },
+          {
+            "BdnNanoseconds": 626579700,
+            "Operations": 4,
+            "NsPerOperation": 156644925,
+            "DisplayNsPerOperation": 156644900
+          },
+          {
+            "BdnNanoseconds": 617689200,
+            "Operations": 4,
+            "NsPerOperation": 154422300,
+            "DisplayNsPerOperation": 154422300
+          },
+          {
+            "BdnNanoseconds": 615472800,
+            "Operations": 4,
+            "NsPerOperation": 153868200,
+            "DisplayNsPerOperation": 153868200
+          },
+          {
+            "BdnNanoseconds": 624873300,
+            "Operations": 4,
+            "NsPerOperation": 156218325,
+            "DisplayNsPerOperation": 156218300
+          },
+          {
+            "BdnNanoseconds": 611354200,
+            "Operations": 4,
+            "NsPerOperation": 152838550,
+            "DisplayNsPerOperation": 152838600
+          },
+          {
+            "BdnNanoseconds": 601043100,
+            "Operations": 4,
+            "NsPerOperation": 150260775,
+            "DisplayNsPerOperation": 150260800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 609485200,
+            "Operations": 4,
+            "NsPerOperation": 152371300,
+            "DisplayNsPerOperation": 152371300
+          },
+          {
+            "BdnNanoseconds": 620048300,
+            "Operations": 4,
+            "NsPerOperation": 155012075,
+            "DisplayNsPerOperation": 155012100
+          },
+          {
+            "BdnNanoseconds": 626579500,
+            "Operations": 4,
+            "NsPerOperation": 156644875,
+            "DisplayNsPerOperation": 156644900
+          },
+          {
+            "BdnNanoseconds": 617689000,
+            "Operations": 4,
+            "NsPerOperation": 154422250,
+            "DisplayNsPerOperation": 154422300
+          },
+          {
+            "BdnNanoseconds": 615472600,
+            "Operations": 4,
+            "NsPerOperation": 153868150,
+            "DisplayNsPerOperation": 153868200
+          },
+          {
+            "BdnNanoseconds": 624873100,
+            "Operations": 4,
+            "NsPerOperation": 156218275,
+            "DisplayNsPerOperation": 156218300
+          },
+          {
+            "BdnNanoseconds": 611354000,
+            "Operations": 4,
+            "NsPerOperation": 152838500,
+            "DisplayNsPerOperation": 152838500
+          },
+          {
+            "BdnNanoseconds": 601042900,
+            "Operations": 4,
+            "NsPerOperation": 150260725,
+            "DisplayNsPerOperation": 150260700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "07-baseline",
+        "Variant": "baseline",
+        "MeanNs": 163046071.875,
+        "AllocatedBytesPerOperation": 64503672,
+        "ProcessId": 18944,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 640271500,
+            "Operations": 4,
+            "NsPerOperation": 160067875,
+            "DisplayNsPerOperation": 160067900
+          },
+          {
+            "BdnNanoseconds": 647043300,
+            "Operations": 4,
+            "NsPerOperation": 161760825,
+            "DisplayNsPerOperation": 161760800
+          },
+          {
+            "BdnNanoseconds": 692752700,
+            "Operations": 4,
+            "NsPerOperation": 173188175,
+            "DisplayNsPerOperation": 173188200
+          },
+          {
+            "BdnNanoseconds": 637141800,
+            "Operations": 4,
+            "NsPerOperation": 159285450,
+            "DisplayNsPerOperation": 159285500
+          },
+          {
+            "BdnNanoseconds": 651245000,
+            "Operations": 4,
+            "NsPerOperation": 162811250,
+            "DisplayNsPerOperation": 162811300
+          },
+          {
+            "BdnNanoseconds": 648202200,
+            "Operations": 4,
+            "NsPerOperation": 162050550,
+            "DisplayNsPerOperation": 162050600
+          },
+          {
+            "BdnNanoseconds": 648972400,
+            "Operations": 4,
+            "NsPerOperation": 162243100,
+            "DisplayNsPerOperation": 162243100
+          },
+          {
+            "BdnNanoseconds": 651847000,
+            "Operations": 4,
+            "NsPerOperation": 162961750,
+            "DisplayNsPerOperation": 162961800
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 640271300,
+            "Operations": 4,
+            "NsPerOperation": 160067825,
+            "DisplayNsPerOperation": 160067800
+          },
+          {
+            "BdnNanoseconds": 647043100,
+            "Operations": 4,
+            "NsPerOperation": 161760775,
+            "DisplayNsPerOperation": 161760800
+          },
+          {
+            "BdnNanoseconds": 692752500,
+            "Operations": 4,
+            "NsPerOperation": 173188125,
+            "DisplayNsPerOperation": 173188100
+          },
+          {
+            "BdnNanoseconds": 637141600,
+            "Operations": 4,
+            "NsPerOperation": 159285400,
+            "DisplayNsPerOperation": 159285400
+          },
+          {
+            "BdnNanoseconds": 651244800,
+            "Operations": 4,
+            "NsPerOperation": 162811200,
+            "DisplayNsPerOperation": 162811200
+          },
+          {
+            "BdnNanoseconds": 648202000,
+            "Operations": 4,
+            "NsPerOperation": 162050500,
+            "DisplayNsPerOperation": 162050500
+          },
+          {
+            "BdnNanoseconds": 648972200,
+            "Operations": 4,
+            "NsPerOperation": 162243050,
+            "DisplayNsPerOperation": 162243100
+          },
+          {
+            "BdnNanoseconds": 651846800,
+            "Operations": 4,
+            "NsPerOperation": 162961700,
+            "DisplayNsPerOperation": 162961700
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "07-candidate",
+        "Variant": "candidate",
+        "MeanNs": 157326912.5,
+        "AllocatedBytesPerOperation": 55344732,
+        "ProcessId": 5524,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 689769700,
+            "Operations": 4,
+            "NsPerOperation": 172442425,
+            "DisplayNsPerOperation": 172442400
+          },
+          {
+            "BdnNanoseconds": 626979600,
+            "Operations": 4,
+            "NsPerOperation": 156744900,
+            "DisplayNsPerOperation": 156744900
+          },
+          {
+            "BdnNanoseconds": 618963000,
+            "Operations": 4,
+            "NsPerOperation": 154740750,
+            "DisplayNsPerOperation": 154740800
+          },
+          {
+            "BdnNanoseconds": 649369300,
+            "Operations": 4,
+            "NsPerOperation": 162342325,
+            "DisplayNsPerOperation": 162342300
+          },
+          {
+            "BdnNanoseconds": 580501100,
+            "Operations": 4,
+            "NsPerOperation": 145125275,
+            "DisplayNsPerOperation": 145125300
+          },
+          {
+            "BdnNanoseconds": 658056400,
+            "Operations": 4,
+            "NsPerOperation": 164514100,
+            "DisplayNsPerOperation": 164514100
+          },
+          {
+            "BdnNanoseconds": 612283500,
+            "Operations": 4,
+            "NsPerOperation": 153070875,
+            "DisplayNsPerOperation": 153070900
+          },
+          {
+            "BdnNanoseconds": 598540200,
+            "Operations": 4,
+            "NsPerOperation": 149635050,
+            "DisplayNsPerOperation": 149635100
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 689769500,
+            "Operations": 4,
+            "NsPerOperation": 172442375,
+            "DisplayNsPerOperation": 172442400
+          },
+          {
+            "BdnNanoseconds": 626979400,
+            "Operations": 4,
+            "NsPerOperation": 156744850,
+            "DisplayNsPerOperation": 156744900
+          },
+          {
+            "BdnNanoseconds": 618962800,
+            "Operations": 4,
+            "NsPerOperation": 154740700,
+            "DisplayNsPerOperation": 154740700
+          },
+          {
+            "BdnNanoseconds": 649369100,
+            "Operations": 4,
+            "NsPerOperation": 162342275,
+            "DisplayNsPerOperation": 162342300
+          },
+          {
+            "BdnNanoseconds": 580500900,
+            "Operations": 4,
+            "NsPerOperation": 145125225,
+            "DisplayNsPerOperation": 145125200
+          },
+          {
+            "BdnNanoseconds": 658056200,
+            "Operations": 4,
+            "NsPerOperation": 164514050,
+            "DisplayNsPerOperation": 164514100
+          },
+          {
+            "BdnNanoseconds": 612283300,
+            "Operations": 4,
+            "NsPerOperation": 153070825,
+            "DisplayNsPerOperation": 153070800
+          },
+          {
+            "BdnNanoseconds": 598540000,
+            "Operations": 4,
+            "NsPerOperation": 149635000,
+            "DisplayNsPerOperation": 149635000
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "08-baseline",
+        "Variant": "baseline",
+        "MeanNs": 164497178.125,
+        "AllocatedBytesPerOperation": 64503660,
+        "ProcessId": 10004,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 663452900,
+            "Operations": 4,
+            "NsPerOperation": 165863225,
+            "DisplayNsPerOperation": 165863200
+          },
+          {
+            "BdnNanoseconds": 651007400,
+            "Operations": 4,
+            "NsPerOperation": 162751850,
+            "DisplayNsPerOperation": 162751900
+          },
+          {
+            "BdnNanoseconds": 711986300,
+            "Operations": 4,
+            "NsPerOperation": 177996575,
+            "DisplayNsPerOperation": 177996600
+          },
+          {
+            "BdnNanoseconds": 625774500,
+            "Operations": 4,
+            "NsPerOperation": 156443625,
+            "DisplayNsPerOperation": 156443600
+          },
+          {
+            "BdnNanoseconds": 653546300,
+            "Operations": 4,
+            "NsPerOperation": 163386575,
+            "DisplayNsPerOperation": 163386600
+          },
+          {
+            "BdnNanoseconds": 653405200,
+            "Operations": 4,
+            "NsPerOperation": 163351300,
+            "DisplayNsPerOperation": 163351300
+          },
+          {
+            "BdnNanoseconds": 653718200,
+            "Operations": 4,
+            "NsPerOperation": 163429550,
+            "DisplayNsPerOperation": 163429600
+          },
+          {
+            "BdnNanoseconds": 651020500,
+            "Operations": 4,
+            "NsPerOperation": 162755125,
+            "DisplayNsPerOperation": 162755100
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 663452700,
+            "Operations": 4,
+            "NsPerOperation": 165863175,
+            "DisplayNsPerOperation": 165863200
+          },
+          {
+            "BdnNanoseconds": 651007200,
+            "Operations": 4,
+            "NsPerOperation": 162751800,
+            "DisplayNsPerOperation": 162751800
+          },
+          {
+            "BdnNanoseconds": 711986100,
+            "Operations": 4,
+            "NsPerOperation": 177996525,
+            "DisplayNsPerOperation": 177996500
+          },
+          {
+            "BdnNanoseconds": 625774300,
+            "Operations": 4,
+            "NsPerOperation": 156443575,
+            "DisplayNsPerOperation": 156443600
+          },
+          {
+            "BdnNanoseconds": 653546100,
+            "Operations": 4,
+            "NsPerOperation": 163386525,
+            "DisplayNsPerOperation": 163386500
+          },
+          {
+            "BdnNanoseconds": 653405000,
+            "Operations": 4,
+            "NsPerOperation": 163351250,
+            "DisplayNsPerOperation": 163351300
+          },
+          {
+            "BdnNanoseconds": 653718000,
+            "Operations": 4,
+            "NsPerOperation": 163429500,
+            "DisplayNsPerOperation": 163429500
+          },
+          {
+            "BdnNanoseconds": 651020300,
+            "Operations": 4,
+            "NsPerOperation": 162755075,
+            "DisplayNsPerOperation": 162755100
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Batch": "confirmation",
+        "Run": "08-candidate",
+        "Variant": "candidate",
+        "MeanNs": 155680893.75,
+        "AllocatedBytesPerOperation": 55345632,
+        "ProcessId": 14288,
+        "ActualIterations": [
+          {
+            "BdnNanoseconds": 622141200,
+            "Operations": 4,
+            "NsPerOperation": 155535300,
+            "DisplayNsPerOperation": 155535300
+          },
+          {
+            "BdnNanoseconds": 602721100,
+            "Operations": 4,
+            "NsPerOperation": 150680275,
+            "DisplayNsPerOperation": 150680300
+          },
+          {
+            "BdnNanoseconds": 673879400,
+            "Operations": 4,
+            "NsPerOperation": 168469850,
+            "DisplayNsPerOperation": 168469900
+          },
+          {
+            "BdnNanoseconds": 613771200,
+            "Operations": 4,
+            "NsPerOperation": 153442800,
+            "DisplayNsPerOperation": 153442800
+          },
+          {
+            "BdnNanoseconds": 616906400,
+            "Operations": 4,
+            "NsPerOperation": 154226600,
+            "DisplayNsPerOperation": 154226600
+          },
+          {
+            "BdnNanoseconds": 609092900,
+            "Operations": 4,
+            "NsPerOperation": 152273225,
+            "DisplayNsPerOperation": 152273200
+          },
+          {
+            "BdnNanoseconds": 631866200,
+            "Operations": 4,
+            "NsPerOperation": 157966550,
+            "DisplayNsPerOperation": 157966600
+          },
+          {
+            "BdnNanoseconds": 611411800,
+            "Operations": 4,
+            "NsPerOperation": 152852950,
+            "DisplayNsPerOperation": 152853000
+          }
+        ],
+        "ResultIterations": [
+          {
+            "BdnNanoseconds": 622141000,
+            "Operations": 4,
+            "NsPerOperation": 155535250,
+            "DisplayNsPerOperation": 155535300
+          },
+          {
+            "BdnNanoseconds": 602720900,
+            "Operations": 4,
+            "NsPerOperation": 150680225,
+            "DisplayNsPerOperation": 150680200
+          },
+          {
+            "BdnNanoseconds": 673879200,
+            "Operations": 4,
+            "NsPerOperation": 168469800,
+            "DisplayNsPerOperation": 168469800
+          },
+          {
+            "BdnNanoseconds": 613771000,
+            "Operations": 4,
+            "NsPerOperation": 153442750,
+            "DisplayNsPerOperation": 153442800
+          },
+          {
+            "BdnNanoseconds": 616906200,
+            "Operations": 4,
+            "NsPerOperation": 154226550,
+            "DisplayNsPerOperation": 154226600
+          },
+          {
+            "BdnNanoseconds": 609092700,
+            "Operations": 4,
+            "NsPerOperation": 152273175,
+            "DisplayNsPerOperation": 152273200
+          },
+          {
+            "BdnNanoseconds": 631866000,
+            "Operations": 4,
+            "NsPerOperation": 157966500,
+            "DisplayNsPerOperation": 157966500
+          },
+          {
+            "BdnNanoseconds": 611411600,
+            "Operations": 4,
+            "NsPerOperation": 152852900,
+            "DisplayNsPerOperation": 152852900
+          }
+        ],
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "WarmupCount": 16,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      }
+    ],
+    "ReplaySourceReference": "Top-level ReplaySourceReference; shared host/workload harness source retained there.",
+    "Scripts": {
+      "RunBlock": "# ProcessStartInfo.ArgumentList requires PowerShell 7; Windows PowerShell 5.1 has no\n# ArgumentList and otherwise fails before starting a benchmark child process.\n#requires -Version 7.0\nparam(\n    [ValidateSet('exploration','confirmation')][string]$Batch='exploration',\n    [Parameter(Mandatory)][ValidateRange(1,8)][int]$Block\n)\n\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$inputPath = Join-Path (Resolve-Path (Join-Path $root '../../..')).Path 'Kotowari.Benchmarks/Data/test.json'\n$expectedInputHash = 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\nif ((Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash -ne $expectedInputHash) { throw 'Input hash mismatch.' }\n\n$cases = if ($Block % 2 -eq 1) { @('baseline','candidate') } else { @('candidate','baseline') }\nforeach ($variant in $cases) {\n    $runName = '{0:d2}-{1}' -f $Block,$variant\n    $runRoot = Join-Path $root \"runs/$Batch/$runName\"\n    $summaryPath = Join-Path $runRoot 'run-summary.json'\n    if (Test-Path -LiteralPath $summaryPath) {\n        $existingSummary = Get-Content -Raw -LiteralPath $summaryPath | ConvertFrom-Json\n        if ($existingSummary.Run -ne $runName -or $existingSummary.Batch -ne $Batch -or $existingSummary.InputSHA256 -ne $expectedInputHash -or $existingSummary.ResultCount -ne 8) { throw \"Existing run summary is invalid: $runName\" }\n        Write-Output \"Preserving already completed $runName.\"\n        continue\n    }\n    $reuseOutput = Test-Path -LiteralPath $runRoot\n    $hostLog = Join-Path $runRoot 'host.log'\n    $stderrPath = Join-Path $runRoot 'stderr.log'\n    if ($reuseOutput) {\n        if (-not (Test-Path -LiteralPath $hostLog) -or -not (Test-Path -LiteralPath $stderrPath)) { throw \"Run output already exists and cannot be resumed: $runName\" }\n    } else {\n        New-Item -ItemType Directory -Path $runRoot -Force | Out-Null\n    }\n\n    $manualRoot = Join-Path $root \"$variant/host\"\n    $assembly = Join-Path $manualRoot 'StringExecutionRecovery.ChildHarness.dll'\n    $measurementHost = Join-Path $manualRoot 'StringExecutionRecovery.Measurement.dll'\n    $sourceRoot = Join-Path $root \"$variant/source\"\n    if (-not (Test-Path -LiteralPath $assembly) -or -not (Test-Path -LiteralPath $measurementHost)) { throw \"Frozen harness is not built: $assembly\" }\n    $manifestPath = Join-Path $root 'dll-manifest.json'\n    if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Frozen DLL manifest is missing.' }\n    $dllManifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json\n    $expectedDlls = @($dllManifest.$variant)\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if (-not (Test-Path -LiteralPath $dllPath) -or (Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch before run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $beforeHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($reuseOutput) {\n        Write-Output \"Validating existing completed process output for $runName.\"\n        $stdout = Get-Content -Raw -LiteralPath $hostLog\n        $stderr = if ((Get-Item -LiteralPath $stderrPath).Length -gt 0) { Get-Content -Raw -LiteralPath $stderrPath } else { '' }\n        $processId = $null\n        $utc = (Get-Item -LiteralPath $hostLog).CreationTimeUtc\n        $elapsedSeconds = $null\n        $affinity = 4\n    } else {\n        Write-Output \"Starting $runName.\"\n        $start = [Diagnostics.ProcessStartInfo]::new('dotnet')\n        $start.WorkingDirectory = $manualRoot\n        $start.UseShellExecute = $false\n        $start.CreateNoWindow = $true\n        $start.RedirectStandardOutput = $true\n        $start.RedirectStandardError = $true\n        foreach ($argument in @('StringExecutionRecovery.ChildHarness.dll','--benchmarkName','Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks.StringInput','--benchmarkId','0')) {\n            $start.ArgumentList.Add($argument)\n        }\n        $start.Environment['DOTNET_TieredPGO'] = '1'\n        $utc = [DateTime]::UtcNow\n        $watch = [Diagnostics.Stopwatch]::StartNew()\n        $process = [Diagnostics.Process]::Start($start)\n        if (-not $process) { throw \"Could not start measurement process: $runName\" }\n        $processId = $process.Id\n        try {\n            $process.ProcessorAffinity = [IntPtr]4\n            $affinity = $process.ProcessorAffinity.ToInt64()\n            if ($affinity -ne 4) { throw \"Affinity mismatch: $runName\" }\n            $stdoutTask = $process.StandardOutput.ReadToEndAsync()\n            $stderrTask = $process.StandardError.ReadToEndAsync()\n            while (-not $process.WaitForExit(1000)) {\n                if ($watch.Elapsed.TotalSeconds -gt 180) { throw \"Measurement timed out: $runName\" }\n            }\n            $stdout = $stdoutTask.GetAwaiter().GetResult()\n            $stderr = $stderrTask.GetAwaiter().GetResult()\n            [IO.File]::WriteAllText($hostLog,$stdout,[Text.UTF8Encoding]::new($false))\n            [IO.File]::WriteAllText($stderrPath,$stderr,[Text.UTF8Encoding]::new($false))\n            if ($process.ExitCode -ne 0) { throw \"Measurement process exited $($process.ExitCode): $runName\" }\n            if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n            if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n        } finally {\n            if (-not $process.HasExited) { $process.Kill(); $process.WaitForExit() }\n            $process.Dispose()\n        }\n        $elapsedSeconds = $watch.Elapsed.TotalSeconds\n    }\n    if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n    if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n    $afterHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($beforeHash -ne $afterHash) { throw \"Built assembly changed during run: $runName\" }\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if ((Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch after run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $observations = @([regex]::Matches($stdout, '(?m)^Workload(?<stage>Warmup|Actual|Result)\\s+(?<index>\\d+):\\s+(?<ops>\\d+) op, (?<ns>[\\d.]+) ns, (?<display>[\\d.]+) (?<unit>ns|us|μs|µs|ms|s)/op') | ForEach-Object {\n        $displayValue = [double]::Parse($_.Groups['display'].Value,[Globalization.CultureInfo]::InvariantCulture)\n        $displayMultiplier = switch ($_.Groups['unit'].Value) { 'ns' { 1.0 } 'us' { 1e3 } 'μs' { 1e3 } 'µs' { 1e3 } 'ms' { 1e6 } 's' { 1e9 } }\n        [pscustomobject]@{\n            Stage=$_.Groups['stage'].Value\n            Iteration=[int]$_.Groups['index'].Value\n            Operations=[int]$_.Groups['ops'].Value\n            TotalNanoseconds=[double]::Parse($_.Groups['ns'].Value,[Globalization.CultureInfo]::InvariantCulture)\n            DisplayNsPerOperation=$displayValue * $displayMultiplier\n            DisplayRoundingToleranceNs=0.000055 * $displayMultiplier\n        }\n    })\n    foreach ($stage in 'Warmup','Actual','Result') {\n        $expected = if ($stage -eq 'Warmup') { 16 } else { 8 }\n        $rows = @($observations | Where-Object Stage -eq $stage)\n        if ($rows.Count -ne $expected -or @($rows | Where-Object Operations -ne 4).Count) { throw \"Unexpected $stage observations or operation count: $runName\" }\n        if (@($rows | Where-Object { [math]::Abs(($_.TotalNanoseconds / $_.Operations) - $_.DisplayNsPerOperation) -gt $_.DisplayRoundingToleranceNs }).Count) { throw \"Nanoseconds/Operations normalization mismatch: $runName\" }\n    }\n    if ($stdout -notmatch '(?m)^// Job: .*OutlierMode=DontRemove.*Affinity=(?:0{0,61})100.*InvocationCount=4.*IterationCount=8.*LaunchCount=1.*UnrollFactor=1.*WarmupCount=16') { throw \"Job settings mismatch: $runName\" }\n\n    $actuals = @($observations | Where-Object Stage -eq 'Actual')\n    $results = @($observations | Where-Object Stage -eq 'Result')\n    $actualValues = @($actuals | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultValues = @($results | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultMeanNs = ($resultValues | Measure-Object -Average).Average\n    $actualMeanNs = ($actualValues | Measure-Object -Average).Average\n    $displayMeanNs = (($results | ForEach-Object { $_.DisplayNsPerOperation } | Measure-Object -Average).Average)\n    $displayMeanToleranceNs = (($results | ForEach-Object { $_.DisplayRoundingToleranceNs } | Measure-Object -Average).Average)\n    if ([math]::Abs($resultMeanNs - $displayMeanNs) -gt $displayMeanToleranceNs) { throw \"Result mean differs from displayed BDN mean beyond rounding: $runName\" }\n    $gc = [regex]::Match($stdout, '(?m)^// GC:\\s+(?<gen0>\\d+)\\s+(?<gen1>\\d+)\\s+(?<gen2>\\d+)\\s+(?<allocated>\\d+)\\s+(?<operations>\\d+)')\n    if (-not $gc.Success -or [long]$gc.Groups['operations'].Value -ne 4) { throw \"Missing or invalid allocation counters: $runName\" }\n    $runtime = [regex]::Match($stdout,'(?m)^// Runtime=(?<runtime>.+)$')\n    $benchmarkDotNet = [regex]::Match($stdout,'(?m)^// BenchmarkDotNet v(?<version>\\S+)')\n    if (-not $runtime.Success -or -not $benchmarkDotNet.Success) { throw \"Runtime or BenchmarkDotNet version missing: $runName\" }\n\n    $sourceFiles = @(Get-ChildItem -LiteralPath $sourceRoot -Recurse -File | Where-Object { ($_.Extension -in @('.cs','.csproj') -or $_.Name -eq '.editorconfig') -and $_.FullName -notmatch '[\\\\/](bin|obj)[\\\\/]' } | Sort-Object FullName | ForEach-Object {\n        [ordered]@{ Path=$_.FullName.Substring($sourceRoot.Length+1).Replace('\\','/'); SHA256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }\n    })\n    $libraryPath = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $jsonPath = Join-Path $manualRoot 'Marimo.Parser.dll'\n    $libraryHash = (Get-FileHash -LiteralPath $libraryPath -Algorithm SHA256).Hash\n    $jsonHash = (Get-FileHash -LiteralPath $jsonPath -Algorithm SHA256).Hash\n    $executedLibrary = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $executedJson = Join-Path $manualRoot 'Marimo.Parser.dll'\n    if ((Get-FileHash -LiteralPath $executedLibrary -Algorithm SHA256).Hash -ne $libraryHash -or (Get-FileHash -LiteralPath $executedJson -Algorithm SHA256).Hash -ne $jsonHash) { throw \"Manual harness DLL hashes differ from frozen inputs: $runName\" }\n\n    $record = [ordered]@{\n        Run=$runName; Batch=$Batch; Variant=$variant; Method='StringInput'; MeanNs=$resultMeanNs\n        ActualMeanNs=$actualMeanNs; ResultMeanNsPerOperation=$resultMeanNs; DisplayMeanNsPerOperation=$displayMeanNs\n        ConsoleNormalizationVerified=$true; ResultObservationCount=$results.Count\n        AllocatedBytesPerOperation=([long]$gc.Groups['allocated'].Value / [long]$gc.Groups['operations'].Value)\n        GC=@([long]$gc.Groups['gen0'].Value,[long]$gc.Groups['gen1'].Value,[long]$gc.Groups['gen2'].Value)\n        ActualIterations=@($actuals | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualNsPerOperation=$actualValues\n        ResultIterations=@($results | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualCount=$actuals.Count; ResultCount=$results.Count; WarmupCount=16\n        Runtime=$runtime.Groups['runtime'].Value; BenchmarkDotNet=$benchmarkDotNet.Groups['version'].Value\n        Job=([regex]::Match($stdout,'(?m)^// Job: (?<job>.+)$').Groups['job'].Value); TieredPGO=1; Affinity=$affinity\n        ProcessId=$processId; StartUTC=$utc.ToString('o'); WallSeconds=$elapsedSeconds\n        PowerShell=$PSVersionTable.PSVersion.ToString()\n        ResumedExistingOutput=$reuseOutput\n        InputBytes=(Get-Item -LiteralPath $inputPath).Length; InputSHA256=$expectedInputHash\n        AssemblySHA256=$afterHash; MeasurementHostAssemblySHA256=(Get-FileHash -LiteralPath $measurementHost -Algorithm SHA256).Hash\n        LibraryDLLSHA256=$libraryHash; JsonDLLSHA256=$jsonHash\n        ChildLibraryDLLSHA256=$libraryHash; ChildJsonDLLSHA256=$jsonHash\n        DLLManifestSHA256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash\n        SourceFiles=$sourceFiles\n    }\n    $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryPath -Encoding utf8\n    Write-Output ('Completed {0}: mean {1:F3} ms, {2} Actual/{3} Result.' -f $runName,($record.MeanNs/1e6),$record.ActualCount,$record.ResultCount)\n}\nWrite-Output \"Block $Block completed.\"\n",
+      "Summarize": "param([ValidateSet('exploration','confirmation')][string]$Batch='exploration')\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$runsRoot = Join-Path $root \"runs/$Batch\"\n$pairs = @()\nfor ($block = 1; $block -le 8; $block++) {\n    $baselinePath = Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $block)\n    $candidatePath = Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $block)\n    if (-not (Test-Path -LiteralPath $baselinePath) -or -not (Test-Path -LiteralPath $candidatePath)) { throw \"Block $block is incomplete.\" }\n    $baseline = Get-Content -Raw -LiteralPath $baselinePath | ConvertFrom-Json\n    $candidate = Get-Content -Raw -LiteralPath $candidatePath | ConvertFrom-Json\n    if ($baseline.Batch -ne $Batch -or $candidate.Batch -ne $Batch -or $baseline.InputSHA256 -ne $candidate.InputSHA256 -or $baseline.InputSHA256 -ne 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D') { throw \"Batch/input mismatch in block $block.\" }\n    $pairs += [pscustomobject]@{\n        Block=$block; Order=if ($block % 2 -eq 1) { 'baseline-candidate' } else { 'candidate-baseline' }\n        BaselineMeanNs=[double]$baseline.MeanNs; CandidateMeanNs=[double]$candidate.MeanNs\n        CandidateOverBaseline=[double]$candidate.MeanNs/[double]$baseline.MeanNs\n        LogCandidateOverBaseline=[math]::Log([double]$candidate.MeanNs/[double]$baseline.MeanNs)\n        BaselineAllocatedBytesPerOperation=[double]$baseline.AllocatedBytesPerOperation; CandidateAllocatedBytesPerOperation=[double]$candidate.AllocatedBytesPerOperation\n        BaselineAssemblySHA256=$baseline.AssemblySHA256; CandidateAssemblySHA256=$candidate.AssemblySHA256\n    }\n}\n\n$logRatios = @($pairs | ForEach-Object { $_.LogCandidateOverBaseline })\n$meanLogRatio = ($logRatios | Measure-Object -Average).Average\n$sumSquares = 0.0\nforeach ($logRatio in $logRatios) { $sumSquares += [math]::Pow(($logRatio - $meanLogRatio),2) }\n$sampleSdLogRatio = [math]::Sqrt($sumSquares / ($logRatios.Count - 1))\n$standardErrorLogRatio = $sampleSdLogRatio / [math]::Sqrt($logRatios.Count)\n$tCriticalDf7 = 2.364624251\n$marginLogRatio = $tCriticalDf7 * $standardErrorLogRatio\n$geometricMeanRatio = [math]::Exp($meanLogRatio)\n$interval = @([math]::Exp($meanLogRatio - $marginLogRatio),[math]::Exp($meanLogRatio + $marginLogRatio))\n$summary = [ordered]@{\n    Experiment='string-reapplication-four-02-pooled-repetition-2026-10-18'; Batch=$Batch;\n    Rule='Candidate adopted only when the geometric mean of paired candidate/baseline ratios has a 95% Student t interval upper bound below 1; interval is calculated on log ratios and exponentiated.'\n    PairCount=$pairs.Count; DegreesOfFreedom=$pairs.Count-1; TCritical95Df7=$tCriticalDf7\n    PairedLogRatioMean=$meanLogRatio; PairedLogRatioSampleStandardDeviation=$sampleSdLogRatio; PairedLogRatioStandardError=$standardErrorLogRatio\n    PairedGeometricMeanRatio=$geometricMeanRatio\n    Confidence95=[ordered]@{Lower=$interval[0];Upper=$interval[1]};\n    BaselineMeanMs=($pairs.BaselineMeanNs | Measure-Object -Average).Average/1e6\n    CandidateMeanMs=($pairs.CandidateMeanNs | Measure-Object -Average).Average/1e6\n    Pairs=$pairs\n    BaselineLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $_)) | ConvertFrom-Json })\n    CandidateLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $_)) | ConvertFrom-Json })\n    InputBytes=4172062; InputSHA256='DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n}\n$summary | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $root \"$Batch-summary.json\") -Encoding utf8\nWrite-Output ('Paired candidate/baseline geometric mean ratio {0:F5}; 95% t interval [{1:F5}, {2:F5}] (log scale, df=7).' -f $geometricMeanRatio,$interval[0],$interval[1])\n",
+      "RecordEnvironment": "param(\n    [Parameter(Mandatory)][ValidateSet('before','after')][string]$Stage\n)\n\n$ErrorActionPreference = 'Stop'\nAdd-Type -TypeDefinition @'\nusing System.Runtime.InteropServices;\n[StructLayout(LayoutKind.Sequential)]\npublic struct StringRecoveryPowerStatus {\n    public byte ACLineStatus;\n    public byte BatteryFlag;\n    public byte BatteryLifePercent;\n    public byte SystemStatusFlag;\n    public uint BatteryLifeTime;\n    public uint BatteryFullLifeTime;\n}\npublic static class StringRecoveryPowerStatusApi {\n    [DllImport(\"kernel32.dll\", SetLastError=true)]\n    public static extern bool GetSystemPowerStatus(out StringRecoveryPowerStatus status);\n}\n'@\n\n$status = New-Object StringRecoveryPowerStatus\nif (-not [StringRecoveryPowerStatusApi]::GetSystemPowerStatus([ref]$status)) {\n    throw \"GetSystemPowerStatus failed: $([Runtime.InteropServices.Marshal]::GetLastWin32Error())\"\n}\n$powerScheme = (powercfg.exe /getactivescheme) -join ' '\n$sampleStart = [DateTime]::UtcNow\n$first = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimSamplingError = $null\ntry {\n    $cimFirst = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\n} catch {\n    $cimFirst = @()\n    $cimSamplingError = $_.Exception.Message\n}\nStart-Sleep -Seconds 3\n$sampleEnd = [DateTime]::UtcNow\n$second = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimSecond = @()\nif (-not $cimSamplingError) {\n    try {\n        $cimSecond = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\n    } catch {\n        $cimSamplingError = $_.Exception.Message\n    }\n}\n$cpuActivity = @(\n    foreach ($process in $second) {\n        $previous = $first | Where-Object Id -eq $process.Id | Select-Object -First 1\n        if ($previous -and $null -ne $process.CPU -and $null -ne $previous.CPU -and $process.CPU -gt $previous.CPU) {\n            [ordered]@{ ProcessId=$process.Id; DeltaCpuSeconds=($process.CPU-$previous.CPU) }\n        }\n    }\n)\n$cimCpuActivity = @(\n    foreach ($process in $cimSecond) {\n        $previous = $cimFirst | Where-Object ProcessId -eq $process.ProcessId | Select-Object -First 1\n        if ($previous -and $null -ne $process.KernelModeTime -and $null -ne $process.UserModeTime) {\n            $delta = ([double]$process.KernelModeTime + [double]$process.UserModeTime) - ([double]$previous.KernelModeTime + [double]$previous.UserModeTime)\n            if ($delta -gt 0) { [ordered]@{ ProcessId=$process.ProcessId; Name=$process.Name; DeltaCpuSeconds=($delta / 10000000) } }\n        }\n    }\n)\n$record = [ordered]@{\n    Stage=$Stage\n    TimestampUTC=[DateTime]::UtcNow.ToString('o')\n    SampleStartUTC=$sampleStart.ToString('o')\n    SampleEndUTC=$sampleEnd.ToString('o')\n    ACLineStatus=[int]$status.ACLineStatus\n    ACLineMeaning='1=online, 0=offline, 255=unknown'\n    BatterySaver=[int]$status.SystemStatusFlag\n    BatterySaverMeaning='1=active, 0=inactive'\n    BatteryFlag=[int]$status.BatteryFlag\n    BatteryLifePercent=[int]$status.BatteryLifePercent\n    PowerScheme=$powerScheme\n    DotnetCpuActivityWindowSeconds=3\n    ActiveDotnetProcesses=$cpuActivity\n    ActiveCimProcesses=$cimCpuActivity\n    CimSamplingError=$cimSamplingError\n}\n$path = Join-Path $PSScriptRoot 'environment.json'\nif (Test-Path -LiteralPath $path) {\n    $records = @(Get-Content -Raw -LiteralPath $path | ConvertFrom-Json)\n} else {\n    $records = @()\n}\n$records += [pscustomobject]$record\n$records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $path -Encoding utf8\nWrite-Output ('{0}: ACLine={1}, BatterySaver={2}, PowerScheme={3}, dotnetCPU-active={4}' -f $Stage,$record.ACLineStatus,$record.BatterySaver,$record.PowerScheme,$cpuActivity.Count)\n"
+    },
+    "ArtifactRoot": "artifacts/string-reapplication-four-2026-10-18/02-pooled-repetition",
+    "Decision": "Adopted by parent: exploration and separate independent confirmation each had paired 95% log-t CI upper bound below 1."
   }
 }
