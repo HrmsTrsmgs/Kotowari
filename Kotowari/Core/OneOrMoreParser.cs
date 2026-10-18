@@ -9,18 +9,11 @@ namespace Marimo.Kotowari.Core;
 public class OneOrMoreParser<T> : Parser<IEnumerable<T>>
     where T : notnull
 {
-    Parser<IEnumerable<T>> Parser { get; }
+    ZeroOrMoreParser<T> Parser { get; }
 
     public OneOrMoreParser(Parser<T> parser)
-    {
-        Parser =
-            new ParserConverter<(T, IEnumerable<T>), IEnumerable<T>>(
-                new SequenceParser<T, IEnumerable<T>>(
-                    parser,
-                    new ZeroOrMoreParser<T>(parser)),
-                tuple => new[] { tuple.Item1 }.Concat(tuple.Item2));
-    }
+        => Parser = new(parser);
 
     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
-        => Parser.ParseCore(cursol);
+        => Parser.ParseCore(cursol, requireFirst: true);
 }

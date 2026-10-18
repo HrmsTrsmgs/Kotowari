@@ -22,6 +22,8 @@ ref struct ParsedValueBuffer<T>
     T[]? rented;
     int count;
 
+    internal readonly int Count => count;
+
     internal ParsedValueBuffer(Span<T> initialBuffer)
         => buffer = initialBuffer;
 
