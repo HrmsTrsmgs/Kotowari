@@ -43,20 +43,12 @@ public readonly record struct Cursol
         // 生成時に長さを取得し、null入力の既存の例外発生時点を保つ。
         public int Length { get; } = text.Length;
 
+        // 負の位置と終端以降は、例外を経由せず同じヌル文字として扱う。
+        // 文字読み取りのホットパスから例外処理を外す。測定記録: 2026-10-18-string-tuning.md。
         public char this[int index]
-        {
-            get
-            {
-                try
-                {
-                    return input[index];
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    return NullCharacter;
-                }
-            }
-        }
+            => (uint)index < (uint)input.Length
+                ? input[index]
+                : NullCharacter;
 
         public int GoFoward(int index, int step)
             => Math.Min(index + step, Length);

@@ -10,6 +10,29 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class Cursolのテスト
 {
+    [Theory]
+    [InlineData("", 0, '\0')]
+    [InlineData("a", 0, 'a')]
+    [InlineData("a", 1, '\0')]
+    [InlineData("a", 100, '\0')]
+    [InlineData("a", -1, '\0')]
+    [InlineData("a", int.MinValue, '\0')]
+    [InlineData("a\0b", 1, '\0')]
+    [InlineData("aあb", 1, 'あ')]
+    public void Currentは範囲内の文字を返し範囲外ではヌル文字を返します(
+        string text, int step, char expected)
+    {
+        new Cursol(text).GoFoward(step).Current.Should().Be(expected);
+    }
+
+    [Fact]
+    public void 初期化していないCursolのCurrentを読むと例外になります()
+    {
+        var read = () => default(Cursol).Current;
+
+        read.Should().Throw<NullReferenceException>();
+    }
+
     [Fact]
     public void 初期状態のIndexは0です()
     {
