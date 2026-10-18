@@ -3,6 +3,2429 @@
   "Experiment": "string-cursor-bounds",
   "BaselineCommit": "ce377dcfa0abae6c081bad347ef9f2081c89603b",
   "WorkingTreeBaseCommit": "0a06cb0",
+  "UserRequestedReruns": [
+    {
+      "Purpose": "User-requested repeat after committing the adopted implementation. Fixed 8 fresh pairs, no result-based reruns or extensions; not pooled with exploration or confirmation.",
+      "CandidateCommit": "ab7a35bbe805c698b3a242acc6f8e44cce898d6a",
+      "BaselineCommit": "ce377dcfa0abae6c081bad347ef9f2081c89603b",
+      "FrozenSourcesAndDllManifest": "Reused unchanged from Sources and DllManifest above; all source/DLL hashes rechecked.",
+      "Conditions": {
+        "TieredPGO": 1,
+        "AffinityMask": 4,
+        "WarmupCount": 16,
+        "IterationCount": 8,
+        "InvocationCount": 4,
+        "UnrollFactor": 1,
+        "OutlierMode": "DontRemove",
+        "LaunchCount": 1,
+        "FreshProcesses": true,
+        "PairedOrder": "Odd AB, even BA; 8 pairs only"
+      },
+      "Validation": {
+        "Baseline": "validation-baseline.log; full consumption and 100001-node tree match passed",
+        "Candidate": "validation-candidate.log; full consumption and 100001-node tree match passed"
+      },
+      "Verification": "16 fresh child processes; each had 16 warmups, 8 Actual and 8 Result observations, four operations per observation, normalization invariant passed, DLL hashes matched manifest before/after.",
+      "MeasurementStartUTC": "2026-10-18T09:02:08.335683Z",
+      "MeasurementEndUTC": "2026-10-18T09:08:13.7066147Z",
+      "Interpretation": "Repeat-only upper 95% paired log-t confidence bound is below 1, supporting improvement in this recorded environment. This is not evidence that absolute timings or Dynamic PGO variance are constant.",
+      "Environment": [
+        {
+          "Stage": "before",
+          "TimestampUTC": "2026-10-18T08:59:56.2766005Z",
+          "SampleStartUTC": "2026-10-18T08:59:50.9609705Z",
+          "SampleEndUTC": "2026-10-18T08:59:54.4657422Z",
+          "ACLineStatus": 1,
+          "ACLineMeaning": "1=online, 0=offline, 255=unknown",
+          "BatterySaver": 0,
+          "BatterySaverMeaning": "1=active, 0=inactive",
+          "BatteryFlag": 1,
+          "BatteryLifePercent": 80,
+          "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+          "DotnetCpuActivityWindowSeconds": 3,
+          "ActiveDotnetProcesses": [],
+          "RelevantCpuObservations": [
+            {
+              "ProcessId": 2416,
+              "Name": "dwm.exe",
+              "DeltaCpuSeconds": 0.09375
+            },
+            {
+              "ProcessId": 2260,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.265625
+            },
+            {
+              "ProcessId": 16500,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.03125
+            },
+            {
+              "ProcessId": 2900,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 2.171875
+            },
+            {
+              "ProcessId": 21208,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.0625
+            },
+            {
+              "ProcessId": 31676,
+              "Name": "WmiPrvSE.exe",
+              "DeltaCpuSeconds": 0.265625
+            },
+            {
+              "ProcessId": 17708,
+              "Name": "Taskmgr.exe",
+              "DeltaCpuSeconds": 0.5625
+            },
+            {
+              "ProcessId": 31192,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.109375
+            },
+            {
+              "ProcessId": 9292,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.171875
+            },
+            {
+              "ProcessId": 9812,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 3880,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 12472,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.65625
+            },
+            {
+              "ProcessId": 31616,
+              "Name": "pwsh.exe",
+              "DeltaCpuSeconds": 1.328125
+            }
+          ],
+          "ObservationNote": "Relevant browser/UI and environment-sampling processes only. These are before/after snapshots; overlap with the benchmark logical CPU and effect on timings are unknown."
+        },
+        {
+          "Stage": "before",
+          "TimestampUTC": "2026-10-18T09:00:37.1243715Z",
+          "SampleStartUTC": "2026-10-18T09:00:31.8312126Z",
+          "SampleEndUTC": "2026-10-18T09:00:35.2688904Z",
+          "ACLineStatus": 1,
+          "ACLineMeaning": "1=online, 0=offline, 255=unknown",
+          "BatterySaver": 0,
+          "BatterySaverMeaning": "1=active, 0=inactive",
+          "BatteryFlag": 1,
+          "BatteryLifePercent": 80,
+          "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+          "DotnetCpuActivityWindowSeconds": 3,
+          "ActiveDotnetProcesses": [],
+          "RelevantCpuObservations": [
+            {
+              "ProcessId": 2416,
+              "Name": "dwm.exe",
+              "DeltaCpuSeconds": 0.625
+            },
+            {
+              "ProcessId": 18468,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 2260,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.375
+            },
+            {
+              "ProcessId": 16500,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 2900,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.265625
+            },
+            {
+              "ProcessId": 20396,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 31676,
+              "Name": "WmiPrvSE.exe",
+              "DeltaCpuSeconds": 0.25
+            },
+            {
+              "ProcessId": 17708,
+              "Name": "Taskmgr.exe",
+              "DeltaCpuSeconds": 0.53125
+            },
+            {
+              "ProcessId": 31192,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.09375
+            },
+            {
+              "ProcessId": 9292,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.90625
+            },
+            {
+              "ProcessId": 12472,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 1.953125
+            },
+            {
+              "ProcessId": 7504,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.03125
+            },
+            {
+              "ProcessId": 23728,
+              "Name": "pwsh.exe",
+              "DeltaCpuSeconds": 0.40625
+            }
+          ],
+          "ObservationNote": "Relevant browser/UI and environment-sampling processes only. These are before/after snapshots; overlap with the benchmark logical CPU and effect on timings are unknown."
+        },
+        {
+          "Stage": "after",
+          "TimestampUTC": "2026-10-18T09:08:37.9172846Z",
+          "SampleStartUTC": "2026-10-18T09:08:32.7619923Z",
+          "SampleEndUTC": "2026-10-18T09:08:36.2147352Z",
+          "ACLineStatus": 1,
+          "ACLineMeaning": "1=online, 0=offline, 255=unknown",
+          "BatterySaver": 0,
+          "BatterySaverMeaning": "1=active, 0=inactive",
+          "BatteryFlag": 1,
+          "BatteryLifePercent": 80,
+          "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+          "DotnetCpuActivityWindowSeconds": 3,
+          "ActiveDotnetProcesses": [],
+          "RelevantCpuObservations": [
+            {
+              "ProcessId": 2416,
+              "Name": "dwm.exe",
+              "DeltaCpuSeconds": 0.234375
+            },
+            {
+              "ProcessId": 18468,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.078125
+            },
+            {
+              "ProcessId": 2260,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.03125
+            },
+            {
+              "ProcessId": 16500,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 2900,
+              "Name": "ChatGPT.exe",
+              "DeltaCpuSeconds": 0.109375
+            },
+            {
+              "ProcessId": 31676,
+              "Name": "WmiPrvSE.exe",
+              "DeltaCpuSeconds": 0.234375
+            },
+            {
+              "ProcessId": 17708,
+              "Name": "Taskmgr.exe",
+              "DeltaCpuSeconds": 0.640625
+            },
+            {
+              "ProcessId": 31192,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.265625
+            },
+            {
+              "ProcessId": 9292,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.234375
+            },
+            {
+              "ProcessId": 9812,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 23840,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 3880,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.015625
+            },
+            {
+              "ProcessId": 12896,
+              "Name": "chrome.exe",
+              "DeltaCpuSeconds": 0.328125
+            },
+            {
+              "ProcessId": 32052,
+              "Name": "pwsh.exe",
+              "DeltaCpuSeconds": 1.328125
+            }
+          ],
+          "ObservationNote": "Relevant browser/UI and environment-sampling processes only. These are before/after snapshots; overlap with the benchmark logical CPU and effect on timings are unknown."
+        }
+      ],
+      "Limitations": [
+        "Measurable browser/UI background CPU was observed before and after timing. Affinity overlap and causation are unknown. No continuous external-load monitoring was used.",
+        "Two before-stage observations were retained. No applications were stopped, and measurement settings were not altered to select a favorable result.",
+        "Initial post-run CIM access failed in the sandbox; one elevated environment-only capture succeeded. No ordinary timing was repeated because of that failure.",
+        "Reuses frozen DLLs built before commit; current committed Cursol source hash is the same as the measured candidate."
+      ],
+      "Batch": "repeat01",
+      "PairCount": 8,
+      "DegreesOfFreedom": 7,
+      "TCritical95Df7": 2.364624251,
+      "PairedGeometricMeanRatio": 0.8691174227566525,
+      "Confidence95": {
+        "Lower": 0.8390052565914128,
+        "Upper": 0.9003103241664444
+      },
+      "BaselineMeanMs": 188.632228125,
+      "CandidateMeanMs": 163.827510546875,
+      "Pairs": [
+        {
+          "Block": 1,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 186396371.875,
+          "CandidateMeanNs": 164655106.25,
+          "CandidateOverBaseline": 0.8833600385763947,
+          "LogCandidateOverBaseline": -0.12402241677633168,
+          "BaselineAllocatedBytesPerOperation": 64505578,
+          "CandidateAllocatedBytesPerOperation": 64501834,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 2,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 191495190.625,
+          "CandidateMeanNs": 162782809.375,
+          "CandidateOverBaseline": 0.8500621286817239,
+          "LogCandidateOverBaseline": -0.16244583960217238,
+          "BaselineAllocatedBytesPerOperation": 64503176,
+          "CandidateAllocatedBytesPerOperation": 64502894,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 3,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 183108518.75,
+          "CandidateMeanNs": 160795953.125,
+          "CandidateOverBaseline": 0.8781456713356762,
+          "LogCandidateOverBaseline": -0.12994278642600487,
+          "BaselineAllocatedBytesPerOperation": 64503316,
+          "CandidateAllocatedBytesPerOperation": 64503400,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 4,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 182119565.625,
+          "CandidateMeanNs": 160417187.5,
+          "CandidateOverBaseline": 0.8808344504308391,
+          "LogCandidateOverBaseline": -0.12688558167864794,
+          "BaselineAllocatedBytesPerOperation": 64503494,
+          "CandidateAllocatedBytesPerOperation": 64502638,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 5,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 185402487.5,
+          "CandidateMeanNs": 166485790.625,
+          "CandidateOverBaseline": 0.8979695627061098,
+          "LogCandidateOverBaseline": -0.10761910579099625,
+          "BaselineAllocatedBytesPerOperation": 64502964,
+          "CandidateAllocatedBytesPerOperation": 64503510,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 6,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 179586159.375,
+          "CandidateMeanNs": 166185387.5,
+          "CandidateOverBaseline": 0.9253797067567029,
+          "LogCandidateOverBaseline": -0.07755113190820827,
+          "BaselineAllocatedBytesPerOperation": 64502350,
+          "CandidateAllocatedBytesPerOperation": 64503646,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 7,
+          "Order": "baseline-candidate",
+          "BaselineMeanNs": 200642406.25,
+          "CandidateMeanNs": 164992100,
+          "CandidateOverBaseline": 0.8223191850800483,
+          "LogCandidateOverBaseline": -0.19562665627897294,
+          "BaselineAllocatedBytesPerOperation": 64502298,
+          "CandidateAllocatedBytesPerOperation": 64502772,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        },
+        {
+          "Block": 8,
+          "Order": "candidate-baseline",
+          "BaselineMeanNs": 200307125,
+          "CandidateMeanNs": 164305750,
+          "CandidateOverBaseline": 0.8202691242261103,
+          "LogCandidateOverBaseline": -0.1981227922940233,
+          "BaselineAllocatedBytesPerOperation": 64505328,
+          "CandidateAllocatedBytesPerOperation": 64503890,
+          "BaselineAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "CandidateAssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+        }
+      ],
+      "Launches": [
+        {
+          "Run": "01-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 186396371.875,
+          "ActualMeanNs": 186396421.875,
+          "AllocatedBytesPerOperation": 64505578,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 757556400,
+              "Operations": 4,
+              "NsPerOperation": 189389100,
+              "DisplayNsPerOperation": 189389100
+            },
+            {
+              "BdnNanoseconds": 729650300,
+              "Operations": 4,
+              "NsPerOperation": 182412575,
+              "DisplayNsPerOperation": 182412600
+            },
+            {
+              "BdnNanoseconds": 730633600,
+              "Operations": 4,
+              "NsPerOperation": 182658400,
+              "DisplayNsPerOperation": 182658400
+            },
+            {
+              "BdnNanoseconds": 745560100,
+              "Operations": 4,
+              "NsPerOperation": 186390025,
+              "DisplayNsPerOperation": 186390000
+            },
+            {
+              "BdnNanoseconds": 734770700,
+              "Operations": 4,
+              "NsPerOperation": 183692675,
+              "DisplayNsPerOperation": 183692700
+            },
+            {
+              "BdnNanoseconds": 768836000,
+              "Operations": 4,
+              "NsPerOperation": 192209000,
+              "DisplayNsPerOperation": 192209000
+            },
+            {
+              "BdnNanoseconds": 747471400,
+              "Operations": 4,
+              "NsPerOperation": 186867850,
+              "DisplayNsPerOperation": 186867900
+            },
+            {
+              "BdnNanoseconds": 750207000,
+              "Operations": 4,
+              "NsPerOperation": 187551750,
+              "DisplayNsPerOperation": 187551800
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 757556200,
+              "Operations": 4,
+              "NsPerOperation": 189389050,
+              "DisplayNsPerOperation": 189389100
+            },
+            {
+              "BdnNanoseconds": 729650100,
+              "Operations": 4,
+              "NsPerOperation": 182412525,
+              "DisplayNsPerOperation": 182412500
+            },
+            {
+              "BdnNanoseconds": 730633400,
+              "Operations": 4,
+              "NsPerOperation": 182658350,
+              "DisplayNsPerOperation": 182658400
+            },
+            {
+              "BdnNanoseconds": 745559900,
+              "Operations": 4,
+              "NsPerOperation": 186389975,
+              "DisplayNsPerOperation": 186390000
+            },
+            {
+              "BdnNanoseconds": 734770500,
+              "Operations": 4,
+              "NsPerOperation": 183692625,
+              "DisplayNsPerOperation": 183692600
+            },
+            {
+              "BdnNanoseconds": 768835800,
+              "Operations": 4,
+              "NsPerOperation": 192208950,
+              "DisplayNsPerOperation": 192209000
+            },
+            {
+              "BdnNanoseconds": 747471200,
+              "Operations": 4,
+              "NsPerOperation": 186867800,
+              "DisplayNsPerOperation": 186867800
+            },
+            {
+              "BdnNanoseconds": 750206800,
+              "Operations": 4,
+              "NsPerOperation": 187551700,
+              "DisplayNsPerOperation": 187551700
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 36672,
+          "StartUTC": "2026-10-18T09:02:08.335683Z",
+          "WallSeconds": 24.5880852,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "02-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 191495190.625,
+          "ActualMeanNs": 191495240.625,
+          "AllocatedBytesPerOperation": 64503176,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 748417400,
+              "Operations": 4,
+              "NsPerOperation": 187104350,
+              "DisplayNsPerOperation": 187104400
+            },
+            {
+              "BdnNanoseconds": 758967600,
+              "Operations": 4,
+              "NsPerOperation": 189741900,
+              "DisplayNsPerOperation": 189741900
+            },
+            {
+              "BdnNanoseconds": 762935000,
+              "Operations": 4,
+              "NsPerOperation": 190733750,
+              "DisplayNsPerOperation": 190733800
+            },
+            {
+              "BdnNanoseconds": 730729800,
+              "Operations": 4,
+              "NsPerOperation": 182682450,
+              "DisplayNsPerOperation": 182682500
+            },
+            {
+              "BdnNanoseconds": 742481700,
+              "Operations": 4,
+              "NsPerOperation": 185620425,
+              "DisplayNsPerOperation": 185620400
+            },
+            {
+              "BdnNanoseconds": 732282000,
+              "Operations": 4,
+              "NsPerOperation": 183070500,
+              "DisplayNsPerOperation": 183070500
+            },
+            {
+              "BdnNanoseconds": 744154300,
+              "Operations": 4,
+              "NsPerOperation": 186038575,
+              "DisplayNsPerOperation": 186038600
+            },
+            {
+              "BdnNanoseconds": 907879900,
+              "Operations": 4,
+              "NsPerOperation": 226969975,
+              "DisplayNsPerOperation": 226970000
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 748417200,
+              "Operations": 4,
+              "NsPerOperation": 187104300,
+              "DisplayNsPerOperation": 187104300
+            },
+            {
+              "BdnNanoseconds": 758967400,
+              "Operations": 4,
+              "NsPerOperation": 189741850,
+              "DisplayNsPerOperation": 189741900
+            },
+            {
+              "BdnNanoseconds": 762934800,
+              "Operations": 4,
+              "NsPerOperation": 190733700,
+              "DisplayNsPerOperation": 190733700
+            },
+            {
+              "BdnNanoseconds": 730729600,
+              "Operations": 4,
+              "NsPerOperation": 182682400,
+              "DisplayNsPerOperation": 182682400
+            },
+            {
+              "BdnNanoseconds": 742481500,
+              "Operations": 4,
+              "NsPerOperation": 185620375,
+              "DisplayNsPerOperation": 185620400
+            },
+            {
+              "BdnNanoseconds": 732281800,
+              "Operations": 4,
+              "NsPerOperation": 183070450,
+              "DisplayNsPerOperation": 183070500
+            },
+            {
+              "BdnNanoseconds": 744154100,
+              "Operations": 4,
+              "NsPerOperation": 186038525,
+              "DisplayNsPerOperation": 186038500
+            },
+            {
+              "BdnNanoseconds": 907879700,
+              "Operations": 4,
+              "NsPerOperation": 226969925,
+              "DisplayNsPerOperation": 226969900
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 26140,
+          "StartUTC": "2026-10-18T09:03:18.2163247Z",
+          "WallSeconds": 23.5124403,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "03-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 183108518.75,
+          "ActualMeanNs": 183108568.75,
+          "AllocatedBytesPerOperation": 64503316,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 714588300,
+              "Operations": 4,
+              "NsPerOperation": 178647075,
+              "DisplayNsPerOperation": 178647100
+            },
+            {
+              "BdnNanoseconds": 754574700,
+              "Operations": 4,
+              "NsPerOperation": 188643675,
+              "DisplayNsPerOperation": 188643700
+            },
+            {
+              "BdnNanoseconds": 730665200,
+              "Operations": 4,
+              "NsPerOperation": 182666300,
+              "DisplayNsPerOperation": 182666300
+            },
+            {
+              "BdnNanoseconds": 721604800,
+              "Operations": 4,
+              "NsPerOperation": 180401200,
+              "DisplayNsPerOperation": 180401200
+            },
+            {
+              "BdnNanoseconds": 734246000,
+              "Operations": 4,
+              "NsPerOperation": 183561500,
+              "DisplayNsPerOperation": 183561500
+            },
+            {
+              "BdnNanoseconds": 737051700,
+              "Operations": 4,
+              "NsPerOperation": 184262925,
+              "DisplayNsPerOperation": 184262900
+            },
+            {
+              "BdnNanoseconds": 738109600,
+              "Operations": 4,
+              "NsPerOperation": 184527400,
+              "DisplayNsPerOperation": 184527400
+            },
+            {
+              "BdnNanoseconds": 728633900,
+              "Operations": 4,
+              "NsPerOperation": 182158475,
+              "DisplayNsPerOperation": 182158500
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 714588100,
+              "Operations": 4,
+              "NsPerOperation": 178647025,
+              "DisplayNsPerOperation": 178647000
+            },
+            {
+              "BdnNanoseconds": 754574500,
+              "Operations": 4,
+              "NsPerOperation": 188643625,
+              "DisplayNsPerOperation": 188643600
+            },
+            {
+              "BdnNanoseconds": 730665000,
+              "Operations": 4,
+              "NsPerOperation": 182666250,
+              "DisplayNsPerOperation": 182666300
+            },
+            {
+              "BdnNanoseconds": 721604600,
+              "Operations": 4,
+              "NsPerOperation": 180401150,
+              "DisplayNsPerOperation": 180401200
+            },
+            {
+              "BdnNanoseconds": 734245800,
+              "Operations": 4,
+              "NsPerOperation": 183561450,
+              "DisplayNsPerOperation": 183561500
+            },
+            {
+              "BdnNanoseconds": 737051500,
+              "Operations": 4,
+              "NsPerOperation": 184262875,
+              "DisplayNsPerOperation": 184262900
+            },
+            {
+              "BdnNanoseconds": 738109400,
+              "Operations": 4,
+              "NsPerOperation": 184527350,
+              "DisplayNsPerOperation": 184527400
+            },
+            {
+              "BdnNanoseconds": 728633700,
+              "Operations": 4,
+              "NsPerOperation": 182158425,
+              "DisplayNsPerOperation": 182158400
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 2560,
+          "StartUTC": "2026-10-18T09:03:42.0598672Z",
+          "WallSeconds": 22.4339849,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "04-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 182119565.625,
+          "ActualMeanNs": 182119615.625,
+          "AllocatedBytesPerOperation": 64503494,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 699261300,
+              "Operations": 4,
+              "NsPerOperation": 174815325,
+              "DisplayNsPerOperation": 174815300
+            },
+            {
+              "BdnNanoseconds": 740385400,
+              "Operations": 4,
+              "NsPerOperation": 185096350,
+              "DisplayNsPerOperation": 185096400
+            },
+            {
+              "BdnNanoseconds": 775640800,
+              "Operations": 4,
+              "NsPerOperation": 193910200,
+              "DisplayNsPerOperation": 193910200
+            },
+            {
+              "BdnNanoseconds": 718655900,
+              "Operations": 4,
+              "NsPerOperation": 179663975,
+              "DisplayNsPerOperation": 179664000
+            },
+            {
+              "BdnNanoseconds": 725784100,
+              "Operations": 4,
+              "NsPerOperation": 181446025,
+              "DisplayNsPerOperation": 181446000
+            },
+            {
+              "BdnNanoseconds": 703288000,
+              "Operations": 4,
+              "NsPerOperation": 175822000,
+              "DisplayNsPerOperation": 175822000
+            },
+            {
+              "BdnNanoseconds": 682760100,
+              "Operations": 4,
+              "NsPerOperation": 170690025,
+              "DisplayNsPerOperation": 170690000
+            },
+            {
+              "BdnNanoseconds": 782052100,
+              "Operations": 4,
+              "NsPerOperation": 195513025,
+              "DisplayNsPerOperation": 195513000
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 699261100,
+              "Operations": 4,
+              "NsPerOperation": 174815275,
+              "DisplayNsPerOperation": 174815300
+            },
+            {
+              "BdnNanoseconds": 740385200,
+              "Operations": 4,
+              "NsPerOperation": 185096300,
+              "DisplayNsPerOperation": 185096300
+            },
+            {
+              "BdnNanoseconds": 775640600,
+              "Operations": 4,
+              "NsPerOperation": 193910150,
+              "DisplayNsPerOperation": 193910200
+            },
+            {
+              "BdnNanoseconds": 718655700,
+              "Operations": 4,
+              "NsPerOperation": 179663925,
+              "DisplayNsPerOperation": 179663900
+            },
+            {
+              "BdnNanoseconds": 725783900,
+              "Operations": 4,
+              "NsPerOperation": 181445975,
+              "DisplayNsPerOperation": 181446000
+            },
+            {
+              "BdnNanoseconds": 703287800,
+              "Operations": 4,
+              "NsPerOperation": 175821950,
+              "DisplayNsPerOperation": 175822000
+            },
+            {
+              "BdnNanoseconds": 682759900,
+              "Operations": 4,
+              "NsPerOperation": 170689975,
+              "DisplayNsPerOperation": 170690000
+            },
+            {
+              "BdnNanoseconds": 782051900,
+              "Operations": 4,
+              "NsPerOperation": 195512975,
+              "DisplayNsPerOperation": 195513000
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 20220,
+          "StartUTC": "2026-10-18T09:04:49.5889858Z",
+          "WallSeconds": 22.6972622,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "05-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 185402487.5,
+          "ActualMeanNs": 185402537.5,
+          "AllocatedBytesPerOperation": 64502964,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 728537100,
+              "Operations": 4,
+              "NsPerOperation": 182134275,
+              "DisplayNsPerOperation": 182134300
+            },
+            {
+              "BdnNanoseconds": 723864900,
+              "Operations": 4,
+              "NsPerOperation": 180966225,
+              "DisplayNsPerOperation": 180966200
+            },
+            {
+              "BdnNanoseconds": 717209500,
+              "Operations": 4,
+              "NsPerOperation": 179302375,
+              "DisplayNsPerOperation": 179302400
+            },
+            {
+              "BdnNanoseconds": 722843000,
+              "Operations": 4,
+              "NsPerOperation": 180710750,
+              "DisplayNsPerOperation": 180710800
+            },
+            {
+              "BdnNanoseconds": 731468900,
+              "Operations": 4,
+              "NsPerOperation": 182867225,
+              "DisplayNsPerOperation": 182867200
+            },
+            {
+              "BdnNanoseconds": 759361300,
+              "Operations": 4,
+              "NsPerOperation": 189840325,
+              "DisplayNsPerOperation": 189840300
+            },
+            {
+              "BdnNanoseconds": 731309200,
+              "Operations": 4,
+              "NsPerOperation": 182827300,
+              "DisplayNsPerOperation": 182827300
+            },
+            {
+              "BdnNanoseconds": 818287300,
+              "Operations": 4,
+              "NsPerOperation": 204571825,
+              "DisplayNsPerOperation": 204571800
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 728536900,
+              "Operations": 4,
+              "NsPerOperation": 182134225,
+              "DisplayNsPerOperation": 182134200
+            },
+            {
+              "BdnNanoseconds": 723864700,
+              "Operations": 4,
+              "NsPerOperation": 180966175,
+              "DisplayNsPerOperation": 180966200
+            },
+            {
+              "BdnNanoseconds": 717209300,
+              "Operations": 4,
+              "NsPerOperation": 179302325,
+              "DisplayNsPerOperation": 179302300
+            },
+            {
+              "BdnNanoseconds": 722842800,
+              "Operations": 4,
+              "NsPerOperation": 180710700,
+              "DisplayNsPerOperation": 180710700
+            },
+            {
+              "BdnNanoseconds": 731468700,
+              "Operations": 4,
+              "NsPerOperation": 182867175,
+              "DisplayNsPerOperation": 182867200
+            },
+            {
+              "BdnNanoseconds": 759361100,
+              "Operations": 4,
+              "NsPerOperation": 189840275,
+              "DisplayNsPerOperation": 189840300
+            },
+            {
+              "BdnNanoseconds": 731309000,
+              "Operations": 4,
+              "NsPerOperation": 182827250,
+              "DisplayNsPerOperation": 182827300
+            },
+            {
+              "BdnNanoseconds": 818287100,
+              "Operations": 4,
+              "NsPerOperation": 204571775,
+              "DisplayNsPerOperation": 204571800
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 9952,
+          "StartUTC": "2026-10-18T09:05:12.673716Z",
+          "WallSeconds": 22.7997242,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "06-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 179586159.375,
+          "ActualMeanNs": 179586209.375,
+          "AllocatedBytesPerOperation": 64502350,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 745821600,
+              "Operations": 4,
+              "NsPerOperation": 186455400,
+              "DisplayNsPerOperation": 186455400
+            },
+            {
+              "BdnNanoseconds": 705266800,
+              "Operations": 4,
+              "NsPerOperation": 176316700,
+              "DisplayNsPerOperation": 176316700
+            },
+            {
+              "BdnNanoseconds": 718694700,
+              "Operations": 4,
+              "NsPerOperation": 179673675,
+              "DisplayNsPerOperation": 179673700
+            },
+            {
+              "BdnNanoseconds": 720161000,
+              "Operations": 4,
+              "NsPerOperation": 180040250,
+              "DisplayNsPerOperation": 180040300
+            },
+            {
+              "BdnNanoseconds": 717778200,
+              "Operations": 4,
+              "NsPerOperation": 179444550,
+              "DisplayNsPerOperation": 179444600
+            },
+            {
+              "BdnNanoseconds": 718822200,
+              "Operations": 4,
+              "NsPerOperation": 179705550,
+              "DisplayNsPerOperation": 179705600
+            },
+            {
+              "BdnNanoseconds": 717557400,
+              "Operations": 4,
+              "NsPerOperation": 179389350,
+              "DisplayNsPerOperation": 179389400
+            },
+            {
+              "BdnNanoseconds": 702656800,
+              "Operations": 4,
+              "NsPerOperation": 175664200,
+              "DisplayNsPerOperation": 175664200
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 745821400,
+              "Operations": 4,
+              "NsPerOperation": 186455350,
+              "DisplayNsPerOperation": 186455400
+            },
+            {
+              "BdnNanoseconds": 705266600,
+              "Operations": 4,
+              "NsPerOperation": 176316650,
+              "DisplayNsPerOperation": 176316700
+            },
+            {
+              "BdnNanoseconds": 718694500,
+              "Operations": 4,
+              "NsPerOperation": 179673625,
+              "DisplayNsPerOperation": 179673600
+            },
+            {
+              "BdnNanoseconds": 720160800,
+              "Operations": 4,
+              "NsPerOperation": 180040200,
+              "DisplayNsPerOperation": 180040200
+            },
+            {
+              "BdnNanoseconds": 717778000,
+              "Operations": 4,
+              "NsPerOperation": 179444500,
+              "DisplayNsPerOperation": 179444500
+            },
+            {
+              "BdnNanoseconds": 718822000,
+              "Operations": 4,
+              "NsPerOperation": 179705500,
+              "DisplayNsPerOperation": 179705500
+            },
+            {
+              "BdnNanoseconds": 717557200,
+              "Operations": 4,
+              "NsPerOperation": 179389300,
+              "DisplayNsPerOperation": 179389300
+            },
+            {
+              "BdnNanoseconds": 702656600,
+              "Operations": 4,
+              "NsPerOperation": 175664150,
+              "DisplayNsPerOperation": 175664200
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 33208,
+          "StartUTC": "2026-10-18T09:06:20.1083621Z",
+          "WallSeconds": 23.0517661,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "07-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 200642406.25,
+          "ActualMeanNs": 200642456.25,
+          "AllocatedBytesPerOperation": 64502298,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 755409500,
+              "Operations": 4,
+              "NsPerOperation": 188852375,
+              "DisplayNsPerOperation": 188852400
+            },
+            {
+              "BdnNanoseconds": 829786600,
+              "Operations": 4,
+              "NsPerOperation": 207446650,
+              "DisplayNsPerOperation": 207446700
+            },
+            {
+              "BdnNanoseconds": 908527100,
+              "Operations": 4,
+              "NsPerOperation": 227131775,
+              "DisplayNsPerOperation": 227131800
+            },
+            {
+              "BdnNanoseconds": 819346000,
+              "Operations": 4,
+              "NsPerOperation": 204836500,
+              "DisplayNsPerOperation": 204836500
+            },
+            {
+              "BdnNanoseconds": 782894100,
+              "Operations": 4,
+              "NsPerOperation": 195723525,
+              "DisplayNsPerOperation": 195723500
+            },
+            {
+              "BdnNanoseconds": 781848400,
+              "Operations": 4,
+              "NsPerOperation": 195462100,
+              "DisplayNsPerOperation": 195462100
+            },
+            {
+              "BdnNanoseconds": 766754900,
+              "Operations": 4,
+              "NsPerOperation": 191688725,
+              "DisplayNsPerOperation": 191688700
+            },
+            {
+              "BdnNanoseconds": 775992000,
+              "Operations": 4,
+              "NsPerOperation": 193998000,
+              "DisplayNsPerOperation": 193998000
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 755409300,
+              "Operations": 4,
+              "NsPerOperation": 188852325,
+              "DisplayNsPerOperation": 188852300
+            },
+            {
+              "BdnNanoseconds": 829786400,
+              "Operations": 4,
+              "NsPerOperation": 207446600,
+              "DisplayNsPerOperation": 207446600
+            },
+            {
+              "BdnNanoseconds": 908526900,
+              "Operations": 4,
+              "NsPerOperation": 227131725,
+              "DisplayNsPerOperation": 227131700
+            },
+            {
+              "BdnNanoseconds": 819345800,
+              "Operations": 4,
+              "NsPerOperation": 204836450,
+              "DisplayNsPerOperation": 204836500
+            },
+            {
+              "BdnNanoseconds": 782893900,
+              "Operations": 4,
+              "NsPerOperation": 195723475,
+              "DisplayNsPerOperation": 195723500
+            },
+            {
+              "BdnNanoseconds": 781848200,
+              "Operations": 4,
+              "NsPerOperation": 195462050,
+              "DisplayNsPerOperation": 195462100
+            },
+            {
+              "BdnNanoseconds": 766754700,
+              "Operations": 4,
+              "NsPerOperation": 191688675,
+              "DisplayNsPerOperation": 191688700
+            },
+            {
+              "BdnNanoseconds": 775991800,
+              "Operations": 4,
+              "NsPerOperation": 193997950,
+              "DisplayNsPerOperation": 193998000
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 12336,
+          "StartUTC": "2026-10-18T09:06:43.4819719Z",
+          "WallSeconds": 23.8754096,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "08-baseline",
+          "Batch": "repeat01",
+          "Variant": "baseline",
+          "MeanNs": 200307125,
+          "ActualMeanNs": 200307175,
+          "AllocatedBytesPerOperation": 64505328,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 825759500,
+              "Operations": 4,
+              "NsPerOperation": 206439875,
+              "DisplayNsPerOperation": 206439900
+            },
+            {
+              "BdnNanoseconds": 854028500,
+              "Operations": 4,
+              "NsPerOperation": 213507125,
+              "DisplayNsPerOperation": 213507100
+            },
+            {
+              "BdnNanoseconds": 779881700,
+              "Operations": 4,
+              "NsPerOperation": 194970425,
+              "DisplayNsPerOperation": 194970400
+            },
+            {
+              "BdnNanoseconds": 764311700,
+              "Operations": 4,
+              "NsPerOperation": 191077925,
+              "DisplayNsPerOperation": 191077900
+            },
+            {
+              "BdnNanoseconds": 789200900,
+              "Operations": 4,
+              "NsPerOperation": 197300225,
+              "DisplayNsPerOperation": 197300200
+            },
+            {
+              "BdnNanoseconds": 867451300,
+              "Operations": 4,
+              "NsPerOperation": 216862825,
+              "DisplayNsPerOperation": 216862800
+            },
+            {
+              "BdnNanoseconds": 769927400,
+              "Operations": 4,
+              "NsPerOperation": 192481850,
+              "DisplayNsPerOperation": 192481900
+            },
+            {
+              "BdnNanoseconds": 759268600,
+              "Operations": 4,
+              "NsPerOperation": 189817150,
+              "DisplayNsPerOperation": 189817200
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 825759300,
+              "Operations": 4,
+              "NsPerOperation": 206439825,
+              "DisplayNsPerOperation": 206439800
+            },
+            {
+              "BdnNanoseconds": 854028300,
+              "Operations": 4,
+              "NsPerOperation": 213507075,
+              "DisplayNsPerOperation": 213507100
+            },
+            {
+              "BdnNanoseconds": 779881500,
+              "Operations": 4,
+              "NsPerOperation": 194970375,
+              "DisplayNsPerOperation": 194970400
+            },
+            {
+              "BdnNanoseconds": 764311500,
+              "Operations": 4,
+              "NsPerOperation": 191077875,
+              "DisplayNsPerOperation": 191077900
+            },
+            {
+              "BdnNanoseconds": 789200700,
+              "Operations": 4,
+              "NsPerOperation": 197300175,
+              "DisplayNsPerOperation": 197300200
+            },
+            {
+              "BdnNanoseconds": 867451100,
+              "Operations": 4,
+              "NsPerOperation": 216862775,
+              "DisplayNsPerOperation": 216862800
+            },
+            {
+              "BdnNanoseconds": 769927200,
+              "Operations": 4,
+              "NsPerOperation": 192481800,
+              "DisplayNsPerOperation": 192481800
+            },
+            {
+              "BdnNanoseconds": 759268400,
+              "Operations": 4,
+              "NsPerOperation": 189817100,
+              "DisplayNsPerOperation": 189817100
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 25624,
+          "StartUTC": "2026-10-18T09:07:50.1231396Z",
+          "WallSeconds": 23.5834751,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "E34C6935D89B0CF8CC81D352F24F590A0F091C29E036F16129DEDC7F8279A918",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "01-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 164655106.25,
+          "ActualMeanNs": 164655156.25,
+          "AllocatedBytesPerOperation": 64501834,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 661528500,
+              "Operations": 4,
+              "NsPerOperation": 165382125,
+              "DisplayNsPerOperation": 165382100
+            },
+            {
+              "BdnNanoseconds": 675262800,
+              "Operations": 4,
+              "NsPerOperation": 168815700,
+              "DisplayNsPerOperation": 168815700
+            },
+            {
+              "BdnNanoseconds": 640173400,
+              "Operations": 4,
+              "NsPerOperation": 160043350,
+              "DisplayNsPerOperation": 160043400
+            },
+            {
+              "BdnNanoseconds": 730178500,
+              "Operations": 4,
+              "NsPerOperation": 182544625,
+              "DisplayNsPerOperation": 182544600
+            },
+            {
+              "BdnNanoseconds": 639612800,
+              "Operations": 4,
+              "NsPerOperation": 159903200,
+              "DisplayNsPerOperation": 159903200
+            },
+            {
+              "BdnNanoseconds": 652387500,
+              "Operations": 4,
+              "NsPerOperation": 163096875,
+              "DisplayNsPerOperation": 163096900
+            },
+            {
+              "BdnNanoseconds": 648510600,
+              "Operations": 4,
+              "NsPerOperation": 162127650,
+              "DisplayNsPerOperation": 162127700
+            },
+            {
+              "BdnNanoseconds": 621310900,
+              "Operations": 4,
+              "NsPerOperation": 155327725,
+              "DisplayNsPerOperation": 155327700
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 661528300,
+              "Operations": 4,
+              "NsPerOperation": 165382075,
+              "DisplayNsPerOperation": 165382100
+            },
+            {
+              "BdnNanoseconds": 675262600,
+              "Operations": 4,
+              "NsPerOperation": 168815650,
+              "DisplayNsPerOperation": 168815700
+            },
+            {
+              "BdnNanoseconds": 640173200,
+              "Operations": 4,
+              "NsPerOperation": 160043300,
+              "DisplayNsPerOperation": 160043300
+            },
+            {
+              "BdnNanoseconds": 730178300,
+              "Operations": 4,
+              "NsPerOperation": 182544575,
+              "DisplayNsPerOperation": 182544600
+            },
+            {
+              "BdnNanoseconds": 639612600,
+              "Operations": 4,
+              "NsPerOperation": 159903150,
+              "DisplayNsPerOperation": 159903200
+            },
+            {
+              "BdnNanoseconds": 652387300,
+              "Operations": 4,
+              "NsPerOperation": 163096825,
+              "DisplayNsPerOperation": 163096800
+            },
+            {
+              "BdnNanoseconds": 648510400,
+              "Operations": 4,
+              "NsPerOperation": 162127600,
+              "DisplayNsPerOperation": 162127600
+            },
+            {
+              "BdnNanoseconds": 621310700,
+              "Operations": 4,
+              "NsPerOperation": 155327675,
+              "DisplayNsPerOperation": 155327700
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 35928,
+          "StartUTC": "2026-10-18T09:02:33.7035317Z",
+          "WallSeconds": 22.0353985,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "02-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 162782809.375,
+          "ActualMeanNs": 162782859.375,
+          "AllocatedBytesPerOperation": 64502894,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 646656500,
+              "Operations": 4,
+              "NsPerOperation": 161664125,
+              "DisplayNsPerOperation": 161664100
+            },
+            {
+              "BdnNanoseconds": 650335700,
+              "Operations": 4,
+              "NsPerOperation": 162583925,
+              "DisplayNsPerOperation": 162583900
+            },
+            {
+              "BdnNanoseconds": 650624100,
+              "Operations": 4,
+              "NsPerOperation": 162656025,
+              "DisplayNsPerOperation": 162656000
+            },
+            {
+              "BdnNanoseconds": 655652500,
+              "Operations": 4,
+              "NsPerOperation": 163913125,
+              "DisplayNsPerOperation": 163913100
+            },
+            {
+              "BdnNanoseconds": 633575000,
+              "Operations": 4,
+              "NsPerOperation": 158393750,
+              "DisplayNsPerOperation": 158393800
+            },
+            {
+              "BdnNanoseconds": 652684500,
+              "Operations": 4,
+              "NsPerOperation": 163171125,
+              "DisplayNsPerOperation": 163171100
+            },
+            {
+              "BdnNanoseconds": 669372200,
+              "Operations": 4,
+              "NsPerOperation": 167343050,
+              "DisplayNsPerOperation": 167343100
+            },
+            {
+              "BdnNanoseconds": 650151000,
+              "Operations": 4,
+              "NsPerOperation": 162537750,
+              "DisplayNsPerOperation": 162537800
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 646656300,
+              "Operations": 4,
+              "NsPerOperation": 161664075,
+              "DisplayNsPerOperation": 161664100
+            },
+            {
+              "BdnNanoseconds": 650335500,
+              "Operations": 4,
+              "NsPerOperation": 162583875,
+              "DisplayNsPerOperation": 162583900
+            },
+            {
+              "BdnNanoseconds": 650623900,
+              "Operations": 4,
+              "NsPerOperation": 162655975,
+              "DisplayNsPerOperation": 162656000
+            },
+            {
+              "BdnNanoseconds": 655652300,
+              "Operations": 4,
+              "NsPerOperation": 163913075,
+              "DisplayNsPerOperation": 163913100
+            },
+            {
+              "BdnNanoseconds": 633574800,
+              "Operations": 4,
+              "NsPerOperation": 158393700,
+              "DisplayNsPerOperation": 158393700
+            },
+            {
+              "BdnNanoseconds": 652684300,
+              "Operations": 4,
+              "NsPerOperation": 163171075,
+              "DisplayNsPerOperation": 163171100
+            },
+            {
+              "BdnNanoseconds": 669372000,
+              "Operations": 4,
+              "NsPerOperation": 167343000,
+              "DisplayNsPerOperation": 167343000
+            },
+            {
+              "BdnNanoseconds": 650150800,
+              "Operations": 4,
+              "NsPerOperation": 162537700,
+              "DisplayNsPerOperation": 162537700
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 18624,
+          "StartUTC": "2026-10-18T09:02:56.2602244Z",
+          "WallSeconds": 21.6184712,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "03-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 160795953.125,
+          "ActualMeanNs": 160796003.125,
+          "AllocatedBytesPerOperation": 64503400,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 657360200,
+              "Operations": 4,
+              "NsPerOperation": 164340050,
+              "DisplayNsPerOperation": 164340100
+            },
+            {
+              "BdnNanoseconds": 639083900,
+              "Operations": 4,
+              "NsPerOperation": 159770975,
+              "DisplayNsPerOperation": 159771000
+            },
+            {
+              "BdnNanoseconds": 656777300,
+              "Operations": 4,
+              "NsPerOperation": 164194325,
+              "DisplayNsPerOperation": 164194300
+            },
+            {
+              "BdnNanoseconds": 642320600,
+              "Operations": 4,
+              "NsPerOperation": 160580150,
+              "DisplayNsPerOperation": 160580200
+            },
+            {
+              "BdnNanoseconds": 657634300,
+              "Operations": 4,
+              "NsPerOperation": 164408575,
+              "DisplayNsPerOperation": 164408600
+            },
+            {
+              "BdnNanoseconds": 626125600,
+              "Operations": 4,
+              "NsPerOperation": 156531400,
+              "DisplayNsPerOperation": 156531400
+            },
+            {
+              "BdnNanoseconds": 631448900,
+              "Operations": 4,
+              "NsPerOperation": 157862225,
+              "DisplayNsPerOperation": 157862200
+            },
+            {
+              "BdnNanoseconds": 634721300,
+              "Operations": 4,
+              "NsPerOperation": 158680325,
+              "DisplayNsPerOperation": 158680300
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 657360000,
+              "Operations": 4,
+              "NsPerOperation": 164340000,
+              "DisplayNsPerOperation": 164340000
+            },
+            {
+              "BdnNanoseconds": 639083700,
+              "Operations": 4,
+              "NsPerOperation": 159770925,
+              "DisplayNsPerOperation": 159770900
+            },
+            {
+              "BdnNanoseconds": 656777100,
+              "Operations": 4,
+              "NsPerOperation": 164194275,
+              "DisplayNsPerOperation": 164194300
+            },
+            {
+              "BdnNanoseconds": 642320400,
+              "Operations": 4,
+              "NsPerOperation": 160580100,
+              "DisplayNsPerOperation": 160580100
+            },
+            {
+              "BdnNanoseconds": 657634100,
+              "Operations": 4,
+              "NsPerOperation": 164408525,
+              "DisplayNsPerOperation": 164408500
+            },
+            {
+              "BdnNanoseconds": 626125400,
+              "Operations": 4,
+              "NsPerOperation": 156531350,
+              "DisplayNsPerOperation": 156531400
+            },
+            {
+              "BdnNanoseconds": 631448700,
+              "Operations": 4,
+              "NsPerOperation": 157862175,
+              "DisplayNsPerOperation": 157862200
+            },
+            {
+              "BdnNanoseconds": 634721100,
+              "Operations": 4,
+              "NsPerOperation": 158680275,
+              "DisplayNsPerOperation": 158680300
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 13380,
+          "StartUTC": "2026-10-18T09:04:04.8159655Z",
+          "WallSeconds": 21.5920903,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "04-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 160417187.5,
+          "ActualMeanNs": 160417237.5,
+          "AllocatedBytesPerOperation": 64502638,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 624630600,
+              "Operations": 4,
+              "NsPerOperation": 156157650,
+              "DisplayNsPerOperation": 156157700
+            },
+            {
+              "BdnNanoseconds": 631425700,
+              "Operations": 4,
+              "NsPerOperation": 157856425,
+              "DisplayNsPerOperation": 157856400
+            },
+            {
+              "BdnNanoseconds": 638614900,
+              "Operations": 4,
+              "NsPerOperation": 159653725,
+              "DisplayNsPerOperation": 159653700
+            },
+            {
+              "BdnNanoseconds": 652225700,
+              "Operations": 4,
+              "NsPerOperation": 163056425,
+              "DisplayNsPerOperation": 163056400
+            },
+            {
+              "BdnNanoseconds": 656443200,
+              "Operations": 4,
+              "NsPerOperation": 164110800,
+              "DisplayNsPerOperation": 164110800
+            },
+            {
+              "BdnNanoseconds": 645297700,
+              "Operations": 4,
+              "NsPerOperation": 161324425,
+              "DisplayNsPerOperation": 161324400
+            },
+            {
+              "BdnNanoseconds": 643842500,
+              "Operations": 4,
+              "NsPerOperation": 160960625,
+              "DisplayNsPerOperation": 160960600
+            },
+            {
+              "BdnNanoseconds": 640871300,
+              "Operations": 4,
+              "NsPerOperation": 160217825,
+              "DisplayNsPerOperation": 160217800
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 624630400,
+              "Operations": 4,
+              "NsPerOperation": 156157600,
+              "DisplayNsPerOperation": 156157600
+            },
+            {
+              "BdnNanoseconds": 631425500,
+              "Operations": 4,
+              "NsPerOperation": 157856375,
+              "DisplayNsPerOperation": 157856400
+            },
+            {
+              "BdnNanoseconds": 638614700,
+              "Operations": 4,
+              "NsPerOperation": 159653675,
+              "DisplayNsPerOperation": 159653700
+            },
+            {
+              "BdnNanoseconds": 652225500,
+              "Operations": 4,
+              "NsPerOperation": 163056375,
+              "DisplayNsPerOperation": 163056400
+            },
+            {
+              "BdnNanoseconds": 656443000,
+              "Operations": 4,
+              "NsPerOperation": 164110750,
+              "DisplayNsPerOperation": 164110800
+            },
+            {
+              "BdnNanoseconds": 645297500,
+              "Operations": 4,
+              "NsPerOperation": 161324375,
+              "DisplayNsPerOperation": 161324400
+            },
+            {
+              "BdnNanoseconds": 643842300,
+              "Operations": 4,
+              "NsPerOperation": 160960575,
+              "DisplayNsPerOperation": 160960600
+            },
+            {
+              "BdnNanoseconds": 640871100,
+              "Operations": 4,
+              "NsPerOperation": 160217775,
+              "DisplayNsPerOperation": 160217800
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 20676,
+          "StartUTC": "2026-10-18T09:04:26.7963902Z",
+          "WallSeconds": 22.4531056,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "05-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 166485790.625,
+          "ActualMeanNs": 166485840.625,
+          "AllocatedBytesPerOperation": 64503510,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 653245700,
+              "Operations": 4,
+              "NsPerOperation": 163311425,
+              "DisplayNsPerOperation": 163311400
+            },
+            {
+              "BdnNanoseconds": 664913700,
+              "Operations": 4,
+              "NsPerOperation": 166228425,
+              "DisplayNsPerOperation": 166228400
+            },
+            {
+              "BdnNanoseconds": 648866300,
+              "Operations": 4,
+              "NsPerOperation": 162216575,
+              "DisplayNsPerOperation": 162216600
+            },
+            {
+              "BdnNanoseconds": 698249900,
+              "Operations": 4,
+              "NsPerOperation": 174562475,
+              "DisplayNsPerOperation": 174562500
+            },
+            {
+              "BdnNanoseconds": 664692800,
+              "Operations": 4,
+              "NsPerOperation": 166173200,
+              "DisplayNsPerOperation": 166173200
+            },
+            {
+              "BdnNanoseconds": 687675300,
+              "Operations": 4,
+              "NsPerOperation": 171918825,
+              "DisplayNsPerOperation": 171918800
+            },
+            {
+              "BdnNanoseconds": 670908900,
+              "Operations": 4,
+              "NsPerOperation": 167727225,
+              "DisplayNsPerOperation": 167727200
+            },
+            {
+              "BdnNanoseconds": 638994300,
+              "Operations": 4,
+              "NsPerOperation": 159748575,
+              "DisplayNsPerOperation": 159748600
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 653245500,
+              "Operations": 4,
+              "NsPerOperation": 163311375,
+              "DisplayNsPerOperation": 163311400
+            },
+            {
+              "BdnNanoseconds": 664913500,
+              "Operations": 4,
+              "NsPerOperation": 166228375,
+              "DisplayNsPerOperation": 166228400
+            },
+            {
+              "BdnNanoseconds": 648866100,
+              "Operations": 4,
+              "NsPerOperation": 162216525,
+              "DisplayNsPerOperation": 162216500
+            },
+            {
+              "BdnNanoseconds": 698249700,
+              "Operations": 4,
+              "NsPerOperation": 174562425,
+              "DisplayNsPerOperation": 174562400
+            },
+            {
+              "BdnNanoseconds": 664692600,
+              "Operations": 4,
+              "NsPerOperation": 166173150,
+              "DisplayNsPerOperation": 166173200
+            },
+            {
+              "BdnNanoseconds": 687675100,
+              "Operations": 4,
+              "NsPerOperation": 171918775,
+              "DisplayNsPerOperation": 171918800
+            },
+            {
+              "BdnNanoseconds": 670908700,
+              "Operations": 4,
+              "NsPerOperation": 167727175,
+              "DisplayNsPerOperation": 167727200
+            },
+            {
+              "BdnNanoseconds": 638994100,
+              "Operations": 4,
+              "NsPerOperation": 159748525,
+              "DisplayNsPerOperation": 159748500
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 13276,
+          "StartUTC": "2026-10-18T09:05:35.7876895Z",
+          "WallSeconds": 21.749144,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "06-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 166185387.5,
+          "ActualMeanNs": 166185437.5,
+          "AllocatedBytesPerOperation": 64503646,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 667966200,
+              "Operations": 4,
+              "NsPerOperation": 166991550,
+              "DisplayNsPerOperation": 166991600
+            },
+            {
+              "BdnNanoseconds": 638185900,
+              "Operations": 4,
+              "NsPerOperation": 159546475,
+              "DisplayNsPerOperation": 159546500
+            },
+            {
+              "BdnNanoseconds": 677442900,
+              "Operations": 4,
+              "NsPerOperation": 169360725,
+              "DisplayNsPerOperation": 169360700
+            },
+            {
+              "BdnNanoseconds": 683760200,
+              "Operations": 4,
+              "NsPerOperation": 170940050,
+              "DisplayNsPerOperation": 170940100
+            },
+            {
+              "BdnNanoseconds": 643908600,
+              "Operations": 4,
+              "NsPerOperation": 160977150,
+              "DisplayNsPerOperation": 160977200
+            },
+            {
+              "BdnNanoseconds": 684484600,
+              "Operations": 4,
+              "NsPerOperation": 171121150,
+              "DisplayNsPerOperation": 171121200
+            },
+            {
+              "BdnNanoseconds": 666188100,
+              "Operations": 4,
+              "NsPerOperation": 166547025,
+              "DisplayNsPerOperation": 166547000
+            },
+            {
+              "BdnNanoseconds": 655997500,
+              "Operations": 4,
+              "NsPerOperation": 163999375,
+              "DisplayNsPerOperation": 163999400
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 667966000,
+              "Operations": 4,
+              "NsPerOperation": 166991500,
+              "DisplayNsPerOperation": 166991500
+            },
+            {
+              "BdnNanoseconds": 638185700,
+              "Operations": 4,
+              "NsPerOperation": 159546425,
+              "DisplayNsPerOperation": 159546400
+            },
+            {
+              "BdnNanoseconds": 677442700,
+              "Operations": 4,
+              "NsPerOperation": 169360675,
+              "DisplayNsPerOperation": 169360700
+            },
+            {
+              "BdnNanoseconds": 683760000,
+              "Operations": 4,
+              "NsPerOperation": 170940000,
+              "DisplayNsPerOperation": 170940000
+            },
+            {
+              "BdnNanoseconds": 643908400,
+              "Operations": 4,
+              "NsPerOperation": 160977100,
+              "DisplayNsPerOperation": 160977100
+            },
+            {
+              "BdnNanoseconds": 684484400,
+              "Operations": 4,
+              "NsPerOperation": 171121100,
+              "DisplayNsPerOperation": 171121100
+            },
+            {
+              "BdnNanoseconds": 666187900,
+              "Operations": 4,
+              "NsPerOperation": 166546975,
+              "DisplayNsPerOperation": 166547000
+            },
+            {
+              "BdnNanoseconds": 655997300,
+              "Operations": 4,
+              "NsPerOperation": 163999325,
+              "DisplayNsPerOperation": 163999300
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 10880,
+          "StartUTC": "2026-10-18T09:05:57.8899343Z",
+          "WallSeconds": 21.9302465,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "07-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 164992100,
+          "ActualMeanNs": 164992150,
+          "AllocatedBytesPerOperation": 64502772,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 649999500,
+              "Operations": 4,
+              "NsPerOperation": 162499875,
+              "DisplayNsPerOperation": 162499900
+            },
+            {
+              "BdnNanoseconds": 679306000,
+              "Operations": 4,
+              "NsPerOperation": 169826500,
+              "DisplayNsPerOperation": 169826500
+            },
+            {
+              "BdnNanoseconds": 637495200,
+              "Operations": 4,
+              "NsPerOperation": 159373800,
+              "DisplayNsPerOperation": 159373800
+            },
+            {
+              "BdnNanoseconds": 645728700,
+              "Operations": 4,
+              "NsPerOperation": 161432175,
+              "DisplayNsPerOperation": 161432200
+            },
+            {
+              "BdnNanoseconds": 643359500,
+              "Operations": 4,
+              "NsPerOperation": 160839875,
+              "DisplayNsPerOperation": 160839900
+            },
+            {
+              "BdnNanoseconds": 632271000,
+              "Operations": 4,
+              "NsPerOperation": 158067750,
+              "DisplayNsPerOperation": 158067800
+            },
+            {
+              "BdnNanoseconds": 750143500,
+              "Operations": 4,
+              "NsPerOperation": 187535875,
+              "DisplayNsPerOperation": 187535900
+            },
+            {
+              "BdnNanoseconds": 641445400,
+              "Operations": 4,
+              "NsPerOperation": 160361350,
+              "DisplayNsPerOperation": 160361400
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 649999300,
+              "Operations": 4,
+              "NsPerOperation": 162499825,
+              "DisplayNsPerOperation": 162499800
+            },
+            {
+              "BdnNanoseconds": 679305800,
+              "Operations": 4,
+              "NsPerOperation": 169826450,
+              "DisplayNsPerOperation": 169826500
+            },
+            {
+              "BdnNanoseconds": 637495000,
+              "Operations": 4,
+              "NsPerOperation": 159373750,
+              "DisplayNsPerOperation": 159373800
+            },
+            {
+              "BdnNanoseconds": 645728500,
+              "Operations": 4,
+              "NsPerOperation": 161432125,
+              "DisplayNsPerOperation": 161432100
+            },
+            {
+              "BdnNanoseconds": 643359300,
+              "Operations": 4,
+              "NsPerOperation": 160839825,
+              "DisplayNsPerOperation": 160839800
+            },
+            {
+              "BdnNanoseconds": 632270800,
+              "Operations": 4,
+              "NsPerOperation": 158067700,
+              "DisplayNsPerOperation": 158067700
+            },
+            {
+              "BdnNanoseconds": 750143300,
+              "Operations": 4,
+              "NsPerOperation": 187535825,
+              "DisplayNsPerOperation": 187535800
+            },
+            {
+              "BdnNanoseconds": 641445200,
+              "Operations": 4,
+              "NsPerOperation": 160361300,
+              "DisplayNsPerOperation": 160361300
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 23612,
+          "StartUTC": "2026-10-18T09:07:07.6852911Z",
+          "WallSeconds": 21.0926427,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        },
+        {
+          "Run": "08-candidate",
+          "Batch": "repeat01",
+          "Variant": "candidate",
+          "MeanNs": 164305750,
+          "ActualMeanNs": 164305800,
+          "AllocatedBytesPerOperation": 64503890,
+          "GC": [
+            19,
+            9,
+            3
+          ],
+          "ActualIterations": [
+            {
+              "BdnNanoseconds": 637503100,
+              "Operations": 4,
+              "NsPerOperation": 159375775,
+              "DisplayNsPerOperation": 159375800
+            },
+            {
+              "BdnNanoseconds": 637552200,
+              "Operations": 4,
+              "NsPerOperation": 159388050,
+              "DisplayNsPerOperation": 159388100
+            },
+            {
+              "BdnNanoseconds": 714288700,
+              "Operations": 4,
+              "NsPerOperation": 178572175,
+              "DisplayNsPerOperation": 178572200
+            },
+            {
+              "BdnNanoseconds": 647750300,
+              "Operations": 4,
+              "NsPerOperation": 161937575,
+              "DisplayNsPerOperation": 161937600
+            },
+            {
+              "BdnNanoseconds": 639093700,
+              "Operations": 4,
+              "NsPerOperation": 159773425,
+              "DisplayNsPerOperation": 159773400
+            },
+            {
+              "BdnNanoseconds": 653308600,
+              "Operations": 4,
+              "NsPerOperation": 163327150,
+              "DisplayNsPerOperation": 163327200
+            },
+            {
+              "BdnNanoseconds": 675527400,
+              "Operations": 4,
+              "NsPerOperation": 168881850,
+              "DisplayNsPerOperation": 168881900
+            },
+            {
+              "BdnNanoseconds": 652761600,
+              "Operations": 4,
+              "NsPerOperation": 163190400,
+              "DisplayNsPerOperation": 163190400
+            }
+          ],
+          "ResultIterations": [
+            {
+              "BdnNanoseconds": 637502900,
+              "Operations": 4,
+              "NsPerOperation": 159375725,
+              "DisplayNsPerOperation": 159375700
+            },
+            {
+              "BdnNanoseconds": 637552000,
+              "Operations": 4,
+              "NsPerOperation": 159388000,
+              "DisplayNsPerOperation": 159388000
+            },
+            {
+              "BdnNanoseconds": 714288500,
+              "Operations": 4,
+              "NsPerOperation": 178572125,
+              "DisplayNsPerOperation": 178572100
+            },
+            {
+              "BdnNanoseconds": 647750100,
+              "Operations": 4,
+              "NsPerOperation": 161937525,
+              "DisplayNsPerOperation": 161937500
+            },
+            {
+              "BdnNanoseconds": 639093500,
+              "Operations": 4,
+              "NsPerOperation": 159773375,
+              "DisplayNsPerOperation": 159773400
+            },
+            {
+              "BdnNanoseconds": 653308400,
+              "Operations": 4,
+              "NsPerOperation": 163327100,
+              "DisplayNsPerOperation": 163327100
+            },
+            {
+              "BdnNanoseconds": 675527200,
+              "Operations": 4,
+              "NsPerOperation": 168881800,
+              "DisplayNsPerOperation": 168881800
+            },
+            {
+              "BdnNanoseconds": 652761400,
+              "Operations": 4,
+              "NsPerOperation": 163190350,
+              "DisplayNsPerOperation": 163190400
+            }
+          ],
+          "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+          "BenchmarkDotNet": "0.15.8",
+          "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+          "TieredPGO": 1,
+          "Affinity": 4,
+          "ProcessId": 5660,
+          "StartUTC": "2026-10-18T09:07:29.1412635Z",
+          "WallSeconds": 20.7306245,
+          "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+          "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+          "LibraryDLLSHA256": "457B5B7D946042585D13B7E25160A2658272650E139EE55CAE5A80F6F8C207FC",
+          "JsonDLLSHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+        }
+      ],
+      "ReplayScripts": [
+        {
+          "Path": "artifacts/string-cursor-bounds-2026-10-18/Run-Repeat01-Block.ps1",
+          "SHA256": "E328BF8920EECB491DA10D638C2883180B884BE557F1CDEFFCD408D5443EA0A5",
+          "Content": "# ProcessStartInfo.ArgumentList requires PowerShell 7; Windows PowerShell 5.1 has no\n# ArgumentList and otherwise fails before starting a benchmark child process.\n#requires -Version 7.0\nparam(\n    [ValidateSet('repeat01')][string]$Batch='repeat01',\n    [Parameter(Mandatory)][ValidateRange(1,8)][int]$Block\n)\n\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$inputPath = Join-Path (Resolve-Path (Join-Path $root '../..')).Path 'Kotowari.Benchmarks/Data/test.json'\n$expectedInputHash = 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\nif ((Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash -ne $expectedInputHash) { throw 'Input hash mismatch.' }\n\n$cases = if ($Block % 2 -eq 1) { @('baseline','candidate') } else { @('candidate','baseline') }\nforeach ($variant in $cases) {\n    $runName = '{0:d2}-{1}' -f $Block,$variant\n    $runRoot = Join-Path $root \"runs/$Batch/$runName\"\n    $summaryPath = Join-Path $runRoot 'run-summary.json'\n    if (Test-Path -LiteralPath $summaryPath) {\n        $existingSummary = Get-Content -Raw -LiteralPath $summaryPath | ConvertFrom-Json\n        if ($existingSummary.Run -ne $runName -or $existingSummary.Batch -ne $Batch -or $existingSummary.InputSHA256 -ne $expectedInputHash -or $existingSummary.ResultCount -ne 8) { throw \"Existing run summary is invalid: $runName\" }\n        Write-Output \"Preserving already completed $runName.\"\n        continue\n    }\n    $reuseOutput = Test-Path -LiteralPath $runRoot\n    $hostLog = Join-Path $runRoot 'host.log'\n    $stderrPath = Join-Path $runRoot 'stderr.log'\n    if ($reuseOutput) {\n        if (-not (Test-Path -LiteralPath $hostLog) -or -not (Test-Path -LiteralPath $stderrPath)) { throw \"Run output already exists and cannot be resumed: $runName\" }\n    } else {\n        New-Item -ItemType Directory -Path $runRoot -Force | Out-Null\n    }\n\n    $manualRoot = Join-Path $root \"$variant/host\"\n    $assembly = Join-Path $manualRoot 'StringExecutionRecovery.ChildHarness.dll'\n    $measurementHost = Join-Path $manualRoot 'StringExecutionRecovery.Measurement.dll'\n    $sourceRoot = Join-Path $root \"$variant/source\"\n    if (-not (Test-Path -LiteralPath $assembly) -or -not (Test-Path -LiteralPath $measurementHost)) { throw \"Frozen harness is not built: $assembly\" }\n    $manifestPath = Join-Path $root 'dll-manifest.json'\n    if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Frozen DLL manifest is missing.' }\n    $dllManifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json\n    $expectedDlls = @($dllManifest.$variant)\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if (-not (Test-Path -LiteralPath $dllPath) -or (Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch before run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $beforeHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($reuseOutput) {\n        Write-Output \"Validating existing completed process output for $runName.\"\n        $stdout = Get-Content -Raw -LiteralPath $hostLog\n        $stderr = if ((Get-Item -LiteralPath $stderrPath).Length -gt 0) { Get-Content -Raw -LiteralPath $stderrPath } else { '' }\n        $processId = $null\n        $utc = (Get-Item -LiteralPath $hostLog).CreationTimeUtc\n        $elapsedSeconds = $null\n        $affinity = 4\n    } else {\n        Write-Output \"Starting $runName.\"\n        $start = [Diagnostics.ProcessStartInfo]::new('dotnet')\n        $start.WorkingDirectory = $manualRoot\n        $start.UseShellExecute = $false\n        $start.CreateNoWindow = $true\n        $start.RedirectStandardOutput = $true\n        $start.RedirectStandardError = $true\n        foreach ($argument in @('StringExecutionRecovery.ChildHarness.dll','--benchmarkName','Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks.StringInput','--benchmarkId','0')) {\n            $start.ArgumentList.Add($argument)\n        }\n        $start.Environment['DOTNET_TieredPGO'] = '1'\n        $utc = [DateTime]::UtcNow\n        $watch = [Diagnostics.Stopwatch]::StartNew()\n        $process = [Diagnostics.Process]::Start($start)\n        if (-not $process) { throw \"Could not start measurement process: $runName\" }\n        $processId = $process.Id\n        try {\n            $process.ProcessorAffinity = [IntPtr]4\n            $affinity = $process.ProcessorAffinity.ToInt64()\n            if ($affinity -ne 4) { throw \"Affinity mismatch: $runName\" }\n            $stdoutTask = $process.StandardOutput.ReadToEndAsync()\n            $stderrTask = $process.StandardError.ReadToEndAsync()\n            while (-not $process.WaitForExit(1000)) {\n                if ($watch.Elapsed.TotalSeconds -gt 180) { throw \"Measurement timed out: $runName\" }\n            }\n            $stdout = $stdoutTask.GetAwaiter().GetResult()\n            $stderr = $stderrTask.GetAwaiter().GetResult()\n            [IO.File]::WriteAllText($hostLog,$stdout,[Text.UTF8Encoding]::new($false))\n            [IO.File]::WriteAllText($stderrPath,$stderr,[Text.UTF8Encoding]::new($false))\n            if ($process.ExitCode -ne 0) { throw \"Measurement process exited $($process.ExitCode): $runName\" }\n            if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n            if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n        } finally {\n            if (-not $process.HasExited) { $process.Kill(); $process.WaitForExit() }\n            $process.Dispose()\n        }\n        $elapsedSeconds = $watch.Elapsed.TotalSeconds\n    }\n    if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n    if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n    $afterHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($beforeHash -ne $afterHash) { throw \"Built assembly changed during run: $runName\" }\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if ((Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch after run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $observations = @([regex]::Matches($stdout, '(?m)^Workload(?<stage>Warmup|Actual|Result)\\s+(?<index>\\d+):\\s+(?<ops>\\d+) op, (?<ns>[\\d.]+) ns, (?<display>[\\d.]+) (?<unit>ns|us|μs|µs|ms|s)/op') | ForEach-Object {\n        $displayValue = [double]::Parse($_.Groups['display'].Value,[Globalization.CultureInfo]::InvariantCulture)\n        $displayMultiplier = switch ($_.Groups['unit'].Value) { 'ns' { 1.0 } 'us' { 1e3 } 'μs' { 1e3 } 'µs' { 1e3 } 'ms' { 1e6 } 's' { 1e9 } }\n        [pscustomobject]@{\n            Stage=$_.Groups['stage'].Value\n            Iteration=[int]$_.Groups['index'].Value\n            Operations=[int]$_.Groups['ops'].Value\n            TotalNanoseconds=[double]::Parse($_.Groups['ns'].Value,[Globalization.CultureInfo]::InvariantCulture)\n            DisplayNsPerOperation=$displayValue * $displayMultiplier\n            DisplayRoundingToleranceNs=0.000055 * $displayMultiplier\n        }\n    })\n    foreach ($stage in 'Warmup','Actual','Result') {\n        $expected = if ($stage -eq 'Warmup') { 16 } else { 8 }\n        $rows = @($observations | Where-Object Stage -eq $stage)\n        if ($rows.Count -ne $expected -or @($rows | Where-Object Operations -ne 4).Count) { throw \"Unexpected $stage observations or operation count: $runName\" }\n        if (@($rows | Where-Object { [math]::Abs(($_.TotalNanoseconds / $_.Operations) - $_.DisplayNsPerOperation) -gt $_.DisplayRoundingToleranceNs }).Count) { throw \"Nanoseconds/Operations normalization mismatch: $runName\" }\n    }\n    if ($stdout -notmatch '(?m)^// Job: .*OutlierMode=DontRemove.*Affinity=(?:0{0,61})100.*InvocationCount=4.*IterationCount=8.*LaunchCount=1.*UnrollFactor=1.*WarmupCount=16') { throw \"Job settings mismatch: $runName\" }\n\n    $actuals = @($observations | Where-Object Stage -eq 'Actual')\n    $results = @($observations | Where-Object Stage -eq 'Result')\n    $actualValues = @($actuals | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultValues = @($results | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultMeanNs = ($resultValues | Measure-Object -Average).Average\n    $actualMeanNs = ($actualValues | Measure-Object -Average).Average\n    $displayMeanNs = (($results | ForEach-Object { $_.DisplayNsPerOperation } | Measure-Object -Average).Average)\n    $displayMeanToleranceNs = (($results | ForEach-Object { $_.DisplayRoundingToleranceNs } | Measure-Object -Average).Average)\n    if ([math]::Abs($resultMeanNs - $displayMeanNs) -gt $displayMeanToleranceNs) { throw \"Result mean differs from displayed BDN mean beyond rounding: $runName\" }\n    $gc = [regex]::Match($stdout, '(?m)^// GC:\\s+(?<gen0>\\d+)\\s+(?<gen1>\\d+)\\s+(?<gen2>\\d+)\\s+(?<allocated>\\d+)\\s+(?<operations>\\d+)')\n    if (-not $gc.Success -or [long]$gc.Groups['operations'].Value -ne 4) { throw \"Missing or invalid allocation counters: $runName\" }\n    $runtime = [regex]::Match($stdout,'(?m)^// Runtime=(?<runtime>.+)$')\n    $benchmarkDotNet = [regex]::Match($stdout,'(?m)^// BenchmarkDotNet v(?<version>\\S+)')\n    if (-not $runtime.Success -or -not $benchmarkDotNet.Success) { throw \"Runtime or BenchmarkDotNet version missing: $runName\" }\n\n    $sourceFiles = @(Get-ChildItem -LiteralPath $sourceRoot -Recurse -File | Where-Object { ($_.Extension -in @('.cs','.csproj') -or $_.Name -eq '.editorconfig') -and $_.FullName -notmatch '[\\\\/](bin|obj)[\\\\/]' } | Sort-Object FullName | ForEach-Object {\n        [ordered]@{ Path=$_.FullName.Substring($sourceRoot.Length+1).Replace('\\','/'); SHA256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }\n    })\n    $libraryPath = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $jsonPath = Join-Path $manualRoot 'Marimo.Parser.dll'\n    $libraryHash = (Get-FileHash -LiteralPath $libraryPath -Algorithm SHA256).Hash\n    $jsonHash = (Get-FileHash -LiteralPath $jsonPath -Algorithm SHA256).Hash\n    $executedLibrary = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $executedJson = Join-Path $manualRoot 'Marimo.Parser.dll'\n    if ((Get-FileHash -LiteralPath $executedLibrary -Algorithm SHA256).Hash -ne $libraryHash -or (Get-FileHash -LiteralPath $executedJson -Algorithm SHA256).Hash -ne $jsonHash) { throw \"Manual harness DLL hashes differ from frozen inputs: $runName\" }\n\n    $record = [ordered]@{\n        Run=$runName; Batch=$Batch; Variant=$variant; Method='StringInput'; MeanNs=$resultMeanNs\n        ActualMeanNs=$actualMeanNs; ResultMeanNsPerOperation=$resultMeanNs; DisplayMeanNsPerOperation=$displayMeanNs\n        ConsoleNormalizationVerified=$true; ResultObservationCount=$results.Count\n        AllocatedBytesPerOperation=([long]$gc.Groups['allocated'].Value / [long]$gc.Groups['operations'].Value)\n        GC=@([long]$gc.Groups['gen0'].Value,[long]$gc.Groups['gen1'].Value,[long]$gc.Groups['gen2'].Value)\n        ActualIterations=@($actuals | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualNsPerOperation=$actualValues\n        ResultIterations=@($results | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualCount=$actuals.Count; ResultCount=$results.Count; WarmupCount=16\n        Runtime=$runtime.Groups['runtime'].Value; BenchmarkDotNet=$benchmarkDotNet.Groups['version'].Value\n        Job=([regex]::Match($stdout,'(?m)^// Job: (?<job>.+)$').Groups['job'].Value); TieredPGO=1; Affinity=$affinity\n        ProcessId=$processId; StartUTC=$utc.ToString('o'); WallSeconds=$elapsedSeconds\n        PowerShell=$PSVersionTable.PSVersion.ToString()\n        ResumedExistingOutput=$reuseOutput\n        InputBytes=(Get-Item -LiteralPath $inputPath).Length; InputSHA256=$expectedInputHash\n        AssemblySHA256=$afterHash; MeasurementHostAssemblySHA256=(Get-FileHash -LiteralPath $measurementHost -Algorithm SHA256).Hash\n        LibraryDLLSHA256=$libraryHash; JsonDLLSHA256=$jsonHash\n        ChildLibraryDLLSHA256=$libraryHash; ChildJsonDLLSHA256=$jsonHash\n        DLLManifestSHA256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash\n        SourceFiles=$sourceFiles\n    }\n    $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryPath -Encoding utf8\n    Write-Output ('Completed {0}: mean {1:F3} ms, {2} Actual/{3} Result.' -f $runName,($record.MeanNs/1e6),$record.ActualCount,$record.ResultCount)\n}\nWrite-Output \"Block $Block completed.\"\n"
+        },
+        {
+          "Path": "artifacts/string-cursor-bounds-2026-10-18/Summarize-Repeat01.ps1",
+          "SHA256": "2D5DDFF5C93DEF0CC4122A5233FE5497D66A03152678EFE57488CE52305BBB2F",
+          "Content": "param([ValidateSet('repeat01')][string]$Batch='repeat01')\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$runsRoot = Join-Path $root \"runs/$Batch\"\n$pairs = @()\nfor ($block = 1; $block -le 8; $block++) {\n    $baselinePath = Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $block)\n    $candidatePath = Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $block)\n    if (-not (Test-Path -LiteralPath $baselinePath) -or -not (Test-Path -LiteralPath $candidatePath)) { throw \"Block $block is incomplete.\" }\n    $baseline = Get-Content -Raw -LiteralPath $baselinePath | ConvertFrom-Json\n    $candidate = Get-Content -Raw -LiteralPath $candidatePath | ConvertFrom-Json\n    if ($baseline.Batch -ne $Batch -or $candidate.Batch -ne $Batch -or $baseline.InputSHA256 -ne $candidate.InputSHA256 -or $baseline.InputSHA256 -ne 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D') { throw \"Batch/input mismatch in block $block.\" }\n    $pairs += [pscustomobject]@{\n        Block=$block; Order=if ($block % 2 -eq 1) { 'baseline-candidate' } else { 'candidate-baseline' }\n        BaselineMeanNs=[double]$baseline.MeanNs; CandidateMeanNs=[double]$candidate.MeanNs\n        CandidateOverBaseline=[double]$candidate.MeanNs/[double]$baseline.MeanNs\n        LogCandidateOverBaseline=[math]::Log([double]$candidate.MeanNs/[double]$baseline.MeanNs)\n        BaselineAllocatedBytesPerOperation=[double]$baseline.AllocatedBytesPerOperation; CandidateAllocatedBytesPerOperation=[double]$candidate.AllocatedBytesPerOperation\n        BaselineAssemblySHA256=$baseline.AssemblySHA256; CandidateAssemblySHA256=$candidate.AssemblySHA256\n    }\n}\n\n$logRatios = @($pairs | ForEach-Object { $_.LogCandidateOverBaseline })\n$meanLogRatio = ($logRatios | Measure-Object -Average).Average\n$sumSquares = 0.0\nforeach ($logRatio in $logRatios) { $sumSquares += [math]::Pow(($logRatio - $meanLogRatio),2) }\n$sampleSdLogRatio = [math]::Sqrt($sumSquares / ($logRatios.Count - 1))\n$standardErrorLogRatio = $sampleSdLogRatio / [math]::Sqrt($logRatios.Count)\n$tCriticalDf7 = 2.364624251\n$marginLogRatio = $tCriticalDf7 * $standardErrorLogRatio\n$geometricMeanRatio = [math]::Exp($meanLogRatio)\n$interval = @([math]::Exp($meanLogRatio - $marginLogRatio),[math]::Exp($meanLogRatio + $marginLogRatio))\n$summary = [ordered]@{\n    Experiment='string-cursor-bounds-2026-10-18'; Batch=$Batch;\n    Rule='Candidate adopted only when the geometric mean of paired candidate/baseline ratios has a 95% Student t interval upper bound below 1; interval is calculated on log ratios and exponentiated.'\n    PairCount=$pairs.Count; DegreesOfFreedom=$pairs.Count-1; TCritical95Df7=$tCriticalDf7\n    PairedLogRatioMean=$meanLogRatio; PairedLogRatioSampleStandardDeviation=$sampleSdLogRatio; PairedLogRatioStandardError=$standardErrorLogRatio\n    PairedGeometricMeanRatio=$geometricMeanRatio\n    Confidence95=[ordered]@{Lower=$interval[0];Upper=$interval[1]};\n    BaselineMeanMs=($pairs.BaselineMeanNs | Measure-Object -Average).Average/1e6\n    CandidateMeanMs=($pairs.CandidateMeanNs | Measure-Object -Average).Average/1e6\n    Pairs=$pairs\n    BaselineLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $_)) | ConvertFrom-Json })\n    CandidateLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $_)) | ConvertFrom-Json })\n    InputBytes=4172062; InputSHA256='DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n}\n$summary | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $root \"$Batch-summary.json\") -Encoding utf8\nWrite-Output ('Paired candidate/baseline geometric mean ratio {0:F5}; 95% t interval [{1:F5}, {2:F5}] (log scale, df=7).' -f $geometricMeanRatio,$interval[0],$interval[1])\n"
+        },
+        {
+          "Path": "artifacts/string-cursor-bounds-2026-10-18/Record-Environment-Repeat01.ps1",
+          "SHA256": "89DA4C5C2EBB10E147867ECF6C537D6EE77B38577F24152B533AA8D38B8B80AF",
+          "Content": "param(\n    [Parameter(Mandatory)][ValidateSet('before','after')][string]$Stage\n)\n\n$ErrorActionPreference = 'Stop'\nAdd-Type -TypeDefinition @'\nusing System.Runtime.InteropServices;\n[StructLayout(LayoutKind.Sequential)]\npublic struct StringRecoveryPowerStatus {\n    public byte ACLineStatus;\n    public byte BatteryFlag;\n    public byte BatteryLifePercent;\n    public byte SystemStatusFlag;\n    public uint BatteryLifeTime;\n    public uint BatteryFullLifeTime;\n}\npublic static class StringRecoveryPowerStatusApi {\n    [DllImport(\"kernel32.dll\", SetLastError=true)]\n    public static extern bool GetSystemPowerStatus(out StringRecoveryPowerStatus status);\n}\n'@\n\n$status = New-Object StringRecoveryPowerStatus\nif (-not [StringRecoveryPowerStatusApi]::GetSystemPowerStatus([ref]$status)) {\n    throw \"GetSystemPowerStatus failed: $([Runtime.InteropServices.Marshal]::GetLastWin32Error())\"\n}\n$powerScheme = (powercfg.exe /getactivescheme) -join ' '\n$sampleStart = [DateTime]::UtcNow\n$first = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimFirst = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\nStart-Sleep -Seconds 3\n$sampleEnd = [DateTime]::UtcNow\n$second = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimSecond = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\n$cpuActivity = @(\n    foreach ($process in $second) {\n        $previous = $first | Where-Object Id -eq $process.Id | Select-Object -First 1\n        if ($previous -and $null -ne $process.CPU -and $null -ne $previous.CPU -and $process.CPU -gt $previous.CPU) {\n            [ordered]@{ ProcessId=$process.Id; DeltaCpuSeconds=($process.CPU-$previous.CPU) }\n        }\n    }\n)\n$cimCpuActivity = @(\n    foreach ($process in $cimSecond) {\n        $previous = $cimFirst | Where-Object ProcessId -eq $process.ProcessId | Select-Object -First 1\n        if ($previous -and $null -ne $process.KernelModeTime -and $null -ne $process.UserModeTime) {\n            $delta = ([double]$process.KernelModeTime + [double]$process.UserModeTime) - ([double]$previous.KernelModeTime + [double]$previous.UserModeTime)\n            if ($delta -gt 0) { [ordered]@{ ProcessId=$process.ProcessId; Name=$process.Name; DeltaCpuSeconds=($delta / 10000000) } }\n        }\n    }\n)\n$record = [ordered]@{\n    Stage=$Stage\n    TimestampUTC=[DateTime]::UtcNow.ToString('o')\n    SampleStartUTC=$sampleStart.ToString('o')\n    SampleEndUTC=$sampleEnd.ToString('o')\n    ACLineStatus=[int]$status.ACLineStatus\n    ACLineMeaning='1=online, 0=offline, 255=unknown'\n    BatterySaver=[int]$status.SystemStatusFlag\n    BatterySaverMeaning='1=active, 0=inactive'\n    BatteryFlag=[int]$status.BatteryFlag\n    BatteryLifePercent=[int]$status.BatteryLifePercent\n    PowerScheme=$powerScheme\n    DotnetCpuActivityWindowSeconds=3\n    ActiveDotnetProcesses=$cpuActivity\n    ActiveCimProcesses=$cimCpuActivity\n}\n$path = Join-Path $PSScriptRoot 'environment-repeat01.json'\nif (Test-Path -LiteralPath $path) {\n    $records = @(Get-Content -Raw -LiteralPath $path | ConvertFrom-Json)\n} else {\n    $records = @()\n}\n$records += [pscustomobject]$record\n$records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $path -Encoding utf8\nWrite-Output ('{0}: ACLine={1}, BatterySaver={2}, PowerScheme={3}, dotnetCPU-active={4}' -f $Stage,$record.ACLineStatus,$record.BatterySaver,$record.PowerScheme,$cpuActivity.Count)\n"
+        }
+      ]
+    }
+  ],
+  "CommittedImplementation": {
+    "Commit": "ab7a35bbe805c698b3a242acc6f8e44cce898d6a",
+    "Date": "2026-10-18",
+    "Note": "The source/test changes and original experiment records were committed with user approval. The original CandidateChange and Decision strings below describe their state at the initial measurement. The frozen candidate DLL is reused for the requested repeat and was not rebuilt after the commit."
+  },
   "CandidateChange": "Kotowari/Core/Cursol.cs: replace Document indexer try/catch with an unsigned range comparison; source hashes identify the uncommitted candidate.",
   "Decision": "Adopt: separate fixed 8-pair confirmation has upper 95% paired log-ratio t confidence bound below 1. Commit pending human review.",
   "StopReason": "Effective method found; no further candidates attempted.",
