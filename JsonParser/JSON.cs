@@ -149,12 +149,10 @@ public class JSON
                 var c => c
             });
 
+    // 固定2文字の除外をまとめ、通常文字ごとの候補走査と文字の再取得を省く。
     static Parser<char> JChar =
         new OrParser<char>(
-            new ExpectCharParser(
-                new OrParser<char>(
-                    DoubleQuote,
-                    BackSlash)),
+            new ConditionalCharParser(it => it is not ('"' or '\\')),
             ControlChar);
 
     static Parser<JSONLiteral> JString =
