@@ -149,7 +149,42 @@ Sequence3案を具体化すると、通常のSequence2全体へprojectionの呼�
 
 通常計時・機械的集計はLuna medium、仮説と採否は主担当。測定は直列実行し、PGO OFFで安定化させない。
 
-## 今回の検証と保存
+### 2026-10-19の続行時に具体化したSequence3案
+
+**2026-10-19時点の設計提案（採用未定）。** 不採用候補の記録を `be9d14b` に保存後、ユーザーの「コミットして次行きましょう」に従い、保留していた案の共通構造と変更単位を検討した。以下は提案時点の記録であり、新しい測定結果ではない。Sequence2・Sequence3・ParserConverterのソースは、上記診断の基準 `d2f7aa` と `be9d14b` で差分がない。ただし、JSONサンプルの変更後も同じPGO生成コードになるとは未確認である。
+
+新しいクラスやinterfaceを作らず、既存のSequence2へ内部メソッドを追加する案に絞った。仮称 `ParseAndConvert<TResult>` は、現在の二つの子の解析処理を一か所に保ち、両方の成功値から最終結果を作る。次は呼び出し形を示す未実装の例である。
+
+```csharp
+// Sequence2の通常経路。解析の制御フローはParseAndConvertだけに置く。
+protected internal override ParseResult<(T1, T2)> ParseCore(Cursol cursol)
+    => ParseAndConvert(cursol, static (first, second) => (first, second));
+
+// 新設するinternalメソッドの引数・戻り値。
+// internal ParseResult<TResult> ParseAndConvert<TResult>(
+//     Cursol cursol, Func<T1, T2, TResult> converter) where TResult : notnull
+
+// Sequence3は自分で生成・保持するSequenceParser<T1, (T2, T3)>へ委譲する。
+protected internal override ParseResult<(T1, T2, T3)> ParseCore(Cursol cursol)
+    => Parser.ParseAndConvert(cursol,
+        static (first, rest) => (first, rest.Item1, rest.Item2));
+```
+
+Sequence3の内部Converterをなくし、外側Sequence2から最終の `ParseResult<(T1, T2, T3)>` を直接返す。suffixのSequence2と子パーサーは残す。削減対象は外側のnested結果と平坦化への受け渡しであり、解析処理やすべての非インライン呼び出しがなくなることを要求する案ではない。上の検証目標を具体化し、呼び出し数だけで成否を判定しない。
+
+* 最初の本体変更は `Core/SequenceParser2.cs` と `Core/SequenceParser3.cs` の2ファイル。公開API、一般のParserConverter、arity 4～10のソースは変更しない。ただし他arityもSequence2・3を組み合わせるため、間接的な影響は全テストで確認する。
+* 子の解析順序・回数、短絡、成功値、例外伝播、失敗時の開始カーソルへの復帰を保つ。内部入口を呼ぶのはSequence3自身が生成した正確なSequence2型だけとし、利用者から渡された派生パーサーのoverrideを迂回しない。
+* 通常のSequence2にも結果生成delegateが入る点が主なリスクである。delegateやgeneric呼び出しの費用が消えるとは仮定しない。既に良好なJPair、通常のSequence2、対象の `char, 参照型, char` を診断し、中間結果の削減と追加コストを区別する。
+* 子の解析をSequence3へ手書き複製する案は共通構造を崩すため選ばない。static abstractのprojection型を増やす案は、まず既存型内で表せる候補を試す段階では追加しない。これはFunc方式の速度優位を確認したという意味ではない。
+* 検証は既存の2・3要素テストクラスで、失敗した子の後を呼ばないこと、消費後の失敗でも開始位置に戻すこと、子の派生overrideを尊重することを補う。内部メソッドを直接テストするための公開範囲変更はしない。
+
+既存テストの入力にも確認事項がある。上記の「三つ目の失敗」に加え、確認した2・3要素テストの「一つ目の失敗」は `publica ...` を使うが、現在のWordParserは `public` の接頭辞を成功として読み、次の子が `a` で失敗する。期待する最終失敗は変わらなくても、名前に対応する失敗箇所を検証できていない。既存テストはまだ変更していない。実装へ進む際には、名前どおりの位置で失敗する入力へ直すことも確認する。WordParserの受理条件を変える提案ではない。
+
+2026-10-20、ユーザーの「お願いします」により、本体2ファイルと既存2クラス内のテスト補強を最初の試行単位とすること、上記の不適切なテスト入力の修正、実装・生成コード比較・測定までを了承された。変更前のテスト確認、候補実装・全検証、固定版の生成コード比較の順に進む。狙った中間結果が残る場合はそこで止め、削減を確認できた場合だけ上記の通常計時・独立確認へ進む。無条件のarity展開や、効果未確認の採用はしない。
+
+その後、[Sequence3案の実装・検証・測定](2026-10-20-sequence3-projection.md)を完了した。対象の中間結果と24 byteコピーは消えたが、通常のSequence2等へ追加したdelegateやキャッシュ参照も残った。8組の時間比1.0072、95%区間[0.9759, 1.0395]は速度改善条件を満たさず、本体候補は撤回した。上記の入力修正と失敗・例外・派生処理のテスト補強は残す。従来の「未実装」「テスト未変更」は提案時点の記録であり、現在の状態は測定報告を参照する。
+
+## 初回調査時の検証と保存
 
 入力の構造集計はスクリプトを再実行し、保存した件数・長さ・分布との一致を確認した。診断のフィルター条件と元資料のハッシュを監査した。プロダクションコードを変更していないため、ビルド・テスト・通常計時は再実行していない。
 
