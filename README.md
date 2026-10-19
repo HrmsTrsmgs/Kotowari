@@ -35,6 +35,10 @@ Versioned benchmark records are listed in [`Kotowari.Benchmarks/Results`](Kotowa
 
 The suspended UTF-8 work, saved Git tags, and measurement baselines are indexed in the [UTF-8 experiment archive](docs/utf8-experiment-archive.md).
 
+## Development continuity
+
+Development decisions, existing specification sources, and the current handoff are indexed in [Development context](docs/development-context.md) (Japanese). AI contributors should start with [AGENTS.md](AGENTS.md); the existing TDD workflow is unchanged.
+
 ## License
 
 Kotowari is licensed under the Apache License 2.0.
