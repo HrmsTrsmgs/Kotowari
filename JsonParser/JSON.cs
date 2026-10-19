@@ -14,12 +14,9 @@ namespace Marimo.Parser;
 
 public class JSON
 {
+    // 候補ごとの文字取得を繰り返さず、JSONの空白4文字をまとめて判定する。
     static Parser<char> WhiteSpace =
-        new OrParser<char>(
-            new CharParser(' '),
-            new CharParser('\t'),
-            new CharParser('\r'),
-            new CharParser('\n'));
+        new ConditionalCharParser(it => it is ' ' or '\t' or '\r' or '\n');
 
     static Parser<char> BraceOpen = new CharParser('{');
     

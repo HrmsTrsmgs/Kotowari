@@ -393,6 +393,42 @@ public class JSONのテスト
         => JSON.Parse("\n{}");
 
     [Fact]
+    public void 四種類の空白が混在しても構造と値を同じように読み込みます()
+    {
+        const string whitespace = " \t\r\n";
+        var text = $$"""
+            {{whitespace}}{
+                {{whitespace}}"a"{{whitespace}}:{{whitespace}}[
+                    {{whitespace}}"b"{{whitespace}},{{whitespace}}12{{whitespace}},
+                    {{whitespace}}true{{whitespace}},{{whitespace}}null{{whitespace}}
+                ]{{whitespace}}
+            }
+            """;
+
+        JSON.Parse(text).Should().BeEquivalentTo(JSON.Parse("""{"a":["b",12,true,null]}"""));
+    }
+
+    [Theory]
+    [InlineData('\v')]
+    [InlineData('\f')]
+    [InlineData('\u00a0')]
+    [InlineData('\0')]
+    public void JSONの空白ではない文字を読み飛ばしません(char character)
+    {
+        var parse = () => JSON.Parse($"{character}{{}}");
+
+        parse.Should().Throw<ParseException>();
+    }
+
+    [Fact]
+    public void 空白だけの入力はParseExceptionになります()
+    {
+        var parse = () => JSON.Parse(" \t\r\n");
+
+        parse.Should().Throw<ParseException>();
+    }
+
+    [Fact]
     public void オブジェクト終了の前に空白があっても読み込みます()
         => JSON.Parse(@"{ }");
     [Fact]
