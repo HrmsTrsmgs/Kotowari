@@ -236,6 +236,28 @@ public class JSONのテスト
         parse.Should().Throw<ParseException>();
     }
 
+    [Theory]
+    [InlineData("{\"key")]
+    [InlineData("{\"key\":\"value")]
+    public void 閉じ引用符のないキーや文字列値はParseExceptionになります(string text)
+    {
+        var parse = () => JSON.Parse(text);
+
+        parse.Should().Throw<ParseException>();
+    }
+
+    [Fact]
+    public void 空文字列のキーと値を識別します()
+    {
+        var tested = JSON.Parse("""{"":""}""");
+
+        tested.Pairs.Should().ContainSingle();
+        tested.Pairs.Should().ContainKey("");
+        var value = (JSONLiteral)tested[""];
+        value.ValueType.Should().Be(LiteralType.String);
+        value.Value.Should().Be("");
+    }
+
     [Fact]
     public void 文字列の値を識別します()
     {

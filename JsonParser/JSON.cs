@@ -151,9 +151,10 @@ public class JSON
 
     // 固定2文字の除外をまとめ、通常文字ごとの候補走査と文字の再取得を省く。
     static Parser<char> JChar =
-        new OrParser<char>(
-            new ConditionalCharParser(it => it is not ('"' or '\\')),
-            ControlChar);
+        new StringCharacterParser(
+            new OrParser<char>(
+                new ConditionalCharParser(it => it is not ('"' or '\\')),
+                ControlChar));
 
     static Parser<JSONLiteral> JString =
         new WithWhiteSpaceParser<JSONLiteral>(
@@ -226,6 +227,14 @@ public class JSON
             return result.Parsed;
         }
         throw new ParseException();
+    }
+
+    sealed class StringCharacterParser(Parser<char> parser) : Parser<char>
+    {
+        protected override ParseResult<char> ParseCore(Cursol cursol)
+            => cursol.Index < cursol.Text.Length
+                ? parser.Parse(cursol)
+                : ParseResult<char>.Failure(cursol);
     }
 
 }
