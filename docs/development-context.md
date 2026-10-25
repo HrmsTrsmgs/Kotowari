@@ -56,13 +56,12 @@ Codexからの入口には既存の [AGENTS.md](../AGENTS.md) を使う（[公�
 
 **確認日：2026-10-25。** 再開時には以下をGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`、Green実装の基準：`be1dfe7`。直前のSequence3初回・delegate保持追試は採用条件未達で撤回し、テスト補強と測定記録を `fe4b86a`／`be1dfe7` に保存済み。[Sequence3報告](../Kotowari.Benchmarks/Results/2026-10-20-sequence3-projection.md)を参照する。
-* 前回の全102 C#ファイル・6,318行等のレビューは[開発候補一覧](development-candidates.md)に24項目として整理済み。前回の一覧と再開記録は `dfa430e` に保存済み。
-* ユーザーの「指摘を一件一件解決していく」により、R01のうちJSONの未終端文字列を最初の変更単位とした。履歴を渡さないRed・Green担当で進め、ユーザーの「コミットして次に行きましょうか」に従い、この更新を含むGコミットへ保存する。次はそのSHAを基準にRefactorを検討する。
-* Redは未終端キー・値の2ケース。独立テストプロセスを監視し、解析が終了せずメモリ条件で停止することを確認した。空キー・空値の正常ケースも追加した。新規の正常系に深い比較の検証漏れがあったため、同じRed内でキーとJSONLiteralの型・値を直接確認する形へ直してからGreenへ渡した。既存の比較テスト全体（R08）は変更していない。
-* Greenは `JsonParser/JSON.cs` のJCharをJSON内の非公開StringCharacterParserで包み、入力末尾ならFailureを返す実装。要求される閉じ引用符が成功しないため、公開入口はParseExceptionで終了する。本体のカーソル／EOF・反復仕様、実入力NULの受理、その他JSON文法、公開APIは変えていない。R01の本体側のEOF契約とR02は未着手。
-* 監視付き回帰2ケース・JSON66テスト・全326テスト（本体260＋JSON66）が成功、失敗・Skipなし。非増分Releaseビルドとアナライザーは9.28秒で成功し、既存NU1701が1件。SARIFで変更箇所への新規診断は報告されていない。
-* format検査はexit 1。未変更箇所のWHITESPACE 7件とworkspace読み込み警告があり、完全な検査成功とは扱わない。前回の66件・exit 2と同じ検査範囲が完了したとも扱わない。性能測定は未実施。文字ごとの終端チェックと呼び出しが増える影響は未確認。
-* 検証の詳細はローカル `artifacts/r01-json-termination-2026-10-25/{red,green}/` の結果JSONと監視スクリプトにある。一時スリープ抑止の状態も同rootへ保存する。これらは別cloneには存在しない。前回のレビュー診断は `artifacts/full-review-2026-10-23/` に残す。
-* 今回のGコミットは、実装 `JsonParser/JSON.cs`、回帰テスト `JsonParserのテスト/JSONのテスト.cs`、対応状況を更新した候補一覧と本記録の計4ファイル。前回のレビュー記録とは別コミット。pushはしていない。
-* 次はこのGコミットのSHAをRefactor担当へ渡し、必要な整理を別単位で検討する。実変更があれば人間の差分確認・Fコミット了承を待つ。完了後にR02等の次の指摘へ進む。根拠のない性能案の再開・未公開コミットのpushは行わない。
+* ブランチ：`codex/optimize-word-parser`、今回のFコミットの基準：`b9cf5ba`。全体レビューの24項目は `dfa430e`、R01のJSON未終端文字列のGreenは `b9cf5ba` に保存済み。今回pushはしていない。
+* GのSHAを渡した独立Refactor担当で下記の整理を完了し、ユーザーの「コミットして次行きましょう」による了承に従い、この記録を含むFコミットへ保存する。R02等の次の指摘はまだ実装していない。現在は**R02の終了時の扱いを決める段階**。
+* Refactorは `JSON.cs` 内の非公開補助型を、JSON専用の内部型 `JSONStringCharacterParser` として `JsonParser/JSONStringCharacterParser.cs` へ分離し、JCharの参照名を変更した。1ファイル1クラスの方針に合わせる整理で、終端判定と委譲の処理は同じ。
+* Gの契約は、未終端のキー・文字列値がParseExceptionで終了すること。空キー・空値、通常文字・escape、実入力NULを含む既存の受理範囲を維持する。本体のEOF・反復仕様や他のJSON文法は対象外。R01の本体側のEOF契約、R02、既存の深い比較テストの問題（R08）は未着手。
+* Refactor版のJSON66テスト・全326テスト（本体260＋JSON66）は成功、失敗・Skipなし。非増分Releaseビルドとアナライザーは10.6秒で成功し、既存NU1701が1件。各プロジェクトのSARIFを確認し、変更箇所に診断なし。
+* 今回のformat検査は22.9秒・exit 2。workspace読み込み警告、未変更行のWHITESPACE7件と既存IDE情報診断があり、完全成功とは扱わない。Green時のexit 1とは別の実行結果。性能測定はしていない。
+* 最初の制限環境内のtestは無出力で進まず中断し、制限外で上記対象・全体テストを確認した。中断した試行を成功扱いしない。原本はローカル `artifacts/r01-json-refactor-2026-10-25/refactor/` に保存。スリープ抑止の状態も同rootにある。Gの診断・監視スクリプトは `artifacts/r01-json-termination-2026-10-25/{red,green}/`。
+* 今回のFコミットは `JsonParser/JSON.cs`、新規 `JsonParser/JSONStringCharacterParser.cs`、進捗を更新した候補一覧と本記録の計4ファイル。メッセージは `refactor: JSON文字列用パーサーを専用ファイルへ分離する`。検証後のソース変更はなく、文書更新だけのためにテストは繰り返していない。
+* 次はR02。既存コードとテストを確認し、空WordやOptionalの不在成功を反復したときの停止・例外のどちらにするかは未確定と確認した。例外で文法の問題を通知する案を推奨するが、まだ確定仕様としてテスト化・実装していない。[候補一覧](development-candidates.md)を一括採用したとは扱わない。
