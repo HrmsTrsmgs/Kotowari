@@ -11,6 +11,19 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class OneOrMoreParserのテスト
 {
+    [Fact]
+    public void 最初の要素が入力を消費せず成功したら例外を投げます()
+    {
+        var attempts = 0;
+        var tested = new OneOrMoreParser<char>(new CallbackCharParser((_, _) =>
+            ++attempts == 1
+                ? (true, 'a', 0)
+                : throw new NotSupportedException("反復が停止しませんでした")));
+        var parse = () => tested.Parse(new Cursol("a"));
+
+        parse.Should().Throw<InvalidOperationException>();
+    }
+
     [Theory]
     [InlineData(1)]
     [InlineData(8)]

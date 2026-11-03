@@ -13,6 +13,8 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
     public ZeroOrMoreParser(Parser<T> parser)
         => Parser = parser;
 
+    /// <summary>要素を繰り返し解析します。</summary>
+    /// <exception cref="InvalidOperationException">要素パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
         => ParseCore(cursol, requireFirst: false);
 
@@ -38,6 +40,11 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
 
                     return ParseResult<IEnumerable<T>>.Success(
                         result.Cursol, parseds.ToArray());
+                }
+
+                if (result.Cursol.Index == current.Index)
+                {
+                    throw new InvalidOperationException("反復する要素パーサーが入力を消費せず成功しました。");
                 }
 
                 current = result.Cursol;

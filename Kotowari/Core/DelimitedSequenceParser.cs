@@ -18,6 +18,8 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         Delimiter = delimiter;
     }
 
+    /// <summary>要素と区切りを交互に解析します。</summary>
+    /// <exception cref="InvalidOperationException">要素と区切りの一巡で入力位置が進まずに成功した場合にスローされます。</exception>
     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
     {
         // 短い列ではList本体と成長途中の配列を確保せず、結果だけを独立した配列にする。
@@ -31,6 +33,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
             var beforeDelimiter = current;
             while (true)
             {
+                var beforeSequence = current;
                 var sequenceResult = Sequence.ParseCore(current);
                 if (!sequenceResult.IsSuccess)
                 {
@@ -47,6 +50,10 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
                 }
 
                 current = delimiterResult.Cursol;
+                if (current.Index == beforeSequence.Index)
+                {
+                    throw new InvalidOperationException("反復する要素と区切りパーサーが入力を消費せず成功しました。");
+                }
             }
         }
         finally

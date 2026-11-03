@@ -11,6 +11,49 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class DelimitedSequenceParserのテスト
 {
+    [Fact]
+    public void 要素と区切りの一巡で入力を消費せず成功したら例外を投げます()
+    {
+        var delimiterAttempts = 0;
+        var tested = new DelimitedSequenceParser<char, char>(
+            new CallbackCharParser((_, _) => (true, 'a', 0)),
+            new CallbackCharParser((_, _) =>
+                ++delimiterAttempts == 1
+                    ? (true, ',', 0)
+                    : throw new NotSupportedException("反復が停止しませんでした")));
+        var parse = () => tested.Parse(new Cursol("a"));
+
+        parse.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void 要素が空でも区切りが入力を消費すれば反復を続けます()
+    {
+        var tested = new DelimitedSequenceParser<char, char>(
+            new CallbackCharParser((_, _) => (true, 'a', 0)),
+            new CharParser(','));
+
+        var result = tested.Parse(new Cursol(",!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal('a', 'a');
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
+    public void 区切りが空でも要素が入力を消費すれば反復を続けます()
+    {
+        var tested = new DelimitedSequenceParser<char, char>(
+            new CharParser('a'),
+            new CallbackCharParser((_, _) => (true, ',', 0)));
+
+        var result = tested.Parse(new Cursol("aa!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal('a', 'a');
+        result.Cursol.Index.Should().Be(2);
+    }
+
     [Theory]
     [InlineData(0)]
     [InlineData(1)]

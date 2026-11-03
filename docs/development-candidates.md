@@ -37,7 +37,7 @@ Git管理下のC#は全102ファイル・6,318行を分担して全文確認し�
 本体のEOF/NUL・一般反復の契約や、実入力NULの受理は維持した。したがって本項の本体側のEOF仕様検討まで完了したわけではない。
 監視付き回帰・全326テスト・非増分Releaseビルドとアナライザーが成功。formatは既存書式指摘とworkspace読み込み警告でexit 1、性能は未測定。現在の停止位置と検証の留保は[再開記録](development-context.md#現在の作業状況)を参照する。
 
-続くRefactorでは、同じ終端判定・委譲を行う補助型をJSON専用の内部型 [JSONStringCharacterParser](../JsonParser/JSONStringCharacterParser.cs) として別ファイルへ分離した。全326テスト・非増分Releaseビルドとアナライザー成功。今回のformatは既存指摘とworkspace読み込み警告でexit 2。2026-10-25にユーザーがコミットを了承し、この更新を含むFコミットで保存する。
+続くRefactorでは、同じ終端判定・委譲を行う補助型をJSON専用の内部型 [JSONStringCharacterParser](../JsonParser/JSONStringCharacterParser.cs) として別ファイルへ分離した。全326テスト・非増分Releaseビルドとアナライザー成功。今回のformatは既存指摘とworkspace読み込み警告でexit 2。2026-10-25にユーザーがコミットを了承し、`b17bbcd` に保存済み。
 
 以下はレビュー時に確認した問題と、未解決の契約に関する根拠。
 
@@ -57,7 +57,11 @@ Git管理下のC#は全102ファイル・6,318行を分担して全文確認し�
 
 ### R02：入力を消費しない成功を反復すると終了しない
 
-**実行確認＋静的確認。対処時の契約は未確定。**
+**2026-11-02の判断・対応：同位置での成功を例外にする方針でGreen完了。2026-11-03の了承に従い、この更新を含むGコミットへ保存する。** ユーザーの「実装してみましょうか」により、非消費成功から反復を継続する場合は `InvalidOperationException` を投げる案を採用した。黙って成功終了させる案は、文法の組み合わせの問題を見逃しやすいため採用しない。
+対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方だけ空でも一巡で入力が進めば許容する。通常の失敗による終了・巻き戻しは維持する。
+既存5テストクラスに例外ケース5件とDelimitedの正常境界2件を追加した。2回目の子呼び出しを別種の例外で止めることで、安全にRedを確認。Greenでは全333テストと非増分Releaseビルド・アナライザーが成功した。formatは既存指摘でexit 2。現在の検証結果と停止位置は[再開記録](development-context.md#現在の作業状況)を参照する。
+
+以下はレビュー時の実行確認と静的確認。
 
 [ZeroOrMore](../Kotowari/Core/ZeroOrMoreParser.cs) 29～44行、これを使う [OneOrMore](../Kotowari/Core/OneOrMoreParser.cs)、[DelimitedSequence](../Kotowari/Core/DelimitedSequenceParser.cs) 32～49行、[WithWhiteSpace](../Kotowari/WithWhiteSpaceParser.cs) 23～31行、[Wordの空白スキップ](../Kotowari/Core/WordParser.cs) 62～67行に進捗の確認がない。
 EOF問題がなくても、空WordやOptionalの不在成功で発生する。
@@ -65,8 +69,7 @@ EOF問題がなくても、空WordやOptionalの不在成功で発生する。
 例：`ZeroOrMore(Optional(Char('a')))` を空入力へ、`OneOrMore(Word(""))` を任意入力へ適用する。
 診断用の子が5回目に例外で停止するようにし、反復・区切り反復・空白スキップで位置が `0,0,0,0,0` のまま呼ばれることを確認した。値収集はメモリを増やし、空白スキップはCPUを使用し続ける。
 
-**改善方向**：非消費成功を例外にするか、停止として扱うか決める。Delimitedでは要素と区切りを合わせた一周の進捗を考え、片方が空というだけで禁止しない。
-後退や文書差し替えを許す契約も確認し、Indexの単純な不一致だけを万能な終了保証とはしない。正常入力の性能への影響は変更案が決まってから評価する。
+**今回の対応範囲**：成功した反復でIndexが同じ場合を検出する。後退や文書差し替えを含む循環の契約は今回決めておらず、この判定をあらゆる反復の終了保証とは扱わない。正常入力の性能への影響は未測定。
 
 ## P2：正しさとテスト
 

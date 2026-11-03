@@ -33,6 +33,8 @@ public class WordParser : Parser<string>
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
 
+    /// <summary>単語と前後の空白を解析します。</summary>
+    /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     protected internal override ParseResult<string> ParseCore(Cursol cursol)
     {
         var current = SkipBlankAsync(cursol);
@@ -63,6 +65,11 @@ public class WordParser : Parser<string>
         {
             var result = WhiteSpace.ParseCore(current);
             if (!result.IsSuccess) return current;
+
+            if (result.Cursol.Index == current.Index)
+            {
+                throw new InvalidOperationException("空白パーサーが入力を消費せず成功しました。");
+            }
 
             current = result.Cursol;
         }

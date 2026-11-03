@@ -18,6 +18,8 @@ public class WithWhiteSpaceParser<T> : Parser<T>
         Parser = parser;
     }
 
+    /// <summary>前置空白を読み飛ばして値を解析します。</summary>
+    /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     protected internal override ParseResult<T> ParseCore(Cursol cursol)
     {
         var current = cursol;
@@ -27,6 +29,11 @@ public class WithWhiteSpaceParser<T> : Parser<T>
             if (!result.IsSuccess)
             {
                 break;
+            }
+
+            if (result.Cursol.Index == current.Index)
+            {
+                throw new InvalidOperationException("空白パーサーが入力を消費せず成功しました。");
             }
 
             current = result.Cursol;

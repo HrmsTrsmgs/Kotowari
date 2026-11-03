@@ -54,14 +54,11 @@ Codexからの入口には既存の [AGENTS.md](../AGENTS.md) を使う（[公�
 
 ## 現在の作業状況
 
-**確認日：2026-10-25。** 再開時には以下をGitと照合する。
+**確認日：2026-11-03。** 再開時にはGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`、今回のFコミットの基準：`b9cf5ba`。全体レビューの24項目は `dfa430e`、R01のJSON未終端文字列のGreenは `b9cf5ba` に保存済み。今回pushはしていない。
-* GのSHAを渡した独立Refactor担当で下記の整理を完了し、ユーザーの「コミットして次行きましょう」による了承に従い、この記録を含むFコミットへ保存する。R02等の次の指摘はまだ実装していない。現在は**R02の終了時の扱いを決める段階**。
-* Refactorは `JSON.cs` 内の非公開補助型を、JSON専用の内部型 `JSONStringCharacterParser` として `JsonParser/JSONStringCharacterParser.cs` へ分離し、JCharの参照名を変更した。1ファイル1クラスの方針に合わせる整理で、終端判定と委譲の処理は同じ。
-* Gの契約は、未終端のキー・文字列値がParseExceptionで終了すること。空キー・空値、通常文字・escape、実入力NULを含む既存の受理範囲を維持する。本体のEOF・反復仕様や他のJSON文法は対象外。R01の本体側のEOF契約、R02、既存の深い比較テストの問題（R08）は未着手。
-* Refactor版のJSON66テスト・全326テスト（本体260＋JSON66）は成功、失敗・Skipなし。非増分Releaseビルドとアナライザーは10.6秒で成功し、既存NU1701が1件。各プロジェクトのSARIFを確認し、変更箇所に診断なし。
-* 今回のformat検査は22.9秒・exit 2。workspace読み込み警告、未変更行のWHITESPACE7件と既存IDE情報診断があり、完全成功とは扱わない。Green時のexit 1とは別の実行結果。性能測定はしていない。
-* 最初の制限環境内のtestは無出力で進まず中断し、制限外で上記対象・全体テストを確認した。中断した試行を成功扱いしない。原本はローカル `artifacts/r01-json-refactor-2026-10-25/refactor/` に保存。スリープ抑止の状態も同rootにある。Gの診断・監視スクリプトは `artifacts/r01-json-termination-2026-10-25/{red,green}/`。
-* 今回のFコミットは `JsonParser/JSON.cs`、新規 `JsonParser/JSONStringCharacterParser.cs`、進捗を更新した候補一覧と本記録の計4ファイル。メッセージは `refactor: JSON文字列用パーサーを専用ファイルへ分離する`。検証後のソース変更はなく、文書更新だけのためにテストは繰り返していない。
-* 次はR02。既存コードとテストを確認し、空WordやOptionalの不在成功を反復したときの停止・例外のどちらにするかは未確定と確認した。例外で文法の問題を通知する案を推奨するが、まだ確定仕様としてテスト化・実装していない。[候補一覧](development-candidates.md)を一括採用したとは扱わない。
+* ブランチ：`codex/optimize-word-parser`。Gの基準は `b17bbcd`、ルール統一は `8ec30d7`。ユーザーの「コミットして次行きましょう」に従い、R02のGreenをこの記録を含むコミットへ保存する。JSON命名修正は別の未コミット差分として保持し、続けて独立したコミットにする。pushはしていない。
+* R02は、成功してもIndexが変わらない場合にInvalidOperationExceptionを投げる。対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方だけ空でも一巡で進めば許容する。子の失敗による終了・巻き戻し、子例外の伝播、finallyのバッファ返却を維持する。後退・別文書への置換や左再帰の検出は扱わない。
+* Redは既存5クラスへの例外5ケースとDelimitedの正常境界2ケース。既存CallbackCharParserの2回目をNotSupportedExceptionで止め、安全に失敗を確認した。Greenは対象91件、本体267件、JSON66件が成功（合計333、失敗・Skipなし）。非増分Release build/analyzersは10.01秒、Debugは13.46秒で成功。既存NU1701が1件、SARIFの既存診断6件、変更箇所の新規診断なし。
+* formatは14.55秒・exit 2で既存指摘が残る。制限環境のtesthost接続失敗とGreen途中のDelimited境界の失敗は、通常環境・一巡開始位置との比較へ修正後の上記結果と区別する。性能測定は未実施。
+* 検証後からR02のCore5ソースと既存5テストのSHA-256が変わっていないことを確認済み。今回のGコミットは、その10ファイルと候補一覧・本記録の計12ファイル。追加のコード検査を同条件で繰り返していない。原本はローカル `artifacts/r02-repetition-progress-2026-11-02/{red,green}/` のみ。
+* 次はJSONの命名修正を保存後、このGのSHAと現在HEADをRefactor担当へ渡し、反復処理の範囲を検討する。R03等はその後に一件ずつ扱う。

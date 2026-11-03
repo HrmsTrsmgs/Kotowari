@@ -12,6 +12,19 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class WordParserのテスト
 {
+    [Fact]
+    public void 空白が入力を消費せず成功したら例外を投げます()
+    {
+        var attempts = 0;
+        var tested = new WordParser("a", new CallbackCharParser((_, _) =>
+            ++attempts == 1
+                ? (true, ' ', 0)
+                : throw new NotSupportedException("反復が停止しませんでした")));
+        var parse = () => tested.Parse(new Cursol("a"));
+
+        parse.Should().Throw<InvalidOperationException>();
+    }
+
 
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
