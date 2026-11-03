@@ -17,17 +17,17 @@ using System.Text;
 namespace Marimo.Parser;
 
 /// <summary>
-/// Maps IJSONValue objects onto other objects
+/// Maps IJsonValue objects onto other objects
 /// </summary>
-static class JSONMap
+static class JsonMap
 {
     /// <summary>
-    /// Maps a JSONObject onto an object which can be cast as an appropriate type
+    /// Maps a JsonObject onto an object which can be cast as an appropriate type
     /// </summary>
     /// <param name="T">The type to which the returned object will be cast</param>
-    /// <param name="toMap">The JSONObject to map onto the object</param>
+    /// <param name="toMap">The JsonObject to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    static object? MapObject(Type T, JSONObject toMap)
+    static object? MapObject(Type T, JsonObject toMap)
     {
         if (T.IsSubclassOf(typeof(IDictionary)))
         {
@@ -52,7 +52,7 @@ static class JSONMap
             //Loop through all the properties of the type
             foreach (var p in T.GetProperties())
             {
-                //If the JSONObject contains information for that property,
+                //If the JsonObject contains information for that property,
                 //set the value of the return object's property to that information.
                 if (toMap.Pairs.ContainsKey(p.Name))
                 {
@@ -63,7 +63,7 @@ static class JSONMap
             //Loop through all the fields of the type
             foreach (var f in T.GetFields())
             {
-                //If the JSONObject contains information for that field,
+                //If the JsonObject contains information for that field,
                 //set the value of the return object's field to that information.
                 if (toMap.Pairs.ContainsKey(f.Name))
                 {
@@ -78,14 +78,14 @@ static class JSONMap
     }
 
     /// <summary>
-    /// Maps a JSONArray onto an object which can be cast as an appropriate type
+    /// Maps a JsonArray onto an object which can be cast as an appropriate type
     /// </summary>
     /// <param name="T">The type to which the returned object will be cast</param>
-    /// <param name="toMap">The JSONArray to map onto the object</param>
+    /// <param name="toMap">The JsonArray to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    static object MapArray(Type T, JSONArray toMap)
+    static object MapArray(Type T, JsonArray toMap)
     {
-        //If the type isn't an array or IList then the JSONArray can't be mapped onto it
+        //If the type isn't an array or IList then the JsonArray can't be mapped onto it
         if (!T.IsArray || T.GetInterface("System.Collections.IList") is null)
         {
             throw new ArgumentException($"{T} can't map JSONArray.");
@@ -127,12 +127,12 @@ static class JSONMap
     }
 
     /// <summary>
-    /// Maps a JSONLiteral onto an object which can be cast as an appropriate type
+    /// Maps a JsonLiteral onto an object which can be cast as an appropriate type
     /// </summary>
     /// <param name="T">The type to which the returned object will be cast</param>
-    /// <param name="toMap">The JSONLiteral to map onto the object</param>
+    /// <param name="toMap">The JsonLiteral to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    static object? MapLiteral(Type T, JSONLiteral toMap)
+    static object? MapLiteral(Type T, JsonLiteral toMap)
     {
         //If the literal is a null, return null IF T is nullable, otherwise throw an exception
         if (toMap.ValueType == LiteralType.Null)
@@ -145,17 +145,17 @@ static class JSONMap
     }
 
     /// <summary>
-    /// Maps a IJSONValue onto an object which can be cast as an appropriate type
+    /// Maps a IJsonValue onto an object which can be cast as an appropriate type
     /// </summary>
     /// <param name="T">The type to which the returned object will be cast</param>
-    /// <param name="toMap">The IJSONValue to map onto the object</param>
+    /// <param name="toMap">The IJsonValue to map onto the object</param>
     /// <returns>An object of type T containing the JSON information</returns>
-    public static object? MapValue(Type T, IJSONValue toMap)
+    public static object? MapValue(Type T, IJsonValue toMap)
         => toMap switch
         {
-            JSONObject jsonObject => MapObject(T, jsonObject),
-            JSONArray jsonArray => MapArray(T, jsonArray),
-            JSONLiteral jsonLiteral => MapLiteral(T, jsonLiteral),
+            JsonObject jsonObject => MapObject(T, jsonObject),
+            JsonArray jsonArray => MapArray(T, jsonArray),
+            JsonLiteral jsonLiteral => MapLiteral(T, jsonLiteral),
             _ => throw new ArgumentException("Cannot map vanilla IJSONValue.")
         };
 }

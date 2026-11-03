@@ -20,7 +20,7 @@ namespace Marimo.Parser;
 /// Represents a literal value in JSON:
 /// A string, number, boolean, or null value
 /// </summary>
-public class JSONLiteral : IJSONValue
+public class JsonLiteral : IJsonValue
 {
     /// <summary>
     /// A string representation of the value
@@ -32,10 +32,10 @@ public class JSONLiteral : IJSONValue
     /// </summary>
     public LiteralType ValueType { get; set; }
 
-    public JSONLiteral(LiteralType type)
+    public JsonLiteral(LiteralType type)
         => ValueType = type;
 
-    public JSONLiteral(string value, LiteralType type)
+    public JsonLiteral(string value, LiteralType type)
     {
         Value = value;
         ValueType = type;
@@ -63,13 +63,13 @@ public class JSONLiteral : IJSONValue
         }
     }
 
-    public IJSONValue this[string key]
+    public IJsonValue this[string key]
     {
         get => throw new NotImplementedException("Cannot access JSONArray by string.");
         set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
-    public IJSONValue this[int i]
+    public IJsonValue this[int i]
     {
         get => throw new NotImplementedException("Cannot access JSONArray by string.");
         set => throw new NotImplementedException("Cannot access JSONArray by string.");
@@ -81,5 +81,5 @@ public class JSONLiteral : IJSONValue
     /// <returns>this.Value</returns>
     public override string? ToString() => Value;
 
-    public string ToJSON() => throw new NotImplementedException();
+    public string ToJson() => throw new NotImplementedException();
 }

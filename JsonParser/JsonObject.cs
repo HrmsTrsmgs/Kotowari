@@ -16,50 +16,49 @@ using System.Text;
 
 namespace Marimo.Parser;
 
-
 /// <summary>
-/// Represents a JSON array:
-/// A collection of unnamed (anonymous) JSON values
+/// Represents a JSON object:
+/// A collection of JSON pairs
 /// </summary>
-public class JSONArray : IJSONValue
+public class JsonObject : IJsonValue
 {
     /// <summary>
-    /// All the JSON values
+    /// All the JSON pair objects
     /// </summary>
-    public List<IJSONValue> Elements { get; set; }
+    public Dictionary<string, IJsonValue> Pairs { get; set; }
 
-    public JSONArray() => Elements = [];
+    public JsonObject() => Pairs = [];
 
-    public JSONArray(IEnumerable<IJSONValue> elements)
+    public JsonObject(IEnumerable<KeyValuePair<string, IJsonValue>> pairs)
     {
-        Elements = [];
-        if (elements is not null) foreach (var e in elements) Elements.Add(e);
+        Pairs = [];
+        if (pairs is not null) foreach (var p in pairs) Pairs.Add(p.Key, p.Value);
     }
 
-    public IJSONValue this[string key]
+    /// <summary>
+    /// Makes Pairs directly accessable
+    /// </summary>
+    /// <param name="key">The key of the IJsonValue</param>
+    /// <returns>The IJsonValue at that key</returns>
+    public IJsonValue this[string key]
+    {
+        get
+        {
+            if (Pairs.ContainsKey(key)) return Pairs[key];
+            else throw new ArgumentException($"Key not found: {key}");
+        }
+        set
+        {
+            if (Pairs.ContainsKey(key)) Pairs[key] = value;
+            else throw new ArgumentException($"Key not found: {key}");
+        }
+    }
+
+    public IJsonValue this[int i]
     {
         get => throw new NotImplementedException("Cannot access JSONArray by string.");
         set => throw new NotImplementedException("Cannot access JSONArray by string.");
     }
 
-    /// <summary>
-    /// Makes Elements directly accessable
-    /// </summary>
-    /// <param name="i">The index of the IJSONValue</param>
-    /// <returns>The IJSONValue at index i</returns>
-    public IJSONValue this[int i]
-    {
-        get
-        {
-            if (0 <= i && i < Elements.Count) return Elements[i];
-            else throw new IndexOutOfRangeException($"{i} is out of range.");
-        }
-        set
-        {
-            if (0 <= i && i < Elements.Count) Elements[i] = value;
-            else throw new IndexOutOfRangeException($"{i} is out of range.");
-        }
-    }
-
-    public string ToJSON() => throw new NotImplementedException();
+    public string ToJson() => throw new NotImplementedException();
 }

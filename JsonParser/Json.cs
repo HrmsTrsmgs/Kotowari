@@ -12,7 +12,7 @@ using System.Xml;
 namespace Marimo.Parser;
 
 
-public class JSON
+public class Json
 {
     // 候補ごとの文字取得を繰り返さず、JSONの空白4文字をまとめて判定する。
     static Parser<char> WhiteSpace =
@@ -69,17 +69,17 @@ public class JSON
             WhiteSpace,
             Comma);
 
-    static Parser<JSONLiteral> JNull =
-        new ParserConverter<string, JSONLiteral>(
+    static Parser<JsonLiteral> JNull =
+        new ParserConverter<string, JsonLiteral>(
             new WordParser("null", true, WhiteSpace),
-            word => new JSONLiteral(LiteralType.Null));
+            word => new JsonLiteral(LiteralType.Null));
 
-    static Parser<JSONLiteral> JBoolean =
-        new ParserConverter<string, JSONLiteral>(
+    static Parser<JsonLiteral> JBoolean =
+        new ParserConverter<string, JsonLiteral>(
             new OrParser<string>(
                 new WordParser("true", true, WhiteSpace),
                 new WordParser("false", true, WhiteSpace)),
-            word => new JSONLiteral(word, LiteralType.Boolean));
+            word => new JsonLiteral(word, LiteralType.Boolean));
 
     static Parser<char> Digit =
         new ConditionalCharParser(char.IsDigit);
@@ -112,16 +112,16 @@ public class JSON
                 Digits),
             tuple => $"{(tuple.Item1.IsPresent ? "-" : "")}{tuple.Item2}");
 
-    static Parser<JSONLiteral> JNumber =
-        new WithWhiteSpaceParser<JSONLiteral>(
+    static Parser<JsonLiteral> JNumber =
+        new WithWhiteSpaceParser<JsonLiteral>(
             WhiteSpace,
-            new ParserConverter<(string, Optional<string>, Optional<string>), JSONLiteral>(
+            new ParserConverter<(string, Optional<string>, Optional<string>), JsonLiteral>(
                 new SequenceParser<string, Optional<string>, Optional<string>>(
                     JInt,
                     new OptionalParser<string>(JFrac),
                     new OptionalParser<string>(JExp)),
                 tuple =>
-                    new JSONLiteral(
+                    new JsonLiteral(
                         tuple.Item1
                         + (tuple.Item2.IsPresent ? tuple.Item2.Value : "")
                         + (tuple.Item3.IsPresent ? tuple.Item3.Value : ""),
@@ -151,75 +151,75 @@ public class JSON
 
     // 固定2文字の除外をまとめ、通常文字ごとの候補走査と文字の再取得を省く。
     static Parser<char> JChar =
-        new JSONStringCharacterParser(
+        new JsonStringCharacterParser(
             new OrParser<char>(
                 new ConditionalCharParser(it => it is not ('"' or '\\')),
                 ControlChar));
 
-    static Parser<JSONLiteral> JString =
-        new WithWhiteSpaceParser<JSONLiteral>(
+    static Parser<JsonLiteral> JString =
+        new WithWhiteSpaceParser<JsonLiteral>(
             WhiteSpace,
-            new ParserConverter<(char, IEnumerable<char>, char), JSONLiteral>(
+            new ParserConverter<(char, IEnumerable<char>, char), JsonLiteral>(
                 new SequenceParser<char, IEnumerable<char>, char>(
                     DoubleQuote,
                     new ZeroOrMoreParser<char>(JChar),
                     DoubleQuote),
-                tuple => new JSONLiteral(new string([.. tuple.Item2]), LiteralType.String)));
+                tuple => new JsonLiteral(new string([.. tuple.Item2]), LiteralType.String)));
 
-    static Parser<JSONLiteral> JLiteral =
-        new OrParser<JSONLiteral>(
+    static Parser<JsonLiteral> JLiteral =
+        new OrParser<JsonLiteral>(
             JString,
             JBoolean,
             JNull,
             JNumber);
 
-    static Parser<IJSONValue> JValue =
-        new OrParser<IJSONValue>(
-            new RecursiveParser<IJSONValue>(
-                () => new ParserConverter<JSONArray, IJSONValue>(
+    static Parser<IJsonValue> JValue =
+        new OrParser<IJsonValue>(
+            new RecursiveParser<IJsonValue>(
+                () => new ParserConverter<JsonArray, IJsonValue>(
                     JArray ?? throw new InvalidOperationException(),
                     array => array)),
-            new RecursiveParser<IJSONValue>(
-                () => new ParserConverter<JSONObject, IJSONValue>(
+            new RecursiveParser<IJsonValue>(
+                () => new ParserConverter<JsonObject, IJsonValue>(
                     JObject ?? throw new InvalidOperationException(),
                     obj => obj)),
-            new ParserConverter<JSONLiteral, IJSONValue>(JLiteral, literal => literal));
+            new ParserConverter<JsonLiteral, IJsonValue>(JLiteral, literal => literal));
 
-    static Parser<IEnumerable<IJSONValue>> JElements =
-        new DelimitedSequenceParser<IJSONValue, char>(
+    static Parser<IEnumerable<IJsonValue>> JElements =
+        new DelimitedSequenceParser<IJsonValue, char>(
             JValue,
             CommaSign);
 
-    static Parser<JSONArray> JArray =
-        new ParserConverter<(char, IEnumerable<IJSONValue>, char), JSONArray>(
-            new SequenceParser<char, IEnumerable<IJSONValue>, char>(
+    static Parser<JsonArray> JArray =
+        new ParserConverter<(char, IEnumerable<IJsonValue>, char), JsonArray>(
+            new SequenceParser<char, IEnumerable<IJsonValue>, char>(
                 BracketOpenSign,
                 JElements,
                 BracketCloseSign),
-            tuple => new JSONArray(tuple.Item2));
+            tuple => new JsonArray(tuple.Item2));
 
 
-    static Parser<KeyValuePair<string, IJSONValue>> JPair =
-        new ParserConverter<(JSONLiteral, char, IJSONValue), KeyValuePair<string, IJSONValue>>(
-            new SequenceParser<JSONLiteral, char, IJSONValue>(
+    static Parser<KeyValuePair<string, IJsonValue>> JPair =
+        new ParserConverter<(JsonLiteral, char, IJsonValue), KeyValuePair<string, IJsonValue>>(
+            new SequenceParser<JsonLiteral, char, IJsonValue>(
                         JString,
                         CollonSign,
                         JValue),
-            tuple => new KeyValuePair<string, IJSONValue>(
+            tuple => new KeyValuePair<string, IJsonValue>(
                 tuple.Item1.Value ?? throw new InvalidOperationException(),
                 tuple.Item3));
 
-    static Parser<JSONObject> JObject =
-        new ParserConverter<(char, IEnumerable<KeyValuePair<string, IJSONValue>>, char), JSONObject>(
-            new SequenceParser<char, IEnumerable<KeyValuePair<string, IJSONValue>>, char>(
+    static Parser<JsonObject> JObject =
+        new ParserConverter<(char, IEnumerable<KeyValuePair<string, IJsonValue>>, char), JsonObject>(
+            new SequenceParser<char, IEnumerable<KeyValuePair<string, IJsonValue>>, char>(
                 BraceOpenSign,
-                new DelimitedSequenceParser<KeyValuePair<string, IJSONValue>, char>(
+                new DelimitedSequenceParser<KeyValuePair<string, IJsonValue>, char>(
                     JPair,
                     CommaSign),
                 BraceCloseSign),
-            tuple => new JSONObject { Pairs = tuple.Item2.ToDictionary(kv => kv.Key, kv => kv.Value) });
+            tuple => new JsonObject { Pairs = tuple.Item2.ToDictionary(kv => kv.Key, kv => kv.Value) });
 
-    public static JSONObject Parse(string text)
+    public static JsonObject Parse(string text)
     {
         var result = JObject.Parse(new Cursol(text));
         if(result.IsSuccess)

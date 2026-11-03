@@ -17,48 +17,21 @@ using System.Text;
 namespace Marimo.Parser;
 
 /// <summary>
-/// Represents a JSON object:
-/// A collection of JSON pairs
+/// Represents a JSON value
 /// </summary>
-public class JSONObject : IJSONValue
+public interface IJsonValue
 {
     /// <summary>
-    /// All the JSON pair objects
+    /// Allows key indexing without downcasting to JsonObject
     /// </summary>
-    public Dictionary<string, IJSONValue> Pairs { get; set; }
-
-    public JSONObject() => Pairs = [];
-
-    public JSONObject(IEnumerable<KeyValuePair<string, IJSONValue>> pairs)
-    {
-        Pairs = [];
-        if (pairs is not null) foreach (var p in pairs) Pairs.Add(p.Key, p.Value);
-    }
+    /// <param name="key">The key to index by</param>
+    /// <returns>Throws an exception unless overridden by JsonObject</returns>
+    IJsonValue this[string key] { get; set; }
 
     /// <summary>
-    /// Makes Pairs directly accessable
+    /// Allows indexing without downcasting to JsonArray
     /// </summary>
-    /// <param name="key">The key of the IJSONValue</param>
-    /// <returns>The IJSONValue at that key</returns>
-    public IJSONValue this[string key]
-    {
-        get
-        {
-            if (Pairs.ContainsKey(key)) return Pairs[key];
-            else throw new ArgumentException($"Key not found: {key}");
-        }
-        set
-        {
-            if (Pairs.ContainsKey(key)) Pairs[key] = value;
-            else throw new ArgumentException($"Key not found: {key}");
-        }
-    }
-
-    public IJSONValue this[int i]
-    {
-        get => throw new NotImplementedException("Cannot access JSONArray by string.");
-        set => throw new NotImplementedException("Cannot access JSONArray by string.");
-    }
-
-    public string ToJSON() => throw new NotImplementedException();
+    /// <param name="i">The integer to index by</param>
+    /// <returns>Throws an exception unless overridden by JsonArray</returns>
+    IJsonValue this[int i] { get; set; }
 }

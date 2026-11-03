@@ -1,6 +1,7 @@
 # 開発候補・全体レビュー
 
 確認日：2026-10-23。対象：`codex/optimize-word-parser` の `be1dfe7`。
+2026-11-03の命名整理に合わせ、自前型名・API例・ソースリンクを現在の `Json` 表記へ更新した。レビュー時の受理挙動・測定結果は変更していない。
 ユーザーの「全行・全観点から見直して改善点の一覧を作る」依頼に基づく。
 以下は2026-10-23のレビュー時に整理した改善候補であり、一覧への掲載だけで仕様変更・実装着手の承認とはしない。レビュー時にはソースを変更していない。以後の対応状況は各項目に記す。
 
@@ -37,15 +38,15 @@ Git管理下のC#は全102ファイル・6,318行を分担して全文確認し�
 本体のEOF/NUL・一般反復の契約や、実入力NULの受理は維持した。したがって本項の本体側のEOF仕様検討まで完了したわけではない。
 監視付き回帰・全326テスト・非増分Releaseビルドとアナライザーが成功。formatは既存書式指摘とworkspace読み込み警告でexit 1、性能は未測定。現在の停止位置と検証の留保は[再開記録](development-context.md#現在の作業状況)を参照する。
 
-続くRefactorでは、同じ終端判定・委譲を行う補助型をJSON専用の内部型 [JSONStringCharacterParser](../JsonParser/JSONStringCharacterParser.cs) として別ファイルへ分離した。全326テスト・非増分Releaseビルドとアナライザー成功。今回のformatは既存指摘とworkspace読み込み警告でexit 2。2026-10-25にユーザーがコミットを了承し、`b17bbcd` に保存済み。
+続くRefactorでは、同じ終端判定・委譲を行う補助型をJSON専用の内部型 [JsonStringCharacterParser](../JsonParser/JsonStringCharacterParser.cs) として別ファイルへ分離した。全326テスト・非増分Releaseビルドとアナライザー成功。今回のformatは既存指摘とworkspace読み込み警告でexit 2。2026-10-25にユーザーがコミットを了承し、`b17bbcd` に保存済み。
 
 以下はレビュー時に確認した問題と、未解決の契約に関する根拠。
 
 **実行確認＋静的確認。EOF契約自体は仕様確認が必要。**
 
 [Cursol](../Kotowari/Core/Cursol.cs) の48～54行は範囲外をNULとし、末尾で移動を止める。
-[ConditionalCharParser](../Kotowari/Core/ConditionalCharParser.cs) の9～14行と [JSONのJChar/JString](../JsonParser/JSON.cs) の153～165行を通ると、EOFも通常文字として成功する。
-`JSON.Parse("{\"a\":\"x")` は閉じ引用符を待つ反復から戻らず、NULを蓄積し続ける。
+[ConditionalCharParser](../Kotowari/Core/ConditionalCharParser.cs) の9～14行と [JSONのJChar/JString](../JsonParser/Json.cs) の153～165行を通ると、EOFも通常文字として成功する。
+`Json.Parse("{\"a\":\"x")` は閉じ引用符を待つ反復から戻らず、NULを蓄積し続ける。
 
 診断では子プロセスに2秒・観測working set 128 MiBの停止条件を置いた。最終確認では戻り値・例外の出力がないまま約303 msで観測値135,098,368 bytesとなり、監視側が強制終了した。
 これは性能計測や割り当て量の測定ではない。永久反復の根拠は同じ位置で成功し続ける制御フローであり、タイムアウトだけから断定していない。
@@ -57,7 +58,7 @@ Git管理下のC#は全102ファイル・6,318行を分担して全文確認し�
 
 ### R02：入力を消費しない成功を反復すると終了しない
 
-**2026-11-02の判断・対応：同位置での成功を例外にする方針でGreen完了。2026-11-03の了承に従い、この更新を含むGコミットへ保存する。** ユーザーの「実装してみましょうか」により、非消費成功から反復を継続する場合は `InvalidOperationException` を投げる案を採用した。黙って成功終了させる案は、文法の組み合わせの問題を見逃しやすいため採用しない。
+**2026-11-02の判断・対応：同位置での成功を例外にする方針でGreen完了、`5cb68d6` に保存済み。** ユーザーの「実装してみましょうか」により、非消費成功から反復を継続する場合は `InvalidOperationException` を投げる案を採用した。黙って成功終了させる案は、文法の組み合わせの問題を見逃しやすいため採用しない。
 対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方だけ空でも一巡で入力が進めば許容する。通常の失敗による終了・巻き戻しは維持する。
 既存5テストクラスに例外ケース5件とDelimitedの正常境界2件を追加した。2回目の子呼び出しを別種の例外で止めることで、安全にRedを確認。Greenでは全333テストと非増分Releaseビルド・アナライザーが成功した。formatは既存指摘でexit 2。現在の検証結果と停止位置は[再開記録](development-context.md#現在の作業状況)を参照する。
 
@@ -81,20 +82,20 @@ EOF問題がなくても、空WordやOptionalの不在成功で発生する。
 
 ### R04：JSON数値の取得結果が実行カルチャーで変わる
 
-**実行確認。** [JSONLiteral.Get](../JsonParser/JSONLiteral.cs) 55～56行は `Convert.ToDouble(string)` を使う。
+**実行確認。** [JsonLiteral.Get](../JsonParser/JsonLiteral.cs) 55～56行は `Convert.ToDouble(string)` を使う。
 同じ `{"a":1.2}` のGet結果がen-USでは1.2、de-DEでは12、fr-FRではFormatExceptionになった。
 JSON用のカルチャー非依存の変換へ改める候補。現在のテストは主に数値の字句を確認し、Getの値を確認していない。
 doubleの精度・範囲をどこまで扱うかは、この誤変換の修正と分けて判断する。
 
-### R05：JSON.Parseが未解析の末尾を捨てる
+### R05：Json.Parseが未解析の末尾を捨てる
 
-**実行確認。全文解析を入口の契約にするかは要確認。** [JSON.Parse](../JsonParser/JSON.cs) 221～228行は最初のobjectの成功だけを返す。
+**実行確認。全文解析を入口の契約にするかは要確認。** [Json.Parse](../JsonParser/Json.cs) 221～228行は最初のobjectの成功だけを返す。
 `{}garbage` と `{}{}` を受理し、返却値には残り入力がない。部分解析用コンビネーターと、文書全体を読む入口を区別する必要がある。
 全文解析なら末尾の許可された空白とEOFを確認する。単なるテストのために公開APIを増やす案ではない。
 
 ### R06：JSONの対応文法を整理し、実際の規格差を補う
 
-**実行確認。対応範囲・互換性は仕様確認。** [JSON.cs](../JsonParser/JSON.cs) 72～156行、219～228行が対象。
+**実行確認。対応範囲・互換性は仕様確認。** [Json.cs](../JsonParser/Json.cs) 72～156行、219～228行が対象。
 
 | 入力例・条件 | 現状 |
 |---|---|
@@ -102,7 +103,7 @@ doubleの精度・範囲をどこまで扱うかは、この誤変換の修正�
 | 文字列内の生の改行・NUL | 受理 |
 | `{"a":01}`、`{"a":١}`（U+0661） | 受理 |
 | `{"a":TRUE}` | 受理。既存テストも大文字受理を固定 |
-| トップレベル `[]` | 拒否。公開入口はJSONObjectを返す |
+| トップレベル `[]` | 拒否。公開入口はJsonObjectを返す |
 | `{"a":1,"a":2}` | ToDictionary由来のArgumentException |
 
 標準文法では、文字列の制御文字をエスケープし、`\uXXXX` と `\/` を扱う。数値はASCII数字で、先頭ゼロに制約がある。リテラルは小文字で、トップレベルはobject以外も含む。重複キーの拒否自体を規格違反とは扱わない。[RFC 8259 §2～7](https://www.rfc-editor.org/rfc/rfc8259.html#section-2)
@@ -117,16 +118,16 @@ doubleの精度・範囲をどこまで扱うかは、この誤変換の修正�
 
 * [Orテスト](../Kotowari.Tests/Core/OrParserのテスト.cs) 54～60行：「先頭失敗・2番目成功の値」が入力・期待値とも `abc` で、先頭候補の成功を見ている。`ab` へ直す候補。
 * [4要素Sequenceテスト](../Kotowari.Tests/Core/要素を4つ持つSeqenceParserのテスト.cs) 35～60行と5～10要素の同型ケース：`abc cd ...` では先頭の `ab` が接頭辞成功し、次の子で失敗する。単語内部の不一致に直す。2・3要素は修正済みなので重複追加しない。
-* [JSONテスト](../JsonParserのテスト/JSONのテスト.cs) 219～228行：`e10+`、`+e10` は整数部がなく、指数符号の位置を検証していない。478～502行の空白否定ケースも数字欠落を同時に含む。例として `1e10+`、`1 .0`、`1.0 e1`、`1.0e +1` のように狙った不正条件だけを残す。
+* [JSONテスト](../JsonParserのテスト/Jsonのテスト.cs) 219～228行：`e10+`、`+e10` は整数部がなく、指数符号の位置を検証していない。478～502行の空白否定ケースも数字欠落を同時に含む。例として `1e10+`、`1 .0`、`1.0 e1`、`1.0e +1` のように狙った不正条件だけを残す。
 
 件数を増やすのではなく、既存テストが想定した経路を確実に検証する。必要な代表ケースで短絡や子の呼び出し位置を確認する。
 
 ### R08：JSONの深い比較が値の違い・配列順序を見逃す
 
-**実行確認。** [JSONテスト](../JsonParserのテスト/JSONのテスト.cs) 20～47行の期待木比較と408行付近の空白有無の比較は、`BeEquivalentTo` の既定設定を使う。
+**実行確認。** [JSONテスト](../JsonParserのテスト/Jsonのテスト.cs) 20～47行の期待木比較と408行付近の空白有無の比較は、`BeEquivalentTo` の既定設定を使う。
 同じ比較で `{"a":1}` と `{"a":2}` が合格し、`{"a":[true,false]}` と `{"a":[false,true]}` も合格した。後者は `WithStrictOrdering()` だけを足しても合格する。
 
-原因は、Pairs/Elementsの要素が `IJSONValue` として宣言され、そのinterfaceには通常の値プロパティがないこと。既定のメンバー選択は宣言型を優先する。加えて、コレクションの順序は既定では無視される。[Fluent Assertions公式文書](https://fluentassertions.com/objectgraphs/)
+原因は、Pairs/Elementsの要素が `IJsonValue` として宣言され、そのinterfaceには通常の値プロパティがないこと。既定のメンバー選択は宣言型を優先する。加えて、コレクションの順序は既定では無視される。[Fluent Assertions公式文書](https://fluentassertions.com/objectgraphs/)
 実行時型のメンバーを使う設定で数値差を、実行時型＋厳密順序の設定で配列順序差を検出することまで確認した。キー名の違いは既定設定でも検出できたため、比較が全面的に無効という意味ではない。
 
 **改善方向**：実際のノード型・値とJSON配列順序を比較する。既存の独立した期待木を生かし、値を故意に変えたとき比較が失敗することも確認する。objectのキー順序まで仕様として強制しない。
@@ -142,7 +143,7 @@ Sequence/Orは開始位置へ戻し、ZeroOrMoreは最後の失敗位置を使�
 
 ### R10：左再帰・深い再帰の制約を示す
 
-**静的確認＋仕様確認。枯渇する深さは未測定。** [RecursiveParser](../Kotowari/Core/RecursiveParser.cs) 12～13行と [JSONの再帰文法](../JsonParser/JSON.cs) 175～198行には深さ制限がない。
+**静的確認＋仕様確認。枯渇する深さは未測定。** [RecursiveParser](../Kotowari/Core/RecursiveParser.cs) 12～13行と [JSONの再帰文法](../JsonParser/Json.cs) 175～198行には深さ制限がない。
 同位置で自分を呼ぶ文法は終了せず、正常な右再帰でも入力のネストに比例してスタックを使う。
 少なくとも左再帰非対応・深い入力の制約を説明する。外部入力へ使う範囲に応じ、深さ上限などが必要か判断する。
 毎回のgetter評価をやめるキャッシュ案ではない。危険なスタック枯渇の再現実行はしていない。
@@ -211,19 +212,19 @@ Sprache、Superpower、KotowariのJSONサンプルは出現ごとに生成する
 文法を並行共有できる条件を説明する候補。防御コピー、InvariantCulture化、一律の早期null拒否を無断で既定の修正にしない。
 並行実行そのものの負荷試験はしていない。
 
-### R17（P3）：未実装の公開ToJSONと未使用JSONMapを整理する
+### R17（P3）：未実装の公開ToJsonと未使用JsonMapを整理する
 
-**静的確認＋用途判断。** [JSONObject](../JsonParser/JSONObject.cs) 63行、[JSONArray](../JsonParser/JSONArray.cs) 64行、[JSONLiteral](../JsonParser/JSONLiteral.cs) 84行のToJSONは必ずNotImplementedExceptionを投げる。
+**静的確認＋用途判断。** [JsonObject](../JsonParser/JsonObject.cs) 63行、[JsonArray](../JsonParser/JsonArray.cs) 64行、[JsonLiteral](../JsonParser/JsonLiteral.cs) 84行のToJsonは必ずNotImplementedExceptionを投げる。
 出力も提供するのか、未対応APIを整理するのか決める。
 
-[JSONMap](../JsonParser/JSONMap.cs) は内部・未使用で、現在のJSON.Parseには影響しない。
+[JsonMap](../JsonParser/JsonMap.cs) は内部・未使用で、現在のJson.Parseには影響しない。
 32行の `IsSubclassOf(typeof(IDictionary))` はinterface実装判定にならず、89行の条件は非配列IListを拒否し、数値写像は要求型によらずboxed doubleを返す。
 GetProperties/GetFieldsはinstance限定でなく、将来使うとstaticメンバーも書き換える経路がある。
 保持する理由を確認し、不要なら整理、使うなら対象型・副作用を限定してテストする。未公開経路の不具合を現行Parseの障害に数えない。
 
 ### R18（P3）：解析失敗の診断情報を用途に応じて補う
 
-**静的確認＋提案。** [ParseException](../JsonParser/ParseException.cs) 5～7行とJSON.Parseのthrowは位置・期待要素などを持たない。
+**静的確認＋提案。** [ParseException](../JsonParser/ParseException.cs) 5～7行とJson.Parseのthrowは位置・期待要素などを持たない。
 入力誤りを直す利用場面では診断が難しい。現在の結果・カーソル設計と合わせて、最小限どの情報を返すか考える。
 大きなエラー回復機構やテスト専用APIを先に作る案ではない。
 

@@ -29,7 +29,7 @@ Codexからの入口には既存の [AGENTS.md](../AGENTS.md) を使う（[公�
 2026-10-19に現行資料とコードを確認した。以下は網羅的な仕様書ではない。
 
 * **既存文書で明文化済みの方針**：dependency-freeのC#パーサーコンビネーター、公開APIの組み合わせやすさ・責務分離、対象 `net10.0`、JSONパーサーは使用例兼性能比較用。詳細と変更時の制約は [Kotowari固有指示](ai-instructions/kotowari.md)、構成と実行方法は [README](../README.md) を参照する。
-* **テストで表現された現状**：[ParseResultのテスト](../Kotowari.Tests/ParseResultのテスト.cs)が成功・失敗・値取得・null拒否を、[各コンビネーターのテスト](../Kotowari.Tests/Core)が組み合わせと境界条件を表す。[JSONのテスト](../JsonParserのテスト/JSONのテスト.cs)はサンプルの振る舞いを表す。JSON nullの値表現と、ParseResultの成功値へのnull指定は別である。
+* **テストで表現された現状**：[ParseResultのテスト](../Kotowari.Tests/ParseResultのテスト.cs)が成功・失敗・値取得・null拒否を、[各コンビネーターのテスト](../Kotowari.Tests/Core)が組み合わせと境界条件を表す。[JSONのテスト](../JsonParserのテスト/Jsonのテスト.cs)はサンプルの振る舞いを表す。JSON nullの値表現と、ParseResultの成功値へのnull指定は別である。
 * テストは重要な仕様資産だが、既存コードとテストのすべてを開発者が意図した仕様、またはJSON規格への適合保証とは扱わない。仕様変更に必要な疑問は、その箇所の既存記録を確認してからユーザーへ尋ねる。
 
 ## 判断記録
@@ -56,9 +56,10 @@ Codexからの入口には既存の [AGENTS.md](../AGENTS.md) を使う（[公�
 
 **確認日：2026-11-03。** 再開時にはGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`。Gの基準は `b17bbcd`、ルール統一は `8ec30d7`。ユーザーの「コミットして次行きましょう」に従い、R02のGreenをこの記録を含むコミットへ保存する。JSON命名修正は別の未コミット差分として保持し、続けて独立したコミットにする。pushはしていない。
-* R02は、成功してもIndexが変わらない場合にInvalidOperationExceptionを投げる。対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方だけ空でも一巡で進めば許容する。子の失敗による終了・巻き戻し、子例外の伝播、finallyのバッファ返却を維持する。後退・別文書への置換や左再帰の検出は扱わない。
-* Redは既存5クラスへの例外5ケースとDelimitedの正常境界2ケース。既存CallbackCharParserの2回目をNotSupportedExceptionで止め、安全に失敗を確認した。Greenは対象91件、本体267件、JSON66件が成功（合計333、失敗・Skipなし）。非増分Release build/analyzersは10.01秒、Debugは13.46秒で成功。既存NU1701が1件、SARIFの既存診断6件、変更箇所の新規診断なし。
-* formatは14.55秒・exit 2で既存指摘が残る。制限環境のtesthost接続失敗とGreen途中のDelimited境界の失敗は、通常環境・一巡開始位置との比較へ修正後の上記結果と区別する。性能測定は未実施。
-* 検証後からR02のCore5ソースと既存5テストのSHA-256が変わっていないことを確認済み。今回のGコミットは、その10ファイルと候補一覧・本記録の計12ファイル。追加のコード検査を同条件で繰り返していない。原本はローカル `artifacts/r02-repetition-progress-2026-11-02/{red,green}/` のみ。
-* 次はJSONの命名修正を保存後、このGのSHAと現在HEADをRefactor担当へ渡し、反復処理の範囲を検討する。R03等はその後に一件ずつ扱う。
+* ブランチ：`codex/optimize-word-parser`。ルール統一は `8ec30d7`、R02のGreenは `5cb68d6` に保存済み。ユーザーの「コミットして次行きましょう」に従い、JSON命名修正をこの記録を含む別コミットへ保存する。pushはしていない。
+* 自前型をJSON→Json、JSONObject→JsonObject、JSONArray→JsonArray、JSONLiteral→JsonLiteral、JSONMap→JsonMap、JSONStringCharacterParser→JsonStringCharacterParser、IJSONValue→IJsonValueへ変更し、ToJSONをToJsonへ変更。対応する7ソースとテストの計8ファイルを改名し、テストクラス・benchmarkの自前型参照を更新した。一般語JSON・外部SpracheJSONの定義・既存の例外メッセージは維持した。
+* サンプルの公開型・メソッド名が変わるため、旧名の利用コードには修正が必要。本体のAPIは変えていない。命名修正のコミット対象は、上記8ファイルの改名、`Kotowari.Benchmarks/JsonParserBenchmarks.cs`、リンク・API例・進捗を更新した候補一覧と本記録。
+* 命名変更後のJSON66件・本体267件はすべて成功（計333、失敗・Skipなし）。非増分Release build/analyzersは16.4秒で成功、既存NU1701が1件。SARIFに新規診断なし。formatは23.5秒・exit 2で既存指摘が残る。制限環境のbuildhost pipe接続失敗は、通常環境の結果と区別する。原本はローカル `artifacts/json-naming-2026-11-03/refactor/`。
+* Windowsの大小文字だけの改名は実ファイル名とGitのステージを照合する。コマンド単位のcore.ignorecase=falseを用い、リポジトリ設定は変更しない。検証後のソース変更はなく、受け渡しだけのためにテストを繰り返していない。性能測定はしていない。
+* R02の契約は、同位置の成功から反復を継続する場合にInvalidOperationExceptionを投げるもの。対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方が空でも一巡で進めば許容する。通常の失敗・巻き戻し・例外伝播・finally返却を維持する。後退・別文書への差し替え、左再帰は対象外。
+* 次はR02のG SHA `5cb68d6` と命名保存後のHEADを、独立Refactor担当へ渡す。対象は今回の反復処理の設計領域。Refactorで実変更があれば、人間の差分確認とFコミット了承を待つ。その後R03等を一件ずつ扱う。
