@@ -72,6 +72,14 @@ public class Cursolのテスト
     }
 
     [Fact]
+    public void GoFowardは非常に大きな正の移動でも文書末尾で止まります()
+    {
+        var tested = new Cursol("ABC").GoFoward(1);
+
+        tested.GoFoward(int.MaxValue).Index.Should().Be(3);
+    }
+
+    [Fact]
     public void GoFowardは元の値をCursolを変更しません()
     {
         var tested = new Cursol("ABC");

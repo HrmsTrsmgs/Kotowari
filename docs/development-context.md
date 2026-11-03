@@ -56,10 +56,12 @@ Codexからの入口には既存の [AGENTS.md](../AGENTS.md) を使う（[公�
 
 **確認日：2026-11-03。** 再開時にはGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`。ルール統一は `8ec30d7`、R02のGreenは `5cb68d6` に保存済み。ユーザーの「コミットして次行きましょう」に従い、JSON命名修正をこの記録を含む別コミットへ保存する。pushはしていない。
-* 自前型をJSON→Json、JSONObject→JsonObject、JSONArray→JsonArray、JSONLiteral→JsonLiteral、JSONMap→JsonMap、JSONStringCharacterParser→JsonStringCharacterParser、IJSONValue→IJsonValueへ変更し、ToJSONをToJsonへ変更。対応する7ソースとテストの計8ファイルを改名し、テストクラス・benchmarkの自前型参照を更新した。一般語JSON・外部SpracheJSONの定義・既存の例外メッセージは維持した。
-* サンプルの公開型・メソッド名が変わるため、旧名の利用コードには修正が必要。本体のAPIは変えていない。命名修正のコミット対象は、上記8ファイルの改名、`Kotowari.Benchmarks/JsonParserBenchmarks.cs`、リンク・API例・進捗を更新した候補一覧と本記録。
-* 命名変更後のJSON66件・本体267件はすべて成功（計333、失敗・Skipなし）。非増分Release build/analyzersは16.4秒で成功、既存NU1701が1件。SARIFに新規診断なし。formatは23.5秒・exit 2で既存指摘が残る。制限環境のbuildhost pipe接続失敗は、通常環境の結果と区別する。原本はローカル `artifacts/json-naming-2026-11-03/refactor/`。
-* Windowsの大小文字だけの改名は実ファイル名とGitのステージを照合する。コマンド単位のcore.ignorecase=falseを用い、リポジトリ設定は変更しない。検証後のソース変更はなく、受け渡しだけのためにテストを繰り返していない。性能測定はしていない。
-* R02の契約は、同位置の成功から反復を継続する場合にInvalidOperationExceptionを投げるもの。対象はZeroOrMore、OneOrMore、DelimitedSequence、WithWhiteSpaceとWordの空白反復。Delimitedは要素と区切りの一巡で判定し、片方が空でも一巡で進めば許容する。通常の失敗・巻き戻し・例外伝播・finally返却を維持する。後退・別文書への差し替え、左再帰は対象外。
-* 次はR02のG SHA `5cb68d6` と命名保存後のHEADを、独立Refactor担当へ渡す。対象は今回の反復処理の設計領域。Refactorで実変更があれば、人間の差分確認とFコミット了承を待つ。その後R03等を一件ずつ扱う。
+* ブランチ：`codex/optimize-word-parser`、HEAD：`012a31a`。ユーザーの「コミットして次行きましょう」に従い、R02のGreenを `5cb68d6`、JSON命名修正を `012a31a` の別コミットに保存した。大小文字だけの改名8件もGitに記録済み。pushはしていない。
+* R02のRefactorは、独立担当が既存の共有部分と反復ごとの判定境界を確認し、今回増やす共通責務はないと判断した。コード変更・Fコミットなし。コードを変えていないため検証を再実行していない。R02の契約・検証は[候補一覧](development-candidates.md#r02入力を消費しない成功を反復すると終了しない)とGコミットを参照する。
+* 続いてR03の正方向カーソル移動のオーバーフローを、独立Red・Green担当で修正した。ユーザーの「コミットして次行きましょう」により、この更新を含むGコミットへ保存し、独立したRefactor担当へ渡す。R04以降はまだ開始していない。
+* 既存の「文書末尾で止まる」制約に従い、途中位置からint.MaxValueだけ正方向へ移動する回帰テストを既存Cursolテストへ1件追加した。Redは期待3に対し-2147483648となる意図した失敗（対象21件中20成功・1失敗）。Greenは正方向の加算だけlongで行い、末尾の上限適用後にintへ戻す。非正方向の計算・負位置許容・範囲外NUL読み取り・公開APIは維持する。
+* 最終Green版は対象Cursol21件、本体268件、JSON66件がすべて成功（計334、失敗・Skipなし）。非増分Release build/analyzersは10.74秒で成功し、既存NU1701警告が1件。5プロジェクトのSARIFを確認し、変更した実装・テストへの診断なし。
+* format検査は27.8秒で既存のWHITESPACE・IDE情報診断により失敗。変更ファイルへの指摘はなく、無関係な既存書式は修正していない。最初の制限環境内の対象テストはtesthost起動後に停止したため中断し、通常環境で上記成功を確認した。失敗・中断した試行を成功扱いしない。
+* R03の原本はローカル `artifacts/r03-cursor-overflow-2026-11-03/{red,green}/result.md` 等に保存。作業全体の一時スリープ抑止は `artifacts/r02-refactor-2026-11-03/` のstatus/heartbeatへ記録した。これらは別cloneには存在しない。性能測定は未実施。
+* 今回のGコミットは `Kotowari/Core/Cursol.cs`、`Kotowari.Tests/Core/Cursolのテスト.cs`、対応状況を更新した候補一覧と本記録の計4ファイル。検証後のソース変更はなく、同条件の検査を繰り返していない。メッセージは `fix: カーソルの正方向移動のオーバーフローを防ぐ`。
+* 次はGのSHAをRefactor担当へ渡す。その後にR04等を一件ずつ扱う。負方向の表現範囲外、左再帰対応などの未確定仕様は今回の修正へ追加していない。
