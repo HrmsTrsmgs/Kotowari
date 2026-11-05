@@ -35,6 +35,20 @@ public class OptionalParserのテスト
     }
 
     [Fact]
+    public void 子が入力を消費して失敗したら不在の値で成功し呼び出し開始位置に戻ります()
+    {
+        var cursol = new Cursol("x b").GoFoward(1);
+        var tested = new OptionalParser<char>(
+            new WithWhiteSpaceParser<char>(new CharParser(' '), new CharParser('a')));
+
+        var result = tested.Parse(cursol);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.IsPresent.Should().BeFalse();
+        result.Cursol.Index.Should().Be(cursol.Index);
+    }
+
+    [Fact]
     public void 子の例外は不在とせずそのまま伝播します()
     {
         var exception = new InvalidOperationException();
