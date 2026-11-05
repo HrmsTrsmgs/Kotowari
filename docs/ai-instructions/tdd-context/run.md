@@ -6,7 +6,7 @@
 
 ## このプロジェクトの記録先
 
-再開・判断は `docs/development-context.md`、未確定候補は `docs/development-candidates.md` を使う。 固有制約は `docs/ai-instructions/kotowari.md` に従う。工程担当へは必要な確定情報だけを渡す。
+記録の索引は `ai-notes/README.md`、再開は `ai-notes/current-work.md`、確定仕様・判断は `docs/development-context.md`、未確定候補は `ai-notes/development-candidates.md` を使う。 固有制約は `docs/ai-instructions/kotowari.md` に従う。工程担当へは必要な確定情報だけを渡す。
 
 ## 開始とコンテキスト
 

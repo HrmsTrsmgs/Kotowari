@@ -37,7 +37,7 @@ The suspended UTF-8 work, saved Git tags, and measurement baselines are indexed 
 
 ## Development continuity
 
-Development decisions, existing specification sources, and the current handoff are indexed in [Development context](docs/development-context.md) (Japanese). AI contributors should start with [AGENTS.md](AGENTS.md); the existing TDD workflow is unchanged.
+Development decisions and existing specification sources are indexed in [Development context](docs/development-context.md) (Japanese). Current work and review candidates are indexed separately in [AI work notes](ai-notes/README.md). AI contributors should start with [AGENTS.md](AGENTS.md); the existing TDD workflow is unchanged.
 
 ## License
 
