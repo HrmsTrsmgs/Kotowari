@@ -37,7 +37,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("abc cd ef gh ij kl mn");
+        var cursol = new Cursol("ax cd ef gh ij kl mn");
 
         var result = Tested.Parse(cursol);
 
@@ -47,7 +47,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cde ef gh ij kl mn");
+        var cursol = new Cursol("ab cx ef gh ij kl mn");
 
         var result = Tested.Parse(cursol);
 
@@ -56,7 +56,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cd efg gh ij kl mn");
+        var cursol = new Cursol("ab cd ex gh ij kl mn");
 
         var result = Tested.Parse(cursol);
 
@@ -66,7 +66,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは4つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cd ef ghi ij kl mn");
+        var cursol = new Cursol("ab cd ef gx ij kl mn");
 
         var result = Tested.Parse(cursol);
 
@@ -76,7 +76,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは5つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cd ef gh ijk kl mn");
+        var cursol = new Cursol("ab cd ef gh ix kl mn");
 
         var result = Tested.Parse(cursol);
 
@@ -86,7 +86,7 @@ public class 要素を7つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは6つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cd ef gh ij klm mn");
+        var cursol = new Cursol("ab cd ef gh ij kx mn");
 
         var result = Tested.Parse(cursol);
 

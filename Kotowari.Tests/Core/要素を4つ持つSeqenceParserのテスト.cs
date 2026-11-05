@@ -34,7 +34,7 @@ public class 要素を4つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("abc cd ef gh");
+        var cursol = new Cursol("ax cd ef gh");
 
         var result = Tested.Parse(cursol);
 
@@ -44,7 +44,7 @@ public class 要素を4つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cde ef gh");
+        var cursol = new Cursol("ab cx ef gh");
 
         var result = Tested.Parse(cursol);
 
@@ -53,7 +53,7 @@ public class 要素を4つ持つSeqenceParserのテスト
     [Fact]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
     {
-        var cursol = new Cursol("ab cd efg gh");
+        var cursol = new Cursol("ab cd ex gh");
 
         var result = Tested.Parse(cursol);
 
