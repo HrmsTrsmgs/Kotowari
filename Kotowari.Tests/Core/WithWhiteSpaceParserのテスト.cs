@@ -25,8 +25,8 @@ public class WithWhiteSpaceParserのテスト
         parse.Should().Throw<InvalidOperationException>();
     }
 
-    [Fact]
-    public void 空白パーサーが消費して失敗しても失敗前の位置から子を読み後の空白は残します()
+    [Fact(Skip = "WithWhiteSpaceParserが前置空白だけを読んでいるため。子の成功後に空白を読み最後の成功位置を返す実装後に解除します。")]
+    public void 子の後の空白パーサーが消費して失敗しても最後に成功した位置を返します()
     {
         var 呼び出し位置 = new List<int>();
         var tested = new WithWhiteSpaceParser<char>(new CallbackCharParser((current, index) =>
@@ -35,13 +35,34 @@ public class WithWhiteSpaceParserのテスト
             return (current == '_', current, 1);
         }), new CharParser('あ'));
 
-        var result = tested.Parse(new Cursol("_あ_!"));
+        var result = tested.Parse(new Cursol("あ__!"));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be('あ');
-        result.Cursol.Index.Should().Be(2);
-        result.Cursol.Current.Should().Be('_');
-        呼び出し位置.Should().Equal(0, 1);
+        result.Cursol.Index.Should().Be(3);
+        result.Cursol.Current.Should().Be('!');
+        呼び出し位置.Should().Equal(1, 2, 3);
+    }
+
+    [Fact(Skip = "WithWhiteSpaceParserが前置空白を読んでいるため。子を先に解析する実装後に解除します。")]
+    public void 子の前にある空白は読み飛ばしません()
+    {
+        var tested = new WithWhiteSpaceParser<char>(new CharParser('_'), new CharParser('あ'));
+
+        tested.Parse(new Cursol("_あ")).IsSuccess.Should().BeFalse();
+    }
+
+    [Fact(Skip = "WithWhiteSpaceParserが後置空白を読まないため。子の値を保ち指定した後置空白だけを読む実装後に解除します。")]
+    public void 子の値を返して文法で指定した後置空白だけを読み飛ばします()
+    {
+        var tested = new WithWhiteSpaceParser<string>(new CharParser('_'), new WordParser("public"));
+
+        var result = tested.Parse(new Cursol("public__ !"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("public");
+        result.Cursol.Index.Should().Be(8);
+        result.Cursol.Current.Should().Be(' ');
     }
 
     [Fact]

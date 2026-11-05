@@ -80,26 +80,43 @@ public class WordParserのテスト
         result.Cursol.Index.Should().Be(0);
     }
 
-    [Fact]
-    public void ParseAsyncは単語前のスペースを読み飛ばします()
+    [Fact(Skip = "WordParserが前置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
+    public void 指定文字列の前に空白があると一致せず入力を消費しません()
     {
         var cursol = new Cursol(" public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
 
-        result.Cursol.Index.Should().Be(7);
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Should().Be(cursol);
     }
 
-    [Fact]
-    public void ParseAsyncは単語後のスペースを読み飛ばします()
+    [Fact(Skip = "WordParserが後置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
+    public void 指定文字列に一致しても後ろの空白は消費しません()
     {
         var cursol = new Cursol("public ");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
 
-        result.Cursol.Index.Should().Be(7);
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("public");
+        result.Cursol.Index.Should().Be(6);
+        result.Cursol.Current.Should().Be(' ');
+    }
+
+    [Fact(Skip = "WordParserが指定文字列の照合前に空白を読んでいるため。文字列内の空白もそのまま照合する実装後に解除します。")]
+    public void 指定文字列に含まれる前後の空白もそのまま照合します()
+    {
+        var tested = new WordParser(" public ");
+
+        var result = tested.Parse(new Cursol(" public !"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(" public ");
+        result.Cursol.Index.Should().Be(8);
+        result.Cursol.Current.Should().Be('!');
     }
 
     [Fact]

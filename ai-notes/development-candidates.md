@@ -177,7 +177,40 @@ Sequence/Orは開始位置へ戻し、ZeroOrMoreは最後の失敗位置を使�
 
 **2026-11-05：開始位置へ戻す修正は `a743a93` にコミット済み。** 判断理由・代替案・再検討条件は[判断記録](../docs/development-context.md#optionalの不在成功は開始位置へ戻す)を正本とする。呼出し位置1からの消費後失敗を確認する1テストを追加し、期待位置1・実際位置2のRedを確認した。Optionalの返却位置を選ぶ1行を修正し、公開型のXMLコメントへ契約を記した。全469テスト成功、既存テストの変更はない。他のコンビネーターの規則をまとめた利用者向け説明は未整備であり、今回の修正には含めていない。
 
-続くRefactorは、同じ型のコンストラクターをprimary constructorへ整理する差分だけでレビュー待ち。既存のget-onlyプロパティ、公開引数、解析処理・テストを維持し、IDE0290を解消した。検証結果と停止位置は[再開記録](current-work.md#現在の作業状況)を参照する。
+続くRefactorは `f12bc86` にコミット済み。同じ型をprimary constructorへ整理し、既存のget-onlyプロパティ、公開引数、解析処理・テストを維持してIDE0290を解消した。
+
+**2026-11-05：空白処理の公式資料調査（提案・未合意）。** ユーザーから、反復の巻き戻しだけでなく空白の考え方自体と既存ライブラリの定石を調べるよう依頼された。新しい実装・仕様テスト・性能測定は行っていない。
+
+* [Megaparsec 9.7.0のLexer](https://hackage.haskell.org/package/megaparsec-9.7.0/docs/Text-Megaparsec-Char-Lexer.html)と[FParsecの空白処理](https://www.quanttec.com/fparsec/tutorial.html#handling-whitespace)は、各字句の後ろで空白を読み、入力先頭の空白は入口で読む流儀を推奨する。空白の定義や改行・コメントの扱いは文法側で指定する。
+* [Spracheの公式実装](https://github.com/sprache/Sprache/blob/develop/src/Sprache/Parse.cs)のTokenは前後の空白を読む。Manyは失敗した試行の消費を捨てて最後の成功位置を返し、XManyは消費後失敗を区別する。[Optionalも失敗時は呼出し開始位置へ戻す](https://github.com/sprache/Sprache/blob/develop/src/Sprache/Parse.Optional.cs)。一方[FParsecのmany](https://www.quanttec.com/fparsec/reference/primitives.html#members.many)は子の状態変更後の失敗を反復全体の失敗にし、[PidginのOr](https://github.com/benjamin-hodgson/Pidgin#choosing-from-alternatives)も消費後失敗では代替へ進まずTryで巻き戻しを明示する。空白を置く側と、消費後失敗の規則は別の判断である。
+* [Superpower](https://github.com/datalust/superpower#tokenization)には、先に字句化して空白・コメントを除外し、トークン列を構文解析する方式もある。後置空白のlexeme方式は別途トークン列を生成することを必須としない。
+* **Kotowariの現状（ソース・既存テストで確認）：** WordParserは前後、WithWhiteSpaceParserは前の空白を読む。Wordの既定は半角空白だが、比較用JSONは明示したUnicode空白パーサーを渡す。反復系の現行の失敗位置引き継ぎはテストで保護されているが、設計意図の証明ではない。
+* **推奨案・未合意：** 空白を暗黙に処理しない字句照合と、成功した字句の後ろで文法指定の空白を読むlexeme相当を分ける。文書先頭だけ入口で空白を読み、引用符の内側や意味を持つ改行ではそのラッパーを使わない。既存Word/WithWhiteSpaceの契約変更・新APIは、具体的な利用例で別途設計する。先の「反復の失敗試行は戻す」案はSprache型の選択肢であり、唯一の定石とは扱わない。空白整理を理由に反復の規則や比較用JSONを自動変更しない。
+
+#### 空白処理の変更範囲（2026-11-05）
+
+ユーザーは上記の方向での整理・影響調査を指示した。[整理方針](../docs/development-context.md#字句照合と空白処理を分離する)は判断記録を正本とし、以下は未実装の変更候補とする。対象版は `f12bc86`。本体の直接関係は2ファイル、直接利用する本体テストは14ファイル、JSON文法は1ファイル、製品Wordを使うbenchmarkは1ファイル。さらに旧Word比較には独立した空白処理がある。ファイル数は検索上の直接参照であり、すべて変更必須という意味ではない。
+
+| 対象 | 現状・変更候補 |
+|---|---|
+| [Core/WordParser.cs](../Kotowari/Core/WordParser.cs) | 文字列照合からWhiteSpace・前後のSkipBlankAsyncを分離する。第一案はWordParserを素の照合へ変更し、空白引数付き2コンストラクターを整理する。公開契約の変更なので確定前に実装しない。照合結果の入力由来の文字列、IgnoreCase、途中不一致の巻き戻し、既存の配列・遅延確保は維持し、別の性能変更を混ぜない。 |
+| [WithWhiteSpaceParser.cs](../Kotowari/WithWhiteSpaceParser.cs) | 前置専用型の役割を見直し、成功した子の後ろで空白を読むLexeme相当へ整理する。提案名は `LexemeParser<T>`（現存APIではない）。旧型を黙って後置へ変えず、改名・置換か旧API併存かを公開APIレビューで決める。 |
+| 空白の読み飛ばし部品（新規または既存合成） | 文法指定の空白を0回以上読み、値列を結果として残さない処理を、後置と文書先頭で使う。単独型・合成APIのどちらにするかは利用例で決める。現在の両Skipループは失敗した空白候補の消費を捨てるが、ZeroOrMoreは失敗位置を引き継いで結果列も作るため、機械的な置換はしない。非消費成功時の例外も維持対象。 |
+| WordParser・WithWhiteSpaceParserのテスト2ファイル | 素の照合と空白ラッパーの責務へ振り分ける。前後空白・独自空白・空語・null空白引数などは既存の仕様変更を明示して移すか改める。単に失敗した期待値を消さない。新しい境界の代表例はRedで先に示す。 |
+| Sequence 2〜10のテスト9ファイル | 空白区切り入力を読む準備コードを明示的な字句ラッパーへ変更する候補。入力・値・失敗させる子の位置を維持し、Sequence自身のテストへ空白の全仕様を複製しない。まず2要素で代表差分をレビューしてから展開する。 |
+| Or・ParserConverter・OptionalParserのテスト3ファイル | 直接利用あり。前二者の既存入力には空白依存が見当たらず、Wordを素の照合にしても変更不要の可能性がある。Optionalの消費後失敗テストは前置空白型を使うため、旧型を廃止するなら「子が消費後に失敗する」前提を失わない準備へ変更する。 |
+| [JsonParser/Json.cs](../JsonParser/Json.cs) | Word生成3箇所と前置空白ラッパー生成9箇所を確認。記号6個、JString/JKey/JNumber、真偽値/nullの字句境界をそろえ、入口に先頭空白を置く。JChar・ControlChar・JInt/JFrac/JExpの内部にはラッパーを入れない。これは構造の変更候補であり同等性は未検証。数値0桁、値省略、空配列のノード数、Unicode空白、末尾を無視する入口など参照元の振る舞いを勝手に変更しない。 |
+| [共有JSONテスト](../JsonParserのテスト/Jsonのテスト.cs) | 原本と同じ98ケースを保持する。既存の空白・引用符内・数値内部の空白拒否・値省略等で確認し、足りない境界のみ両実装へ追加する。原本ソースやSprache側のTokenを後置方式へ変更しない。 |
+| [WordParserBenchmarks.cs](../Kotowari.Benchmarks/WordParserBenchmarks.cs) | 製品の素の照合と空白付き字句で何を測るかを分け、過去のWord計時と同じ仕事だと扱わない。現行入力自体は空白を含まないが、旧処理には空白判定が含まれる。 |
+| 独立した旧Word比較 | `WordParserAccumulationParser.cs`、`WordParserAccumulationCandidates.cs` と7方式（Array/DeferredArray/List/CapacityList/StringBuilder/CapacityStringBuilder/StackBuffer）に旧前後空白処理がある。本体の直接利用ではないので自動で現行へ追従させず、既存の累積方式比較として残す範囲と、新設計比較の範囲を区別する。過去のResultsを上書きしない。 |
+
+**設計で先に確定する境界：** 子の成功時だけ後置空白を読み、値は子の値をそのまま返す。子が失敗したら後置空白は読まない。ラッパー自身の巻き戻しを追加するか、子の失敗結果を引き継ぐかは公開契約として別途明示する。空白パーサーを「一単位として反復する」現行契約と、「0回以上をまとめて読むパーサーを一度呼ぶ」契約を混同しない。今回コメント解析・EOF/NUL変更・キーワードの単語境界判定・反復の失敗規則統一は導入しない。
+
+**進める単位の提案：** (1) 文字用の小さな利用例で後置空白と読み飛ばしAPIをRedとして決める。(2) Wordの素の照合と既存呼出しの移行を、ビルドを壊さない単位で進める（JSONの旧意味を保つ移行手段もこの段階で必要）。(3) Sequenceの代表例をレビューし必要範囲へ展開、JSONの字句境界は別単位で共通テストにより同等性を検証する。(4) 移行後に不要になった旧空白APIを整理し、測定の対象・条件を更新する。新旧API併存は自動採用せず、移行途中の必要性と最終的な公開面を分けて判断する。いずれも今は洗い出しであり、着手・展開の許可ではない。
+
+**2026-11-06：代表例のSkipテスト作成まで着手・レビュー待ち。** ユーザーの追加・修正指示に従い、Wordの既存2件変更・1件追加、WithWhiteSpaceの既存1件変更・2件追加の計6件をSkip付きにした。場所・仕様名・理由・解除条件は[Wordのテスト](../Kotowari.Tests/Core/WordParserのテスト.cs)と[WithWhiteSpaceのテスト](../Kotowari.Tests/Core/WithWhiteSpaceParserのテスト.cs)を正本とし、ケース一覧をここへ複製しない。一時解除した6件は意図した理由で失敗し、Skipへ復元した。本体は変更していない。既存型で新契約を表現しており、新APIの仮実装・ダミー型・設定切替は追加していない。
+
+残りの旧空白コンストラクター関連・WithWhiteSpaceの前置失敗位置テスト・Sequenceなどは未展開であり、新旧仕様の移行はまだ完了していない。今回の代表例を確認後に残りへ進む。将来実装時、古い期待を無断で削除・弱体化せず、どの責務へ移すかを確認する。最終状態の検証結果と停止位置は[再開記録](current-work.md#現在の作業状況)を参照する。
 
 ### R10：左再帰・深い再帰の制約を示す
 
