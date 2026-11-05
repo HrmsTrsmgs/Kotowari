@@ -55,9 +55,9 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var parsed = tested.Parse(new Cursol("abc")).Parsed;
+        var parsed = tested.Parse(new Cursol("ab")).Parsed;
 
-        parsed.Should().Be("abc");
+        parsed.Should().Be("ab");
     }
 
     [Fact]
