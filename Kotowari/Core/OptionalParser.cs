@@ -10,12 +10,11 @@ namespace Marimo.Kotowari.Core;
 /// 子が失敗したら、入力消費の有無にかかわらず呼び出し開始位置へ戻り、不在の値で成功します。
 /// 子が送出した例外はそのまま伝播します。
 /// </summary>
-public class OptionalParser<T> : Parser<Optional<T>>
+/// <param name="parser">値の有無を判定する子パーサー。</param>
+public class OptionalParser<T>(Parser<T> parser) : Parser<Optional<T>>
     where T : notnull
 {
-    Parser<T> Parser { get; }
-    public OptionalParser(Parser<T> parser)
-        => Parser = parser;
+    Parser<T> Parser { get; } = parser;
 
     protected internal override ParseResult<Optional<T>> ParseCore(Cursol cursol)
     {
