@@ -172,16 +172,13 @@ JSON規格に合わせていた旧期待8ケースは、今回の明示指示と
 
 整理後の最終検証はJSON計196件成功、失敗・Skip・error 0。Release非増分solution解析ビルド成功（12.55秒、既存NU1701のみ）、7プロジェクトのSARIFで新規診断なし。変更テスト限定formatも両条件で成功（移植側4.36秒・原本側4.62秒）。一時診断で、値・型・配列順序の異常は検出し、キー順序だけの違いは許容することを両側で確認した。開始時の37ファイルのハッシュから変わったソース・設定は共有テスト1ファイルのみで、原本10ソースとライセンスも同一。Core268件は不変の前回成功を引き継ぎ、今回再実行していない。全体formatの既存・原本への無関係な指摘を解消したとは扱わない。
 
-同期時の原本比較、Red/Green、ビルド・テスト・診断・ハッシュ確認はローカル `artifacts/json-upstream-sync-approved-2026-11-05/{red,green}/HANDOFF.md`、テスト診断修正の結果は `artifacts/json-test-diagnostic-fix-2026-11-05/green/HANDOFF.md`、共有ソース化の結果は `artifacts/json-common-tests-2026-11-05/red/HANDOFF.md`、仕様表現・検出力の修正結果は `artifacts/json-test-spec-fix-2026-11-05/red/HANDOFF.md` 等に保存する。一時ログはコミット対象にしない。巨大JSONの実行・速度測定は今回行っておらず、過去の測定値をこの同期版の性能とは扱わない。
+同期時の原本比較、Red/Green、ビルド・テスト・診断・ハッシュ確認はローカル `artifacts/json-upstream-sync-approved-2026-11-05/{red,green}/HANDOFF.md`、テスト診断修正の結果は `artifacts/json-test-diagnostic-fix-2026-11-05/green/HANDOFF.md`、共有ソース化の結果は `artifacts/json-common-tests-2026-11-05/red/HANDOFF.md`、仕様表現・検出力の修正結果は `artifacts/json-test-spec-fix-2026-11-05/red/HANDOFF.md` 等に保存する。一時ログはコミット対象にしない。これらの検証時には巨大JSONの速度測定はしていなかった。後日の測定は下記を参照する。
 
 ## 現在の作業状況
 
 **確認日：2026-11-05。** 再開時にはGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`、基準HEAD：`ae69e2a`。前回から未コミットの履歴監査記録を保持したまま、原本最新版への同期をRed→Greenで進めた。コミット・pushはしていない。
-* 実装と検証は上の[最新版同期](#最新版同期2026-11-05green完了未コミット)に整理した。Green完了・人間レビュー待ち。原本の固定ソースと共通テストが今回の確認基準であり、独自のJSON規格対応へ戻すものではない。
-* 変更対象はJsonParserの実装・interface計8ファイル（新規JsonMapper/JsonSerializer/JsonTextExtensionsを含む）、共有JSONテスト・分離したMappingSample、新規SpracheJson.Reference.Testsのcsproj、Kotowari.sln、SpracheJson.Reference一式、本記録と候補一覧。既存のJSONテストcsprojは、参照を分離した結果HEADと同じ状態になった。Core・既存ベンチマーク・中央パッケージ版は変更していない。従来の未使用JsonMapはこのGreenでは整理しておらず、同期実装の独立したRefactorはまだ実施していない。
-* ユーザーのコミット前レビューに対応し、xUnit1047の解消、テストソースの両側共有、仕様表現・比較の検出力・過不足の整理を完了した。[R08](development-candidates.md#r08jsonの深い比較が値の違い配列順序を見逃す)に指摘と対応を集約した。今回の恒久ソース変更は共有テスト1ファイルだけで、実装変更は不要だった。
-* 最終検証はJSON98件×両側の計196件成功、Release解析ビルド成功、7SARIFで新規診断なし、両条件の変更テスト限定format成功。一時診断でも値・型・配列順序の検出力を確認した。Core268件は不変の前回版の成功を引き継ぐ。既存・原本の無関係な診断は未修正。同条件の検査を親で繰り返していない。
-* **次の着手点：** 修正後の差分を人間が確認し、了承後に同期Green全体をコミットする。その後、独立したRefactorへ渡す。新しい未合意の仕様を追加する指示ではない。巨大JSONや速度比較はまだ実施していない。
-* 一時スリープ抑止のログはローカル `artifacts/json-upstream-sync-approved-2026-11-05/`、`artifacts/json-test-diagnostic-fix-2026-11-05/`、`artifacts/json-common-tests-2026-11-05/`、`artifacts/json-test-spec-review-2026-11-05/`、`artifacts/json-test-spec-fix-2026-11-05/` に保存。コミット案は `feat: JSONサンプルをSpracheJsonの固定最新版へ同期する`。ステージ済み変更なし。
+* ブランチ：`codex/optimize-word-parser`、HEAD：`cd1d294`。最新版SpracheJsonへの同期と共有テストはユーザーの了承後にコミット済み。pushはしていない。テスト・解析の確認範囲は上記と[R08](development-candidates.md#r08jsonの深い比較が値の違い配列順序を見逃す)を参照。同期実装の独立したRefactorは未実施。
+* 同期前後と最新版原本を、同一の巨大JSONで簡易測定した。[測定記録](../Kotowari.Benchmarks/Results/2026-11-05-json-sync-speed.md)とその索引、および本記録は未コミット。入力、版、条件、各反復、検証と限界は測定記録を正本とする。
+* **比較条件の変更：** 同期前 `ae69e2a` と同期後 `cd1d294` は文法と生成ノード数（100,001→104,120）が異なる。ユーザーもこの条件変更を了承した。同期前後の速度差を同一の仕事量による純粋な性能差と扱わず、過去測定を比較する際はこの変更を確認する。一方、同期後と固定最新版原本は、今回の入力について全消費・104,120ノード・構造と値の一致を確認済み。
+* **次の着手点：** 未コミットの測定記録・索引・本記録をレビューし、了承後に保存する。記録後の作業はユーザーの依頼に従う。巨大JSON比較の生データ・一時ホストはローカル `artifacts/json-speed-snapshots-2026-11-05/` にあり、Git対象外。
