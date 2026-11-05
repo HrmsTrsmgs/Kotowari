@@ -21,6 +21,9 @@ namespace Marimo.Parser;
 /// </summary>
 public interface IJsonValue
 {
+    /// <summary>Returns the upstream sample's JSON representation.</summary>
+    string ToJson();
+
     /// <summary>
     /// Allows key indexing without downcasting to JsonObject
     /// </summary>

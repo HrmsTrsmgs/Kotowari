@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Marimo.Parser;
@@ -61,5 +62,7 @@ public class JsonArray : IJsonValue
         }
     }
 
-    public string ToJson() => throw new NotImplementedException();
+    /// <summary>Returns the array's indented JSON representation. Empty arrays are unsupported.</summary>
+    public string ToJson() =>
+        $"[\r\n{string.Concat(from element in Elements select $"{element.ToJson()},\r\n")[..^3].Tabify()}\r\n]";
 }

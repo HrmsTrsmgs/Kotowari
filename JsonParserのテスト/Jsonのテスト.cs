@@ -1,15 +1,281 @@
 using FluentAssertions;
-using Marimo.Parser;
-using Marimo.Kotowari;
 using System;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
+
+#if SPRACHE_JSON_REFERENCE
+using IJsonValue = SpracheJson.IJsonValue;
+using Json = SpracheJson.Json;
+using JsonArray = SpracheJson.JsonArray;
+using JsonLiteral = SpracheJson.JsonLiteral;
+using JsonObject = SpracheJson.JsonObject;
+using LiteralType = SpracheJson.JsonLiteralType;
+using ParseException = Sprache.ParseException;
+#else
+using IJsonValue = Marimo.Parser.IJsonValue;
+using Json = Marimo.Parser.Json;
+using JsonArray = Marimo.Parser.JsonArray;
+using JsonLiteral = Marimo.Parser.JsonLiteral;
+using JsonObject = Marimo.Parser.JsonObject;
+using LiteralType = Marimo.Parser.LiteralType;
+using ParseException = Marimo.Parser.ParseException;
+#endif
 
 namespace Marimo.Parser.Test;
 
 public class Jsonのテスト
 {
+    // This source is compiled for both implementations; only the type aliases above differ.
+    // Fixed upstream: IanWold/SpracheJson aa8092aa4f5a7f1675200ac908d20c06e285aec4.
+
+    [Theory]
+    [InlineData("-")]
+    [InlineData("1e")]
+    [InlineData("1e+")]
+    public void 数字が不足した符号や指数部も数値として受理します(string number)
+    {
+        var tested = Json.Parse($"{{\"a\":{number}}}")["a"].Should().BeOfType<JsonLiteral>().Which;
+
+        tested.ValueType.Should().Be(LiteralType.Number);
+        tested.Value.Should().Be(number);
+    }
+
+    [Theory]
+    [InlineData("01")]
+    [InlineData("١٢")]
+    public void 先頭のゼロやUnicode数字も数値の文字列として保持します(string number)
+    {
+        var tested = Json.Parse($"{{\"a\":{number}}}")["a"].Should().BeOfType<JsonLiteral>().Which;
+
+        tested.ValueType.Should().Be(LiteralType.Number);
+        tested.Value.Should().Be(number);
+    }
+
+    [Theory]
+    [InlineData("""{"a":[1,]}""", "1", "")]
+    [InlineData("""{"a":[,]}""", "", "")]
+    public void 配列の省略された要素を空の数値として読み込みます(string text, string first, string second)
+    {
+        var array = Json.Parse(text)["a"].Should().BeOfType<JsonArray>().Which;
+
+        array.Elements.Should().HaveCount(2);
+        var firstValue = array[0].Should().BeOfType<JsonLiteral>().Which;
+        firstValue.ValueType.Should().Be(LiteralType.Number);
+        firstValue.Value.Should().Be(first);
+        var secondValue = array[1].Should().BeOfType<JsonLiteral>().Which;
+        secondValue.ValueType.Should().Be(LiteralType.Number);
+        secondValue.Value.Should().Be(second);
+    }
+
+    [Theory]
+    [InlineData("{}suffix")]
+    [InlineData("{} {}")]
+    public void オブジェクトの後に入力が続いても解析結果を返します(string text)
+    {
+        Json.Parse(text).Pairs.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void 引用符内の改行を文字列として保持します()
+    {
+        var tested = Json.Parse("{\"a\":\"\n\"}")["a"].Should().BeOfType<JsonLiteral>().Which;
+
+        tested.ValueType.Should().Be(LiteralType.String);
+        tested.Value.Should().Be("\n");
+    }
+
+    [Fact]
+    public void 空文字列の値を読み込みます()
+    {
+        var tested = Json.Parse("""{"a":""}""")["a"].Should().BeOfType<JsonLiteral>().Which;
+
+        tested.ValueType.Should().Be(LiteralType.String);
+        tested.Value.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ルートの配列を拒否します()
+    {
+        var parse = () => Json.Parse("[]");
+
+        parse.Should().Throw<Exception>();
+    }
+
+    [Theory]
+    [InlineData("""{"a":"\/"}""")]
+    [InlineData("""{"a":"\u0061"}""")]
+    public void 未対応のスラッシュとUnicodeのエスケープを拒否します(string text)
+    {
+        var parse = () => Json.Parse(text);
+
+        parse.Should().Throw<Exception>();
+    }
+
+    [Fact]
+    public void 重複したキーを持つオブジェクトを拒否します()
+    {
+        var parse = () => Json.Parse("""{"a":1,"a":2}""");
+
+        parse.Should().Throw<Exception>();
+    }
+
+    [Theory]
+    [InlineData("/\"\\\b\f\n\r\t", "\"\\/\\\"\\\\\\b\\f\\n\\r\\t\"")]
+    [InlineData(null, "\"\"")]
+    public void 文字列リテラルは文字列で取得しJSONではエスケープします(string? text, string json)
+    {
+        var tested = text is null
+            ? new JsonLiteral("", LiteralType.String) { Value = null }
+            : new JsonLiteral(text, LiteralType.String);
+
+        if (text is null) tested.Get().Should().BeNull();
+        else tested.Get().Should().BeOfType<string>().Which.Should().Be(text);
+        tested.ToString().Should().Be(text ?? "");
+        tested.ToJson().Should().Be(json);
+    }
+
+    [Theory]
+    [InlineData("12", 12d)]
+    [InlineData(null, 0d)]
+    public void 数値リテラルはdoubleで取得し元の文字列表現を返します(string? text, double number)
+    {
+        var tested = text is null
+            ? new JsonLiteral("", LiteralType.Number) { Value = null }
+            : new JsonLiteral(text, LiteralType.Number);
+
+        tested.Get().Should().BeOfType<double>().Which.Should().Be(number);
+        tested.ToString().Should().Be(text ?? "");
+        tested.ToJson().Should().Be(text ?? "");
+    }
+
+    [Theory]
+    [InlineData("TRUE", true)]
+    [InlineData("false", false)]
+    [InlineData(null, false)]
+    public void 真偽値リテラルはboolで取得し元の文字列表現を返します(string? text, bool boolean)
+    {
+        var tested = text is null
+            ? new JsonLiteral("", LiteralType.Boolean) { Value = null }
+            : new JsonLiteral(text, LiteralType.Boolean);
+
+        tested.Get().Should().BeOfType<bool>().Which.Should().Be(boolean);
+        tested.ToString().Should().Be(text ?? "");
+        tested.ToJson().Should().Be(text ?? "");
+    }
+
+    [Fact]
+    public void Nullリテラルはnullで取得し空の表示文字列とnullのJSON表現を返します()
+    {
+        var tested = new JsonLiteral("", LiteralType.Null) { Value = null };
+
+        tested.Get().Should().BeNull();
+        tested.ToString().Should().BeEmpty();
+        tested.ToJson().Should().Be("null");
+    }
+
+    [Fact]
+    public void ネストしたオブジェクトと配列をJSON文字列へ戻します()
+    {
+        const string text = """{"a":[1,"b"]}""";
+
+        Json.Parse(text).ToJson().Should().Be(
+            "{\r\n\t\"a\": [\r\n\t\t1,\r\n\t\t\"b\"\r\n\t]\r\n}");
+    }
+
+    [Fact]
+    public void 空コンテナーのJSON文字列生成には対応しません()
+    {
+        var objectError = Record.Exception(() => new JsonObject().ToJson());
+        var arrayError = Record.Exception(() => new JsonArray().ToJson());
+
+        objectError.Should().NotBeNull();
+        arrayError.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void インデクサーで既存の配列要素とオブジェクトの値を置換します()
+    {
+#pragma warning disable CA1859 // Exercise the public interface call site for both implementations.
+        IJsonValue tested = Json.Parse("""{"a":[1],"b":"before"}""");
+#pragma warning restore CA1859
+        tested["a"][0] = new JsonLiteral("2", LiteralType.Number);
+        tested[1] = new JsonLiteral("after", LiteralType.String);
+
+        tested.Should().BeOfType<JsonObject>().Which.Pairs.Should().HaveCount(2);
+        var array = tested["a"].Should().BeOfType<JsonArray>().Which;
+        array.Elements.Should().ContainSingle();
+        var number = array[0].Should().BeOfType<JsonLiteral>().Which;
+        number.ValueType.Should().Be(LiteralType.Number);
+        number.Value.Should().Be("2");
+        var text = tested["b"].Should().BeOfType<JsonLiteral>().Which;
+        text.ValueType.Should().Be(LiteralType.String);
+        text.Value.Should().Be("after");
+    }
+
+    [Fact]
+    public void 数値をdoubleとその配列へマップします()
+    {
+        Json.Map<double>(new JsonLiteral("12", LiteralType.Number)).Should().Be(12d);
+        Json.Map<double[]>(Json.Parse("""{"a":[12,3]}""")["a"]).Should().Equal(12d, 3d);
+    }
+
+    [Fact]
+    public void 数値をintへ自動変換してマップしません()
+    {
+        var map = () => Json.Map<int>(new JsonLiteral("12", LiteralType.Number));
+
+        map.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void nullを参照型へマップして返すことも拒否します()
+    {
+        var map = () => Json.Map<string>(new JsonLiteral("", LiteralType.Null) { Value = null });
+
+        map.Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void オブジェクトを公開プロパティとフィールドへマップします()
+    {
+        const string text = """{"Name":"sample","Count":12,"Marker":"field"}""";
+        var mapped = Json.Map<MappingSample>(Json.Parse(text));
+        var deserialized = Json.Deserialize<MappingSample>(text);
+
+        mapped.Should().BeEquivalentTo(new MappingSample { Name = "sample", Count = 12, Marker = "field" });
+        deserialized.Should().BeEquivalentTo(mapped);
+    }
+
+    [Fact]
+    public void CLR値とJSON値をシリアライズします()
+    {
+        double[] numbers = [12d, 3d];
+
+        Json.Serialize("a/b").Should().Be("\"a\\/b\"");
+        Json.Serialize(12d).Should().Be("12");
+        Json.Serialize(true).Should().Be("true");
+        Json.Serialize(false).Should().Be("false");
+        Json.Serialize<object?>(null).Should().Be("null");
+        Json.Serialize(numbers).Should().Be("[\r\n\t12,\r\n\t3\r\n]");
+        Json.Serialize(Json.Parse("""{"a":12}""")).Should().Be("{\r\n\t\"a\": 12\r\n}");
+    }
+
+    [Fact]
+    public void CLRオブジェクトのプロパティとフィールドをシリアライズします()
+    {
+        var sample = new MappingSample { Name = "sample", Count = 12, Marker = "field" };
+
+        Json.Serialize(sample).Should().Be(
+            "{\r\n\t\"Name\": \"sample\",\r\n\t\"Count\": 12,\r\n\t\"Marker\": \"field\"\r\n}");
+    }
+
+    [Fact]
+    public void 整数のシリアライズには対応しません()
+    {
+        var serialize = () => Json.Serialize(12);
+
+        serialize.Should().Throw<ArgumentException>();
+    }
+
     [Fact]
     public void ASCIIとBMPを含むネストしたJSONを期待した値へ解析します()
     {
@@ -34,7 +300,7 @@ public class Jsonのテスト
                                 new JsonLiteral("12", LiteralType.Number),
                                 new JsonLiteral("true", LiteralType.Boolean),
                                 new JsonLiteral("false", LiteralType.Boolean),
-                                new JsonLiteral(LiteralType.Null),
+                                new JsonLiteral("", LiteralType.Null) { Value = null },
                                 new JsonObject
                                 {
                                     Pairs = { ["文字"] = new JsonLiteral("中", LiteralType.String) }
@@ -44,7 +310,7 @@ public class Jsonのテスト
                     }
                 }
             }
-        });
+        }, it => it.PreferringRuntimeMemberTypes().WithStrictOrdering());
     }
 
     [Theory]
@@ -142,19 +408,15 @@ public class Jsonのテスト
     }
 
     [Fact]
-    public void 数値は小数で整数部の数字が必要です()
+    public void 整数部の数字がない小数を受理します()
     {
-        var parse = () => Json.Parse(@"{""a"":.1}");
-
-        parse.Should().Throw<ParseException>();
+        ((JsonLiteral)Json.Parse(@"{""a"":.1}")["a"]).Value.Should().Be(".1");
     }
 
     [Fact]
-    public void 数値は小数で小数部の数字が必要です()
+    public void 小数部の数字がなくても受理します()
     {
-        var parse = () => Json.Parse(@"{""a"":0.}");
-
-        parse.Should().Throw<ParseException>();
+        ((JsonLiteral)Json.Parse(@"{""a"":0.}")["a"]).Value.Should().Be("0.");
     }
 
     [Fact]
@@ -197,15 +459,6 @@ public class Jsonのテスト
         value.Value.Should().Be("1e-0");
     }
     [Fact]
-    public void 数値の指数部の数値を識別します()
-    {
-        var result = Json.Parse(@"{""a"":1e0}");
-        result.Pairs.Should().ContainSingle();
-        var value = (JsonLiteral)result["a"];
-        value.ValueType.Should().Be(LiteralType.Number);
-        value.Value.Should().Be("1e0");
-    }
-    [Fact]
     public void 数値の指数部の複数の数字を識別します()
     {
         var result = Json.Parse(@"{""a"":1e+10}");
@@ -229,11 +482,12 @@ public class Jsonのテスト
     }
 
     [Fact]
-    public void 値が何もない場合は読み込みません()
+    public void 値の省略を空の数値として読み込みます()
     {
-        var parse = () => Json.Parse(@"{""a"":}");
+        var tested = (JsonLiteral)Json.Parse(@"{""a"":}")["a"];
 
-        parse.Should().Throw<ParseException>();
+        tested.ValueType.Should().Be(LiteralType.Number);
+        tested.Value.Should().BeEmpty();
     }
 
     [Theory]
@@ -247,15 +501,11 @@ public class Jsonのテスト
     }
 
     [Fact]
-    public void 空文字列のキーと値を識別します()
+    public void 空文字列のキーを拒否します()
     {
-        var tested = Json.Parse("""{"":""}""");
+        var parse = () => Json.Parse("""{"":""}""");
 
-        tested.Pairs.Should().ContainSingle();
-        tested.Pairs.Should().ContainKey("");
-        var value = (JsonLiteral)tested[""];
-        value.ValueType.Should().Be(LiteralType.String);
-        value.Value.Should().Be("");
+        parse.Should().Throw<ParseException>();
     }
 
     [Fact]
@@ -359,12 +609,16 @@ public class Jsonのテスト
         value.Should().BeOfType<JsonArray>();
     }
 
-    [Fact]
-    public void 空の配列に要素はありません()
+    [Theory]
+    [InlineData("""{"a":[]}""")]
+    [InlineData("""{"a":[ ]}""")]
+    public void 空の配列を空の数値一要素として読み込みます(string text)
     {
-        var array = (JsonArray)Json.Parse(@"{""a"":[]}")["a"];
+        var array = (JsonArray)Json.Parse(text)["a"];
 
-        array.Elements.Should().BeEmpty();
+        array.Elements.Should().ContainSingle();
+        ((JsonLiteral)array[0]).ValueType.Should().Be(LiteralType.Number);
+        ((JsonLiteral)array[0]).Value.Should().BeEmpty();
     }
 
     [Fact]
@@ -427,17 +681,24 @@ public class Jsonのテスト
             }
             """;
 
-        Json.Parse(text).Should().BeEquivalentTo(Json.Parse("""{"a":["b",12,true,null]}"""));
+        Json.Parse(text).Should().BeEquivalentTo(
+            Json.Parse("""{"a":["b",12,true,null]}"""),
+            it => it.PreferringRuntimeMemberTypes().WithStrictOrdering());
     }
 
     [Theory]
     [InlineData('\v')]
     [InlineData('\f')]
     [InlineData('\u00a0')]
-    [InlineData('\0')]
-    public void JSONの空白ではない文字を読み飛ばしません(char character)
+    public void Unicodeの空白を読み飛ばします(char character)
     {
-        var parse = () => Json.Parse($"{character}{{}}");
+        Json.Parse($"{character}{{}}").Pairs.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void NUL文字を空白として読み飛ばしません()
+    {
+        var parse = () => Json.Parse("\0{}");
 
         parse.Should().Throw<ParseException>();
     }
@@ -456,9 +717,6 @@ public class Jsonのテスト
     [Fact]
     public void 配列の前に空白があっても読み込みます()
         => Json.Parse(@"{""a"": []}");
-    [Fact]
-    public void 配列終了の前に空白があっても読み込みます()
-        => Json.Parse(@"{""a"":[ ]}");
     [Fact]
     public void オブジェクト区切りのコロンの前に空白があっても読み込みます()
         => Json.Parse(@"{""a"" :1}");

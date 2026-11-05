@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonParser", "JsonParser\Js
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonParserのテスト", "JsonParserのテスト\JsonParserのテスト.csproj", "{83EF2F82-7506-4869-AE88-9A4A93DA7AF0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpracheJson.Reference", "SpracheJson.Reference\SpracheJson.Reference.csproj", "{E9D1CDF3-B878-44DD-A06C-A96022A58E33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpracheJson.Reference.Tests", "SpracheJson.Reference.Tests\SpracheJson.Reference.Tests.csproj", "{BA8F8CB1-4413-427A-9B19-D29E22D9F439}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kotowari.Benchmarks", "Kotowari.Benchmarks", "{E2D692FF-8BF4-97BD-1D46-34C3D73AE893}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marimo.Kotowari.Benchmarks", "Kotowari.Benchmarks\Marimo.Kotowari.Benchmarks.csproj", "{C4E3FE3D-ACBD-4D3B-B0B6-1CAD2E95F09A}"
@@ -25,6 +29,30 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|x64.Build.0 = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|x64.ActiveCfg = Release|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|x64.Build.0 = Release|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA8F8CB1-4413-427A-9B19-D29E22D9F439}.Release|x86.Build.0 = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|x64.Build.0 = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Debug|x86.Build.0 = Debug|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|x64.ActiveCfg = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|x64.Build.0 = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|x86.ActiveCfg = Release|Any CPU
+		{E9D1CDF3-B878-44DD-A06C-A96022A58E33}.Release|x86.Build.0 = Release|Any CPU
 		{BEDAD7EB-B455-4074-A3E4-C0F9497C87D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEDAD7EB-B455-4074-A3E4-C0F9497C87D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEDAD7EB-B455-4074-A3E4-C0F9497C87D7}.Debug|x64.ActiveCfg = Debug|Any CPU

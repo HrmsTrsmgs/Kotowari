@@ -14,12 +14,36 @@ namespace Marimo.Parser;
 
 public class Json
 {
-    // 候補ごとの文字取得を繰り返さず、JSONの空白4文字をまとめて判定する。
-    static Parser<char> WhiteSpace =
-        new ConditionalCharParser(it => it is ' ' or '\t' or '\r' or '\n');
+    /// <summary>Maps a JSON value using the upstream sample's mapping contract.</summary>
+    /// <typeparam name="T">The destination CLR type.</typeparam>
+    /// <param name="toMap">The JSON value to map.</param>
+    /// <returns>The mapped non-null value; JSON numbers map to double without numeric coercion.</returns>
+    /// <exception cref="ArgumentException">The mapped value cannot be returned as T.</exception>
+    public static T Map<T>(IJsonValue toMap) =>
+        JsonMapper.MapValue(typeof(T), toMap) is T mapped
+            ? mapped
+            : throw new ArgumentException($"Cannot map value to type {typeof(T)}.", nameof(toMap));
+
+    /// <summary>Parses an object and maps it using the upstream sample's mapping contract.</summary>
+    /// <typeparam name="T">The destination CLR type.</typeparam>
+    /// <param name="toMap">The JSON object text.</param>
+    /// <returns>The mapped object.</returns>
+    public static T Deserialize<T>(string toMap) => Map<T>(Parse(toMap));
+
+    /// <summary>Serializes a value using the upstream sample's serialization contract.</summary>
+    /// <typeparam name="T">The declared CLR type used for serialization.</typeparam>
+    /// <param name="toWrite">A supported CLR value or JSON value.</param>
+    /// <returns>The upstream-style JSON representation.</returns>
+    /// <exception cref="ArgumentException">A primitive type other than double or bool is requested.</exception>
+    public static string Serialize<T>(T toWrite) =>
+        toWrite is IJsonValue value ? value.ToJson() : JsonSerializer.SerializeValue(typeof(T), toWrite);
+
+    // 参照元のTokenと同じUnicode空白を読み飛ばす。
+    static readonly Parser<char> WhiteSpace =
+        new ConditionalCharParser(char.IsWhiteSpace);
 
     static Parser<char> BraceOpen = new CharParser('{');
-    
+
     static Parser<char> BraceClose = new CharParser('}');
 
     static Parser<char> BracketOpen = new CharParser('[');
@@ -84,9 +108,9 @@ public class Json
     static Parser<char> Digit =
         new ConditionalCharParser(char.IsDigit);
 
-    static Parser<string> Digits =
+    static readonly Parser<string> Digits =
         new ParserConverter<IEnumerable<char>, string>(
-            new OneOrMoreParser<char>(Digit),
+            new ZeroOrMoreParser<char>(Digit),
             chars => new string([.. chars]));
 
     static Parser<string> JExp =
@@ -199,14 +223,24 @@ public class Json
             tuple => new JsonArray(tuple.Item2));
 
 
-    static Parser<KeyValuePair<string, IJsonValue>> JPair =
-        new ParserConverter<(JsonLiteral, char, IJsonValue), KeyValuePair<string, IJsonValue>>(
-            new SequenceParser<JsonLiteral, char, IJsonValue>(
-                        JString,
+    static readonly Parser<string> JKey =
+        new WithWhiteSpaceParser<string>(
+            WhiteSpace,
+            new ParserConverter<(char, IEnumerable<char>, char), string>(
+                new SequenceParser<char, IEnumerable<char>, char>(
+                    DoubleQuote,
+                    new OneOrMoreParser<char>(JChar),
+                    DoubleQuote),
+                tuple => new string([.. tuple.Item2])));
+
+    static readonly Parser<KeyValuePair<string, IJsonValue>> JPair =
+        new ParserConverter<(string, char, IJsonValue), KeyValuePair<string, IJsonValue>>(
+            new SequenceParser<string, char, IJsonValue>(
+                        JKey,
                         CollonSign,
                         JValue),
             tuple => new KeyValuePair<string, IJsonValue>(
-                tuple.Item1.Value ?? throw new InvalidOperationException(),
+                tuple.Item1,
                 tuple.Item3));
 
     static Parser<JsonObject> JObject =
@@ -222,7 +256,7 @@ public class Json
     public static JsonObject Parse(string text)
     {
         var result = JObject.Parse(new Cursol(text));
-        if(result.IsSuccess)
+        if (result.IsSuccess)
         {
             return result.Parsed;
         }

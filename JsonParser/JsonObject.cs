@@ -12,6 +12,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Marimo.Parser;
@@ -54,11 +55,20 @@ public class JsonObject : IJsonValue
         }
     }
 
+    /// <summary>Gets or replaces an existing value by its position in the object's pairs.</summary>
+    /// <param name="i">The zero-based pair position.</param>
+    /// <returns>The JSON value at that position.</returns>
     public IJsonValue this[int i]
     {
-        get => throw new NotImplementedException("Cannot access JSONArray by string.");
-        set => throw new NotImplementedException("Cannot access JSONArray by string.");
+        get => i >= 0 && i < Pairs.Count
+            ? Pairs.ElementAt(i).Value
+            : throw new IndexOutOfRangeException($"{i} is outside the bounds of the JsonObject.");
+        set => Pairs[Pairs.ElementAt(i).Key] = i >= 0 && i < Pairs.Count
+            ? value
+            : throw new IndexOutOfRangeException($"{i} is outside the bounds of the JsonObject.");
     }
 
-    public string ToJson() => throw new NotImplementedException();
+    /// <summary>Returns the object's indented JSON representation. Empty objects are unsupported.</summary>
+    public string ToJson() =>
+        $"{{\r\n{string.Concat(from pair in Pairs select $"\"{pair.Key}\": {pair.Value.ToJson()},\r\n")[..^3].Tabify()}\r\n}}";
 }

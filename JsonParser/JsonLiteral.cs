@@ -45,23 +45,13 @@ public class JsonLiteral : IJsonValue
     /// Returns Value cast as the appropriate type.
     /// </summary>
     /// <returns></returns>
-    public object? Get()
+    public object? Get() => ValueType switch
     {
-        switch (ValueType)
-        {
-            case LiteralType.String:
-                return Value ?? throw new InvalidOperationException();
-
-            case LiteralType.Number:
-                return Convert.ToDouble(Value ?? throw new InvalidOperationException());
-
-            case LiteralType.Boolean:
-                return (Value ?? throw new InvalidOperationException()).ToLower() == "true";
-
-            default:
-                return null;
-        }
-    }
+        LiteralType.String => Value,
+        LiteralType.Number => Convert.ToDouble(Value),
+        LiteralType.Boolean => Value?.ToLower() == "true",
+        _ => null
+    };
 
     public IJsonValue this[string key]
     {
@@ -79,7 +69,13 @@ public class JsonLiteral : IJsonValue
     /// Returns the Value property
     /// </summary>
     /// <returns>this.Value</returns>
-    public override string? ToString() => Value;
+    public override string ToString() => Value ?? string.Empty;
 
-    public string ToJson() => throw new NotImplementedException();
+    /// <summary>Returns the literal's JSON representation, using the upstream sample's escaping.</summary>
+    public string ToJson() => ValueType switch
+    {
+        LiteralType.String => $"\"{Value?.ToJsonString()}\"",
+        LiteralType.Null => "null",
+        _ => Value ?? string.Empty
+    };
 }
