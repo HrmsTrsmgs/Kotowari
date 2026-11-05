@@ -51,8 +51,14 @@ public readonly record struct Cursol
                 : NullCharacter;
 
         public int GoFoward(int index, int step)
-            => step > 0
-                ? (int)Math.Min((long)index + step, Length)
-                : Math.Min(index + step, Length);
+        {
+            if (step > 0)
+            {
+                // 正方向は加算時のオーバーフローを避けてから文書末尾に収める。
+                return (int)Math.Min((long)index + step, Length);
+            }
+
+            return Math.Min(index + step, Length);
+        }
     }
 }
