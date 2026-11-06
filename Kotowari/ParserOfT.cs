@@ -14,6 +14,16 @@ public abstract class Parser<T> : Parser
         => ParseCore(cursol);
 
     /// <summary>
+    /// 元のパーサーを変更せずに空白規則を指定するための未実装APIです。
+    /// 現在は呼び出すと例外を投げます。
+    /// </summary>
+    /// <param name="whiteSpace">字句の成功後に使用する空白規則。</param>
+    /// <returns>未実装のため、現在は値を返しません。</returns>
+    /// <exception cref="NotImplementedException">空白規則の設定処理はまだ実装されていません。</exception>
+    public Parser<T> WithWhiteSpace(Parser<char> whiteSpace)
+        => throw new NotImplementedException();
+
+    /// <summary>
     /// 指定位置からの解析を実装します。
     /// </summary>
     /// <param name="cursol">解析を開始する文書と位置。</param>

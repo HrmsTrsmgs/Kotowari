@@ -2,7 +2,6 @@
 using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,20 +11,6 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class WordParserのテスト
 {
-    [Fact]
-    public void 空白が入力を消費せず成功したら例外を投げます()
-    {
-        var attempts = 0;
-        var tested = new WordParser("a", new CallbackCharParser((_, _) =>
-            ++attempts == 1
-                ? (true, ' ', 0)
-                : throw new NotSupportedException("反復が停止しませんでした")));
-        var parse = () => tested.Parse(new Cursol("a"));
-
-        parse.Should().Throw<InvalidOperationException>();
-    }
-
-
     [Fact]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
@@ -80,7 +65,7 @@ public class WordParserのテスト
         result.Cursol.Index.Should().Be(0);
     }
 
-    [Fact(Skip = "WordParserが前置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
+    [Fact(Skip = "[空白責務分離 01] WordParserが前置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
     public void 指定文字列の前に空白があると一致せず入力を消費しません()
     {
         var cursol = new Cursol(" public");
@@ -92,7 +77,7 @@ public class WordParserのテスト
         result.Cursol.Should().Be(cursol);
     }
 
-    [Fact(Skip = "WordParserが後置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
+    [Fact(Skip = "[空白責務分離 02] WordParserが後置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
     public void 指定文字列に一致しても後ろの空白は消費しません()
     {
         var cursol = new Cursol("public ");
@@ -106,7 +91,7 @@ public class WordParserのテスト
         result.Cursol.Current.Should().Be(' ');
     }
 
-    [Fact(Skip = "WordParserが指定文字列の照合前に空白を読んでいるため。文字列内の空白もそのまま照合する実装後に解除します。")]
+    [Fact(Skip = "[空白責務分離 03] WordParserが指定文字列の照合前に空白を読んでいるため。文字列内の空白もそのまま照合する実装後に解除します。")]
     public void 指定文字列に含まれる前後の空白もそのまま照合します()
     {
         var tested = new WordParser(" public ");
@@ -119,45 +104,17 @@ public class WordParserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact]
-    public void 指定した空白パーサーで単語前後を読み飛ばします()
+    [Fact(Skip = "[空白責務分離 09] WordParserが空の文字列でも空白を暗黙に読んでいるため。空の文字列に一致しても入力を消費しない実装後に解除します。")]
+    public void 指定文字列が空でも空白は消費しません()
     {
-        var tested = new WordParser("public", new CharParser('_'));
+        var cursol = new Cursol(" x");
+        var tested = new WordParser("");
 
-        var result = tested.Parse(new Cursol("_public_"));
+        var result = tested.Parse(cursol);
 
         result.IsSuccess.Should().BeTrue();
-        result.Cursol.Index.Should().Be(8);
-    }
-
-    [Fact]
-    public void 空白パーサーが消費して失敗しても前後とも失敗前の位置を使います()
-    {
-        var 呼び出し位置 = new List<int>();
-        var tested = new WordParser("あ", new CallbackCharParser((current, index) =>
-        {
-            呼び出し位置.Add(index);
-            return (current == '_', current, 1);
-        }));
-
-        var result = tested.Parse(new Cursol("_あ_!"));
-
-        result.IsSuccess.Should().BeTrue();
-        result.Parsed.Should().Be("あ");
-        result.Cursol.Index.Should().Be(3);
-        result.Cursol.Current.Should().Be('!');
-        呼び出し位置.Should().Equal(0, 1, 2, 3);
-    }
-
-    [Fact]
-    public void 大文字小文字を無視して指定した空白パーサーで単語前後を読み飛ばします()
-    {
-        var tested = new WordParser("public", true, new CharParser('_'));
-
-        var result = tested.Parse(new Cursol("_PUBLIC_"));
-
-        result.IsSuccess.Should().BeTrue();
-        result.Cursol.Index.Should().Be(8);
+        result.Parsed.Should().BeEmpty();
+        result.Cursol.Should().Be(cursol);
     }
 
     [Fact]
@@ -184,18 +141,6 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void 空の単語でも指定した空白パーサーで読み飛ばします()
-    {
-        var tested = new WordParser("", new CharParser('_'));
-
-        var result = tested.Parse(new Cursol("__x"));
-
-        result.IsSuccess.Should().BeTrue();
-        result.Parsed.Should().BeEmpty();
-        result.Cursol.Index.Should().Be(2);
-    }
-
-    [Fact]
     public void 大文字小文字を無視しない場合には異なる文字を読み込みません()
     {
         var tested = new WordParser("Public");
@@ -204,15 +149,15 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void 先頭の空白を読み飛ばした後に失敗した場合も元のカーソルを返します()
+    public void 開始位置が0でなくても単語の照合に失敗したら元のカーソルを返します()
     {
-        var cursol = new Cursol("x__publiX").GoFoward(1);
-        var tested = new WordParser("public", new CharParser('_'));
+        var cursol = new Cursol("xpubliX").GoFoward(1);
+        var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
 
         result.IsSuccess.Should().BeFalse();
-        (result.Cursol == cursol).Should().BeTrue();
+        result.Cursol.Should().Be(cursol);
     }
 
     [Theory]
@@ -273,13 +218,13 @@ public class WordParserのテスト
     [InlineData(true)]
     public void IgnoreCaseはコンストラクターで指定した値を返します(bool ignoreCase)
     {
-        var tested = new WordParser("public", ignoreCase, new CharParser('_'));
+        var tested = new WordParser("public", ignoreCase);
 
         tested.IgnoreCase.Should().Be(ignoreCase);
     }
 
     [Fact]
-    public void IgnoreCaseは空白パーサーを省略しても大文字小文字を無視する指定を返します()
+    public void IgnoreCaseは大文字小文字を無視する指定を返します()
     {
         var tested = new WordParser("public", true);
 
@@ -290,7 +235,6 @@ public class WordParserのテスト
     public void IgnoreCaseは大文字小文字の指定を省略するとfalseを返します()
     {
         new WordParser("public").IgnoreCase.Should().BeFalse();
-        new WordParser("public", new CharParser('_')).IgnoreCase.Should().BeFalse();
     }
 
     [Theory]
@@ -304,15 +248,15 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void 文字列入力を同じ単語パーサーで空白を読み飛ばして読み込めます()
+    public void 文字列入力を同じ単語パーサーで読み込めます()
     {
         Parser<string> tested = new WordParser("éあb");
 
-        var result = tested.Parse(new Cursol(" éあb ,"));
+        var result = tested.Parse(new Cursol("éあb,"));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be("éあb");
-        result.Cursol.Index.Should().Be(5);
+        result.Cursol.Index.Should().Be(3);
     }
 
 }

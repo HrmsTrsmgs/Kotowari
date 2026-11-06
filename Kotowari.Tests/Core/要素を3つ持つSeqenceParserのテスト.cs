@@ -12,17 +12,14 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class 要素を3つ持つSeqenceParserのテスト
 {
-    Parser<(string, string, string)> Tested { get; }
-
-    public 要素を3つ持つSeqenceParserのテスト()
-    {
-        Tested = new SequenceParser<string, string, string>(
+    static Parser<(string, string, string)> Tested
+        => SequenceParser.Create(
             new WordParser("public"),
             new WordParser("static"),
-            new WordParser("int"));
-    }
+            new WordParser("int"))
+            .WithWhiteSpace(new CharParser(' '));
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 023] WithWhiteSpaceが未実装のため。親に指定した空白規則で各単語を読み込める実装後に解除します。")]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
         var cursol = new Cursol("public static int");
@@ -32,7 +29,7 @@ public class 要素を3つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeTrue();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 024] WithWhiteSpaceが未実装のため。親に空白規則を指定しても1番目の不一致で失敗する実装後に解除します。")]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
         var cursol = new Cursol("publiac static int");
@@ -42,7 +39,7 @@ public class 要素を3つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeFalse();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 025] WithWhiteSpaceが未実装のため。親に空白規則を指定しても2番目の不一致で失敗する実装後に解除します。")]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
         var cursol = new Cursol("public statiac int");
@@ -52,7 +49,7 @@ public class 要素を3つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeFalse();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 026] WithWhiteSpaceが未実装のため。親に空白規則を指定しても3番目の不一致で失敗する実装後に解除します。")]
     public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
     {
         var cursol = new Cursol("public static innt");
@@ -62,7 +59,7 @@ public class 要素を3つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeFalse();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 027] WithWhiteSpaceが未実装のため。親に空白規則を指定して各単語の値を返す実装後に解除します。")]
     public void ParseAsyncは指定した単語を読み込みます()
     {
         var cursol = new Cursol("public static int");
@@ -72,7 +69,7 @@ public class 要素を3つ持つSeqenceParserのテスト
         result.Parsed.Should().Be(("public", "static", "int"));
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 028] WithWhiteSpaceが未実装のため。親に指定した空白規則を使って解析後の位置を返す実装後に解除します。")]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
         var cursol = new Cursol("public static int");

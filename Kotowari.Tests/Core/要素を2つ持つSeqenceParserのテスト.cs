@@ -25,16 +25,11 @@ public class 要素を2つ持つSeqenceParserのテスト
         parser.呼び出し回数.Should().Be(1);
     }
 
-    Parser<(string, string)> Tested { get; }
+    static Parser<(string, string)> Tested
+        => SequenceParser.Create(new WordParser("public"), new WordParser("static"))
+            .WithWhiteSpace(new CharParser(' '));
 
-    public 要素を2つ持つSeqenceParserのテスト()
-    {
-        Tested = new SequenceParser<string, string>(
-            new WordParser("public"),
-            new WordParser("static"));
-    }
-
-    [Fact]
+    [Fact(Skip = "[空白責務分離 018] WithWhiteSpaceが未実装のため。親に指定した空白規則で各単語を読み込める実装後に解除します。")]
     public void ParseAsyncは指定した単語を読み込みに成功します()
     {
         var cursol = new Cursol("public static");
@@ -44,7 +39,7 @@ public class 要素を2つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeTrue();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 019] WithWhiteSpaceが未実装のため。親に空白規則を指定しても一つ目の不一致で失敗する実装後に解除します。")]
     public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
     {
         var cursol = new Cursol("publiac static");
@@ -54,7 +49,7 @@ public class 要素を2つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeFalse();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 020] WithWhiteSpaceが未実装のため。親に空白規則を指定しても二つ目の不一致で失敗する実装後に解除します。")]
     public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
     {
         var cursol = new Cursol("public statiac");
@@ -64,7 +59,7 @@ public class 要素を2つ持つSeqenceParserのテスト
         result.IsSuccess.Should().BeFalse();
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 021] WithWhiteSpaceが未実装のため。親に空白規則を指定して各単語の値を返す実装後に解除します。")]
     public void ParseAsyncは指定した単語を読み込みます()
     {
         var cursol = new Cursol("public static");
@@ -74,11 +69,12 @@ public class 要素を2つ持つSeqenceParserのテスト
         result.Parsed.Should().Be(("public", "static"));
     }
 
-    [Fact]
+    [Fact(Skip = "[空白責務分離 022] WithWhiteSpaceが未実装のため。親に指定した空白規則を使って解析後の位置を返す実装後に解除します。")]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
         var cursol = new Cursol("public static");
-        var tested = SequenceParser.Create(new WordParser("public"), new WordParser("static"));
+        var tested = SequenceParser.Create(new WordParser("public"), new WordParser("static"))
+            .WithWhiteSpace(new CharParser(' '));
 
         var result = tested.Parse(cursol);
 

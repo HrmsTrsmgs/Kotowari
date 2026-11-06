@@ -38,8 +38,7 @@ public class OptionalParserのテスト
     public void 子が入力を消費して失敗したら不在の値で成功し呼び出し開始位置に戻ります()
     {
         var cursol = new Cursol("x b").GoFoward(1);
-        var tested = new OptionalParser<char>(
-            new WithWhiteSpaceParser<char>(new CharParser(' '), new CharParser('a')));
+        var tested = new OptionalParser<char>(new CallbackCharParser((_, _) => (false, '?', 1)));
 
         var result = tested.Parse(cursol);
 

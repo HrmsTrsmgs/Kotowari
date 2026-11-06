@@ -1,0 +1,238 @@
+using FluentAssertions;
+using Marimo.Kotowari.Core;
+using Marimo.Kotowari.Tests.Core;
+using System;
+using System.Collections.Generic;
+using Xunit;
+
+namespace Marimo.Kotowari.Tests;
+
+public class Parserのテスト
+{
+    [Fact(Skip = "[空白責務分離 010] WithWhiteSpaceが未実装のため。親に指定した空白規則を未指定の子が引き継ぐ実装後に解除します。")]
+    public void 親に指定した空白規則を未指定の子が引き継ぎます()
+    {
+        var tested = SequenceParser.Create(
+            new WordParser("public"),
+            new WordParser("static"))
+            .WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("public__static_!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(("public", "static"));
+        result.Cursol.Index.Should().Be(15);
+        result.Cursol.Current.Should().Be('!');
+    }
+
+    [Fact(Skip = "[空白責務分離 04] WithWhiteSpaceが未実装のため。子の成功後に空白を読み最後の成功位置を返す実装後に解除します。")]
+    public void 子の後の空白パーサーが消費して失敗しても最後に成功した位置を返します()
+    {
+        var 呼び出し位置 = new List<int>();
+        var tested = new CharParser('あ').WithWhiteSpace(new CallbackCharParser((current, index) =>
+        {
+            呼び出し位置.Add(index);
+            return (current == '_', current, 1);
+        }));
+
+        var result = tested.Parse(new Cursol("あ__!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be('あ');
+        result.Cursol.Index.Should().Be(3);
+        result.Cursol.Current.Should().Be('!');
+        呼び出し位置.Should().Equal(1, 2, 3);
+    }
+
+    [Fact(Skip = "[空白責務分離 05] WithWhiteSpaceが未実装のため。子の前にある空白を暗黙に読まない実装後に解除します。")]
+    public void 子の前にある空白は読み飛ばしません()
+    {
+        var tested = new CharParser('あ').WithWhiteSpace(new CharParser('_'));
+
+        tested.Parse(new Cursol("_あ")).IsSuccess.Should().BeFalse();
+    }
+
+    [Fact(Skip = "[空白責務分離 06] WithWhiteSpaceが未実装のため。子の値を保ち指定した後置空白だけを読む実装後に解除します。")]
+    public void 子の値を返して文法で指定した後置空白だけを読み飛ばします()
+    {
+        var tested = new WordParser("public").WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("public__ !"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("public");
+        result.Cursol.Index.Should().Be(8);
+        result.Cursol.Current.Should().Be(' ');
+    }
+
+    [Fact(Skip = "[空白責務分離 07] WithWhiteSpaceが未実装のため。大文字小文字を無視する子の値を保ち指定した後置空白を読む実装後に解除します。")]
+    public void 大文字小文字を無視する子の値を返して指定した後置空白を読み飛ばします()
+    {
+        var tested = new WordParser("public", true).WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("PUBLIC_"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("PUBLIC");
+        result.Cursol.Index.Should().Be(7);
+    }
+
+    [Fact(Skip = "[空白責務分離 011] WithWhiteSpaceが未実装のため。子が空の文字列で成功しても指定した後置空白を読み飛ばす実装後に解除します。")]
+    public void 子が空の文字列で成功しても指定した後置空白を読み飛ばします()
+    {
+        var tested = new WordParser("").WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("__x"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeEmpty();
+        result.Cursol.Index.Should().Be(2);
+    }
+
+    [Fact(Skip = "[空白責務分離 08] WithWhiteSpaceが未実装のため。子が失敗したら空白を呼ばない実装後に解除します。")]
+    public void 子が入力を消費して失敗したら後置空白は読みません()
+    {
+        var 空白の呼び出し回数 = 0;
+        var tested = new CallbackCharParser((_, _) => (false, '?', 1))
+            .WithWhiteSpace(new CallbackCharParser((current, _) =>
+            {
+                ++空白の呼び出し回数;
+                return (current == '_', current, 1);
+            }));
+
+        var result = tested.Parse(new Cursol("あ_!"));
+
+        result.IsSuccess.Should().BeFalse();
+        空白の呼び出し回数.Should().Be(0);
+    }
+
+    [Theory(Skip = "[空白責務分離 012] WithWhiteSpaceが未実装のため。子の明示設定が親より優先され親の規則を併用しない実装後に解除します。")]
+    [InlineData("public-static_!", true, 14)]
+    [InlineData("public-_static_!", false, 0)]
+    public void 子が明示した空白規則は親の規則より優先されます(string input, bool isSuccess, int index)
+    {
+        var tested = SequenceParser.Create(
+            new WordParser("public").WithWhiteSpace(new CharParser('-')),
+            new WordParser("static"))
+            .WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol(input));
+
+        result.IsSuccess.Should().Be(isSuccess);
+        result.Cursol.Index.Should().Be(index);
+        if (isSuccess)
+        {
+            result.Parsed.Should().Be(("public", "static"));
+            result.Cursol.Current.Should().Be('!');
+        }
+    }
+
+    [Fact(Skip = "[空白責務分離 013] WithWhiteSpaceが未実装のため。未指定の子が最も近い親の明示設定を引き継ぐ実装後に解除します。")]
+    public void 入れ子の未指定の子は最も近い親の空白規則を引き継ぎます()
+    {
+        var nested = SequenceParser.Create(new WordParser("public"), new WordParser("static"))
+            .WithWhiteSpace(new CharParser('_'));
+        var tested = SequenceParser.Create(nested, new WordParser("int"))
+            .WithWhiteSpace(new CharParser('-'));
+
+        var result = tested.Parse(new Cursol("public_static_int-!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be((("public", "static"), "int"));
+        result.Cursol.Index.Should().Be(18);
+        result.Cursol.Current.Should().Be('!');
+    }
+
+    [Fact(Skip = "[空白責務分離 014] WithWhiteSpaceが未実装のため。再指定は後の規則だけを使い元のパーサーと以前の設定版を変えない実装後に解除します。")]
+    public void 空白規則の再指定は後の指定を使い元のパーサーと以前の設定版を変えません()
+    {
+        var original = new WordParser("public");
+        var previous = original.WithWhiteSpace(new CharParser('_'));
+        var tested = previous.WithWhiteSpace(new CharParser('-'));
+
+        var latest = tested.Parse(new Cursol("public-_!"));
+        var withoutPrevious = tested.Parse(new Cursol("public_-!"));
+        var previousResult = previous.Parse(new Cursol("public_-!"));
+        var originalResult = original.Parse(new Cursol("public_!"));
+
+        latest.IsSuccess.Should().BeTrue();
+        latest.Parsed.Should().Be("public");
+        latest.Cursol.Index.Should().Be(7);
+        latest.Cursol.Current.Should().Be('_');
+        withoutPrevious.IsSuccess.Should().BeTrue();
+        withoutPrevious.Parsed.Should().Be("public");
+        withoutPrevious.Cursol.Index.Should().Be(6);
+        withoutPrevious.Cursol.Current.Should().Be('_');
+        previousResult.IsSuccess.Should().BeTrue();
+        previousResult.Parsed.Should().Be("public");
+        previousResult.Cursol.Index.Should().Be(7);
+        previousResult.Cursol.Current.Should().Be('-');
+        originalResult.IsSuccess.Should().BeTrue();
+        originalResult.Parsed.Should().Be("public");
+        originalResult.Cursol.Index.Should().Be(6);
+        originalResult.Cursol.Current.Should().Be('_');
+    }
+
+    [Fact(Skip = "[空白責務分離 015] WithWhiteSpaceが未実装のため。共有する子を別の親や空白規則で再利用しても他の利用箇所を変えない実装後に解除します。")]
+    public void 共有する子を異なる空白規則の親で再利用しても他の利用箇所を変えません()
+    {
+        var shared = new WordParser("public");
+        var underscores = SequenceParser.Create(shared, new WordParser("static"))
+            .WithWhiteSpace(new CharParser('_'));
+        var hyphens = SequenceParser.Create(shared, new WordParser("static"))
+            .WithWhiteSpace(new CharParser('-'));
+
+        var first = underscores.Parse(new Cursol("public_static_!"));
+        var second = hyphens.Parse(new Cursol("public-static-!"));
+        var reused = underscores.Parse(new Cursol("public_static_!"));
+        var original = shared.Parse(new Cursol("public_!"));
+
+        first.IsSuccess.Should().BeTrue();
+        first.Parsed.Should().Be(("public", "static"));
+        first.Cursol.Index.Should().Be(14);
+        first.Cursol.Current.Should().Be('!');
+        second.IsSuccess.Should().BeTrue();
+        second.Parsed.Should().Be(("public", "static"));
+        second.Cursol.Index.Should().Be(14);
+        second.Cursol.Current.Should().Be('!');
+        reused.IsSuccess.Should().BeTrue();
+        reused.Parsed.Should().Be(("public", "static"));
+        reused.Cursol.Index.Should().Be(14);
+        reused.Cursol.Current.Should().Be('!');
+        original.IsSuccess.Should().BeTrue();
+        original.Parsed.Should().Be("public");
+        original.Cursol.Index.Should().Be(6);
+        original.Cursol.Current.Should().Be('_');
+    }
+
+    [Theory(Skip = "[空白責務分離 016] WithWhiteSpaceが未実装のため。指定した規則をWordの文字列内部へ適用しない実装後に解除します。")]
+    [InlineData("public_static", true, 14)]
+    [InlineData("publicstatic", false, 0)]
+    public void 空白規則は単語の文字列内部に適用されません(string word, bool isSuccess, int index)
+    {
+        var tested = new WordParser(word).WithWhiteSpace(new CharParser('_'));
+
+        var result = tested.Parse(new Cursol("public_static_!"));
+
+        result.IsSuccess.Should().Be(isSuccess);
+        result.Cursol.Index.Should().Be(index);
+        if (isSuccess)
+        {
+            result.Parsed.Should().Be("public_static");
+            result.Cursol.Current.Should().Be('!');
+        }
+    }
+
+    [Fact(Skip = "[空白責務分離 017] WithWhiteSpaceが未実装のため。空白が入力を消費せず成功した場合にInvalidOperationExceptionを投げる実装後に解除します。")]
+    public void 空白が入力を消費せず成功したら例外を投げます()
+    {
+        var attempts = 0;
+        var tested = new CharParser('a').WithWhiteSpace(new CallbackCharParser((_, _) =>
+            ++attempts == 1
+                ? (true, ' ', 0)
+                : throw new NotSupportedException("反復が停止しませんでした")));
+        var parse = () => tested.Parse(new Cursol("a"));
+
+        parse.Should().Throw<InvalidOperationException>();
+    }
+}

@@ -193,12 +193,12 @@ Sequence/Orは開始位置へ戻し、ZeroOrMoreは最後の失敗位置を使�
 
 | 対象 | 現状・変更候補 |
 |---|---|
-| [Core/WordParser.cs](../Kotowari/Core/WordParser.cs) | 文字列照合からWhiteSpace・前後のSkipBlankAsyncを分離する。第一案はWordParserを素の照合へ変更し、空白引数付き2コンストラクターを整理する。公開契約の変更なので確定前に実装しない。照合結果の入力由来の文字列、IgnoreCase、途中不一致の巻き戻し、既存の配列・遅延確保は維持し、別の性能変更を混ぜない。 |
-| [WithWhiteSpaceParser.cs](../Kotowari/WithWhiteSpaceParser.cs) | 前置専用型の役割を見直し、成功した子の後ろで空白を読むLexeme相当へ整理する。提案名は `LexemeParser<T>`（現存APIではない）。旧型を黙って後置へ変えず、改名・置換か旧API併存かを公開APIレビューで決める。 |
+| [Core/WordParser.cs](../Kotowari/Core/WordParser.cs) | 文字列照合からWhiteSpace・前後のSkipBlankAsyncを分離する。当初は空白引数付きコンストラクターの整理も候補としたが、削除は未合意で、今回も本体を変更しない。照合結果の入力由来の文字列、IgnoreCase、途中不一致の巻き戻し、既存の配列・遅延確保は維持し、別の性能変更を混ぜない。 |
+| [WithWhiteSpaceParser.cs](../Kotowari/WithWhiteSpaceParser.cs) | 当初は前置専用型を後置Lexeme相当へ改名・置換する案も検討した。その後の公開APIは `Parser<T>.WithWhiteSpace(...)` とし、今回、旧型の実装や削除には手を付けない。旧型を黙って後置へ変えたとは扱わない。 |
 | 空白の読み飛ばし部品（新規または既存合成） | 文法指定の空白を0回以上読み、値列を結果として残さない処理を、後置と文書先頭で使う。単独型・合成APIのどちらにするかは利用例で決める。現在の両Skipループは失敗した空白候補の消費を捨てるが、ZeroOrMoreは失敗位置を引き継いで結果列も作るため、機械的な置換はしない。非消費成功時の例外も維持対象。 |
-| WordParser・WithWhiteSpaceParserのテスト2ファイル | 素の照合と空白ラッパーの責務へ振り分ける。前後空白・独自空白・空語・null空白引数などは既存の仕様変更を明示して移すか改める。単に失敗した期待値を消さない。新しい境界の代表例はRedで先に示す。 |
-| Sequence 2〜10のテスト9ファイル | 空白区切り入力を読む準備コードを明示的な字句ラッパーへ変更する候補。入力・値・失敗させる子の位置を維持し、Sequence自身のテストへ空白の全仕様を複製しない。まず2要素で代表差分をレビューしてから展開する。 |
-| Or・ParserConverter・OptionalParserのテスト3ファイル | 直接利用あり。前二者の既存入力には空白依存が見当たらず、Wordを素の照合にしても変更不要の可能性がある。Optionalの消費後失敗テストは前置空白型を使うため、旧型を廃止するなら「子が消費後に失敗する」前提を失わない準備へ変更する。 |
+| WordParser・Parser・旧WithWhiteSpaceParserのテスト | 素の照合と空白設定の責務へ振り分ける。後置空白等の新APIの契約は追加した [Parserのテスト](../Kotowari.Tests/Parserのテスト.cs) を正本とし、旧型のガードは元のクラスに残す。Wordの空白引数付きコンストラクターのnull検査は保全する。単に失敗した期待値を消さない。 |
+| Sequence 2〜10のテスト9ファイル | 各Wordを個別の空白ラッパーで包む最初の準備から、親へ一度 `.WithWhiteSpace(...)` を指定する新APIへ移行した。入力・値・失敗させる子の位置を維持し、Sequence自身のテストへ空白の全仕様を複製しない。未実装APIを使うケースをSkipとし、それに依存しないコールバック・派生処理等はactiveのまま残す。 |
+| Or・ParserConverter・OptionalParserのテスト3ファイル | 直接利用あり。前二者は既存入力に空白依存が見当たらず不変更。Optionalの消費後失敗の準備は既存CallbackCharParserへ変更済みで、入力・期待値と「子が消費後に失敗する」前提を維持した。 |
 | [JsonParser/Json.cs](../JsonParser/Json.cs) | Word生成3箇所と前置空白ラッパー生成9箇所を確認。記号6個、JString/JKey/JNumber、真偽値/nullの字句境界をそろえ、入口に先頭空白を置く。JChar・ControlChar・JInt/JFrac/JExpの内部にはラッパーを入れない。これは構造の変更候補であり同等性は未検証。数値0桁、値省略、空配列のノード数、Unicode空白、末尾を無視する入口など参照元の振る舞いを勝手に変更しない。 |
 | [共有JSONテスト](../JsonParserのテスト/Jsonのテスト.cs) | 原本と同じ98ケースを保持する。既存の空白・引用符内・数値内部の空白拒否・値省略等で確認し、足りない境界のみ両実装へ追加する。原本ソースやSprache側のTokenを後置方式へ変更しない。 |
 | [WordParserBenchmarks.cs](../Kotowari.Benchmarks/WordParserBenchmarks.cs) | 製品の素の照合と空白付き字句で何を測るかを分け、過去のWord計時と同じ仕事だと扱わない。現行入力自体は空白を含まないが、旧処理には空白判定が含まれる。 |
@@ -210,20 +210,45 @@ Sequence/Orは開始位置へ戻し、ZeroOrMoreは最後の失敗位置を使�
 
 **2026-11-06：代表例のSkipテストは `a384bf5` にコミット済み。** ユーザーの追加・修正指示に従い、Wordの既存2件変更・1件追加、WithWhiteSpaceの既存1件変更・2件追加の計6件をSkip付きにした。場所・仕様名・理由・解除条件は[Wordのテスト](../Kotowari.Tests/Core/WordParserのテスト.cs)と[WithWhiteSpaceのテスト](../Kotowari.Tests/Core/WithWhiteSpaceParserのテスト.cs)を正本とし、ケース一覧をここへ複製しない。一時解除した6件は意図した理由で失敗し、Skipへ復元した。本体は変更していない。既存型で新契約を表現しており、新APIの仮実装・ダミー型・設定切替は追加していない。
 
-**2026-11-06：残りのテスト整理はレビュー待ち・未コミット。** ユーザーの展開指示に基づき、Word・WithWhiteSpace・OptionalとSequence2〜10の12ファイルを整理した。Wordの空白関連3メソッドをWithの代表例へ統合し、空語とIgnoreCase付きの結合確認2メソッドを移動。素のWordの空語を確認する1件を追加したため、テスト全体は代表例時点の472ケースから470ケースとなった。Optionalは既存CallbackCharParserで消費後失敗を作る準備へ、Sequenceは10箇所の準備を明示的な空白ラッパーへ変更し、これらの入力・期待・active状態は維持した。
+**2026-11-06：新API移行前のテスト整理（未コミットのまま後述の移行へ継続）。** ユーザーの展開指示に基づき、Word・WithWhiteSpace・OptionalとSequence2〜10の12ファイルを整理した。Wordの空白関連3メソッドをWithの代表例へ統合し、空語とIgnoreCase付きの結合確認2メソッドを移動。素のWordの空語を確認する1件を追加したため、この時点のテスト全体は代表例時点の472ケースから470ケースとなった。Optionalは既存CallbackCharParserで消費後失敗を作る準備へ、Sequenceは10箇所の準備を明示的な空白ラッパーへ変更し、これらの入力・期待・active状態は維持した。
 
-最新のSkipルールに合わせて「空白責務分離 01〜09」を理由先頭に付け、今回は解除していない。01〜06は代表例の過去Red、今回の07〜09はRed未実施と区別する。具体的なケース・解除条件はテスト属性を正本とする。旧コンストラクター固有のnull関連2メソッド（3ケース）は、削除・移管先の契約が未確定なので無変更・activeで保留。これらは未解決であり全移行完了とは扱わない。本体実装や新API名の確定は今回の許可に含めない。最終状態の検証結果と停止位置は[再開記録](current-work.md#現在の作業状況)を参照する。
+当該整理ではSkip理由に「空白責務分離 01〜09」を付けた。01〜06は代表例の過去Red、07〜09はこの段階でRed未実施だった。具体的なケース・解除条件はテスト属性を正本とする。旧コンストラクター固有のnull関連2メソッド（3ケース）は、削除・移管先の契約が未確定なので無変更・activeで保全した。この整理だけで全移行完了や本体実装の許可とは扱わず、続くAPIの変更と最新の検証結果・停止位置は下記および[再開記録](current-work.md#現在の作業状況)を参照する。
 
 #### 空白処理見直し前後の速度比較（2026-11-06）
 
 **比較元の保存まで実施・未計測。** 影響範囲が大きいため、ユーザーから見直し前後で速度を比較できるよう準備するよう指示された。
 
-* 変更前の固定版：`8f50f569ad25723df2e083427e2dc0447cff69a6`。ローカルの注釈付きタグ `baseline/whitespace-before-redesign-2026-11-06` を作成し、このSHAを指すことを確認した。タグは未pushだが、SHAからも取得できる。`Kotowari`・`JsonParser`・`Kotowari.Benchmarks` は `f12bc86` と同じ内容で、作業ツリーにもこれらの差分はない。Optional修正やJSON最新版同期は含み、空白処理の見直しは含まない比較元である。
+* 変更前の固定版：`8f50f569ad25723df2e083427e2dc0447cff69a6`。ローカルの注釈付きタグ `baseline/whitespace-before-redesign-2026-11-06` を作成し、このSHAを指すことを確認した。タグは未pushだが、SHAからも取得できる。この版の `Kotowari`・`JsonParser`・`Kotowari.Benchmarks` は `f12bc86` と同じ内容で、タグ作成時の作業ツリーにもこれらの差分はなかった。Optional修正やJSON最新版同期は含み、空白処理の見直しは含まない比較元である。
 * 入力：[既存の巨大JSON](../Kotowari.Benchmarks/Data/test.json)、4,172,062 bytes、SHA-256 `DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D`。[2026-11-05の記録](../Kotowari.Benchmarks/Results/2026-11-05-json-sync-speed.md#条件)と一致し、Gitにも保存されている。
 * 取得方法：変更前は上記固定SHA、変更後はレビュー・コミット済みのSHAから、それぞれ `git worktree add --detach` で別の作業場所を作り、ビルド出力も分離する。現在の未コミット差分を戻す必要はなく、ブランチのresetやstashを比較の前提にしない。今回はタグ作成までで、比較用worktreeはまだ作成していない。
 * 測定入口：Git内の [JsonParserBenchmarks.Kotowari](../Kotowari.Benchmarks/JsonParserBenchmarks.cs) を共通の入口とし、両版で同じベンチマーク定義・入力・ジョブを使う。ファイル読み込みはSetupであり、対象は読み込んだ文字列の解析と結果生成である。Release・Dynamic PGO有効（`DOTNET_TieredPGO=1`）・`DOTNET_ReadyToRun=0` とし、同じSDK・ランタイム・依存を使い、他の重い処理を止めて直列に複数の新規プロセスで測る。ジョブ設定と起動別の値も残す。Gitのタグだけでは実行環境は固定されず、`global.json` はrollForwardを許すため、実際に使った版を両方で確認・記録する。
 * 計時外の確認：両版の成功・入力全体の消費・結果木と値の一致を確認する。既存の `--validate` は例外を表示しても失敗終了せず、全消費・結果同値性も確認しないため、それだけで検証済みとは扱わない。Word単体を測る場合も、素の照合と空白付き字句を同じ仕事とみなさず、両版で入力・消費範囲・結果をそろえる。
 * 過去の平均値を変更後の値と直接比較せず、保存した旧版も同じ環境で測り直す。11月5日の一時ハーネスはローカルの `artifacts/` に依存するため、再実行に必須の入口とはしない。今回、新しい測定スクリプト・CSV・測定結果は追加していない。
+
+#### 空白設定を親から引き継ぐAPI（2026-11-06）
+
+**正式APIの宣言とSkip付きテストへ移行・実処理は未実装。** 比較準備の記録は `9621e3c` にコミット済み。その後のAPI検討を経て、ユーザーが新APIでのテスト書換えと、本体への宣言・未実装例外だけの追加を了承した。今回の許可に空白処理の実装やコミットは含めない。
+
+* **移行前の確認（`9621e3c`）：** [Parser](../Kotowari/Parser.cs)は空の基底型で、[Parser&lt;T&gt;](../Kotowari/ParserOfT.cs)も空白設定を持たず、解析時に子へ渡すのはCursolだけだった。[WordParser](../Kotowari/Core/WordParser.cs)は個別指定の空白パーサー、または既定の半角空白を保持する。[WithWhiteSpaceParser](../Kotowari/WithWhiteSpaceParser.cs)は自分の前置空白を処理するだけで、包んだ子へ設定を伝えない。今回もこれらの実処理やSequence・Orの本体は変更していない。
+* **確認した履歴：** 初期の `96e818b` の基底Parserに空白設定はなく、`c1074d3`（2020-08-25）で抽出したWithWhiteSpaceも前置空白のラッパーだった。同版のWordは前後の半角空白を自身で読む。関連型の履歴検索では親設定の伝播を削除した変更は確認できず、元からあった自動継承の復元とは扱わない。
+* **テストへ反映する契約：** [判断記録](../docs/development-context.md#字句照合と空白処理を分離する)を正本とする。親からの継承・子の明示設定優先・最寄りの設定・同じ箇所での後勝ち・元の版と共有子の不変性を、新APIによる観測可能なテストへ記述する。具体的な入力・期待・Skip解除条件は [Parserのテスト](../Kotowari.Tests/Parserのテスト.cs) を参照する。
+* **分けて決めること：** 空白の定義を継承することと、空白を消費する字句境界は別である。引用符の内側や数値・Word内部の文字列照合まで読み飛ばさないよう、素の解析領域を指定する方法が必要。既存Wordの「指定なし＝半角空白」と「親から継承」をどう区別するか、既存の空白引数付きコンストラクターとの優先順位もレビュー対象。責務分離を理由に既存APIの削除を確定しない。
+
+了承された呼び出しの形は以下。`.WithWhiteSpace` を正式なメソッドとして宣言したが、現在は `NotImplementedException` を投げ、まだ利用可能な機能ではない。既存のWithWhiteSpaceParserを親へ一回巻くだけで、この継承動作を実現したとは扱わない。
+
+```csharp
+var parser =
+    SequenceParser.Create(
+        new WordParser("public"),
+        new WordParser("static"))
+    .WithWhiteSpace(new CharParser('_'));
+```
+
+実装後は親で一度指定した規則を両方のWordが使い、利用側で各要素を個別の空白ラッパーに包むことを強制しない。実処理の実装と性能評価はまだ行っていない。
+
+**宣言追加を了承後、Red担当でテスト移行を実施。** 最初は公開宣言がなく、Skipではコンパイルエラーを避けられないため確認待ちにした。その後のユーザー了承により、`Parser<T>.WithWhiteSpace(Parser<char>) : Parser<T>` と未実装を示す例外だけを追加した。テスト専用の偽API、reflection/dynamic、条件付きコンパイルでは回避していない。継承の代表と追加契約は、正式なAPIとしてビルドした上で未実装例外によるRedを確認し、Skipへ保留した。既存の01〜09は確認のために解除していない。
+
+後置空白等の契約6メソッドは旧WithWhiteSpaceのクラスから新APIのParserテストへ移し、旧型の現行ガードは元のクラスに残した。新しい契約は7メソッドにまとめ、Sequence2〜10の準備は親への一度の指定に変更した。新APIを使う既存SequenceのみSkipとし、コールバックや派生処理等の非依存ケース、Wordのnull検査3ケースはactiveで維持した。最終の対象ファイル・検証結果・保留数は[再開記録](current-work.md#現在の作業状況)、代表Redと生ログ等はローカル `artifacts/whitespace-inherited-api-tests-2026-11-06/red/HANDOFF.md` を参照する。
 
 ### R10：左再帰・深い再帰の制約を示す
 
