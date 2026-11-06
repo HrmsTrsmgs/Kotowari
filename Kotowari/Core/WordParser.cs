@@ -33,11 +33,11 @@ public class WordParser : Parser<string>
         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
     }
 
-    /// <summary>単語と前後の空白を解析します。</summary>
+    /// <summary>単語と後ろの空白を解析します。</summary>
     /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     protected internal override ParseResult<string> ParseCore(Cursol cursol)
     {
-        var current = SkipBlankAsync(cursol);
+        var current = cursol;
         // 単語長が既知なので、Listの拡張と最後の配列化を避ける。
         // 最初の成功まで確保を遅らせ、先頭失敗では割り当てない。
         // 短語の比較ではList・ジェネレーター・stackalloc版より速かった。変更時は再比較する。
