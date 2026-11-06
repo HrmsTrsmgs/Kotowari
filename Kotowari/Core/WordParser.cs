@@ -13,8 +13,6 @@ public class WordParser : Parser<string>
     Parser<char>[] Parsers { get; }
     public bool IgnoreCase { get; }
 
-    Parser<char> WhiteSpace { get; }
-
     public WordParser(string word, bool ignoreCase = false)
         : this(word, ignoreCase, new CharParser(' '))
     {
@@ -30,11 +28,10 @@ public class WordParser : Parser<string>
         Parsers = [.. word.Select(c => new CharParser(c, ignoreCase))];
         IgnoreCase = ignoreCase;
 
-        WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
+        ArgumentNullException.ThrowIfNull(whiteSpace);
     }
 
-    /// <summary>単語と後ろの空白を解析します。</summary>
-    /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
+    /// <summary>単語を解析します。</summary>
     protected internal override ParseResult<string> ParseCore(Cursol cursol)
     {
         var current = cursol;
@@ -54,24 +51,7 @@ public class WordParser : Parser<string>
             returnValue[index++] = result.Parsed;
         }
 
-        current = SkipBlankAsync(current);
         return ParseResult<string>.Success(current,
             returnValue is null ? string.Empty : new string(returnValue));
-    }
-
-    private Cursol SkipBlankAsync(Cursol current)
-    {
-        while (true)
-        {
-            var result = WhiteSpace.ParseCore(current);
-            if (!result.IsSuccess) return current;
-
-            if (result.Cursol.Index == current.Index)
-            {
-                throw new InvalidOperationException("空白パーサーが入力を消費せず成功しました。");
-            }
-
-            current = result.Cursol;
-        }
     }
 }

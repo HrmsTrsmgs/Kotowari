@@ -77,7 +77,7 @@ public class WordParserのテスト
         result.Cursol.Should().Be(cursol);
     }
 
-    [Fact(Skip = "[空白責務分離 02] WordParserが後置空白を暗黙に読んでいるため。指定文字列だけを照合する実装後に解除します。")]
+    [Fact]
     public void 指定文字列に一致しても後ろの空白は消費しません()
     {
         var cursol = new Cursol("public ");
