@@ -91,7 +91,7 @@ public class WordParserのテスト
         result.Cursol.Current.Should().Be(' ');
     }
 
-    [Fact(Skip = "[空白責務分離 03] WordParserが指定文字列の照合前に空白を読んでいるため。文字列内の空白もそのまま照合する実装後に解除します。")]
+    [Fact]
     public void 指定文字列に含まれる前後の空白もそのまま照合します()
     {
         var tested = new WordParser(" public ");
