@@ -45,6 +45,30 @@ Kotowariを、第三者がビルド、テスト、利用、レビューできる
 * READMEは初めて使う人が目的、最小利用例、制約を理解できる順にする。公開準備と実際の公開を区別し、公開やreleaseを準備依頼だけで実行しない。
 * ライブラリ本体、テスト用JSONパーサー、ベンチマーク用アダプターの責務を文書上でも区別する。
 
+## AI用スクリプトとSkip管理
+
+* AI向けの作業補助は `scripts/ai/` に置く。Skip解除には `scripts/ai/Enable-NextSkippedTest.ps1` を使う。PowerShell 7.6以降が必要で、同梱のRoslynでC#構文を解析する。パッケージの追加は不要。
+* 新しいSkip理由は既存のテストに合わせて `[グループ名 001] 理由と解除条件` の形にする。グループ名がない場合は `[001] 理由と解除条件` とする。番号は同じグループ内で一意の正の整数とし、解除後の振り直しは不要。`グループ名 001: 理由` と `001: 理由` も同じメタデータとして読める。
+* 解除するグループをユーザーと決めた後は、AIがスクリプトを実行してよい。`-Group` はグループ名の完全一致で選ぶ。省略した場合はグループ名のないSkipだけを選び、別グループへ自動で進まない。
+* 選択範囲では最小番号の一件を解除する。グループ名も番号もない従来のSkipも扱い、無グループの番号付きSkipの後で、ファイル名・ファイル内の出現順に一件ずつ選ぶ。既存Skipの一括改名や一括解除を前提としない。
+* データごとに段階的に扱う場合は、xUnit v3の `InlineData` の `Skip`、または `TheoryDataRow` の `Skip` プロパティ・`WithSkip` に記す。全体が未対応の場合だけ `Fact`・`Theory` 全体のSkipを使う。データ単位のSkipと、そのデータを妨げるTheory全体のSkipを重ねない。
+* スクリプトは通常の `Fact`・`Theory`・`InlineData`・`MemberData`・`ClassData` 属性と、型をソースから確認できる `TheoryDataRow` の初期化・`WithSkip` を対象にする。理由は文字列リテラルで記載する。定数参照などの式は実行・評価せず停止する。対象なし、番号重複、構文エラーの場合も書き込まない。
+* 標準の探索先は `Kotowari.Tests`、`JsonParserのテスト`、`SpracheJson.Reference.Tests`。`-Path` でC#ファイルまたはディレクトリを限定できる。相対パスはリポジトリ基準。`bin`・`obj` 等の生成物とリンク先を探索しない。
+* `-WhatIf` で書き込まずに対象を確認できる。実行結果のファイル・行・理由とGit差分を確認し、解除した対象テストを実行する。意図したRedか、既に通る確認かを区別し、後者を失敗させるために本体を壊さない。解除だけを理由に次のSkipや本体実装へ進まない。
+
+```powershell
+# グループ指定ありの事前確認と解除
+pwsh -NoProfile -File scripts/ai/Enable-NextSkippedTest.ps1 -Group 空白処理 -WhatIf
+pwsh -NoProfile -File scripts/ai/Enable-NextSkippedTest.ps1 -Group 空白処理
+
+# グループ名なしの事前確認と解除
+pwsh -NoProfile -File scripts/ai/Enable-NextSkippedTest.ps1 -WhatIf
+pwsh -NoProfile -File scripts/ai/Enable-NextSkippedTest.ps1
+
+# スクリプトの回帰検証（一時フィクスチャだけを変更する）
+pwsh -NoProfile -File scripts/ai/tests/Test-Enable-NextSkippedTest.ps1
+```
+
 ## 実行中のスリープ抑止
 
 * 依頼された作業の実行中は、実行マシンの自動スリープを一時的に抑止する。測定だけでなく、準備、調査、ビルド、テスト、解析、結果整理、ツール・サブエージェントの完了待ちも対象とする。

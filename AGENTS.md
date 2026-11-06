@@ -10,6 +10,7 @@
 * 振る舞いを維持するリファクタリングの進行役: 共通Skill内の `references/run.md`。未導入の場合は `docs/ai-instructions/tdd-context/run.md`。性能調査・計測だけの依頼をTDDへ振り分けない。
 * C#/.NETの作業: 共通Skill `csharp-conventions`。採用パッケージ・具体的なビルド対象は `docs/ai-instructions/csharp.md` の該当節も確認する。共通Skill未導入時は同文書を技術規約の参照版として使う。
 * Kotowari固有の指示: `docs/ai-instructions/kotowari.md`。主担当は確認し、工程担当は自分の担当範囲に必要な節だけ参照する。
+* Skipの記録・解除: 同文書の「AI用スクリプトとSkip管理」を参照する。グループ名がない場合の選択順と解除スクリプトの使い方は、このプロジェクト固有規則を優先する。
 
 共通ルールの正本は個人管理の `codex-workflows`。利用可能なSkillの一覧で名前と実際の場所を確認する。共通Skillとリポジトリ内の参照版は同じ用途へ重ねて読み込まず、固有の制約・検証対象・記録先だけを補足する。私用リポジトリへのアクセスや共通Skillの導入を、OSSへの参加条件にしない。
 
