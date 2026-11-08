@@ -25,7 +25,7 @@ public class Parserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact(Skip = "[空白責務分離 04] WithWhiteSpaceが未実装のため。子の成功後に空白を読み最後の成功位置を返す実装後に解除します。")]
+    [Fact]
     public void 子の後の空白パーサーが消費して失敗しても最後に成功した位置を返します()
     {
         var 呼び出し位置 = new List<int>();
@@ -42,6 +42,19 @@ public class Parserのテスト
         result.Cursol.Index.Should().Be(3);
         result.Cursol.Current.Should().Be('!');
         呼び出し位置.Should().Equal(1, 2, 3);
+    }
+
+    [Fact]
+    public void 文字列を返す複数文字の空白規則を繰り返し読み飛ばします()
+    {
+        var tested = new WordParser("public").WithWhiteSpace(new WordParser("__"));
+
+        var result = tested.Parse(new Cursol("public____!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("public");
+        result.Cursol.Index.Should().Be(10);
+        result.Cursol.Current.Should().Be('!');
     }
 
     [Fact(Skip = "[空白責務分離 05] WithWhiteSpaceが未実装のため。子の前にある空白を暗黙に読まない実装後に解除します。")]

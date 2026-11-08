@@ -14,14 +14,39 @@ public abstract class Parser<T> : Parser
         => ParseCore(cursol);
 
     /// <summary>
-    /// 元のパーサーを変更せずに空白規則を指定するための未実装APIです。
-    /// 現在は呼び出すと例外を投げます。
+    /// 元のパーサーを変更せずに、成功後に使用する空白規則を指定します。
     /// </summary>
+    /// <typeparam name="TWhiteSpace">空白規則が返す値の型。</typeparam>
     /// <param name="whiteSpace">字句の成功後に使用する空白規則。</param>
-    /// <returns>未実装のため、現在は値を返しません。</returns>
-    /// <exception cref="NotImplementedException">空白規則の設定処理はまだ実装されていません。</exception>
-    public Parser<T> WithWhiteSpace(Parser<char> whiteSpace)
-        => throw new NotImplementedException();
+    /// <returns>指定した空白規則を使用するパーサー。</returns>
+    public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
+        where TWhiteSpace : notnull
+        => new TrailingWhiteSpaceParser<TWhiteSpace>(this, whiteSpace);
+
+    sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> parser, Parser<TWhiteSpace> whiteSpace) : Parser<T>
+        where TWhiteSpace : notnull
+    {
+        protected internal override ParseResult<T> ParseCore(Cursol cursol)
+        {
+            var result = parser.Parse(cursol);
+            if (!result.IsSuccess)
+            {
+                return result;
+            }
+
+            var current = result.Cursol;
+            while (true)
+            {
+                var whitespaceResult = whiteSpace.Parse(current);
+                if (!whitespaceResult.IsSuccess)
+                {
+                    return ParseResult<T>.Success(current, result.Parsed);
+                }
+
+                current = whitespaceResult.Cursol;
+            }
+        }
+    }
 
     /// <summary>
     /// 指定位置からの解析を実装します。
