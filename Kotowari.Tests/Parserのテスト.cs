@@ -45,6 +45,36 @@ public class Parserのテスト
     }
 
     [Fact]
+    public void 後置空白が初回に消費して失敗したら子の直後の位置を返します()
+    {
+        var 呼び出し位置 = new List<int>();
+        var tested = new CharParser('あ').WithWhiteSpace(new CallbackCharParser((_, index) =>
+        {
+            呼び出し位置.Add(index);
+            return (false, '?', 1);
+        }));
+
+        var result = tested.Parse(new Cursol("あ!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be('あ');
+        result.Cursol.Index.Should().Be(1);
+        result.Cursol.Current.Should().Be('!');
+        呼び出し位置.Should().Equal(1);
+    }
+
+    [Fact]
+    public void 後置空白の例外はそのまま伝播します()
+    {
+        var exception = new InvalidOperationException();
+        var tested = new CharParser('あ').WithWhiteSpace(new CallbackCharParser((_, _) => throw exception));
+
+        var parse = () => tested.Parse(new Cursol("あ!"));
+
+        parse.Should().Throw<InvalidOperationException>().Which.Should().BeSameAs(exception);
+    }
+
+    [Fact]
     public void 文字列を返す複数文字の空白規則を繰り返し読み飛ばします()
     {
         var tested = new WordParser("public").WithWhiteSpace(new WordParser("__"));

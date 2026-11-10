@@ -34,17 +34,7 @@ public abstract class Parser<T> : Parser
                 return result;
             }
 
-            var current = result.Cursol;
-            while (true)
-            {
-                var whitespaceResult = whiteSpace.Parse(current);
-                if (!whitespaceResult.IsSuccess)
-                {
-                    return ParseResult<T>.Success(current, result.Parsed);
-                }
-
-                current = whitespaceResult.Cursol;
-            }
+            return ParseResult<T>.Success(WhiteSpaceSkipper.Skip(whiteSpace, result.Cursol), result.Parsed);
         }
     }
 
