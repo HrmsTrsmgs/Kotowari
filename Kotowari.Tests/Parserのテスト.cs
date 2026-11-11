@@ -145,7 +145,7 @@ public class Parserのテスト
         tested.Parse(new Cursol("_あ")).IsSuccess.Should().BeFalse();
     }
 
-    [Fact(Skip = "[空白責務分離 06] WithWhiteSpaceが未実装のため。子の値を保ち指定した後置空白だけを読む実装後に解除します。")]
+    [Fact]
     public void 子の値を返して文法で指定した後置空白だけを読み飛ばします()
     {
         var tested = new WordParser("public").WithWhiteSpace(new CharParser('_'));
