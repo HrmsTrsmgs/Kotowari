@@ -137,7 +137,7 @@ public class Parserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact(Skip = "[空白責務分離 05] WithWhiteSpaceが未実装のため。子の前にある空白を暗黙に読まない実装後に解除します。")]
+    [Fact]
     public void 子の前にある空白は読み飛ばしません()
     {
         var tested = new CharParser('あ').WithWhiteSpace(new CharParser('_'));
