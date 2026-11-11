@@ -12,6 +12,21 @@ namespace Marimo.Kotowari.Tests.Core;
 public class DelimitedSequenceParserのテスト
 {
     [Fact]
+    public void 要素と区切りのnull成功値を失敗と区別します()
+    {
+        var tested = new DelimitedSequenceParser<string?, string?>(
+            new ParserConverter<char, string?>(
+                new ConditionalCharParser(char.IsLetter), it => it == 'a' ? null : it.ToString()),
+            ParserConverter.Create<string?, char>(new CharParser(','), _ => null));
+
+        var result = tested.Parse(new Cursol("a,b!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal(null, "b");
+        result.Cursol.Index.Should().Be(3);
+    }
+
+    [Fact]
     public void 要素と区切りの一巡で入力を消費せず成功したら例外を投げます()
     {
         var delimiterAttempts = 0;

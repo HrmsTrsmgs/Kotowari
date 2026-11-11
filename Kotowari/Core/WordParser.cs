@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Linq;
@@ -32,9 +33,9 @@ public class WordParser : Parser<string>
     }
 
     /// <summary>単語を解析します。</summary>
-    protected internal override ParseResult<string> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out string parsed)
     {
-        var current = cursol;
+        var current = start;
         // 単語長が既知なので、Listの拡張と最後の配列化を避ける。
         // 最初の成功まで確保を遅らせ、先頭失敗では割り当てない。
         // 短語の比較ではList・ジェネレーター・stackalloc版より速かった。変更時は再比較する。
@@ -43,15 +44,20 @@ public class WordParser : Parser<string>
         var index = 0;
         foreach (var parser in Parsers)
         {
-            var result = parser.ParseCore(current);
-            if (!result.IsSuccess) return ParseResult<string>.Failure(cursol);
+            if (!parser.TryParseCore(current, out var childNext, out var childParsed))
+            {
+                next = start;
+                parsed = default;
+                return false;
+            }
 
-            current = result.Cursol;
+            current = childNext;
             returnValue ??= new char[Parsers.Length];
-            returnValue[index++] = result.Parsed;
+            returnValue[index++] = childParsed;
         }
 
-        return ParseResult<string>.Success(current,
-            returnValue is null ? string.Empty : new string(returnValue));
+        next = current;
+        parsed = returnValue is null ? string.Empty : new string(returnValue);
+        return true;
     }
 }

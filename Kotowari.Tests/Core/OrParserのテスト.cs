@@ -11,6 +11,20 @@ namespace Marimo.Kotowari.Tests.Core;
 public class OrParserのテスト
 {
     [Fact]
+    public void 一つ目の要素がnullで成功したら失敗と区別してその値を返します()
+    {
+        var tested = new OrParser<string?>(
+            ParserConverter.Create<string?, string>(new WordParser("abc"), _ => null),
+            ParserConverter.Create<string?, string>(new WordParser("abc"), _ => "fallback"));
+
+        var result = tested.Parse(new Cursol("abc!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeNull();
+        result.Cursol.Index.Should().Be(3);
+    }
+
+    [Fact]
     public void 一つ目の要素のパースに成功したら成功です()
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));

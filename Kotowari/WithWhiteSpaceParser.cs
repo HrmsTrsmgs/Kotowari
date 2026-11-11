@@ -1,6 +1,7 @@
 ﻿using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -8,7 +9,6 @@ using System.Transactions;
 namespace Marimo.Kotowari;
 
 public class WithWhiteSpaceParser<T> : Parser<T>
-    where T : notnull
 {
     Parser<char> WhiteSpace { get; }
     Parser<T> Parser { get; }
@@ -20,25 +20,24 @@ public class WithWhiteSpaceParser<T> : Parser<T>
 
     /// <summary>前置空白を読み飛ばして値を解析します。</summary>
     /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
-    protected internal override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
     {
-        var current = cursol;
+        var current = start;
         while (true)
         {
-            var result = WhiteSpace.ParseCore(current);
-            if (!result.IsSuccess)
+            if (!WhiteSpace.TryParseCore(current, out var whiteSpaceNext, out _))
             {
                 break;
             }
 
-            if (result.Cursol.Index == current.Index)
+            if (whiteSpaceNext.Index == current.Index)
             {
                 throw new InvalidOperationException("空白パーサーが入力を消費せず成功しました。");
             }
 
-            current = result.Cursol;
+            current = whiteSpaceNext;
         }
 
-        return Parser.ParseCore(current);
+        return Parser.TryParseCore(current, out next, out parsed);
     }
 }

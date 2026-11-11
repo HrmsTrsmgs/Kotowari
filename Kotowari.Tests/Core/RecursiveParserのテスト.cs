@@ -11,6 +11,23 @@ namespace Marimo.Kotowari.Tests.Core;
 public class RecursiveParserのテスト
 {
     [Fact]
+    public void 再帰先のnull成功値を失敗と区別して返します()
+    {
+        var tested = new RecursiveParser<string?>(() =>
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null));
+
+        var success = tested.Parse(new Cursol("a!"));
+        var failure = tested.Parse(new Cursol("!"));
+
+        success.IsSuccess.Should().BeTrue();
+        success.Parsed.Should().BeNull();
+        success.Cursol.Index.Should().Be(1);
+        failure.IsSuccess.Should().BeFalse();
+        var readFailure = () => failure.Parsed;
+        readFailure.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
     public void シーケンスが先に失敗した場合は再帰getterを評価しません()
     {
         var 呼び出し回数 = 0;

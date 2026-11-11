@@ -9,6 +9,56 @@ namespace Marimo.Kotowari.Tests;
 
 public class Parserのテスト
 {
+    [Fact]
+    public void 派生パーサーは異なる結果型の子を解析して値と消費位置を返せます()
+    {
+        Parser<int> tested = new ConvertingChildParser<string, int>(new WordParser("abc"), it => it.Length);
+        var start = new Cursol("abc!");
+
+        ParseResult<int> result = tested.Parse(start);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(3);
+        (result.Cursol == start.GoFoward(3)).Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineData("a!", true)]
+    [InlineData("b!", false)]
+    public void 派生パーサーは子のnull成功と消費した失敗を戻り値で区別できます(string input, bool isSuccess)
+    {
+        Parser<string?> tested = new ConvertingChildParser<string?, string?>(new NullStringParser(), it => it);
+        var start = new Cursol(input);
+
+        ParseResult<string?> result = tested.Parse(start);
+
+        result.IsSuccess.Should().Be(isSuccess);
+        (result.Cursol == start.GoFoward(1)).Should().BeTrue();
+        if (isSuccess)
+        {
+            result.Parsed.Should().BeNull();
+        }
+        else
+        {
+            var readParsed = () => result.Parsed;
+
+            readParsed.Should().Throw<InvalidOperationException>();
+        }
+    }
+
+    [Fact]
+    public void 子と後置空白がnullで成功しても子の値と空白の消費を保ちます()
+    {
+        var tested = ParserConverter.Create<string?, char>(new CharParser('a'), _ => null)
+            .WithWhiteSpace(ParserConverter.Create<string?, char>(new CharParser('_'), _ => null));
+
+        var result = tested.Parse(new Cursol("a__!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeNull();
+        result.Cursol.Index.Should().Be(3);
+    }
+
     [Fact(Skip = "[空白責務分離 010] WithWhiteSpaceが未実装のため。親に指定した空白規則を未指定の子が引き継ぐ実装後に解除します。")]
     public void 親に指定した空白規則を未指定の子が引き継ぎます()
     {

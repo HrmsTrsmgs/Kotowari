@@ -12,6 +12,20 @@ namespace Marimo.Kotowari.Tests.Core;
 public class OneOrMoreParserのテスト
 {
     [Fact]
+    public void 子のnull成功値を列に保持します()
+    {
+        var tested = new OneOrMoreParser<string?>(
+            new ParserConverter<char, string?>(
+                new ConditionalCharParser(char.IsLetter), it => it == 'a' ? null : it.ToString()));
+
+        var result = tested.Parse(new Cursol("ab!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Equal(null, "b");
+        result.Cursol.Index.Should().Be(2);
+    }
+
+    [Fact]
     public void 最初の要素が入力を消費せず成功したら例外を投げます()
     {
         var attempts = 0;

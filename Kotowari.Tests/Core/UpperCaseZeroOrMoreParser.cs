@@ -2,21 +2,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-// 継承元ごとのParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
+// 継承元ごとのTryParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
 internal sealed class UpperCaseZeroOrMoreParser() : ZeroOrMoreParser<char>(new CharParser('a'))
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<IEnumerable<char>> ParseCore(Cursol cursol)
+    protected override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out IEnumerable<char> parsed)
     {
         呼び出し回数++;
-        var result = base.ParseCore(cursol);
-        return ParseResult<IEnumerable<char>>.Success(
-            result.Cursol,
-            result.Parsed.Select(char.ToUpper));
+        if (!base.TryParseCore(start, out next, out parsed))
+        {
+            return false;
+        }
+
+        parsed = parsed.Select(char.ToUpper);
+        return true;
     }
 }

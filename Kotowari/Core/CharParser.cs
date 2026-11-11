@@ -17,11 +17,18 @@ public class CharParser : Parser<char>
         IgnoreCase = ignoreCase;
     }
 
-    protected internal override ParseResult<char> ParseCore(Cursol cursol)
-        => cursol.Current switch
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, out char parsed)
+    {
+        var c = start.Current;
+        if (IgnoreCase ? char.ToLower(c) == char.ToLower(Char) : c == Char)
         {
-            var c when (IgnoreCase ? char.ToLower(c) == char.ToLower(Char) : c == Char)
-                    => ParseResult<char>.Success(cursol.GoFoward(1), c),
-            _ => ParseResult<char>.Failure(cursol)
-        };
+            next = start.GoFoward(1);
+            parsed = c;
+            return true;
+        }
+
+        next = start;
+        parsed = default;
+        return false;
+    }
 }

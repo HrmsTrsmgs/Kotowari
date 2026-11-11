@@ -12,6 +12,21 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class 要素を3つ持つSeqenceParserのテスト
 {
+    [Fact]
+    public void 間の子がnullで成功しても前後の値とともに保持します()
+    {
+        var tested = SequenceParser.Create(
+            new CharParser('a'),
+            ParserConverter.Create<string?, char>(new CharParser('b'), _ => null),
+            new CharParser('c'));
+
+        var result = tested.Parse(new Cursol("abc!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(('a', (string?)null, 'c'));
+        result.Cursol.Index.Should().Be(3);
+    }
+
     static Parser<(string, string, string)> Tested
         => SequenceParser.Create(
             new WordParser("public"),

@@ -6,15 +6,20 @@ using System.Linq;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-// 継承元ごとのParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
+// 継承元ごとのTryParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
 internal sealed class UpperCaseSequenceParser() : SequenceParser<char, char>(new CharParser('a'), new CharParser('b'))
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<(char, char)> ParseCore(Cursol cursol)
+    protected override bool TryParseCore(Cursol start, out Cursol next, out (char, char) parsed)
     {
         呼び出し回数++;
-        return TestParseResults.ConvertSuccessfulValue(
-            base.ParseCore(cursol), static it => (char.ToUpper(it.Item1), char.ToUpper(it.Item2)));
+        if (!base.TryParseCore(start, out next, out parsed))
+        {
+            return false;
+        }
+
+        parsed = (char.ToUpper(parsed.Item1), char.ToUpper(parsed.Item2));
+        return true;
     }
 }

@@ -6,9 +6,13 @@ using System.Linq;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-// 継承元ごとのParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
+// 外部派生型のTryParseCoreを通ることを観測する。
 internal sealed class ConsumingFailureCharParser : Parser<char>
 {
-    protected override ParseResult<char> ParseCore(Cursol cursol)
-        => ParseResult<char>.Failure(cursol.GoFoward(2));
+    protected override bool TryParseCore(Cursol start, out Cursol next, out char parsed)
+    {
+        next = start.GoFoward(2);
+        parsed = default;
+        return false;
+    }
 }

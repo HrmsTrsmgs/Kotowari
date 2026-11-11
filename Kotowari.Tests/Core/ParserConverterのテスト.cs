@@ -12,6 +12,20 @@ namespace Marimo.Kotowari.Tests.Core;
 public class ParserConverterのテスト
 {
     [Fact]
+    public void 子のnull成功値を変換関数に渡します()
+    {
+        var tested = ParserConverter.Create<string, string?>(
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null),
+            it => it is null ? "null" : it);
+
+        var result = tested.Parse(new Cursol("a!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("null");
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
     public void 組み合わせから呼んでも派生変換パーサーの処理と基底実装を使います()
     {
         var parser = new IncrementingParserConverter();

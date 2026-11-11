@@ -5,18 +5,16 @@ namespace Marimo.Kotowari;
 internal static class WhiteSpaceSkipper
 {
     public static Cursol Skip<T>(Parser<T> whiteSpace, Cursol cursol)
-        where T : notnull
     {
         var current = cursol;
         while (true)
         {
-            var result = whiteSpace.Parse(current);
-            if (!result.IsSuccess)
+            if (!whiteSpace.TryParseCore(current, out var next, out _))
             {
                 return current;
             }
 
-            current = result.Cursol;
+            current = next;
         }
     }
 }

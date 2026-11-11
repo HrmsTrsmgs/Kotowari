@@ -10,6 +10,20 @@ namespace Marimo.Kotowari.Tests.Core;
 public class WithWhiteSpaceParserのテスト
 {
     [Fact]
+    public void 子のnull成功値を保持します()
+    {
+        var tested = new WithWhiteSpaceParser<string?>(
+            new CharParser('_'),
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null));
+
+        var result = tested.Parse(new Cursol("__a!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeNull();
+        result.Cursol.Index.Should().Be(3);
+    }
+
+    [Fact]
     public void 空白が入力を消費せず成功したら例外を投げます()
     {
         var attempts = 0;

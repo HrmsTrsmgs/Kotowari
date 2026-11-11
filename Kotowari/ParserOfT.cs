@@ -1,6 +1,7 @@
 ﻿using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,24 @@ using System.Threading.Tasks;
 namespace Marimo.Kotowari;
 
 public abstract class Parser<T> : Parser
-    where T : notnull
 {
+    /// <summary>指定位置から解析し、成否、解析後のカーソル、および成功時の値を返します。</summary>
+    /// <param name="cursol">解析を開始する文書と位置。</param>
+    /// <returns>成功値または失敗を表す結果。結果オブジェクトはこの公開入口で生成します。</returns>
     public ParseResult<T> Parse(Cursol cursol)
-        => ParseCore(cursol);
+        => TryParseCore(cursol, out var next, out var parsed)
+            ? ParseResult<T>.Success(next, parsed)
+            : ParseResult<T>.Failure(next);
+
+    /// <summary>派生実装から任意の結果型の子を、結果オブジェクトを生成せずに解析します。</summary>
+    /// <typeparam name="TChild">子の成功値の型。</typeparam>
+    /// <param name="parser">解析する子パーサー。</param>
+    /// <param name="start">子の解析を開始する文書と位置。</param>
+    /// <param name="next">子が返した解析後のカーソル。</param>
+    /// <param name="parsed">成功時の値。失敗時は未取得です。成功時のnull許容性は<typeparamref name="TChild"/>に従います。</param>
+    /// <returns>子の解析が成功した場合はtrue、それ以外はfalse。</returns>
+    protected static bool TryParseChild<TChild>(Parser<TChild> parser, Cursol start, out Cursol next, [MaybeNullWhen(false)] out TChild parsed)
+        => parser.TryParseCore(start, out next, out parsed);
 
     /// <summary>
     /// 元のパーサーを変更せずに、成功後に使用する空白規則を指定します。
@@ -20,42 +35,42 @@ public abstract class Parser<T> : Parser
     /// <param name="whiteSpace">字句の成功後に使用する空白規則。</param>
     /// <returns>指定した空白規則を使用するパーサー。</returns>
     public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
-        where TWhiteSpace : notnull
         => new TrailingWhiteSpaceParser<TWhiteSpace>(this, whiteSpace);
 
     sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> parser, Parser<TWhiteSpace> whiteSpace) : Parser<T>
-        where TWhiteSpace : notnull
     {
-        protected internal override ParseResult<T> ParseCore(Cursol cursol)
+        protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
         {
-            var result = parser.Parse(cursol);
-            if (!result.IsSuccess)
+            if (!parser.TryParseCore(start, out next, out parsed))
             {
-                return result;
+                return false;
             }
 
-            return ParseResult<T>.Success(WhiteSpaceSkipper.Skip(whiteSpace, result.Cursol), result.Parsed);
+            next = WhiteSpaceSkipper.Skip(whiteSpace, next);
+            return true;
         }
     }
 
     /// <summary>
     /// 指定位置からの解析を実装します。
     /// </summary>
-    /// <param name="cursol">解析を開始する文書と位置。</param>
-    /// <returns>成否、解析後のカーソル、および成功時の値。</returns>
+    /// <param name="start">解析を開始する文書と位置。</param>
+    /// <param name="next">解析後のカーソル。失敗時に入力を戻すかどうかは各パーサーの契約に従います。</param>
+    /// <param name="parsed">成功時の値。失敗時は未取得です。成功時のnull許容性は<typeparamref name="T"/>に従います。</param>
+    /// <returns>解析が成功した場合はtrue、それ以外はfalse。</returns>
     /// <remarks>
     /// <para>
-    /// 通常は、子パーサーを呼ぶ場合もParseを使います。
-    /// 以下の直接呼び出しは、型profileの混在と性能改善を実測で確認した今回のPGO対策に限る特例です。
-    /// 同一assembly内から呼べるという理由だけで、他の呼び出しにもこの特例を適用しないでください。
-    /// 今回の対象となった内部コンビネーターでは、子パーサーのParseではなくParseCoreを直接呼びます。
-    /// protected internalは、その内部呼び出しと、外部assemblyからの派生実装の両方を許すためです。
+    /// 内部コンビネーターは子のTryParseCoreを直接呼び、公開Parseの出口でだけ結果オブジェクトを生成します。
+    /// protected internalは、内部呼び出しと外部assemblyからの派生実装の両方を許すためです。
     /// 利用側の解析入口は公開のParseのままです。外部assemblyの派生クラスでは
     /// protected overrideで実装します。同一assembly内のoverrideはprotected internalにそろえます。
+    /// 外部assemblyから任意の子を合成する場合はTryParseChildを使います。
+    /// 以下は旧ParseCore署名で2026-10-05に測定したPGO対策の記録です。
+    /// bool/out署名への変更後の性能は未測定ですが、既存の内部呼び出し位置は維持します。
     /// </para>
     /// <para>
     /// この呼び分けは、Dynamic PGOが収集する型profileを実際の呼び出し位置に対応させるためです。
-    /// Parseは非virtualの共通入口で、このvirtualなParseCoreへ委譲するだけですが、
+    /// 測定当時のParseは非virtualの共通入口で、virtualなParseCoreへ委譲するだけでしたが、
     /// 同じ閉じたジェネリック型のParseを通ると、異なる用途の子パーサーの実行時型が
     /// 同じvirtual呼び出し位置のprofileへ集まります。例えばParser&lt;char&gt;.Parseには
     /// CharParser、OrParser&lt;char&gt;、ConditionalCharParserなどの呼び出しが集まります。
@@ -74,7 +89,7 @@ public abstract class Parser<T> : Parser
     /// 生の型profile分布は未採取ですが、このガード対象と展開内容の違いは生成コードで確認しました。
     /// </para>
     /// <para>
-    /// 各コンビネーターがParseCoreを直接呼ぶと、そのvirtual呼び出し位置で型profileを収集できます。
+    /// 当時、各コンビネーターがParseCoreを直接呼ぶと、そのvirtual呼び出し位置で型profileを収集できました。
     /// 実際にZeroOrMoreのInstrumented Tier0へ型profile計測helperが入り、Tier 1のガード対象は
     /// OrParser&lt;char&gt;またはConditionalCharParserへ変わりました。採取した両方の選択で
     /// 約156～163msの速い帯に収まり、選択される型や生成コードが毎回同じになる必要はありませんでした。
@@ -103,7 +118,8 @@ public abstract class Parser<T> : Parser
     /// </para>
     /// <para>
     /// 内部呼び出しを共通のParseへ戻すリファクタリングでは、型profileの再混在と性能を再検証します。
-    /// 現在のParseは委譲だけなので、この呼び分けでも値、カーソル、成否、例外の契約は共通です。
+    /// 現在のParseはTryParseCoreの成否と出力から公開結果を生成します。
+    /// 内部経路でも値、カーソル、成否、例外の契約は共通です。
     /// 将来Parseに検証などの振る舞いを追加する場合は、内部の直接呼び出しにも必要な契約を確認してください。
     /// 再評価はPGO有効・同一入力・同一条件の複数の新規プロセスで行い、
     /// 診断付きの生成コード確認と、診断なしの速度比較を分けます。
@@ -112,5 +128,5 @@ public abstract class Parser<T> : Parser
     /// Kotowari.Benchmarks/Results/2026-10-05-pgo-callsite.md、および各報告の証拠JSONに記録しています。
     /// </para>
     /// </remarks>
-    protected internal abstract ParseResult<T> ParseCore(Cursol cursol);
+    protected internal abstract bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed);
 }

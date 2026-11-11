@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -7,8 +8,6 @@ using System.Transactions;
 namespace Marimo.Kotowari.Core;
 
 public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
-    where T : notnull
-    where U : notnull
 {
     Parser<T> Sequence { get; }
     Parser<U> Delimiter { get; }
@@ -20,7 +19,7 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
 
     /// <summary>要素と区切りを交互に解析します。</summary>
     /// <exception cref="InvalidOperationException">要素と区切りの一巡で入力位置が進まずに成功した場合にスローされます。</exception>
-    protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out IEnumerable<T> parsed)
     {
         // 短い列ではList本体と成長途中の配列を確保せず、結果だけを独立した配列にする。
         // 結果に借用領域を含めず、子パーサーが例外を投げた場合もfinallyで返却する。
@@ -29,27 +28,29 @@ public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
         var parseds = new ParsedValueBuffer<T>(scratch);
         try
         {
-            var current = cursol;
+            var current = start;
             var beforeDelimiter = current;
             while (true)
             {
                 var beforeSequence = current;
-                var sequenceResult = Sequence.ParseCore(current);
-                if (!sequenceResult.IsSuccess)
+                if (!Sequence.TryParseCore(current, out var sequenceNext, out var sequenceParsed))
                 {
-                    return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds.ToArray());
+                    next = beforeDelimiter;
+                    parsed = parseds.ToArray();
+                    return true;
                 }
 
-                current = sequenceResult.Cursol;
-                parseds.Add(sequenceResult.Parsed);
+                current = sequenceNext;
+                parseds.Add(sequenceParsed);
                 beforeDelimiter = current;
-                var delimiterResult = Delimiter.ParseCore(current);
-                if (!delimiterResult.IsSuccess)
+                if (!Delimiter.TryParseCore(current, out var delimiterNext, out _))
                 {
-                    return ParseResult<IEnumerable<T>>.Success(beforeDelimiter, parseds.ToArray());
+                    next = beforeDelimiter;
+                    parsed = parseds.ToArray();
+                    return true;
                 }
 
-                current = delimiterResult.Cursol;
+                current = delimiterNext;
                 if (current.Index == beforeSequence.Index)
                 {
                     throw new InvalidOperationException("反復する要素と区切りパーサーが入力を消費せず成功しました。");

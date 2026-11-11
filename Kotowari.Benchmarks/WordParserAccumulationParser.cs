@@ -18,10 +18,9 @@ internal abstract class WordParserAccumulationParser(string word, bool ignoreCas
     {
         while (true)
         {
-            var result = WhiteSpace.Parse(current);
-            if (!result.IsSuccess) return current;
+            if (!TryParseChild(WhiteSpace, current, out var next, out _)) return current;
 
-            current = result.Cursol;
+            current = next;
         }
     }
 }

@@ -13,10 +13,11 @@ public class ParseResultのテスト
         var cursol = new Cursol("text");
 
         var result = ParseResult<string>.Success(cursol, "parsed");
+        string parsed = result.Parsed;
 
         result.IsSuccess.Should().BeTrue();
         (result.Cursol == cursol).Should().BeTrue();
-        result.Parsed.Should().Be("parsed");
+        parsed.Should().Be("parsed");
     }
 
     [Fact]
@@ -39,10 +40,13 @@ public class ParseResultのテスト
     }
 
     [Fact]
-    public void 成功結果にnullは指定できません()
+    public void 成功結果はnullを値として保持します()
     {
-        Action action = () => ParseResult<string>.Success(new Cursol("text"), null!);
+        var cursol = new Cursol("text");
+        var result = ParseResult<string?>.Success(cursol, null);
 
-        action.Should().Throw<ArgumentNullException>();
+        result.IsSuccess.Should().BeTrue();
+        (result.Cursol == cursol).Should().BeTrue();
+        result.Parsed.Should().BeNull();
     }
 }

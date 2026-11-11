@@ -8,6 +8,24 @@ namespace Marimo.Kotowari.Tests.Core;
 public class OptionalParserのテスト
 {
     [Fact]
+    public void 子のnull成功値は不在と区別して保持します()
+    {
+        var tested = OptionalParser.Create(
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null));
+
+        var present = tested.Parse(new Cursol("a!"));
+        var absent = tested.Parse(new Cursol("!"));
+
+        present.IsSuccess.Should().BeTrue();
+        present.Parsed.IsPresent.Should().BeTrue();
+        present.Parsed.Value.Should().BeNull();
+        present.Cursol.Index.Should().Be(1);
+        absent.IsSuccess.Should().BeTrue();
+        absent.Parsed.IsPresent.Should().BeFalse();
+        absent.Cursol.Index.Should().Be(0);
+    }
+
+    [Fact]
     public void 子が成功したら値が存在し子が消費した位置で成功します()
     {
         var tested = new OptionalParser<char>(new CharParser('-'));

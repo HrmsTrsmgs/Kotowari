@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Marimo.Kotowari.Core;
-using System;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -26,11 +25,24 @@ public class Optionalのテスト
     }
 
     [Fact]
-    public void 存在する値にnullは指定できません()
+    public void 存在するnullは不在と区別されます()
     {
-        var action = () => new Optional<string>(true, null);
+        var present = new Optional<string?>(true, null);
+        var absent = new Optional<string?>(false, null);
 
-        action.Should().Throw<ArgumentNullException>();
+        present.IsPresent.Should().BeTrue();
+        present.Value.Should().BeNull();
+        absent.IsPresent.Should().BeFalse();
+        (present == absent).Should().BeFalse();
+    }
+
+    [Fact]
+    public void 存在するnull許容値型のnullも保持します()
+    {
+        var present = new Optional<int?>(true, null);
+
+        present.IsPresent.Should().BeTrue();
+        present.Value.Should().BeNull();
     }
 
     [Fact]

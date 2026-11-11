@@ -13,6 +13,20 @@ namespace Marimo.Kotowari.Tests.Core;
 public class 要素を2つ持つSeqenceParserのテスト
 {
     [Fact]
+    public void 二つの子のnull成功値を保持します()
+    {
+        var tested = SequenceParser.Create(
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null),
+            ParserConverter.Create<int?, char>(new CharParser('b'), _ => null));
+
+        var result = tested.Parse(new Cursol("ab!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(((string?)null, (int?)null));
+        result.Cursol.Index.Should().Be(2);
+    }
+
+    [Fact]
     public void 組み合わせから呼んでも派生シーケンスの処理と基底実装を使います()
     {
         var parser = new UpperCaseSequenceParser();

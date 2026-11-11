@@ -9,28 +9,28 @@ using System.Data.SqlTypes;
 namespace Marimo.Kotowari.Core;
 
 public class SequenceParser<T1, T2> : Parser<(T1, T2)>
-    where T1 : notnull
-    where T2 : notnull
 {
     (Parser<T1>, Parser<T2>) Parsers { get; }
     public SequenceParser(Parser<T1> parser1, Parser<T2> parser2)
         => Parsers = (parser1, parser2);
-    protected internal override ParseResult<(T1, T2)> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2) parsed)
     {
-        var result1 = Parsers.Item1.ParseCore(cursol);
-        if (!result1.IsSuccess)
+        if (!Parsers.Item1.TryParseCore(start, out var next1, out var parsed1))
         {
-            return ParseResult<(T1, T2)>.Failure(cursol);
+            next = start;
+            parsed = default;
+            return false;
         }
 
-        var result2 = Parsers.Item2.ParseCore(result1.Cursol);
-        if (!result2.IsSuccess)
+        if (!Parsers.Item2.TryParseCore(next1, out var next2, out var parsed2))
         {
-            return ParseResult<(T1, T2)>.Failure(cursol);
+            next = start;
+            parsed = default;
+            return false;
         }
 
-        return ParseResult<(T1, T2)>.Success(
-            result2.Cursol,
-            (result1.Parsed, result2.Parsed));
+        next = next2;
+        parsed = (parsed1, parsed2);
+        return true;
     }
 }

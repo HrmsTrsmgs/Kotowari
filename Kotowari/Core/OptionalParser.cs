@@ -12,17 +12,18 @@ namespace Marimo.Kotowari.Core;
 /// </summary>
 /// <param name="parser">値の有無を判定する子パーサー。</param>
 public class OptionalParser<T>(Parser<T> parser) : Parser<Optional<T>>
-    where T : notnull
 {
     Parser<T> Parser { get; } = parser;
 
-    protected internal override ParseResult<Optional<T>> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, out Optional<T> parsed)
     {
-        var result = Parser.ParseCore(cursol);
-        var parsed = result.IsSuccess ? result.Parsed : default;
+        var isSuccess = Parser.TryParseCore(start, out next, out var childParsed);
+        if (!isSuccess)
+        {
+            next = start;
+        }
 
-        return ParseResult<Optional<T>>.Success(
-            result.IsSuccess ? result.Cursol : cursol,
-            new Optional<T>(result.IsSuccess, parsed));
+        parsed = new Optional<T>(isSuccess, childParsed);
+        return true;
     }
 }

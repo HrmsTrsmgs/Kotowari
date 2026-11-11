@@ -6,14 +6,20 @@ using System.Linq;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-// 継承元ごとのParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
+// 継承元ごとのTryParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。
 internal sealed class IncrementingParserConverter() : ParserConverter<char, int>(new CharParser('a'), it => it)
 {
     public int 呼び出し回数 { get; private set; }
 
-    protected override ParseResult<int> ParseCore(Cursol cursol)
+    protected override bool TryParseCore(Cursol start, out Cursol next, out int parsed)
     {
         呼び出し回数++;
-        return TestParseResults.ConvertSuccessfulValue(base.ParseCore(cursol), static it => it + 1);
+        if (!base.TryParseCore(start, out next, out parsed))
+        {
+            return false;
+        }
+
+        parsed++;
+        return true;
     }
 }

@@ -9,13 +9,6 @@ using System.Data.SqlTypes;
 namespace Marimo.Kotowari.Core;
 
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7> : Parser<(T1, T2, T3, T4, T5, T6, T7)>
-    where T1 : notnull
-    where T2 : notnull
-    where T3 : notnull
-    where T4 : notnull
-    where T5 : notnull
-    where T6 : notnull
-    where T7 : notnull
 {
     Parser<(T1, T2, T3, T4, T5, T6, T7)> Parser { get; }
     public SequenceParser(
@@ -48,6 +41,6 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7> : Parser<(T1, T2, T3, T4
                 tuple.Item2.Item6));
     }
 
-    protected internal override ParseResult<(T1, T2, T3, T4, T5, T6, T7)> ParseCore(Cursol cursol)
-        => Parser.ParseCore(cursol);
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2, T3, T4, T5, T6, T7) parsed)
+        => Parser.TryParseCore(start, out next, out parsed);
 }
