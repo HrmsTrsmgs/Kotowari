@@ -104,7 +104,7 @@ public class WordParserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact(Skip = "[空白責務分離 09] WordParserが空の文字列でも空白を暗黙に読んでいるため。空の文字列に一致しても入力を消費しない実装後に解除します。")]
+    [Fact]
     public void 指定文字列が空でも空白は消費しません()
     {
         var cursol = new Cursol(" x");

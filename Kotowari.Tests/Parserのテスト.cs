@@ -158,7 +158,7 @@ public class Parserのテスト
         result.Cursol.Current.Should().Be(' ');
     }
 
-    [Fact(Skip = "[空白責務分離 07] WithWhiteSpaceが未実装のため。大文字小文字を無視する子の値を保ち指定した後置空白を読む実装後に解除します。")]
+    [Fact]
     public void 大文字小文字を無視する子の値を返して指定した後置空白を読み飛ばします()
     {
         var tested = new WordParser("public", true).WithWhiteSpace(new CharParser('_'));
@@ -182,7 +182,7 @@ public class Parserのテスト
         result.Cursol.Index.Should().Be(2);
     }
 
-    [Fact(Skip = "[空白責務分離 08] WithWhiteSpaceが未実装のため。子が失敗したら空白を呼ばない実装後に解除します。")]
+    [Fact]
     public void 子が入力を消費して失敗したら後置空白は読みません()
     {
         var 空白の呼び出し回数 = 0;
