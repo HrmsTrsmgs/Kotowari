@@ -39,6 +39,16 @@ public class 要素を2つ持つSeqenceParserのテスト
         parser.呼び出し回数.Should().Be(1);
     }
 
+    [Fact]
+    public void 空白規則を指定しても派生シーケンスの解析を使います()
+    {
+        var tested = new UpperCaseSequenceParser().WithWhiteSpace(new CharParser(' '));
+
+        var result = tested.Parse(new Cursol("ab!"));
+
+        result.Parsed.Should().Be(('A', 'B'));
+    }
+
     static Parser<(string, string)> Tested
         => SequenceParser.Create(new WordParser("public"), new WordParser("static"))
             .WithWhiteSpace(new CharParser(' '));

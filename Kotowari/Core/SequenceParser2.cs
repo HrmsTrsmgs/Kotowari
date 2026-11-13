@@ -15,7 +15,9 @@ public class SequenceParser<T1, T2> : Parser<(T1, T2)>
         => Parsers = (parser1, parser2);
 
     internal override Parser<(T1, T2)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
-        => new SequenceParser<T1, T2>(Parsers.Item1.WithWhiteSpace(whiteSpace), Parsers.Item2);
+        => GetType() == typeof(SequenceParser<T1, T2>)
+            ? new SequenceParser<T1, T2>(Parsers.Item1.WithWhiteSpace(whiteSpace), Parsers.Item2)
+            : this;
 
     protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2) parsed)
     {
