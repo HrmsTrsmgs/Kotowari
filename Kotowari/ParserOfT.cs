@@ -35,7 +35,9 @@ public abstract class Parser<T> : Parser
     /// <param name="whiteSpace">字句の成功後に使用する空白規則。</param>
     /// <returns>指定した空白規則を使用するパーサー。</returns>
     public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
-        => new TrailingWhiteSpaceParser<TWhiteSpace>(this, whiteSpace);
+        => new TrailingWhiteSpaceParser<TWhiteSpace>(PrepareWhiteSpace(whiteSpace), whiteSpace);
+
+    internal virtual Parser<T> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace) => this;
 
     sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> parser, Parser<TWhiteSpace> whiteSpace) : Parser<T>
     {

@@ -59,7 +59,7 @@ public class Parserのテスト
         result.Cursol.Index.Should().Be(3);
     }
 
-    [Fact(Skip = "[空白責務分離 010] WithWhiteSpaceが未実装のため。親に指定した空白規則を未指定の子が引き継ぐ実装後に解除します。")]
+    [Fact]
     public void 親に指定した空白規則を未指定の子が引き継ぎます()
     {
         var tested = SequenceParser.Create(
