@@ -668,11 +668,7 @@ public class Jsonのテスト
     public void LF記号も空白として読み飛ばします()
         => Json.Parse("\n{}");
 
-#if SPRACHE_JSON_REFERENCE
     [Fact]
-#else
-    [Fact(Skip = "[JSON空白移行 001] WordParserの前置空白処理を分離中のため。WithWhiteSpace実装後に復帰を検討します。")]
-#endif
     public void 四種類の空白が混在しても構造と値を同じように読み込みます()
     {
         const string whitespace = " \t\r\n";

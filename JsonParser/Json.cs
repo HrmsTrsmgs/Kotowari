@@ -65,44 +65,32 @@ public class Json
     static Parser<char> Comma = new CharParser(',');
 
     static Parser<char> BraceOpenSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            BraceOpen);
+        BraceOpen.WithWhiteSpace(WhiteSpace);
     static Parser<char> BraceCloseSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            BraceClose);
+        BraceClose.WithWhiteSpace(WhiteSpace);
 
     static Parser<char> BracketOpenSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            BracketOpen);
+        BracketOpen.WithWhiteSpace(WhiteSpace);
 
     static Parser<char> BracketCloseSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            BracketClose);
+        BracketClose.WithWhiteSpace(WhiteSpace);
 
     static Parser<char> CollonSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            Collon);
+        Collon.WithWhiteSpace(WhiteSpace);
 
     static Parser<char> CommaSign =
-        new WithWhiteSpaceParser<char>(
-            WhiteSpace,
-            Comma);
+        Comma.WithWhiteSpace(WhiteSpace);
 
     static Parser<JsonLiteral> JNull =
         new ParserConverter<string, JsonLiteral>(
-            new WordParser("null", true, WhiteSpace),
+            new WordParser("null", true).WithWhiteSpace(WhiteSpace),
             word => new JsonLiteral(LiteralType.Null));
 
     static Parser<JsonLiteral> JBoolean =
         new ParserConverter<string, JsonLiteral>(
             new OrParser<string>(
-                new WordParser("true", true, WhiteSpace),
-                new WordParser("false", true, WhiteSpace)),
+                new WordParser("true", true),
+                new WordParser("false", true)).WithWhiteSpace(WhiteSpace),
             word => new JsonLiteral(word, LiteralType.Boolean));
 
     static Parser<char> Digit =
@@ -137,19 +125,17 @@ public class Json
             tuple => $"{(tuple.Item1.IsPresent ? "-" : "")}{tuple.Item2}");
 
     static Parser<JsonLiteral> JNumber =
-        new WithWhiteSpaceParser<JsonLiteral>(
-            WhiteSpace,
-            new ParserConverter<(string, Optional<string>, Optional<string>), JsonLiteral>(
-                new SequenceParser<string, Optional<string>, Optional<string>>(
-                    JInt,
-                    new OptionalParser<string>(JFrac),
-                    new OptionalParser<string>(JExp)),
-                tuple =>
-                    new JsonLiteral(
-                        tuple.Item1
-                        + (tuple.Item2.IsPresent ? tuple.Item2.Value : "")
-                        + (tuple.Item3.IsPresent ? tuple.Item3.Value : ""),
-                        LiteralType.Number)));
+        new ParserConverter<(string, Optional<string>, Optional<string>), JsonLiteral>(
+            new SequenceParser<string, Optional<string>, Optional<string>>(
+                JInt,
+                new OptionalParser<string>(JFrac),
+                new OptionalParser<string>(JExp)),
+            tuple =>
+                new JsonLiteral(
+                    tuple.Item1
+                    + (tuple.Item2.IsPresent ? tuple.Item2.Value : "")
+                    + (tuple.Item3.IsPresent ? tuple.Item3.Value : ""),
+                    LiteralType.Number)).WithWhiteSpace(WhiteSpace);
 
     static Parser<char> ControlChar =
         new ParserConverter<(char, char), char>(
@@ -181,14 +167,12 @@ public class Json
                 ControlChar));
 
     static Parser<JsonLiteral> JString =
-        new WithWhiteSpaceParser<JsonLiteral>(
-            WhiteSpace,
-            new ParserConverter<(char, IEnumerable<char>, char), JsonLiteral>(
-                new SequenceParser<char, IEnumerable<char>, char>(
-                    DoubleQuote,
-                    new ZeroOrMoreParser<char>(JChar),
-                    DoubleQuote),
-                tuple => new JsonLiteral(new string([.. tuple.Item2]), LiteralType.String)));
+        new ParserConverter<(char, IEnumerable<char>, char), JsonLiteral>(
+            new SequenceParser<char, IEnumerable<char>, char>(
+                DoubleQuote,
+                new ZeroOrMoreParser<char>(JChar),
+                DoubleQuote),
+            tuple => new JsonLiteral(new string([.. tuple.Item2]), LiteralType.String)).WithWhiteSpace(WhiteSpace);
 
     static Parser<JsonLiteral> JLiteral =
         new OrParser<JsonLiteral>(
@@ -224,14 +208,12 @@ public class Json
 
 
     static readonly Parser<string> JKey =
-        new WithWhiteSpaceParser<string>(
-            WhiteSpace,
-            new ParserConverter<(char, IEnumerable<char>, char), string>(
-                new SequenceParser<char, IEnumerable<char>, char>(
-                    DoubleQuote,
-                    new OneOrMoreParser<char>(JChar),
-                    DoubleQuote),
-                tuple => new string([.. tuple.Item2])));
+        new ParserConverter<(char, IEnumerable<char>, char), string>(
+            new SequenceParser<char, IEnumerable<char>, char>(
+                DoubleQuote,
+                new OneOrMoreParser<char>(JChar),
+                DoubleQuote),
+            tuple => new string([.. tuple.Item2])).WithWhiteSpace(WhiteSpace);
 
     static readonly Parser<KeyValuePair<string, IJsonValue>> JPair =
         new ParserConverter<(string, char, IJsonValue), KeyValuePair<string, IJsonValue>>(
@@ -253,9 +235,11 @@ public class Json
                 BraceCloseSign),
             tuple => new JsonObject { Pairs = tuple.Item2.ToDictionary(kv => kv.Key, kv => kv.Value) });
 
+    static readonly Parser<JsonObject> Document = new WithWhiteSpaceParser<JsonObject>(WhiteSpace, JObject);
+
     public static JsonObject Parse(string text)
     {
-        var result = JObject.Parse(new Cursol(text));
+        var result = Document.Parse(new Cursol(text));
         if (result.IsSuccess)
         {
             return result.Parsed;
