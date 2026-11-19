@@ -220,7 +220,7 @@ public class Parserのテスト
         }
     }
 
-    [Fact(Skip = "[空白責務分離 013] WithWhiteSpaceが未実装のため。未指定の子が最も近い親の明示設定を引き継ぐ実装後に解除します。")]
+    [Fact]
     public void 入れ子の未指定の子は最も近い親の空白規則を引き継ぎます()
     {
         var nested = SequenceParser.Create(new WordParser("public"), new WordParser("static"))
@@ -236,7 +236,7 @@ public class Parserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact(Skip = "[空白責務分離 014] WithWhiteSpaceが未実装のため。再指定は後の規則だけを使い元のパーサーと以前の設定版を変えない実装後に解除します。")]
+    [Fact]
     public void 空白規則の再指定は後の指定を使い元のパーサーと以前の設定版を変えません()
     {
         var original = new WordParser("public");

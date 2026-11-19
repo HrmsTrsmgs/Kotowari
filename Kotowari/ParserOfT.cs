@@ -43,6 +43,8 @@ public abstract class Parser<T> : Parser
 
     sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> parser, Parser<TWhiteSpace> whiteSpace) : Parser<T>
     {
+        internal override Parser<T> PrepareWhiteSpace<TNewWhiteSpace>(Parser<TNewWhiteSpace> whiteSpace) => parser.PrepareWhiteSpace(whiteSpace);
+
         internal override Parser<T> InheritWhiteSpace<TInheritedWhiteSpace>(Parser<TInheritedWhiteSpace> whiteSpace) => this;
 
         protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
