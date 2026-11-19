@@ -34,64 +34,23 @@ public class 要素を3つ持つSeqenceParserのテスト
             new WordParser("int"))
             .WithWhiteSpace(new CharParser(' '));
 
-    [Fact(Skip = "[空白責務分離 023] WithWhiteSpaceが未実装のため。親に指定した空白規則で各単語を読み込める実装後に解除します。")]
-    public void ParseAsyncは指定した単語を読み込みに成功します()
+    [Fact]
+    public void 親に指定した空白規則で三つの単語を読み込み末尾まで進みます()
     {
-        var cursol = new Cursol("public static int");
-
-        var result = Tested.Parse(cursol);
+        var result = Tested.Parse(new Cursol("public static int"));
 
         result.IsSuccess.Should().BeTrue();
-    }
-
-    [Fact(Skip = "[空白責務分離 024] WithWhiteSpaceが未実装のため。親に空白規則を指定しても1番目の不一致で失敗する実装後に解除します。")]
-    public void ParseAsyncは一つ目の解析に失敗した場合は失敗します()
-    {
-        var cursol = new Cursol("publiac static int");
-
-        var result = Tested.Parse(cursol);
-
-        result.IsSuccess.Should().BeFalse();
-    }
-
-    [Fact(Skip = "[空白責務分離 025] WithWhiteSpaceが未実装のため。親に空白規則を指定しても2番目の不一致で失敗する実装後に解除します。")]
-    public void ParseAsyncはふたつ目の解析に失敗した場合は失敗します()
-    {
-        var cursol = new Cursol("public statiac int");
-
-        var result = Tested.Parse(cursol);
-
-        result.IsSuccess.Should().BeFalse();
-    }
-
-    [Fact(Skip = "[空白責務分離 026] WithWhiteSpaceが未実装のため。親に空白規則を指定しても3番目の不一致で失敗する実装後に解除します。")]
-    public void ParseAsyncは三つ目の解析に失敗した場合は失敗します()
-    {
-        var cursol = new Cursol("public static innt");
-
-        var result = Tested.Parse(cursol);
-
-        result.IsSuccess.Should().BeFalse();
-    }
-
-    [Fact(Skip = "[空白責務分離 027] WithWhiteSpaceが未実装のため。親に空白規則を指定して各単語の値を返す実装後に解除します。")]
-    public void ParseAsyncは指定した単語を読み込みます()
-    {
-        var cursol = new Cursol("public static int");
-
-        var result = Tested.Parse(cursol);
-
         result.Parsed.Should().Be(("public", "static", "int"));
+        result.Cursol.Index.Should().Be("public static int".Length);
     }
 
-    [Fact(Skip = "[空白責務分離 028] WithWhiteSpaceが未実装のため。親に指定した空白規則を使って解析後の位置を返す実装後に解除します。")]
-    public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
+    [Theory]
+    [InlineData("publiac static int")]
+    [InlineData("public statiac int")]
+    [InlineData("public static innt")]
+    public void 親に空白規則を指定してもいずれかの単語が一致しなければ失敗します(string 入力)
     {
-        var cursol = new Cursol("public static int");
-
-        var result = Tested.Parse(cursol);
-
-        result.Cursol.Index.Should().Be("public static int".Length);
+        Tested.Parse(new Cursol(入力)).IsSuccess.Should().BeFalse();
     }
 
     [Theory]
