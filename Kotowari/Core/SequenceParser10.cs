@@ -10,6 +10,7 @@ namespace Marimo.Kotowari.Core;
 
 public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)>
 {
+    (Parser<T1>, Parser<T2>, Parser<T3>, Parser<T4>, Parser<T5>, Parser<T6>, Parser<T7>, Parser<T8>, Parser<T9>, Parser<T10>) Parsers { get; }
     Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)> Parser { get; }
     public SequenceParser(
         Parser<T1> parser1,
@@ -23,6 +24,7 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T
         Parser<T9> parser9,
         Parser<T10> parser10)
     {
+        Parsers = (parser1, parser2, parser3, parser4, parser5, parser6, parser7, parser8, parser9, parser10);
         Parser =
             new ParserConverter<(T1, (T2, T3, T4, T5, T6, T7, T8, T9, T10)), (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)>(
             new SequenceParser<T1, (T2, T3, T4, T5, T6, T7, T8, T9, T10)>(
@@ -49,6 +51,21 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> : Parser<(T
                 tuple.Item2.Item8,
                 tuple.Item2.Item9));
     }
+
+    internal override Parser<(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
+        => GetType() == typeof(SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>)
+            ? new SequenceParser<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(
+                Parsers.Item1.InheritWhiteSpace(whiteSpace),
+                Parsers.Item2.InheritWhiteSpace(whiteSpace),
+                Parsers.Item3.InheritWhiteSpace(whiteSpace),
+                Parsers.Item4.InheritWhiteSpace(whiteSpace),
+                Parsers.Item5.InheritWhiteSpace(whiteSpace),
+                Parsers.Item6.InheritWhiteSpace(whiteSpace),
+                Parsers.Item7.InheritWhiteSpace(whiteSpace),
+                Parsers.Item8.InheritWhiteSpace(whiteSpace),
+                Parsers.Item9.InheritWhiteSpace(whiteSpace),
+                Parsers.Item10)
+            : this;
 
     protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) parsed)
         => Parser.TryParseCore(start, out next, out parsed);
