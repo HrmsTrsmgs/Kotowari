@@ -170,7 +170,7 @@ public class Parserのテスト
         result.Cursol.Index.Should().Be(7);
     }
 
-    [Fact(Skip = "[空白責務分離 011] WithWhiteSpaceが未実装のため。子が空の文字列で成功しても指定した後置空白を読み飛ばす実装後に解除します。")]
+    [Fact]
     public void 子が空の文字列で成功しても指定した後置空白を読み飛ばします()
     {
         var tested = new WordParser("").WithWhiteSpace(new CharParser('_'));
@@ -199,7 +199,7 @@ public class Parserのテスト
         空白の呼び出し回数.Should().Be(0);
     }
 
-    [Theory(Skip = "[空白責務分離 012] WithWhiteSpaceが未実装のため。子の明示設定が親より優先され親の規則を併用しない実装後に解除します。")]
+    [Theory]
     [InlineData("public-static_!", true, 14)]
     [InlineData("public-_static_!", false, 0)]
     public void 子が明示した空白規則は親の規則より優先されます(string input, bool isSuccess, int index)
