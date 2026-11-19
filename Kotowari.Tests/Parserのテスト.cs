@@ -280,7 +280,7 @@ public class Parserのテスト
         result.Cursol.Current.Should().Be('!');
     }
 
-    [Fact(Skip = "[空白責務分離 015] WithWhiteSpaceが未実装のため。共有する子を別の親や空白規則で再利用しても他の利用箇所を変えない実装後に解除します。")]
+    [Fact]
     public void 共有する子を異なる空白規則の親で再利用しても他の利用箇所を変えません()
     {
         var shared = new WordParser("public");
@@ -289,55 +289,60 @@ public class Parserのテスト
         var hyphens = SequenceParser.Create(shared, new WordParser("static"))
             .WithWhiteSpace(new CharParser('-'));
 
-        var first = underscores.Parse(new Cursol("public_static_!"));
-        var second = hyphens.Parse(new Cursol("public-static-!"));
-        var reused = underscores.Parse(new Cursol("public_static_!"));
+        ParseResult<(string, string)>[] parentResults =
+        [
+            underscores.Parse(new Cursol("public_static_!")),
+            hyphens.Parse(new Cursol("public-static-!")),
+            underscores.Parse(new Cursol("public_static_!"))
+        ];
         var original = shared.Parse(new Cursol("public_!"));
 
-        first.IsSuccess.Should().BeTrue();
-        first.Parsed.Should().Be(("public", "static"));
-        first.Cursol.Index.Should().Be(14);
-        first.Cursol.Current.Should().Be('!');
-        second.IsSuccess.Should().BeTrue();
-        second.Parsed.Should().Be(("public", "static"));
-        second.Cursol.Index.Should().Be(14);
-        second.Cursol.Current.Should().Be('!');
-        reused.IsSuccess.Should().BeTrue();
-        reused.Parsed.Should().Be(("public", "static"));
-        reused.Cursol.Index.Should().Be(14);
-        reused.Cursol.Current.Should().Be('!');
+        parentResults.Should().AllSatisfy(result =>
+        {
+            result.IsSuccess.Should().BeTrue();
+            result.Parsed.Should().Be(("public", "static"));
+            result.Cursol.Index.Should().Be(14);
+            result.Cursol.Current.Should().Be('!');
+        });
+
         original.IsSuccess.Should().BeTrue();
         original.Parsed.Should().Be("public");
         original.Cursol.Index.Should().Be(6);
         original.Cursol.Current.Should().Be('_');
     }
 
-    [Theory(Skip = "[空白責務分離 016] WithWhiteSpaceが未実装のため。指定した規則をWordの文字列内部へ適用しない実装後に解除します。")]
+    [Theory]
     [InlineData("public_static", true, 14)]
     [InlineData("publicstatic", false, 0)]
-    public void 空白規則は単語の文字列内部に適用されません(string word, bool isSuccess, int index)
+    public void 空白規則は単語の文字列内部に適用されません(string word, bool expectedSuccess, int expectedIndex)
     {
         var tested = new WordParser(word).WithWhiteSpace(new CharParser('_'));
 
         var result = tested.Parse(new Cursol("public_static_!"));
 
-        result.IsSuccess.Should().Be(isSuccess);
-        result.Cursol.Index.Should().Be(index);
-        if (isSuccess)
+        result.IsSuccess.Should().Be(expectedSuccess);
+        result.Cursol.Index.Should().Be(expectedIndex);
+        if (expectedSuccess)
         {
             result.Parsed.Should().Be("public_static");
             result.Cursol.Current.Should().Be('!');
         }
     }
 
-    [Fact(Skip = "[空白責務分離 017] WithWhiteSpaceが未実装のため。空白が入力を消費せず成功した場合にInvalidOperationExceptionを投げる実装後に解除します。")]
+    [Fact]
     public void 空白が入力を消費せず成功したら例外を投げます()
     {
         var attempts = 0;
-        var tested = new CharParser('a').WithWhiteSpace(new CallbackCharParser((_, _) =>
-            ++attempts == 1
-                ? (true, ' ', 0)
-                : throw new NotSupportedException("反復が停止しませんでした")));
+        var 消費しない空白 = new CallbackCharParser((_, _) =>
+        {
+            if (++attempts > 1)
+            {
+                throw new NotSupportedException("反復が停止しませんでした");
+            }
+
+            return (IsSuccess: true, Parsed: ' ', Step: 0);
+        });
+        var tested = new CharParser('a').WithWhiteSpace(消費しない空白);
         var parse = () => tested.Parse(new Cursol("a"));
 
         parse.Should().Throw<InvalidOperationException>();

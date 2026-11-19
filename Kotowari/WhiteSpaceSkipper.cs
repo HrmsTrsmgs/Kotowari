@@ -1,4 +1,5 @@
 ﻿using Marimo.Kotowari.Core;
+using System;
 
 namespace Marimo.Kotowari;
 
@@ -12,6 +13,11 @@ internal static class WhiteSpaceSkipper
             if (!whiteSpace.TryParseCore(current, out var next, out _))
             {
                 return current;
+            }
+
+            if (next.Index == current.Index)
+            {
+                throw new InvalidOperationException("空白パーサーが入力を消費せず成功しました。");
             }
 
             current = next;

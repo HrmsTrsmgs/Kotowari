@@ -34,6 +34,7 @@ public abstract class Parser<T> : Parser
     /// <typeparam name="TWhiteSpace">空白規則が返す値の型。</typeparam>
     /// <param name="whiteSpace">字句の成功後に使用する空白規則。</param>
     /// <returns>指定した空白規則を使用するパーサー。</returns>
+    /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => new TrailingWhiteSpaceParser<TWhiteSpace>(PrepareWhiteSpace(whiteSpace), whiteSpace);
 
