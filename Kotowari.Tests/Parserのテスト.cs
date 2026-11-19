@@ -266,7 +266,7 @@ public class Parserのテスト
         originalResult.Cursol.Current.Should().Be('_');
     }
 
-    [Fact(Skip = "[空白責務分離 099] 組み合わせたパーサーの空白規則の再指定時に以前の規則が子に残るため。後の規則だけを使う実装後に解除します。")]
+    [Fact]
     public void 組み合わせたパーサーの空白規則の再指定は子にも後の規則を使います()
     {
         var tested = SequenceParser.Create(new WordParser("public"), new WordParser("static"))

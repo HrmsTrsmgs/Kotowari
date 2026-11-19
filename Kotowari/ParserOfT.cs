@@ -36,15 +36,19 @@ public abstract class Parser<T> : Parser
     /// <returns>指定した空白規則を使用するパーサー。</returns>
     /// <exception cref="InvalidOperationException">空白パーサーが入力位置を進めずに成功した場合にスローされます。</exception>
     public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
-        => new TrailingWhiteSpaceParser<TWhiteSpace>(PrepareWhiteSpace(whiteSpace), whiteSpace);
+        => new TrailingWhiteSpaceParser<TWhiteSpace>(WhiteSpaceSource, whiteSpace);
+
+    private protected virtual Parser<T> WhiteSpaceSource => this;
 
     internal virtual Parser<T> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace) => this;
 
     internal virtual Parser<T> InheritWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace) => WithWhiteSpace(whiteSpace);
 
-    sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> parser, Parser<TWhiteSpace> whiteSpace) : Parser<T>
+    sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> source, Parser<TWhiteSpace> whiteSpace) : Parser<T>
     {
-        internal override Parser<T> PrepareWhiteSpace<TNewWhiteSpace>(Parser<TNewWhiteSpace> whiteSpace) => parser.PrepareWhiteSpace(whiteSpace);
+        readonly Parser<T> parser = source.PrepareWhiteSpace(whiteSpace);
+
+        private protected override Parser<T> WhiteSpaceSource => source;
 
         internal override Parser<T> InheritWhiteSpace<TInheritedWhiteSpace>(Parser<TInheritedWhiteSpace> whiteSpace) => this;
 
