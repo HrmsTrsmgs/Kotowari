@@ -729,18 +729,11 @@ public class Jsonのテスト
     public void 配列区切りのカンマの前に空白があっても読み込みます()
         => Json.Parse(@"{""a"":[1 ,2]}");
 
-#if SPRACHE_JSON_REFERENCE
     [Fact]
-#else
-    [Fact(Skip = "[JSON空白移行 002] WordParserの前置空白処理を分離中のため。WithWhiteSpace実装後に復帰を検討します。")]
-#endif
     public void Nullの前に空白があっても読み込みます()
         => Json.Parse(@"{""a"": null}");
-#if SPRACHE_JSON_REFERENCE
+
     [Fact]
-#else
-    [Fact(Skip = "[JSON空白移行 003] WordParserの前置空白処理を分離中のため。WithWhiteSpace実装後に復帰を検討します。")]
-#endif
     public void 真偽値の前に空白があっても読み込みます()
         => Json.Parse(@"{""a"": true}");
 
