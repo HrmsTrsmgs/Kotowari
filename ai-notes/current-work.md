@@ -6,8 +6,8 @@
 
 **確認日：2026-11-20。** 再開時にはGitと照合する。
 
-* ブランチ：`codex/optimize-word-parser`、基準HEAD：`e51e615`（JSON空白移行001）。この作業ではpushしていない。
-* **停止位置・差分：** JSON空白移行002・003を順に解除し、どちらも001の実装のままで成功。共通テストの条件分岐を通常のFactへ戻した。未コミットはJsonParserのテスト/Jsonのテスト.csとこの再開記録。追加の文法変更や期待値変更はない。
+* ブランチ：`codex/optimize-word-parser`、基準HEAD：`960297b`（JSON空白移行002・003）。この作業ではpushしていない。
+* **停止位置・差分：** 2要素Sequenceの018〜022を復帰。成功の3観点を1つのFactにまとめ、不一致は元の2入力をTheoryで検証する。未コミットは2要素版テストとこの記録。製品と他の要素数は変更していない。
 * **検証：** `d4d1acd`＋上記差分。新入口が未存在であるコンパイルRedの後、対象171成功・94 Skip、全体399成功・97 Skip・失敗0。非増分解析ビルドは17.43秒で成功、既存NU1701警告1件。通常実行のテストホスト接続タイムアウト・ビルド終了1は権限付きの同じコマンドで解消した。全体formatは既存657指摘で不合格、全7 SARIFとformatの変更行への指摘は0件。誤った非nullable成功とnullable成功値の無検査使用はコンパイラが拒否。diff check・改行・BOM確認成功。詳細・変更一覧・ローカル診断・変更前差分は `artifacts/nullable-parse-protocol-2026-11-10/{red,green}/HANDOFF.md` と同Rootの退避パッチ。
 * **巨大JSONの機能確認：** 正規の4MB入力は現行と正確な変更前版の両方でParseException。空白のない最小入力とメモリ内でminifyした入力は両版とも成功し、既存の空白仕様の途中状態による失敗と切り分けた。入力ファイル・JSON文法は変更していない。`--validate`自体の終了0をKotowariの成功とは扱わず、元入力での速度比較は未成立。
 * **限定入力での性能比較：** 11日に同じminify入力で全文消費・結果一致を確認して比較した。結果はローカル `artifacts/json-minified-comparison-2026-11-11/{before-run-2,after-run}/`。平均は現行側が遅く、割り当てはほぼ同量だが、3起動ずつで起動間・計時中の変動も大きい。元の空白付き入力や定常状態の劣化量へ一般化しない。比較元を「HEADそのもの」としたチャット報告は誤り。測定プロジェクトの参照先と保存DLLを照合すると、元は `d4d1acd` に `pre-protocol.patch` を反映した直前のnullable版（構造体、Successのnull拒否なし）であり、現行との主な差は結果クラス化とbool/out経路への移行だった。
@@ -22,8 +22,8 @@
 * **メモリ調査の位置付け訂正：** ユーザーの指摘を受け、別時点・別runnerの測定間でのGC回数差を、今回のコード変更前後の性能差の証拠にした判断を撤回した。GCが時間を占める事実も、前後差の原因の証明ではない。メモリを空けることを必須の次工程にはせず、再開後はメモリ調査・アプリ終了・UACを行っていない。
 * **同一PIDのJITと時間：** `paired-jit/capture-01/process-runs.json` と各run原本、解釈の正本は `paired-jit/codegen-findings.md`。元runner/DLL/入力を固定し、Medium・PGO有効/R2R無効・process affinity 0x4・64暖機/16batch×4解析で4pair・8processを採取。Jit/TypeDiagnostic/PhaseだけのEventPipeとJIT asmを同じPIDに紐付け、各69marker・損失0・時刻整合・版不変を確認。Marimo/KotowariのTier1公開は測定前で、測定中0件だが、標準ライブラリ等の公開は測定中にもある。診断値は精密な性能比較に使わない。型guardは同PIDのTypeID/TypeNameへ対応付けた。旧版の文字ループには、JChar用にinlineする状態と、ConditionalCharParser用guardが実子に不一致で文字ごとにwrapper仮想call/helperを通る状態がある。GC回数が同じ3processでは後者の主CPUが高いが、寄与量・因果は未確定。新実装にもpredicate inlineの違いはあるが、4processの主CPU順位には対応しなかった。callerのSequence内の展開も監査し、以前の別PIDのasmの結論を転用していない。
 * **最新の診断なし比較：** `paired-jit/precision-01/` のprocess-runs.csv・paired-summary.csv・timing-results.json・16生ログ。ユーザーが重い作業を止めてよいと回答後、既存の元runner/測定scriptを変更せず8隣接pair・順序反転・16新規Medium processで実行。PGO有効/R2R無効・全診断無効・process affinity 0x4・64暖機/16batch×4解析、同じminify入力1,473,224bytes、同じ全文消費/104,120node結果。版のSHAは前後不変、全成功・外れ値除去なし。新−旧の壁時間差平均−0.075ms/解析、paired 95%区間−7.994〜+7.845ms。時間比の幾何平均0.99774、95%区間0.93087〜1.06942。主thread CPU差−1.740ms（−5.270〜+1.791）、process CPU差−1.587ms（−6.995〜+3.821）。独立単位はprocess pairでn=8、batchは独立扱いしない。同等性の証明ではなく、この条件で一貫した劣化を確認できないという判断。最初のBDNとは電源設定・harness等が異なるため、当時の差の理由を遡って確定したとはしない。
-* **Skip・残る範囲：** JSONは0件。残り82件はSequence専用81件と再指定の保留099。旧Wordの空白引数付きコンストラクターの削除は未合意。
-* **次の着手点：** 002・003のテスト復帰をレビュー・了承後にコミットし、Sequence専用81件のまとめ方を検討する。今回変更したテストを使う両プロジェクトの非増分ビルド成功（警告・エラー0）。xUnit直接実行はKotowari JSON・Sprache参照が各98件成功、失敗・Skipなし。本体テストは差分がないため再実行していない（直前222成功・82 Skip）。空白処理の実装後は[固定した旧版](development-candidates.md#空白処理見直し前後の速度比較2026-11-06)と同条件で速度を測り直す。
+* **Skip・残る範囲：** 77件（3〜10要素Sequenceの023〜098が76件、再指定の099が1件）。JSONは0件。旧Wordの空白引数付きコンストラクターの削除は未合意。
+* **次の着手点：** 2要素版をレビュー・了承後にコミットし、次は3要素版023〜028を検討する。本体テストプロジェクトは非増分ビルド成功（警告・エラー0）、302件中225成功・77 Skip・失敗0。JSON両プロジェクトは変更なし（直前各98件成功）。空白処理の実装後は[固定した旧版](development-candidates.md#空白処理見直し前後の速度比較2026-11-06)と同条件で速度を測り直す。
 
 ## Skip解除の補助ツール
 
