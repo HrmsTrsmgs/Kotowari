@@ -266,6 +266,20 @@ public class Parserのテスト
         originalResult.Cursol.Current.Should().Be('_');
     }
 
+    [Fact(Skip = "[空白責務分離 099] 組み合わせたパーサーの空白規則の再指定時に以前の規則が子に残るため。後の規則だけを使う実装後に解除します。")]
+    public void 組み合わせたパーサーの空白規則の再指定は子にも後の規則を使います()
+    {
+        var tested = SequenceParser.Create(new WordParser("public"), new WordParser("static"))
+            .WithWhiteSpace(new CharParser('_'))
+            .WithWhiteSpace(new CharParser('-'));
+
+        var result = tested.Parse(new Cursol("public-static-!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(("public", "static"));
+        result.Cursol.Current.Should().Be('!');
+    }
+
     [Fact(Skip = "[空白責務分離 015] WithWhiteSpaceが未実装のため。共有する子を別の親や空白規則で再利用しても他の利用箇所を変えない実装後に解除します。")]
     public void 共有する子を異なる空白規則の親で再利用しても他の利用箇所を変えません()
     {
