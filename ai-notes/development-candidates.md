@@ -216,7 +216,7 @@ Sequence/Orは開始位置へ戻し、ZeroOrMoreは最後の失敗位置を使�
 
 #### 空白処理見直し前後の速度比較（2026-11-06）
 
-**比較元の保存まで実施・未計測。** 影響範囲が大きいため、ユーザーから見直し前後で速度を比較できるよう準備するよう指示された。
+**2026-11-20に計測済み。** [巨大JSONでの比較結果](../Kotowari.Benchmarks/Results/2026-11-20-whitespace-redesign.md)。以下は11月6日に固定した基準と当時の準備記録。
 
 * 変更前の固定版：`8f50f569ad25723df2e083427e2dc0447cff69a6`。ローカルの注釈付きタグ `baseline/whitespace-before-redesign-2026-11-06` を作成し、このSHAを指すことを確認した。タグは未pushだが、SHAからも取得できる。この版の `Kotowari`・`JsonParser`・`Kotowari.Benchmarks` は `f12bc86` と同じ内容で、タグ作成時の作業ツリーにもこれらの差分はなかった。Optional修正やJSON最新版同期は含み、空白処理の見直しは含まない比較元である。
 * 入力：[既存の巨大JSON](../Kotowari.Benchmarks/Data/test.json)、4,172,062 bytes、SHA-256 `DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D`。[2026-11-05の記録](../Kotowari.Benchmarks/Results/2026-11-05-json-sync-speed.md#条件)と一致し、Gitにも保存されている。
