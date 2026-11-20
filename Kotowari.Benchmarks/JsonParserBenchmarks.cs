@@ -45,9 +45,7 @@ public class JsonParserBenchmarks
 
     private static int CountNodes(object result) => result switch
     {
-        BenchmarkJsonObject value => 1 + value.Members.Values.Sum(CountNodes),
-        BenchmarkJsonArray value => 1 + value.Elements.Sum(CountNodes),
-        BenchmarkJson => 1,
+        BenchmarkJson value => CountNodes(value),
         Marimo.Parser.JsonObject value => 1 + value.Pairs.Values.Sum(CountNodes),
         Marimo.Parser.JsonArray value => 1 + value.Elements.Sum(CountNodes),
         Marimo.Parser.JsonLiteral => 1,
@@ -56,6 +54,16 @@ public class JsonParserBenchmarks
         SpracheJSON.JSONLiteral => 1,
         JsonElement value => CountNodes(value),
         _ => throw new InvalidOperationException($"Unknown JSON result type: {result.GetType()}")
+    };
+
+    private static int CountNodes(BenchmarkJson result) => result switch
+    {
+        BenchmarkJsonObject value => 1 + value.Members.Values.Sum(CountNodes),
+        BenchmarkJsonArray value => 1 + value.Elements.Sum(CountNodes),
+        BenchmarkJsonBoolean => 1,
+        BenchmarkJsonNull => 1,
+        BenchmarkJsonNumber => 1,
+        BenchmarkJsonString => 1
     };
 
     private static int CountNodes(JsonElement element) => element.ValueKind switch

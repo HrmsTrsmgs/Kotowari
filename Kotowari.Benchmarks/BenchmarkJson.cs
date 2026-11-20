@@ -9,4 +9,4 @@ using Superpower.Parsers;
 namespace Marimo.Kotowari.Benchmarks;
 
 
-internal abstract record BenchmarkJson;
+internal closed record BenchmarkJson;
