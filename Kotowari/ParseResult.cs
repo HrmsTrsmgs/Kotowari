@@ -3,37 +3,33 @@ using System;
 
 namespace Marimo.Kotowari;
 
-public readonly struct ParseResult<T>
-    where T : notnull
+/// <summary>解析の成否と解析後のカーソルを表します。</summary>
+/// <typeparam name="T">成功時の値の型。nullを許容する型では成功値もnullを保持できます。</typeparam>
+public abstract class ParseResult<T>
 {
-    readonly T? parsed;
+    /// <summary>解析が成功したかどうかを取得します。</summary>
+    public abstract bool IsSuccess { get; }
 
-    public bool IsSuccess { get; }
-
+    /// <summary>解析後のカーソルを取得します。</summary>
     public Cursol Cursol { get; }
 
-    public T Parsed
-        => IsSuccess && parsed is not null
-            ? parsed
-            : throw new InvalidOperationException();
+    /// <summary>成功時の解析値を取得します。</summary>
+    /// <exception cref="InvalidOperationException">解析が失敗した場合にスローされます。</exception>
+    public abstract T Parsed { get; }
 
-    ParseResult(bool isSuccess, Cursol cursol, T? parsed)
-    {
-        IsSuccess = isSuccess;
-        Cursol = cursol;
-        this.parsed = parsed;
-    }
+    internal ParseResult(Cursol cursol)
+        => Cursol = cursol;
 
+    /// <summary>指定したカーソルと値を保持する成功結果を作成します。</summary>
+    /// <param name="cursol">解析後のカーソル。</param>
+    /// <param name="parsed">成功値。null許容性は<typeparamref name="T"/>に従います。</param>
+    /// <returns>成功結果。</returns>
     public static ParseResult<T> Success(Cursol cursol, T parsed)
-    {
-        if (parsed is null)
-        {
-            throw new ArgumentNullException(nameof(parsed));
-        }
+        => new SuccessfulParseResult<T>(cursol, parsed);
 
-        return new(true, cursol, parsed);
-    }
-
+    /// <summary>値を保持しない失敗結果を作成します。</summary>
+    /// <param name="cursol">解析後のカーソル。</param>
+    /// <returns>失敗結果。</returns>
     public static ParseResult<T> Failure(Cursol cursol)
-        => new(false, cursol, default);
+        => new FailedParseResult<T>(cursol);
 }

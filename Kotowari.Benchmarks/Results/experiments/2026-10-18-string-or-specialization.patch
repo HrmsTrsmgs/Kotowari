@@ -1,0 +1,128 @@
+diff --git "a/Kotowari.Tests/Core/ZeroOrMoreParser\343\201\256\343\203\206\343\202\271\343\203\210.cs" "b/Kotowari.Tests/Core/ZeroOrMoreParser\343\201\256\343\203\206\343\202\271\343\203\210.cs"
+index eb76edc..a947f60 100644
+--- "a/Kotowari.Tests/Core/ZeroOrMoreParser\343\201\256\343\203\206\343\202\271\343\203\210.cs"
++++ "b/Kotowari.Tests/Core/ZeroOrMoreParser\343\201\256\343\203\206\343\202\271\343\203\210.cs"
+@@ -11,6 +11,33 @@ namespace Marimo.Kotowari.Tests.Core;
+ 
+ public class ZeroOrMoreParserのテスト
+ {
++    [Fact]
++    public void Or派生型を反復してもoverrideを呼びます()
++    {
++        var parser = new UpperCaseOrParser();
++        var tested = new ZeroOrMoreParser<char>(parser);
++
++        var parsed = tested.Parse(new Cursol("aa!"));
++
++        parsed.Parsed.Should().Equal('A', 'A');
++        parsed.Cursol.Index.Should().Be(2);
++        parser.呼び出し回数.Should().Be(3);
++    }
++
++    [Fact]
++    public void Orの候補配列を変更すると次の反復解析で変更を使います()
++    {
++        Parser<char>[] candidates = [new CharParser('a')];
++        var tested = new ZeroOrMoreParser<char>(new OrParser<char>(candidates));
++
++        tested.Parse(new Cursol("aa!")).Parsed.Should().Equal('a', 'a');
++        candidates[0] = new CharParser('あ');
++
++        var parsed = tested.Parse(new Cursol("ああ!"));
++        parsed.Parsed.Should().Equal('あ', 'あ');
++        parsed.Cursol.Index.Should().Be(2);
++    }
++
+     [Theory]
+     [InlineData(0)]
+     [InlineData(1)]
+diff --git a/Kotowari/Core/OrParser.cs b/Kotowari/Core/OrParser.cs
+index 59b3497..88f2efc 100644
+--- a/Kotowari/Core/OrParser.cs
++++ b/Kotowari/Core/OrParser.cs
+@@ -14,6 +14,10 @@ public class OrParser<T> : Parser<T>
+         => Parsers = parsers;
+ 
+     protected internal override ParseResult<T> ParseCore(Cursol cursol)
++        => ParseAlternatives(cursol);
++
++    // ZeroOrMoreの組み込みOr専用経路。派生型はこの入口へ迂回させない。
++    internal ParseResult<T> ParseAlternatives(Cursol cursol)
+     {
+         foreach (var parser in Parsers)
+         {
+diff --git a/Kotowari/Core/ZeroOrMoreParser.cs b/Kotowari/Core/ZeroOrMoreParser.cs
+index 2211cb3..2db3157 100644
+--- a/Kotowari/Core/ZeroOrMoreParser.cs
++++ b/Kotowari/Core/ZeroOrMoreParser.cs
+@@ -8,25 +8,59 @@ namespace Marimo.Kotowari.Core;
+ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+     where T : notnull
+ {
+-    Parser<T> Parser { get; }
++    readonly ILoop loop;
+ 
+     public ZeroOrMoreParser(Parser<T> parser)
+-        => Parser = parser;
++        => loop = parser is OrParser<T> orParser && parser.GetType() == typeof(OrParser<T>)
++            ? new Loop<OrChild>(new OrChild(orParser))
++            : new Loop<VirtualChild>(new VirtualChild(parser));
+ 
+     protected internal override ParseResult<IEnumerable<T>> ParseCore(Cursol cursol)
++        => loop.Parse(cursol);
++
++    interface ILoop
++    {
++        ParseResult<IEnumerable<T>> Parse(Cursol cursol);
++    }
++
++    interface IChild
+     {
+-        var parseds = new List<T> { };
+-        var current = cursol;
+-        while (true)
++        ParseResult<T> Parse(Cursol cursol);
++    }
++
++    readonly struct OrChild(OrParser<T> parser) : IChild
++    {
++        public ParseResult<T> Parse(Cursol cursol)
++            => parser.ParseAlternatives(cursol);
++    }
++
++    readonly struct VirtualChild(Parser<T> parser) : IChild
++    {
++        public ParseResult<T> Parse(Cursol cursol)
++            => parser.ParseCore(cursol);
++    }
++
++    // 値型の子adapterで反復本体のJIT実体を分ける。処理本体は複製しない。
++    // 組み込みOrとその他の子の型profileを分離する試作。採否はPGO有効の比較で判断する。
++    // Or派生型はVirtualChildを通してoverrideを保持し、候補配列も呼び出し時に読む。
++    sealed class Loop<TChild>(TChild parser) : ILoop
++        where TChild : struct, IChild
++    {
++        public ParseResult<IEnumerable<T>> Parse(Cursol cursol)
+         {
+-            var result = Parser.ParseCore(current);
+-            if (!result.IsSuccess)
++            var parseds = new List<T> { };
++            var current = cursol;
++            while (true)
+             {
+-                return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);
+-            }
++                var result = parser.Parse(current);
++                if (!result.IsSuccess)
++                {
++                    return ParseResult<IEnumerable<T>>.Success(result.Cursol, parseds);
++                }
+ 
+-            current = result.Cursol;
+-            parseds.Add(result.Parsed);
++                current = result.Cursol;
++                parseds.Add(result.Parsed);
++            }
+         }
+     }
+ }

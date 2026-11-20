@@ -1,0 +1,130 @@
+diff --git a/Kotowari/Core/ZeroOrMoreParser.cs b/Kotowari/Core/ZeroOrMoreParser.cs
+index 01b3669..3ba9e2f 100644
+--- a/Kotowari/Core/ZeroOrMoreParser.cs
++++ b/Kotowari/Core/ZeroOrMoreParser.cs
+@@ -62,18 +62,27 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+         {
+             internal override ParseResult<IEnumerable<T>, TDocument> ParseCore(Cursol<TDocument> cursol)
+             {
+-                var parseds = new List<T> { };
+-                var current = cursol;
+-                while (true)
++                var scratch = new ParsedValueScratchBuffer<T>();
++                var parseds = new ParsedValueBuffer<T>(scratch);
++                try
+                 {
+-                    var result = parser.ParseCore(current);
+-                    if (!result.IsSuccess)
++                    var current = cursol;
++                    while (true)
+                     {
+-                        return ParseResult<IEnumerable<T>, TDocument>.Success(result.Cursol, parseds);
+-                    }
++                        var result = parser.ParseCore(current);
++                        if (!result.IsSuccess)
++                        {
++                            return ParseResult<IEnumerable<T>, TDocument>.Success(
++                                result.Cursol, parseds.ToArray());
++                        }
+ 
+-                    current = result.Cursol;
+-                    parseds.Add(result.Parsed);
++                        current = result.Cursol;
++                        parseds.Add(result.Parsed);
++                    }
++                }
++                finally
++                {
++                    parseds.Dispose();
+                 }
+             }
+         }
+diff --git a/Kotowari/Core/ParsedValueBuffer.cs b/Kotowari/Core/ParsedValueBuffer.cs
+new file mode 100644
+index 0000000..ca1ab1a
+--- /dev/null
++++ b/Kotowari/Core/ParsedValueBuffer.cs
+@@ -0,0 +1,66 @@
++﻿using System;
++using System.Buffers;
++using System.Runtime.CompilerServices;
++
++namespace Marimo.Kotowari.Core;
++
++/// <summary>反復解析の一時値を集め、借用領域と独立した結果配列を作る。</summary>
++/// <remarks>
++/// 呼び出し側の小さな領域から始め、不足した場合だけ配列を借りて拡張する。
++/// ToArrayは確定した値を所有する新しい配列を返し、借用した配列を外部へ渡さない。
++/// 子パーサーや結果配列の生成で例外が出る場合も、呼び出し側のfinallyでDisposeする。
++/// 参照を含む配列は返却時にクリアし、解析結果をpoolに保持させない。
++/// </remarks>
++ref struct ParsedValueBuffer<T>
++{
++    Span<T> buffer;
++    T[]? rented;
++    int count;
++
++    internal ParsedValueBuffer(Span<T> initialBuffer)
++        => buffer = initialBuffer;
++
++    internal void Add(T value)
++    {
++        if (count == buffer.Length)
++        {
++            Grow();
++        }
++
++        buffer[count++] = value;
++    }
++
++    internal readonly T[] ToArray()
++        => [.. buffer[..count]];
++
++    internal void Dispose()
++    {
++        if (rented is not null)
++        {
++            ArrayPool<T>.Shared.Return(rented, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
++        }
++
++        rented = null;
++        buffer = default;
++        count = 0;
++    }
++
++    void Grow()
++    {
++        var capacity = (int)Math.Min(Math.Max(16L, buffer.Length * 2L), Array.MaxLength);
++        if (capacity <= count)
++        {
++            throw new OutOfMemoryException();
++        }
++
++        var next = ArrayPool<T>.Shared.Rent(capacity);
++        buffer.CopyTo(next);
++        if (rented is not null)
++        {
++            ArrayPool<T>.Shared.Return(rented, RuntimeHelpers.IsReferenceOrContainsReferences<T>());
++        }
++
++        rented = next;
++        buffer = next;
++    }
++}
+diff --git a/Kotowari/Core/ParsedValueScratchBuffer.cs b/Kotowari/Core/ParsedValueScratchBuffer.cs
+new file mode 100644
+index 0000000..1501093
+--- /dev/null
++++ b/Kotowari/Core/ParsedValueScratchBuffer.cs
+@@ -0,0 +1,10 @@
++﻿using System.Runtime.CompilerServices;
++
++namespace Marimo.Kotowari.Core;
++
++// 入力長に比例するstackallocは行わず、大きな値型にも使うため8要素に制限する。
++[InlineArray(8)]
++struct ParsedValueScratchBuffer<T>
++{
++    T first;
++}
+

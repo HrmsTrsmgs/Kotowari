@@ -3,6 +3,7 @@ using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,6 +12,7 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class CharParserのテスト
 {
+
     [Fact]
     public void ParseAsyncは指定した文字を読み込みに成功します()
     {
@@ -119,5 +121,34 @@ public class CharParserのテスト
         var parsed = tested.Parse(cursol).Parsed;
 
         parsed.Should().Be('p');
+    }
+
+    [Theory]
+    [InlineData("ab", 'a')]
+    [InlineData("éb", 'é')]
+    [InlineData("あb", 'あ')]
+    public void 文字列入力を同じ文字パーサーで読み込めます(string input, char first)
+    {
+        Parser<char> tested = new CharParser(first);
+
+        var result = tested.Parse(new Cursol(input));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(first);
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
+    public void 組み合わせから呼んでも派生文字パーサーの処理と基底実装を使います()
+    {
+        var parser = new UpperCaseCharParser();
+        var tested = new ZeroOrMoreParser<char>(
+            new OrParser<char>(parser, new CharParser('b')));
+
+        var result = tested.Parse(new Cursol("ab!"));
+
+        result.Parsed.Should().Equal('A', 'b');
+        result.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(3);
     }
 }

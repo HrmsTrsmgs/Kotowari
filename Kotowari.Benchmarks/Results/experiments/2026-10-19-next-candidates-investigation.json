@@ -1,0 +1,416 @@
+﻿{
+  "Schema": "kotowari-string-candidate-investigation-v1",
+  "Experiment": "2026-10-19-next-candidates-investigation",
+  "InputStructure": {
+    "Input": {
+      "Path": "Kotowari.Benchmarks/Data/test.json",
+      "Bytes": 4172062,
+      "SHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "Parser": "System.Text.Json.JsonDocument.Parse(string)",
+      "TextEncoding": "UTF-8 strict; decoded string and property-name lengths are .NET UTF-16 code units"
+    },
+    "Counts": {
+      "Object": 16636,
+      "Array": 16454,
+      "Number": 16893,
+      "String": 16625,
+      "True": 8417,
+      "False": 8374,
+      "Null": 16602,
+      "ValueNodes": 100001,
+      "ObjectProperties": 50078
+    },
+    "Lengths": {
+      "PropertyNames": {
+        "Count": 50078,
+        "Total": 550645,
+        "Min": 2,
+        "Median": 11,
+        "P95": 20,
+        "Max": 20,
+        "DistributionByLength": {
+          "2": 2614,
+          "3": 2586,
+          "4": 2654,
+          "5": 2687,
+          "6": 2729,
+          "7": 2582,
+          "8": 2676,
+          "9": 2606,
+          "10": 2638,
+          "11": 2599,
+          "12": 2616,
+          "13": 2606,
+          "14": 2603,
+          "15": 2752,
+          "16": 2606,
+          "17": 2647,
+          "18": 2677,
+          "19": 2544,
+          "20": 2656
+        }
+      },
+      "StringValues": {
+        "Count": 16625,
+        "Total": 165775,
+        "Min": 0,
+        "Median": 10,
+        "P95": 19,
+        "Max": 20,
+        "DistributionByLength": {
+          "0": 766,
+          "1": 760,
+          "2": 808,
+          "3": 835,
+          "4": 789,
+          "5": 797,
+          "6": 817,
+          "7": 804,
+          "8": 805,
+          "9": 770,
+          "10": 833,
+          "11": 793,
+          "12": 753,
+          "13": 825,
+          "14": 798,
+          "15": 759,
+          "16": 758,
+          "17": 775,
+          "18": 811,
+          "19": 799,
+          "20": 770
+        }
+      },
+      "NumberRawText": {
+        "Count": 16893,
+        "Total": 289993,
+        "Min": 13,
+        "Median": 17,
+        "P95": 18,
+        "Max": 18,
+        "DistributionByLength": {
+          "13": 2,
+          "14": 16,
+          "15": 145,
+          "16": 1367,
+          "17": 10838,
+          "18": 4525
+        }
+      }
+    },
+    "ContainerSizes": {
+      "ArrayChildCount": {
+        "Count": 16454,
+        "Total": 49922,
+        "Min": 0,
+        "Median": 2,
+        "P95": 10,
+        "Max": 39,
+        "DistributionByLength": {
+          "0": 4119,
+          "1": 3052,
+          "2": 2272,
+          "3": 1784,
+          "4": 1280,
+          "5": 990,
+          "6": 770,
+          "7": 535,
+          "8": 373,
+          "9": 318,
+          "10": 226,
+          "11": 164,
+          "12": 163,
+          "13": 96,
+          "14": 79,
+          "15": 50,
+          "16": 40,
+          "17": 42,
+          "18": 21,
+          "19": 16,
+          "20": 16,
+          "21": 13,
+          "22": 4,
+          "23": 3,
+          "24": 7,
+          "25": 4,
+          "26": 2,
+          "27": 2,
+          "28": 2,
+          "29": 1,
+          "30": 2,
+          "31": 5,
+          "33": 1,
+          "37": 1,
+          "39": 1
+        }
+      },
+      "ObjectPropertyCount": {
+        "Count": 16636,
+        "Total": 50078,
+        "Min": 0,
+        "Median": 2,
+        "P95": 10,
+        "Max": 35,
+        "DistributionByLength": {
+          "0": 4172,
+          "1": 3108,
+          "2": 2276,
+          "3": 1823,
+          "4": 1294,
+          "5": 1020,
+          "6": 728,
+          "7": 528,
+          "8": 429,
+          "9": 303,
+          "10": 225,
+          "11": 182,
+          "12": 133,
+          "13": 106,
+          "14": 89,
+          "15": 58,
+          "16": 40,
+          "17": 32,
+          "18": 19,
+          "19": 13,
+          "20": 15,
+          "21": 11,
+          "22": 8,
+          "23": 5,
+          "24": 4,
+          "25": 3,
+          "26": 3,
+          "27": 2,
+          "28": 2,
+          "29": 2,
+          "30": 1,
+          "31": 1,
+          "35": 1
+        }
+      }
+    },
+    "AllocationDiagnostics": {
+      "Interpretation": "GC AllocationTick payload amounts are sampled estimates, not confirmed total allocated bytes.",
+      "ActualWindowCount": 8,
+      "TotalActualWindowDurationMs": 4971.983499999995,
+      "AllocationTickSamples": 11279,
+      "AllocationTickMissingStacks": 0,
+      "ExecutionThreadFilter": "ProcessID and ThreadID must match a complete BenchmarkDotNet WorkloadActual window; event timestamp is inclusive within that window.",
+      "JitEventFilter": "same process as an Actual window, timestamp within the window; no thread-ID filter",
+      "JitEventsInActualCount": 51,
+      "LastBackgroundJitStopMs": 20046.5781,
+      "AllocationSamplesByType": [
+        {
+          "Type": "System.Char[]",
+          "Samples": 3204,
+          "SampledBytes": 341418024
+        },
+        {
+          "Type": "System.String",
+          "Samples": 2277,
+          "SampledBytes": 506249168
+        },
+        {
+          "Type": "Marimo.Parser.JSONLiteral",
+          "Samples": 1112,
+          "SampledBytes": 118490976
+        },
+        {
+          "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONArray,Marimo.Parser.IJSONValue]",
+          "Samples": 955,
+          "SampledBytes": 101770888
+        },
+        {
+          "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONObject,Marimo.Parser.IJSONValue]",
+          "Samples": 874,
+          "SampledBytes": 93111976
+        },
+        {
+          "Type": "System.Collections.Generic.Dictionary`2[System.String,Marimo.Parser.IJSONValue]",
+          "Samples": 747,
+          "SampledBytes": 79564704
+        },
+        {
+          "Type": "Entry[System.String,Marimo.Parser.IJSONValue][]",
+          "Samples": 612,
+          "SampledBytes": 65199264
+        },
+        {
+          "Type": "Marimo.Parser.IJSONValue[]",
+          "Samples": 536,
+          "SampledBytes": 57106376
+        },
+        {
+          "Type": "System.Collections.Generic.KeyValuePair`2[System.String,Marimo.Parser.IJSONValue][]",
+          "Samples": 356,
+          "SampledBytes": 37929056
+        },
+        {
+          "Type": "System.Int32[]",
+          "Samples": 206,
+          "SampledBytes": 21960592
+        },
+        {
+          "Type": "System.Collections.Generic.List`1[Marimo.Parser.IJSONValue]",
+          "Samples": 141,
+          "SampledBytes": 15021192
+        },
+        {
+          "Type": "Marimo.Parser.JSONArray",
+          "Samples": 118,
+          "SampledBytes": 12572864
+        },
+        {
+          "Type": "Marimo.Parser.JSONObject",
+          "Samples": 109,
+          "SampledBytes": 11618936
+        },
+        {
+          "Type": "System.Byte[]",
+          "Samples": 32,
+          "SampledBytes": 133506816
+        }
+      ],
+      "AllocationTypeOutputLimit": 30,
+      "AllocationTypeOutputNote": "The analyzer sorts all observed types by sample count then emits at most 30; this trace had 14 observed types, so all 14 appear.",
+      "AllocationTypeAndStackOutputLimit": 30,
+      "AllocationTypeAndStackOutputNote": "The analyzer sorts all observed type+8-frame-stack keys by sample count then emits at most 30; this is a truncated view of stack keys."
+    },
+    "CaptureMetadata": {
+      "HEAD": "d2f7aa8915ca1f580fc009b0a5d88d7b3c9d1ec1",
+      "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "Runtime": ".NET 10.0.12",
+      "BenchmarkDotNet": "0.15.8",
+      "AffinityMask": 4,
+      "TieredPGO": 1,
+      "WarmupCount": 16,
+      "ActualCount": 8,
+      "InvocationCount": 4,
+      "UnrollFactor": 1,
+      "OutlierMode": "DontRemove",
+      "DiagnosticOnly": true,
+      "SourceDriftAtCapture": [
+        "Kotowari/ParseResult.cs"
+      ],
+      "CurrentSourceDriftAtAudit": []
+    },
+    "Hashes": {
+      "CountScriptSHA256": "232286E255722DE82F19676B2A74C3169854768E6ABBFCFA5A2E987AC6731D3F",
+      "DiagnosticSummarySHA256": "A63191489F8A78ACB8F25937B4E4A09139AC759824EC50800DB4948A862E025C",
+      "CpuAnalysisSHA256": "B60E8686AE3B017E52C0CD5FC7A978E6955AC4B49255A15D51C5E548AA471230",
+      "CpuTraceSHA256": "EA3C1CD095BF2BF338E08CE20458404509B755E6F3CBCF3273156C52FAB71871",
+      "JitAssemblySHA256": "24C3479894910269E6E2CDD9D84DD5FE992FDFFC5EC1D4EDB111B8417FE82045",
+      "CpuCaptureScriptSHA256": "FA701C36BCCC98A227E3A21604972EC7FC0F5E4E68F7E87227B160539FB74B0E",
+      "JitCaptureScriptSHA256": "1663AB47431FE0E16EBE415DB9DE1D0B3FE0A7C6009A15538F5A0A809FEF1176",
+      "TraceAnalysisSourceSHA256": "21F45C5225BCF65BBC0F0F1136F894E60BF6E053D9EF2C8ACAFD5011D3B7482A",
+      "TraceAnalysisAssemblySHA256": "4E8E09F7884CD8812DA8BF62718F9EFED43F159F514C66641D2D801D457B1E1E",
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+    },
+    "Semantics": [
+      "ValueNodes counts JSON values including containers and scalars; property names are excluded from value-node count.",
+      "PropertyNames and decoded StringValues are distinct populations. Length is UTF-16 code units, not Unicode scalar values or UTF-8 bytes.",
+      "NumberRawText length is the exact source token length from JsonElement.GetRawText().",
+      "The structure script only parses and counts the input; it does not measure CPU or throughput.",
+      "CPU stack samples are sampled observations, not method invocation counts or exact time fractions."
+    ]
+  },
+  "Reproduction": {
+    "ScriptPath": "artifacts/string-candidate-research-2026-10-19/Count-JsonStructure.ps1",
+    "ScriptSHA256": "232286E255722DE82F19676B2A74C3169854768E6ABBFCFA5A2E987AC6731D3F",
+    "ScriptRootNote": "The script derives repositoryRoot from $PSScriptRoot using its original artifacts/string-candidate-research-2026-10-19 location. Running it from this Results/experiments location requires restoring that original location or adjusting the root derivation.",
+    "ScriptBody": "#requires -Version 7.0\n$ErrorActionPreference = 'Stop'\n\n$repositoryRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent\n$inputPath = Join-Path $repositoryRoot 'Kotowari.Benchmarks/Data/test.json'\n$expectedInputHash = 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n$inputHash = (Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash\nif ($inputHash -ne $expectedInputHash) {\n    throw \"Unexpected input SHA256: $inputHash\"\n}\n\n$bytes = [IO.File]::ReadAllBytes($inputPath)\n$jsonText = [Text.UTF8Encoding]::new($false, $true).GetString($bytes)\n$document = [System.Text.Json.JsonDocument]::Parse([string]$jsonText)\n$stack = [Collections.Generic.Stack[System.Text.Json.JsonElement]]::new()\n$stack.Push($document.RootElement)\n$counts = [ordered]@{\n    Object = 0\n    Array = 0\n    Number = 0\n    String = 0\n    True = 0\n    False = 0\n    Null = 0\n    ValueNodes = 0\n    ObjectProperties = 0\n}\n$propertyNameLengths = [Collections.Generic.List[int]]::new()\n$stringValueLengths = [Collections.Generic.List[int]]::new()\n$numberRawTextLengths = [Collections.Generic.List[int]]::new()\n$arrayChildCounts = [Collections.Generic.List[int]]::new()\n$objectPropertyCounts = [Collections.Generic.List[int]]::new()\n\ntry {\n    while ($stack.Count -gt 0) {\n        $element = $stack.Pop()\n        $counts.ValueNodes++\n        switch ($element.ValueKind) {\n            'Object' {\n                $counts.Object++\n                $properties = @($element.EnumerateObject())\n                $objectPropertyCounts.Add($properties.Count)\n                $counts.ObjectProperties += $properties.Count\n                foreach ($property in $properties) {\n                    $propertyNameLengths.Add($property.Name.Length)\n                    $stack.Push($property.Value)\n                }\n            }\n            'Array' {\n                $counts.Array++\n                $children = @($element.EnumerateArray())\n                $arrayChildCounts.Add($children.Count)\n                foreach ($child in $children) { $stack.Push($child) }\n            }\n            'Number' {\n                $counts.Number++\n                $numberRawTextLengths.Add($element.GetRawText().Length)\n            }\n            'String' {\n                $counts.String++\n                $stringValueLengths.Add($element.GetString().Length)\n            }\n            'True' { $counts.True++ }\n            'False' { $counts.False++ }\n            'Null' { $counts.Null++ }\n        }\n    }\n\n    function Get-LengthSummary([Collections.Generic.List[int]] $lengths) {\n        $sorted = @($lengths | Sort-Object)\n        $histogram = [ordered]@{}\n        foreach ($group in ($sorted | Group-Object)) {\n            $histogram[[string]$group.Name] = $group.Count\n        }\n        $sum = 0L\n        foreach ($length in $sorted) { $sum += $length }\n        $p50 = if ($sorted.Count -gt 0) { $sorted[[int][Math]::Floor(($sorted.Count - 1) * 0.50)] } else { $null }\n        $p95 = if ($sorted.Count -gt 0) { $sorted[[int][Math]::Floor(($sorted.Count - 1) * 0.95)] } else { $null }\n        return [ordered]@{\n            Count = $sorted.Count\n            Total = $sum\n            Min = if ($sorted.Count -gt 0) { $sorted[0] } else { $null }\n            Median = $p50\n            P95 = $p95\n            Max = if ($sorted.Count -gt 0) { $sorted[-1] } else { $null }\n            DistributionByLength = $histogram\n        }\n    }\n\n    $record = [ordered]@{\n        Input = [ordered]@{\n            Path = 'Kotowari.Benchmarks/Data/test.json'\n            Bytes = $bytes.Length\n            SHA256 = $inputHash\n            Parser = 'System.Text.Json.JsonDocument.Parse(string)'\n            TextEncoding = 'UTF-8 strict; decoded string and property-name lengths are .NET UTF-16 code units'\n        }\n        Counts = $counts\n        Lengths = [ordered]@{\n            PropertyNames = Get-LengthSummary $propertyNameLengths\n            StringValues = Get-LengthSummary $stringValueLengths\n            NumberRawText = Get-LengthSummary $numberRawTextLengths\n        }\n        ContainerSizes = [ordered]@{\n            ArrayChildCount = Get-LengthSummary $arrayChildCounts\n            ObjectPropertyCount = Get-LengthSummary $objectPropertyCounts\n        }\n        Semantics = @(\n            'ValueNodes counts JSON values including containers and scalars; object property names are not value nodes.',\n            'PropertyNames and StringValues are separate populations; decoded lengths use .NET string.Length (UTF-16 code units).',\n            'NumberRawText lengths count the exact JSON token text returned by JsonElement.GetRawText().',\n            'This is input structure accounting only; no CPU or throughput measurement.'\n        )\n    }\n    ConvertTo-Json -InputObject $record -Depth 12\n}\nfinally {\n    $document.Dispose()\n}\n"
+  },
+  "CpuAllocationStackRows": {
+    "SourcePath": "artifacts/string-next-2026-10-19-round3/diagnostics/cpu/capture-01/analysis.json",
+    "SourceSHA256": "B60E8686AE3B017E52C0CD5FC7A978E6955AC4B49255A15D51C5E548AA471230",
+    "SourceMeaning": "Rows copied verbatim from TopAllocationSamplesByTypeAndStack. AllocationTick sampled bytes are estimates, not confirmed total allocation.",
+    "OutputLimit": 30,
+    "Rows": [
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONArray,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_9() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 251,
+        "SampledBytes": 26755120
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONArray,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_9() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 245,
+        "SampledBytes": 26093928
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONArray,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_9() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.Char,System.__Canon,System.Char],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 243,
+        "SampledBytes": 25901872
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONObject,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_10() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 229,
+        "SampledBytes": 24404816
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONObject,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_10() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 227,
+        "SampledBytes": 24177064
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONObject,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_10() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.Char,System.__Canon,System.Char],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 223,
+        "SampledBytes": 23748984
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONArray,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_9() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.Char,System.__Canon,System.Char],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 216,
+        "SampledBytes": 23019968
+      },
+      {
+        "Type": "Marimo.Kotowari.Core.ParserConverter`2[Marimo.Parser.JSONObject,Marimo.Parser.IJSONValue]",
+        "Stack": "Marimo.Parser.JSON+<>c.<.cctor>b__37_10() <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.Char,System.__Canon,System.Char],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 195,
+        "SampledBytes": 20781112
+      },
+      {
+        "Type": "Marimo.Parser.IJSONValue[]",
+        "Stack": "System.Collections.Generic.List`1[System.__Canon].AddWithResize(!0) <- Marimo.Parser.JSON+<>c.<.cctor>b__37_12(value class System.ValueTuple`3<wchar,class System.Collections.Generic.IEnumerable`1<class Marimo.Parser.IJSONValue>,wchar>) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 185,
+        "SampledBytes": 19715768
+      },
+      {
+        "Type": "Marimo.Parser.IJSONValue[]",
+        "Stack": "System.Collections.Generic.List`1[System.__Canon].AddWithResize(!0) <- Marimo.Parser.JSON+<>c.<.cctor>b__37_12(value class System.ValueTuple`3<wchar,class System.Collections.Generic.IEnumerable`1<class Marimo.Parser.IJSONValue>,wchar>) <- Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol) <- Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.Char,System.__Canon,System.Char],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+        "Samples": 156,
+        "SampledBytes": 16613024
+      }
+    ]
+  },
+  "FrozenJitEvidence": {
+    "SourcePath": "artifacts/string-next-2026-10-19-round3/diagnostics/jit/capture-01/jit.asm",
+    "SourceSHA256": "24C3479894910269E6E2CDD9D84DD5FE992FDFFC5EC1D4EDB111B8417FE82045",
+    "Excerpts": [
+      {
+        "StartLine": 38945,
+        "EndLine": 38992,
+        "Text": "       5D                   pop      rbp\r\n       5E                   pop      rsi\r\n       5F                   pop      rdi\r\n       415E                 pop      r14\r\n       C3                   ret      \r\n \r\nG_M000_IG09:                ;; offset=0x008B\r\n       488D542450           lea      rdx, [rsp+0x50]\r\n       FF1562C53A00         call     [Marimo.Kotowari.Core.SequenceParser`2[char,System.ValueTuple`2[System.__Canon,char]]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.ValueTuple`2[char,System.ValueTuple`2[System.__Canon,char]]]:this]\r\n       EBBA                 jmp      SHORT G_M000_IG04\r\n \r\nG_M000_IG10:                ;; offset=0x0098\r\n       488B7C2470           mov      rdi, gword ptr [rsp+0x70]\r\n       8B6C2478             mov      ebp, dword ptr [rsp+0x78]\r\n       488B4610             mov      rax, gword ptr [rsi+0x10]\r\n \r\nG_M000_IG11:                ;; offset=0x00A5\r\n       C5FA6F442458         vmovdqu  xmm0, xmmword ptr [rsp+0x58]\r\n       C5FA7F442438         vmovdqu  xmmword ptr [rsp+0x38], xmm0\r\n       4C8B442468           mov      r8, qword ptr [rsp+0x68]\r\n       4C89442448           mov      qword ptr [rsp+0x48], r8\r\n \r\nG_M000_IG12:                ;; offset=0x00BB\r\n       49B8D0943406FF7F0000 mov      r8, 0x7FFF063494D0\r\n       4C394018             cmp      qword ptr [rax+0x18], r8\r\n       755E                 jne      SHORT G_M000_IG14\r\n       4C8B4008             mov      r8, gword ptr [rax+0x08]\r\n       453900               cmp      dword ptr [r8], r8d\r\n       4C8B442440           mov      r8, gword ptr [rsp+0x40]\r\n       0FB7542448           movzx    rdx, word  ptr [rsp+0x48]\r\n       0FB7442438           movzx    rax, word  ptr [rsp+0x38]\r\n       4C89442428           mov      gword ptr [rsp+0x28], r8\r\n       6689442430           mov      word  ptr [rsp+0x30], ax\r\n       6689542432           mov      word  ptr [rsp+0x32], dx\r\n \r\nG_M000_IG13:                ;; offset=0x00F0\r\n       0FB7742430           movzx    rsi, word  ptr [rsp+0x30]\r\n       440FB7742432         movzx    r14, word  ptr [rsp+0x32]\r\n       C60301               mov      byte  ptr [rbx], 1\r\n       488D4B08             lea      rcx, [rbx+0x08]\r\n       488B542428           mov      rdx, gword ptr [rsp+0x28]\r\n       E894ADBD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       66897310             mov      word  ptr [rbx+0x10], si\r\n       6644897312           mov      word  ptr [rbx+0x12], r14w\r\n       488D4B18             lea      rcx, [rbx+0x18]\r\n       488BD7               mov      rdx, rdi\r\n       E87FADBD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       896B20               mov      dword ptr [rbx+0x20], ebp"
+      },
+      {
+        "StartLine": 39160,
+        "EndLine": 39185,
+        "Text": "       7565                 jne      SHORT G_M000_IG20\r\n \r\nG_M000_IG18:                ;; offset=0x0189\r\n       4C89742420           mov      gword ptr [rsp+0x20], r14\r\n       44897C2428           mov      dword ptr [rsp+0x28], r15d\r\n       4C8D442420           lea      r8, [rsp+0x20]\r\n       488D542460           lea      rdx, [rsp+0x60]\r\n       FF154DB43A00         call     [Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.ValueTuple`2[System.__Canon,char]]:this]\r\n \r\nG_M000_IG19:                ;; offset=0x01A3\r\n       807C246000           cmp      byte  ptr [rsp+0x60], 0\r\n       746C                 je       SHORT G_M000_IG22\r\n       488B5C2478           mov      rbx, gword ptr [rsp+0x78]\r\n       8BAC2480000000       mov      ebp, dword ptr [rsp+0x80]\r\n       488B542468           mov      rdx, gword ptr [rsp+0x68]\r\n       440FB7742470         movzx    r14, word  ptr [rsp+0x70]\r\n       410FB7CD             movzx    rcx, r13w\r\n       C60601               mov      byte  ptr [rsi], 1\r\n       66894E08             mov      word  ptr [rsi+0x08], cx\r\n       488D4E10             lea      rcx, [rsi+0x10]\r\n       E82BA7BD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       6644897618           mov      word  ptr [rsi+0x18], r14w\r\n       488D4E20             lea      rcx, [rsi+0x20]\r\n       488BD3               mov      rdx, rbx\r\n       E81AA7BD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       896E28               mov      dword ptr [rsi+0x28], ebp"
+      },
+      {
+        "StartLine": 47340,
+        "EndLine": 47390,
+        "Text": "       440FB69424C8000000   movzx    r10, byte  ptr [rsp+0xC8]\r\n       488BAC24D0000000     mov      rbp, gword ptr [rsp+0xD0]\r\n       448B8C24D8000000     mov      r9d, dword ptr [rsp+0xD8]\r\n \r\nG_M000_IG41:                ;; offset=0x051C\r\n       4585D2               test     r10d, r10d\r\n       0F8416090000         je       G_M000_IG125\r\n       4885C0               test     rax, rax\r\n       0F846B090000         je       G_M000_IG126\r\n       410FB7D5             movzx    rdx, r13w\r\n       41BD01000000         mov      r13d, 1\r\n \r\nG_M000_IG42:                ;; offset=0x0538\r\n       4585ED               test     r13d, r13d\r\n       0F84D8090000         je       G_M000_IG128\r\n       4D85E4               test     r12, r12\r\n       0F84200A0000         je       G_M000_IG129\r\n       41BE01000000         mov      r14d, 1\r\n       458BF9               mov      r15d, r9d\r\n \r\nG_M000_IG43:                ;; offset=0x0553\r\n       4585F6               test     r14d, r14d\r\n       0F840C010000         je       G_M000_IG51\r\n \r\nG_M000_IG44:                ;; offset=0x055C\r\n       4C8B5710             mov      r10, gword ptr [rdi+0x10]\r\n       49B820963406FF7F0000 mov      r8, 0x7FFF06349620\r\n       4D394218             cmp      qword ptr [r10+0x18], r8\r\n       0F85690A0000         jne      G_M000_IG131\r\n       4D8B4208             mov      r8, gword ptr [r10+0x08]\r\n       453900               cmp      dword ptr [r8], r8d\r\n       4C89A42460020000     mov      gword ptr [rsp+0x260], r12\r\n       4889842468020000     mov      gword ptr [rsp+0x268], rax\r\n       6689942470020000     mov      word  ptr [rsp+0x270], dx\r\n \r\nG_M000_IG45:                ;; offset=0x0593\r\n       488B942460020000     mov      rdx, gword ptr [rsp+0x260]\r\n       488BB42468020000     mov      rsi, gword ptr [rsp+0x268]\r\n       0FB7BC2470020000     movzx    rdi, word  ptr [rsp+0x270]\r\n       C60301               mov      byte  ptr [rbx], 1\r\n       488D4B08             lea      rcx, [rbx+0x08]\r\n       E84913BD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       488D4B10             lea      rcx, [rbx+0x10]\r\n       488BD6               mov      rdx, rsi\r\n       E83D13BD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       66897B18             mov      word  ptr [rbx+0x18], di\r\n       488D4B20             lea      rcx, [rbx+0x20]\r\n       488BD5               mov      rdx, rbp\r\n       E82D13BD5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       44897B28             mov      dword ptr [rbx+0x28], r15d\r\n "
+      },
+      {
+        "StartLine": 51920,
+        "EndLine": 51951,
+        "Text": " \r\nG_M000_IG178:                ;; offset=0x12A6\r\n       8985D4FBFFFF         mov      dword ptr [rbp-0x42C], eax\r\n       488B5B10             mov      rbx, gword ptr [rbx+0x10]\r\n       488B8D58FDFFFF       mov      rcx, gword ptr [rbp-0x2A8]\r\n       0FB79560FDFFFF       movzx    rdx, word  ptr [rbp-0x2A0]\r\n       440FB78562FDFFFF     movzx    r8, word  ptr [rbp-0x29E]\r\n       49BAF8373406FF7F0000 mov      r10, 0x7FFF063437F8\r\n       4C395318             cmp      qword ptr [rbx+0x18], r10\r\n       0F8585000000         jne      G_M000_IG182\r\n \r\nG_M000_IG179:                ;; offset=0x12DA\r\n       8B5308               mov      edx, dword ptr [rbx+0x08]\r\n       FF158D571700         call     [System.Linq.Enumerable:ToArray[char](System.Collections.Generic.IEnumerable`1[char]):char[]]\r\n       4885C0               test     rax, rax\r\n       0F84C5050000         je       G_M000_IG232\r\n       488D5810             lea      rbx, bword ptr [rax+0x10]\r\n       8B4008               mov      eax, dword ptr [rax+0x08]\r\n       8985CCFBFFFF         mov      dword ptr [rbp-0x434], eax\r\n \r\nG_M000_IG180:                ;; offset=0x12F9\r\n       48B9905F3706FF7F0000 mov      rcx, 0x7FFF06375F90\r\n       E898BABC5F           call     CORINFO_HELP_NEWSFAST\r\n       488985F0FAFFFF       mov      gword ptr [rbp-0x510], rax\r\n       48899D88FBFFFF       mov      bword ptr [rbp-0x478], rbx\r\n       8B9DCCFBFFFF         mov      ebx, dword ptr [rbp-0x434]\r\n       899D90FBFFFF         mov      dword ptr [rbp-0x470], ebx\r\n       488D8D88FBFFFF       lea      rcx, [rbp-0x478]\r\n       E8227EF4FF           call     System.String:.ctor(System.ReadOnlySpan`1[char]):this\r\n       488B9DF0FAFFFF       mov      rbx, gword ptr [rbp-0x510]\r\n       488D4B08             lea      rcx, bword ptr [rbx+0x08]\r\n       488BD0               mov      rdx, rax"
+      }
+    ]
+  }
+}

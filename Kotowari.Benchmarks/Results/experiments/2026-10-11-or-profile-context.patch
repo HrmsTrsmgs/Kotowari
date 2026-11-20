@@ -1,0 +1,35 @@
+diff --git a/Kotowari/Core/OrParser.cs b/Kotowari/Core/OrParser.cs
+index 57b75ca..acbb67a 100644
+--- a/Kotowari/Core/OrParser.cs
++++ b/Kotowari/Core/OrParser.cs
+@@ -38,6 +38,17 @@ public class OrParser<T> : Parser<T>
+                 parser, static it => new Execution<TDocument>(it));
+ 
+         internal override ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
++            => ParseCoreInContext<TDocument>(cursol);
++
++        /// <remarks>
++        /// TContextは入力や値ではなく、子を呼ぶ位置の型profileを分けるために使う。
++        /// 調査したJSONでは、通常の選択とZeroOrMoreの子としての選択が同じprofileへ集まり、
++        /// 文字列反復内のCharParser用のガードが、実際のExpectCharParserに一致しなかった。
++        /// 反復では既存のOrChild値型を文脈に使い、処理本体や候補の評価順序は複製しない。
++        /// この型引数による分離はJITと通常計時で評価中であり、速度改善は未確認。
++        /// </remarks>
++        internal ParseResult<T, TDocument> ParseCoreInContext<TContext>(Cursol<TDocument> cursol)
++            where TContext : allows ref struct
+         {
+             for (var index = 0; index < parsers.Length; index++)
+             {
+diff --git a/Kotowari/Core/ZeroOrMoreParser.cs b/Kotowari/Core/ZeroOrMoreParser.cs
+index 01b3669..fe3a45c 100644
+--- a/Kotowari/Core/ZeroOrMoreParser.cs
++++ b/Kotowari/Core/ZeroOrMoreParser.cs
+@@ -44,7 +44,7 @@ public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+         readonly struct OrChild(OrParser<T>.Execution<TDocument> parser) : IChild
+         {
+             public ParseResult<T, TDocument> ParseCore(Cursol<TDocument> cursol)
+-                => parser.ParseCore(cursol);
++                => parser.ParseCoreInContext<OrChild>(cursol);
+         }
+ 
+         readonly struct VirtualChild(ParserExecution<T, TDocument> parser) : IChild

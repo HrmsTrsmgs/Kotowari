@@ -1,0 +1,3027 @@
+{
+  "Experiment": "2026-10-05-pgo-codegen",
+  "SourceCommit": "a4a37bb92ef852976b0d9a50df07cbc68942c1ea",
+  "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+  "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308)",
+  "BenchmarkDotNet": "0.15.8",
+  "TieredPGO": 1,
+  "InvocationCount": 4,
+  "WarmupCount": 10,
+  "IterationCount": 16,
+  "LaunchCountPerRun": 1,
+  "Affinity": 4,
+  "Outliers": "DontRemove",
+  "InstructionHashNormalization": "Instruction/label lines only; hex values with 7+ digits -> 0xADDRESS; method label numbers and byte-offset comments removed. Not proof of identical referenced handles.",
+  "AssemblyAudit": {
+    "RunsChecked": 32,
+    "RawAuditSHA256": "CC833C64425101C4BC59F2EF4A0B010DF815961C3FC23A2970F4AA53A24F5BE6",
+    "RawAuditPath": "artifacts/pgo-codegen-2026-10-05/assembly-audit.json",
+    "MethodBodyHashMethod": "Metadata method-definition order: method name plus platform newline, then uppercase hex of exact PE method body (header, IL, locals token, exception regions) or no-body, plus platform newline; UTF-8 on Windows. Metadata hash zeroes the single 16-byte MVID occurrence.",
+    "Limitation": "BDN built before each run. IL method bodies and metadata excluding MVID match across all runs, but DLL files are not byte-identical. A fixed-binary repeated-process baseline remains to be checked.",
+    "Assemblies": [
+      {
+        "Name": "Marimo.Kotowari.dll",
+        "Runs": 32,
+        "DistinctFileSHA256Count": 25,
+        "MethodDefinitions": 139,
+        "MethodBodies": 138,
+        "MethodBodiesSHA256": "1164611A4F4D732D593E978D7149FB94F9437EDF557B24ECBC6758BCEEF85480",
+        "MetadataExcludingMVIDSHA256": "6D64B7C3E5317044708168C278ED8B2ADB6F1D4310F8458BE511B0BB0F2342B1"
+      },
+      {
+        "Name": "Marimo.Parser.dll",
+        "Runs": 32,
+        "DistinctFileSHA256Count": 25,
+        "MethodDefinitions": 64,
+        "MethodBodies": 60,
+        "MethodBodiesSHA256": "396F0704B53C359079761341B0413E94D2684F1B2FE955039140C466C49A2DCA",
+        "MetadataExcludingMVIDSHA256": "F8AC12FD21C82F27E1E7924C4CB89522F91C37E8B73EFF7B5A5DC3257BE26FFD"
+      }
+    ]
+  },
+  "Runs": [
+    {
+      "Run": "01-pgo-on",
+      "ReportSHA256": "25282A06C6744D86862A566FBF1513E9AD703DE3A13D5E11F486D2773DCF8170",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 259.9347125,
+      "SDMs": 6.989843009449497,
+      "N": 16,
+      "WarmupMs": [
+        848.360725,
+        301.3847,
+        296.452875,
+        257.80735,
+        258.44105,
+        253.856025,
+        260.2883,
+        260.13345,
+        260.9335,
+        270.844175
+      ],
+      "ActualMs": [
+        266.6154,
+        267.0253,
+        259.7735,
+        249.99915,
+        257.97375,
+        264.3472,
+        269.668,
+        275.34595,
+        252.208475,
+        257.703175,
+        258.640025,
+        260.12235,
+        254.334825,
+        255.474,
+        257.561675,
+        252.163825
+      ]
+    },
+    {
+      "Run": "02-pgo-on",
+      "ReportSHA256": "4883A40A1BD8B6613D271B785BE1D442B4477B903786271332F9B393D26C4944",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 257.757503125,
+      "SDMs": 6.226243474231172,
+      "N": 16,
+      "WarmupMs": [
+        845.828275,
+        335.598025,
+        265.9698,
+        262.6338,
+        256.012575,
+        258.350675,
+        260.278175,
+        266.493575,
+        268.077175,
+        271.532975
+      ],
+      "ActualMs": [
+        259.689025,
+        260.646875,
+        253.035725,
+        254.401975,
+        252.035175,
+        264.4554,
+        274.321525,
+        253.707875,
+        266.182375,
+        256.7936,
+        258.793975,
+        252.045825,
+        252.544775,
+        254.022125,
+        253.225375,
+        258.219625
+      ]
+    },
+    {
+      "Run": "03-pgo-on",
+      "ReportSHA256": "FCBB385A554E473EAD02DA738B29F7DE792118E6379C814A01587384FFDB3844",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 269.7494,
+      "SDMs": 15.161198076196571,
+      "N": 16,
+      "WarmupMs": [
+        856.6947,
+        344.31035,
+        299.817775,
+        260.912025,
+        263.658225,
+        279.30615,
+        278.325675,
+        268.874175,
+        265.696825,
+        278.04825
+      ],
+      "ActualMs": [
+        306.67695,
+        281.64835,
+        272.3723,
+        261.5432,
+        263.508175,
+        272.11405,
+        297.9591,
+        264.282325,
+        263.217,
+        255.4935,
+        270.341575,
+        253.35755,
+        254.454875,
+        264.2577,
+        257.18365,
+        277.5809
+      ]
+    },
+    {
+      "Run": "04-pgo-on",
+      "ReportSHA256": "3827932E74750DB9EC8DD168248AE9BEF8BD3B3268E8DC1C8F43EAEE03F58666",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 264.078078125,
+      "SDMs": 8.39226289203273,
+      "N": 16,
+      "WarmupMs": [
+        864.21035,
+        296.020775,
+        264.10845,
+        258.781025,
+        271.4538,
+        258.651625,
+        256.311375,
+        257.301,
+        265.529725,
+        271.4492
+      ],
+      "ActualMs": [
+        269.93075,
+        270.876225,
+        267.748125,
+        253.5998,
+        260.126375,
+        288.059325,
+        264.9471,
+        261.3641,
+        257.3559,
+        257.57695,
+        271.477375,
+        260.311225,
+        261.95525,
+        256.658625,
+        265.234875,
+        258.02845
+      ]
+    },
+    {
+      "Run": "05-pgo-on",
+      "ReportSHA256": "29374E4D77C19716A41F45025B0C2DF7C1B4B25D792AC3736CCE2CE3C96FC099",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 264.7489671875,
+      "SDMs": 5.849643081723867,
+      "N": 16,
+      "WarmupMs": [
+        901.36715,
+        518.46435,
+        289.978,
+        253.5344,
+        253.32375,
+        265.16015,
+        259.0566,
+        264.538425,
+        254.0099,
+        264.51695
+      ],
+      "ActualMs": [
+        273.397325,
+        261.5411,
+        264.93565,
+        258.332525,
+        257.422,
+        263.7661,
+        259.638575,
+        259.984075,
+        262.954925,
+        265.992025,
+        265.897975,
+        266.367925,
+        269.103875,
+        258.22175,
+        278.340525,
+        270.088325
+      ]
+    },
+    {
+      "Run": "06-pgo-on",
+      "ReportSHA256": "CB9A09F56A730D9FC6A54253C0149E746FAFBA2F956968C97C152E8B8F6E2416",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 265.269353125,
+      "SDMs": 10.36864203975893,
+      "N": 16,
+      "WarmupMs": [
+        864.899425,
+        561.64345,
+        257.593025,
+        257.376175,
+        259.52245,
+        262.2636,
+        254.042875,
+        258.251225,
+        254.975875,
+        265.851425
+      ],
+      "ActualMs": [
+        259.311225,
+        261.76245,
+        261.48255,
+        254.884125,
+        252.449425,
+        272.91065,
+        270.0581,
+        270.96415,
+        263.160075,
+        265.0047,
+        274.542,
+        254.581125,
+        261.327075,
+        258.8225,
+        267.846825,
+        295.203475
+      ]
+    },
+    {
+      "Run": "07-pgo-on",
+      "ReportSHA256": "45D378F62E3633C27BCCFC924F0E0334656D74DD510CFE8E90D0AD3C05FFBA5E",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 264.5353109375,
+      "SDMs": 6.330948820404468,
+      "N": 16,
+      "WarmupMs": [
+        875.498525,
+        338.12325,
+        270.865525,
+        269.039325,
+        318.834975,
+        269.027475,
+        264.028775,
+        259.68025,
+        272.4647,
+        295.770025
+      ],
+      "ActualMs": [
+        262.2073,
+        264.771025,
+        265.13775,
+        263.1256,
+        263.292625,
+        285.1264,
+        265.68385,
+        261.259525,
+        260.390525,
+        269.063275,
+        263.1458,
+        255.563125,
+        259.962375,
+        265.43505,
+        261.579375,
+        266.822175
+      ]
+    },
+    {
+      "Run": "08-pgo-on",
+      "ReportSHA256": "0B6BF37F84D0BFB12D62E3E424FB9348D0A1A2EEA3F923976C1DE99EB840D592",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 268.2868640625,
+      "SDMs": 11.052958609575873,
+      "N": 16,
+      "WarmupMs": [
+        1014.42485,
+        366.211725,
+        264.123575,
+        264.127575,
+        256.947525,
+        255.895175,
+        256.9822,
+        280.053475,
+        267.907625,
+        270.956425
+      ],
+      "ActualMs": [
+        272.53405,
+        264.037475,
+        257.8069,
+        276.1753,
+        295.5693,
+        290.48165,
+        263.021475,
+        258.60845,
+        263.532225,
+        268.0154,
+        270.39185,
+        261.141,
+        257.689275,
+        262.608,
+        269.2068,
+        261.771475
+      ]
+    },
+    {
+      "Run": "09-pgo-on",
+      "ReportSHA256": "47F306A3A50101A5FBDC35EA8EC5EF3F1690D249BB523AD9AE9F4E8756D020D1",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 268.0511359375,
+      "SDMs": 8.008312070415592,
+      "N": 16,
+      "WarmupMs": [
+        1035.2065,
+        357.0677,
+        268.08485,
+        268.88565,
+        267.4014,
+        272.9279,
+        271.0632,
+        275.1317,
+        277.525375,
+        266.467025
+      ],
+      "ActualMs": [
+        264.988025,
+        266.661975,
+        262.89285,
+        254.5386,
+        287.4022,
+        277.55985,
+        276.231875,
+        269.703575,
+        261.122,
+        262.810575,
+        272.132825,
+        274.2993,
+        267.9755,
+        264.346125,
+        260.571,
+        265.5831
+      ]
+    },
+    {
+      "Run": "10-pgo-on",
+      "ReportSHA256": "FBC65F27607814E8761AD0CB8B7B6E06EF6B6306D46AA13BFC65335C8FFB0AC5",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 285.0203859375,
+      "SDMs": 24.462744477166993,
+      "N": 16,
+      "WarmupMs": [
+        901.062025,
+        343.0822,
+        270.419725,
+        274.810425,
+        265.547975,
+        270.193125,
+        264.9576,
+        268.461525,
+        258.581425,
+        329.1223
+      ],
+      "ActualMs": [
+        329.514575,
+        267.139875,
+        265.1455,
+        262.652675,
+        261.413225,
+        273.154925,
+        291.543675,
+        268.0341,
+        301.430275,
+        296.517125,
+        341.88185,
+        282.540575,
+        305.2011,
+        280.322825,
+        270.58175,
+        263.253325
+      ]
+    },
+    {
+      "Run": "11-pgo-on",
+      "ReportSHA256": "D50314EA7E5653EC325E6A35F0505D395C315896E77DD8A80BFCE2BEF01226A1",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 238.2945546875,
+      "SDMs": 19.334397961660237,
+      "N": 16,
+      "WarmupMs": [
+        864.742075,
+        484.640475,
+        258.2595,
+        219.521625,
+        231.4279,
+        221.7441,
+        228.680325,
+        219.4166,
+        221.089925,
+        216.754075
+      ],
+      "ActualMs": [
+        218.52145,
+        223.079925,
+        222.215425,
+        220.5817,
+        225.779575,
+        240.472975,
+        221.9825,
+        279.8722,
+        244.344875,
+        259.60995,
+        237.10935,
+        227.2271,
+        277.093375,
+        247.80265,
+        233.427475,
+        233.59355
+      ]
+    },
+    {
+      "Run": "12-pgo-on",
+      "ReportSHA256": "11B4D76D27F16C21EBD05C1E95F9B7BB619474A9F8E941FF8B1F0E1A614F572E",
+      "Diagnostics": "JitDisasm+EventPipe",
+      "MeanMs": 274.3318859375,
+      "SDMs": 35.00260131311668,
+      "N": 16,
+      "WarmupMs": [
+        882.31855,
+        316.9398,
+        265.736975,
+        260.8062,
+        280.24105,
+        300.52815,
+        285.690525,
+        283.16995,
+        265.083175,
+        267.015
+      ],
+      "ActualMs": [
+        263.3473,
+        265.115825,
+        267.54425,
+        403.19055,
+        270.0906,
+        278.332825,
+        278.355175,
+        261.4701,
+        263.15535,
+        255.33535,
+        266.926025,
+        267.94905,
+        270.61875,
+        255.0541,
+        263.041575,
+        259.78415
+      ]
+    },
+    {
+      "Run": "13-plain",
+      "ReportSHA256": "83E1D2B04BEC373A99BBC4D7CB0F9AB38978055BA6215FBB717E357A251834EB",
+      "Diagnostics": "none",
+      "MeanMs": 250.1935828125,
+      "SDMs": 6.595523981520338,
+      "N": 16,
+      "WarmupMs": [
+        817.584675,
+        267.669525,
+        255.5777,
+        261.773775,
+        246.03985,
+        247.6125,
+        252.065025,
+        245.7983,
+        254.174425,
+        254.400575
+      ],
+      "ActualMs": [
+        256.03835,
+        244.12865,
+        245.265925,
+        261.9667,
+        255.8272,
+        261.694825,
+        258.891875,
+        246.289125,
+        243.679575,
+        249.01655,
+        242.6232,
+        249.0057,
+        247.403075,
+        244.6902,
+        245.47005,
+        251.107125
+      ]
+    },
+    {
+      "Run": "14-plain",
+      "ReportSHA256": "6528C3CD29E0C8673B38A0D6E983125F2337734019D2F0CC8003088CE7EB9BFE",
+      "Diagnostics": "none",
+      "MeanMs": 246.108465625,
+      "SDMs": 3.6092017561236784,
+      "N": 16,
+      "WarmupMs": [
+        825.245175,
+        269.83405,
+        238.8026,
+        272.82325,
+        243.2853,
+        241.938825,
+        252.96825,
+        250.6586,
+        250.359725,
+        245.6363
+      ],
+      "ActualMs": [
+        248.1607,
+        241.993875,
+        242.30065,
+        247.229975,
+        240.10445,
+        250.938,
+        254.0354,
+        245.6161,
+        243.904825,
+        245.598925,
+        249.39235,
+        246.523025,
+        246.086075,
+        246.9672,
+        247.058375,
+        241.826725
+      ]
+    },
+    {
+      "Run": "15-plain",
+      "ReportSHA256": "E4BACAA79CC336DD8A63EA830731A0501AF98F1DD478D92FC5594BE9684B1034",
+      "Diagnostics": "none",
+      "MeanMs": 248.5755171875,
+      "SDMs": 4.588029969312525,
+      "N": 16,
+      "WarmupMs": [
+        847.103275,
+        316.2038,
+        259.786225,
+        253.14955,
+        283.769425,
+        250.443975,
+        250.458175,
+        252.284975,
+        245.3353,
+        247.712625
+      ],
+      "ActualMs": [
+        241.59015,
+        240.867275,
+        251.1235,
+        250.2148,
+        243.83195,
+        251.349325,
+        245.2632,
+        252.441625,
+        244.9835,
+        253.456025,
+        253.825425,
+        250.8212,
+        252.4089,
+        248.102525,
+        253.84885,
+        243.080825
+      ]
+    },
+    {
+      "Run": "16-plain",
+      "ReportSHA256": "D170C04FF8C51A975DEBF99F3E8016FB547CF41575B9972713C348F24F6F0198",
+      "Diagnostics": "none",
+      "MeanMs": 248.3108796875,
+      "SDMs": 5.074207788620956,
+      "N": 16,
+      "WarmupMs": [
+        792.2049,
+        477.926675,
+        279.71935,
+        255.427975,
+        246.126925,
+        254.779725,
+        251.396025,
+        255.2073,
+        252.823125,
+        249.46725
+      ],
+      "ActualMs": [
+        250.866625,
+        243.89265,
+        246.83525,
+        247.2723,
+        243.0005,
+        258.8339,
+        245.32735,
+        258.040975,
+        247.120125,
+        251.817525,
+        251.085625,
+        241.18625,
+        251.312475,
+        247.883375,
+        244.402475,
+        244.097475
+      ]
+    },
+    {
+      "Run": "17-plain",
+      "ReportSHA256": "6F2C639E5B6234742CCC4EEDEF76BD8CD640DB3839827039820F6672E374741E",
+      "Diagnostics": "none",
+      "MeanMs": 214.664171875,
+      "SDMs": 6.630737077032959,
+      "N": 16,
+      "WarmupMs": [
+        866.029575,
+        239.373375,
+        213.9319,
+        212.785975,
+        213.06745,
+        236.0607,
+        214.582425,
+        213.685225,
+        210.760025,
+        211.94365
+      ],
+      "ActualMs": [
+        216.757375,
+        213.780725,
+        225.989675,
+        204.647425,
+        210.82375,
+        222.848825,
+        211.951775,
+        212.78185,
+        215.994125,
+        204.307875,
+        205.148225,
+        224.927325,
+        217.564475,
+        219.023075,
+        214.066925,
+        214.014125
+      ]
+    },
+    {
+      "Run": "18-plain",
+      "ReportSHA256": "DA08635C2BA2584F5775A72B3367690E9F489A2C36B2AB0B4DC9405FC659FEDC",
+      "Diagnostics": "none",
+      "MeanMs": 256.1415296875,
+      "SDMs": 12.112645858603104,
+      "N": 16,
+      "WarmupMs": [
+        850.633325,
+        267.36975,
+        249.53035,
+        265.163,
+        262.55375,
+        254.662675,
+        248.6335,
+        249.109075,
+        248.465025,
+        246.802675
+      ],
+      "ActualMs": [
+        245.79435,
+        266.644075,
+        263.247825,
+        255.83665,
+        248.3866,
+        255.906325,
+        256.78715,
+        251.6085,
+        255.64535,
+        244.27615,
+        253.355825,
+        245.35175,
+        245.81755,
+        294.5284,
+        256.4517,
+        258.627075
+      ]
+    },
+    {
+      "Run": "19-plain",
+      "ReportSHA256": "A37AE8D59B10875B231AB2633FE95EB032CB3921A766046CCA51980F20D787CB",
+      "Diagnostics": "none",
+      "MeanMs": 252.9975484375,
+      "SDMs": 6.3911398291793295,
+      "N": 16,
+      "WarmupMs": [
+        833.399775,
+        273.963725,
+        275.053875,
+        253.868425,
+        254.082175,
+        266.553675,
+        252.373475,
+        246.774625,
+        248.651475,
+        256.893
+      ],
+      "ActualMs": [
+        252.88005,
+        254.70345,
+        252.180175,
+        256.5187,
+        242.54145,
+        256.236675,
+        251.915325,
+        247.21085,
+        270.1911,
+        252.484525,
+        251.98955,
+        247.601975,
+        248.966325,
+        257.69095,
+        246.20885,
+        258.641625
+      ]
+    },
+    {
+      "Run": "20-plain",
+      "ReportSHA256": "3DD7A19CB716468684CC52B8A78A8415DC5B77EC478F0ED732D1A7B26191CC04",
+      "Diagnostics": "none",
+      "MeanMs": 252.2611984375,
+      "SDMs": 3.5985270598708015,
+      "N": 16,
+      "WarmupMs": [
+        820.60415,
+        259.7754,
+        246.999375,
+        276.45195,
+        262.21325,
+        255.311525,
+        260.23725,
+        249.0549,
+        244.120575,
+        252.429175
+      ],
+      "ActualMs": [
+        255.242675,
+        252.87925,
+        251.495325,
+        248.154725,
+        257.155325,
+        246.70025,
+        256.051775,
+        249.451325,
+        254.8554,
+        253.597525,
+        247.92765,
+        252.930225,
+        252.76985,
+        250.024,
+        258.689425,
+        248.25485
+      ]
+    },
+    {
+      "Run": "21-asm-only",
+      "ReportSHA256": "98E792340FB6BCE5226E7791AFCB9DB2D3675CA546EDB912EAC39DD9F9EE482F",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 251.36606875,
+      "SDMs": 7.549330516258268,
+      "N": 16,
+      "WarmupMs": [
+        948.39535,
+        330.08115,
+        284.9866,
+        251.533,
+        257.77305,
+        253.73745,
+        245.67295,
+        264.502825,
+        252.0139,
+        264.949725
+      ],
+      "ActualMs": [
+        257.08995,
+        242.601275,
+        259.9144,
+        256.42835,
+        244.0651,
+        258.5217,
+        250.6484,
+        248.8926,
+        245.199025,
+        243.24665,
+        258.523875,
+        247.42835,
+        267.698125,
+        248.64335,
+        251.106275,
+        241.850475
+      ]
+    },
+    {
+      "Run": "22-asm-only",
+      "ReportSHA256": "E898F41BC7BA1C08808A24EA331645B3602C522D8D131C7AE5AA07D8FAF8DE0A",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 254.313265625,
+      "SDMs": 5.611818698112901,
+      "N": 16,
+      "WarmupMs": [
+        875.27095,
+        280.36435,
+        253.143275,
+        248.024175,
+        263.6744,
+        253.032725,
+        257.7418,
+        259.4088,
+        255.639725,
+        246.46405
+      ],
+      "ActualMs": [
+        246.553975,
+        255.912075,
+        255.682525,
+        248.1974,
+        259.93165,
+        245.017075,
+        251.9896,
+        255.988525,
+        253.05965,
+        259.007125,
+        255.369175,
+        253.498475,
+        263.0443,
+        249.6733,
+        264.8696,
+        251.2188
+      ]
+    },
+    {
+      "Run": "23-asm-only",
+      "ReportSHA256": "81B9C19D35A7CED1AD2D968F21859CC853AB6E764471DBE549B0F92A9465CBE7",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 253.630803125,
+      "SDMs": 8.476774738365386,
+      "N": 16,
+      "WarmupMs": [
+        816.386525,
+        296.375425,
+        252.16215,
+        256.76025,
+        256.4371,
+        259.512,
+        253.0935,
+        246.711075,
+        253.47645,
+        249.101125
+      ],
+      "ActualMs": [
+        255.856175,
+        248.0269,
+        246.877875,
+        243.095925,
+        252.52655,
+        253.75125,
+        257.744825,
+        249.4092,
+        252.45035,
+        249.792175,
+        248.207775,
+        254.726275,
+        245.4518,
+        278.8173,
+        259.801875,
+        261.5578
+      ]
+    },
+    {
+      "Run": "24-asm-only",
+      "ReportSHA256": "90C2A889D4F1228ECB87353AA04A43EA848B68EC1233A7021E52139F3F146C1C",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 172.7734984375,
+      "SDMs": 5.864549657017355,
+      "N": 16,
+      "WarmupMs": [
+        961.7256,
+        248.908225,
+        172.5337,
+        171.339075,
+        167.66,
+        167.4426,
+        172.2692,
+        172.4478,
+        184.676225,
+        189.8449
+      ],
+      "ActualMs": [
+        177.333375,
+        168.796625,
+        175.309625,
+        172.7769,
+        186.180925,
+        183.3535,
+        172.652025,
+        170.5,
+        168.047975,
+        171.923125,
+        166.602875,
+        166.555425,
+        171.433775,
+        165.1484,
+        171.2553,
+        176.506925
+      ]
+    },
+    {
+      "Run": "25-asm-only",
+      "ReportSHA256": "30AD9FA2BD250485AEB007DBB0A7706CB2566F4B844CFADA61346BE01C71923B",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 250.267446875,
+      "SDMs": 9.931745965404215,
+      "N": 16,
+      "WarmupMs": [
+        860.985975,
+        295.844875,
+        263.698575,
+        250.278025,
+        258.122025,
+        258.9011,
+        258.5105,
+        250.499925,
+        241.9496,
+        238.4764
+      ],
+      "ActualMs": [
+        250.184875,
+        244.42345,
+        251.72155,
+        243.46875,
+        241.70115,
+        256.308225,
+        247.6336,
+        257.077625,
+        242.691125,
+        283.438825,
+        249.096525,
+        250.6578,
+        247.6667,
+        243.46805,
+        248.931725,
+        245.810375
+      ]
+    },
+    {
+      "Run": "26-asm-only",
+      "ReportSHA256": "5397B742FDF2B25DF0B2D2145F06421DABA1B0BE015C02C2AFA5627D9A577F12",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 248.327209375,
+      "SDMs": 11.012184886228967,
+      "N": 16,
+      "WarmupMs": [
+        957.651375,
+        342.051225,
+        251.455575,
+        252.3519,
+        244.591925,
+        252.4364,
+        248.186575,
+        246.140525,
+        251.9913,
+        249.856
+      ],
+      "ActualMs": [
+        284.32735,
+        240.44465,
+        240.522875,
+        238.493125,
+        249.82735,
+        250.782025,
+        246.122575,
+        249.109575,
+        258.14525,
+        246.4373,
+        239.094325,
+        247.453725,
+        239.27735,
+        247.676075,
+        244.554025,
+        250.968575
+      ]
+    },
+    {
+      "Run": "27-asm-only",
+      "ReportSHA256": "FAA220424159E3B6749397411912C889562E86A077E1592178680B3E24A77C7A",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 260.8863328125,
+      "SDMs": 16.70696476934275,
+      "N": 16,
+      "WarmupMs": [
+        840.237725,
+        330.347425,
+        258.5205,
+        269.83835,
+        243.36995,
+        255.95485,
+        250.707525,
+        255.104,
+        247.57005,
+        248.801975
+      ],
+      "ActualMs": [
+        256.52085,
+        259.9014,
+        257.52505,
+        308.393875,
+        293.8137,
+        264.136775,
+        256.04125,
+        253.450375,
+        257.2979,
+        257.4667,
+        260.208275,
+        247.73905,
+        253.1606,
+        244.11435,
+        256.415375,
+        247.9966
+      ]
+    },
+    {
+      "Run": "28-asm-only",
+      "ReportSHA256": "74EB44E644D7BE104BCCD4F8E06C691358EE294D55934D5045D46001CF5955E5",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 247.8941703125,
+      "SDMs": 5.410693368508165,
+      "N": 16,
+      "WarmupMs": [
+        885.300675,
+        431.9422,
+        285.809775,
+        254.3991,
+        251.48635,
+        244.978925,
+        248.678825,
+        245.48285,
+        242.294125,
+        246.206925
+      ],
+      "ActualMs": [
+        244.572925,
+        254.212425,
+        246.8568,
+        255.573875,
+        242.161625,
+        247.6672,
+        242.4322,
+        244.590075,
+        244.6906,
+        245.421675,
+        244.173425,
+        239.764925,
+        252.231025,
+        251.5946,
+        258.299125,
+        252.065025
+      ]
+    },
+    {
+      "Run": "29-asm-only",
+      "ReportSHA256": "7CABE95CA7CB6222991121E4DC69F2C60C45E42DD18B19C33B360BB71965A7A8",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 252.292375,
+      "SDMs": 10.966935643606194,
+      "N": 16,
+      "WarmupMs": [
+        853.33025,
+        275.682475,
+        247.79615,
+        252.894575,
+        257.112275,
+        281.4284,
+        250.790425,
+        250.9872,
+        251.2514,
+        250.538075
+      ],
+      "ActualMs": [
+        252.2978,
+        251.86735,
+        243.533725,
+        245.852575,
+        254.679625,
+        256.5665,
+        245.8458,
+        250.327175,
+        250.46255,
+        253.776825,
+        242.95045,
+        290.5671,
+        247.76665,
+        249.098975,
+        253.842275,
+        247.243425
+      ]
+    },
+    {
+      "Run": "30-asm-only",
+      "ReportSHA256": "7B5E44ACBD4A9DC0F70C8EE6CC2CA86803DBD8DBFD3414A83DFA7A162123C1E2",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 213.8606125,
+      "SDMs": 11.501294294118235,
+      "N": 16,
+      "WarmupMs": [
+        859.107175,
+        231.29765,
+        230.881275,
+        211.7922,
+        203.563575,
+        204.6989,
+        206.575025,
+        213.888875,
+        211.0302,
+        217.59255
+      ],
+      "ActualMs": [
+        214.75995,
+        211.9913,
+        211.856725,
+        216.03895,
+        255.69135,
+        209.6439,
+        212.14515,
+        208.588725,
+        210.9138,
+        212.127175,
+        205.16655,
+        213.720025,
+        210.6333,
+        207.781175,
+        212.961525,
+        207.751
+      ]
+    },
+    {
+      "Run": "31-asm-only",
+      "ReportSHA256": "DC9178C4C4A1959F5D15A4AB767D05067A28BAD292B3CA162CAFE7CE5EE37F2A",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 246.4399484375,
+      "SDMs": 8.998629390285265,
+      "N": 16,
+      "WarmupMs": [
+        839.6145,
+        257.9963,
+        242.8839,
+        251.31175,
+        254.3501,
+        245.3517,
+        242.611325,
+        250.641675,
+        257.8323,
+        252.080075
+      ],
+      "ActualMs": [
+        244.545825,
+        240.632375,
+        239.985675,
+        262.13295,
+        260.584925,
+        266.44515,
+        241.023925,
+        242.08535,
+        246.08365,
+        239.093375,
+        243.09255,
+        241.066775,
+        243.426275,
+        248.29285,
+        235.2242,
+        249.324125
+      ]
+    },
+    {
+      "Run": "32-asm-only",
+      "ReportSHA256": "2C462918BC6A11DB9AD00C7B7D222439BB12B5FF936DD2775C7D43AE9734C681",
+      "Diagnostics": "JitDisasm",
+      "MeanMs": 249.054475,
+      "SDMs": 3.8168667453161107,
+      "N": 16,
+      "WarmupMs": [
+        879.941975,
+        264.944275,
+        245.560625,
+        253.482,
+        245.527025,
+        249.4432,
+        250.025,
+        260.928475,
+        248.4673,
+        254.717525
+      ],
+      "ActualMs": [
+        249.8148,
+        240.71585,
+        247.897425,
+        251.225175,
+        252.2713,
+        256.197075,
+        252.9134,
+        247.0941,
+        246.072475,
+        246.516325,
+        246.37745,
+        245.587075,
+        247.633525,
+        253.7295,
+        250.118475,
+        250.70845
+      ]
+    }
+  ],
+  "Disassembly": [
+    {
+      "Run": "23-asm-only",
+      "RawDisassemblySHA256": "E393CD09145B0DB1510B4FBD927D11B54BF4EDBBBB9F61DD798C796A78A57328",
+      "Methods": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 32,
+          "ProfileCount": "",
+          "Inlinees": "",
+          "NormalizedInstructionSHA256": "836963C5D4851B02DE07BC0286B6B1FB4AC6936C481A5FCF842BED9C6A6B5AC0",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; rsp based frame\r\n; fully interruptible\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n \r\nG_M000_IG02:                ;; offset=0x0000\r\n       mov      rax, 0x7FFAB0811680\r\n       cmp      qword ptr [rcx], rax\r\n       jne      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x000F\r\n       tail.jmp [Marimo.Kotowari.Core.CharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n \r\nG_M000_IG04:                ;; offset=0x0015\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n \r\nG_M000_IG05:                ;; offset=0x001C\r\n       tail.jmp [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n \r\n; Total bytes of code 32"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.Cursol:get_Current():byref:this",
+          "Tier": "Tier1",
+          "NativeBytes": 78,
+          "ProfileCount": "1.511219e+07",
+          "Inlinees": "0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "FBA555576360B4B18B9F8732A92D075781F679C30B6FE5DB8BB72E730BB85A51",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.Cursol:get_Current():byref:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Dynamic PGO\r\n; rbp based frame\r\n; fully interruptible\r\n; with Dynamic PGO: fgCalledCount is 1.511219e+07\r\n; 0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     rbp\r\n       sub      rsp, 48\r\n       lea      rbp, [rsp+0x30]\r\n \r\nG_M000_IG02:                ;; offset=0x000A\r\n       mov      rax, gword ptr [rcx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ecx, dword ptr [rax+0x08]\r\n       jae      SHORT G_M000_IG03\r\n       lea      rax, bword ptr [rax+2*rcx+0x10]\r\n       mov      bword ptr [rbp-0x08], rax\r\n       jmp      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x0020\r\n       call     CORINFO_HELP_RNGCHKFAIL\r\n       int3     \r\n \r\nG_M000_IG04:                ;; offset=0x0026\r\n       mov      rax, bword ptr [rbp-0x08]\r\n \r\nG_M000_IG05:                ;; offset=0x002A\r\n       add      rsp, 48\r\n       pop      rbp\r\n       ret      \r\n \r\nG_M000_IG06:                ;; offset=0x0030\r\n       sub      rsp, 40\r\n \r\nG_M000_IG07:                ;; offset=0x0034\r\n       mov      rax, 0x7FFAB032B108\r\n       mov      bword ptr [rbp-0x08], rax\r\n       lea      rax, G_M000_IG04\r\n \r\nG_M000_IG08:                ;; offset=0x0049\r\n       add      rsp, 40\r\n       ret      \r\n \r\n; Total bytes of code 78"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 363,
+          "ProfileCount": "3.556352e+07",
+          "Inlinees": "3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "735BCB33D00BCC09ADFAE8886DA61D63411C52F684C996873D5DEB4655CAE4CF",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 3.556352e+07\r\n; 3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002B\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       xor      ebp, ebp\r\n \r\nG_M000_IG03:                ;; offset=0x0031\r\n       mov      ecx, dword ptr [rdi+0x08]\r\n       cmp      ecx, ebp\r\n       jle      G_M000_IG21\r\n \r\nG_M000_IG04:                ;; offset=0x003C\r\n       mov      r14, gword ptr [rdi+8*rbp+0x10]\r\n       mov      rcx, 0x7FFAB0811680\r\n       cmp      qword ptr [r14], rcx\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG05:                ;; offset=0x0054\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x38], xmm0\r\n \r\nG_M000_IG06:                ;; offset=0x005E\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r15, word  ptr [rax]\r\n       cmp      byte  ptr [r14+0x0A], 0\r\n       jne      SHORT G_M000_IG16\r\n \r\nG_M000_IG07:                ;; offset=0x0074\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       cmp      r15d, ecx\r\n       jne      G_M000_IG17\r\n \r\nG_M000_IG08:                ;; offset=0x0082\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      edx, dword ptr [rsp+0x40]\r\n       inc      edx\r\n       mov      rcx, gword ptr [rsp+0x38]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      edx, ecx\r\n       jg       G_M000_IG22\r\n \r\nG_M000_IG09:                ;; offset=0x009D\r\n       mov      r13d, 1\r\n \r\nG_M000_IG10:                ;; offset=0x00A3\r\n       mov      word  ptr [rsp+0x48], r15w\r\n       mov      gword ptr [rsp+0x50], r8\r\n       mov      dword ptr [rsp+0x58], edx\r\n \r\nG_M000_IG11:                ;; offset=0x00B2\r\n       test     r13d, r13d\r\n       je       G_M000_IG20\r\n \r\nG_M000_IG12:                ;; offset=0x00BB\r\n       vmovdqu  xmm0, xmmword ptr [rsp+0x48]\r\n       vmovdqu  xmmword ptr [rsi], xmm0\r\n       mov      rcx, qword ptr [rsp+0x58]\r\n       mov      qword ptr [rsi+0x10], rcx\r\n \r\nG_M000_IG13:                ;; offset=0x00CE\r\n       mov      byte  ptr [rsi+0x02], r13b\r\n \r\nG_M000_IG14:                ;; offset=0x00D2\r\n       mov      rax, rsi\r\n \r\nG_M000_IG15:                ;; offset=0x00D5\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG16:                ;; offset=0x00E4\r\n       mov      ecx, r15d\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      r13d, eax\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      r13d, eax\r\n       je       SHORT G_M000_IG08\r\n \r\nG_M000_IG17:                ;; offset=0x0100\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      edx, dword ptr [rsp+0x40]\r\n       xor      r15d, r15d\r\n       xor      r13d, r13d\r\n       jmp      SHORT G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x0111\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x28], xmm0\r\n \r\nG_M000_IG19:                ;; offset=0x011B\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r14\r\n       mov      rax, qword ptr [r14]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    r13, byte  ptr [rsp+0x4A]\r\n       jmp      G_M000_IG11\r\n \r\nG_M000_IG20:                ;; offset=0x013D\r\n       inc      ebp\r\n       jmp      G_M000_IG03\r\n \r\nG_M000_IG21:                ;; offset=0x0144\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      G_M000_IG14\r\n \r\nG_M000_IG22:                ;; offset=0x0164\r\n       mov      edx, ecx\r\n       jmp      G_M000_IG09\r\n \r\n; Total bytes of code 363"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 295,
+          "ProfileCount": "840192",
+          "Inlinees": "4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "186672A8D3712B437EAB552657AE410EA062DCB40667A76B5814A88F1991FAF7",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 840192\r\n; 4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r14\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x0027\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       mov      rbp, gword ptr [rbx]\r\n       mov      r14d, dword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB0811680\r\n       cmp      qword ptr [rdi], rcx\r\n       jne      G_M000_IG12\r\n \r\nG_M000_IG03:                ;; offset=0x0045\r\n       mov      gword ptr [rsp+0x38], rbp\r\n       mov      dword ptr [rsp+0x40], r14d\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       cmp      byte  ptr [rdi+0x0A], 0\r\n       jne      SHORT G_M000_IG10\r\n \r\nG_M000_IG04:                ;; offset=0x0063\r\n       movzx    rax, word  ptr [rdi+0x08]\r\n       cmp      ecx, eax\r\n       jne      SHORT G_M000_IG11\r\n \r\nG_M000_IG05:                ;; offset=0x006B\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r8d, dword ptr [r8+0x08]\r\n       mov      ebp, 1\r\n \r\nG_M000_IG06:                ;; offset=0x0079\r\n       test     ebp, ebp\r\n       jne      G_M000_IG13\r\n \r\nG_M000_IG07:                ;; offset=0x0081\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      rdi, rdx\r\n       mov      ebp, dword ptr [rbx+0x08]\r\n       inc      ebp\r\n       mov      ecx, dword ptr [rdx+0x08]\r\n       cmp      ebp, ecx\r\n       cmovg    ebp, ecx\r\n       mov      rcx, rbx\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       mov      word  ptr [rsi], cx\r\n       mov      byte  ptr [rsi+0x02], 1\r\n       lea      rcx, [rsi+0x08]\r\n       mov      rdx, rdi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebp\r\n \r\nG_M000_IG08:                ;; offset=0x00B6\r\n       mov      rax, rsi\r\n \r\nG_M000_IG09:                ;; offset=0x00B9\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r14\r\n       ret      \r\n \r\nG_M000_IG10:                ;; offset=0x00C4\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      ebp, eax\r\n       movzx    rcx, word  ptr [rdi+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      ebp, eax\r\n       je       SHORT G_M000_IG05\r\n \r\nG_M000_IG11:                ;; offset=0x00DA\r\n       xor      ebp, ebp\r\n       jmp      SHORT G_M000_IG06\r\n \r\nG_M000_IG12:                ;; offset=0x00DE\r\n       mov      gword ptr [rsp+0x28], rbp\r\n       mov      dword ptr [rsp+0x30], r14d\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, rdi\r\n       mov      rax, qword ptr [rdi]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rbp, byte  ptr [rsp+0x4A]\r\n       jmp      G_M000_IG06\r\n \r\nG_M000_IG13:                ;; offset=0x010A\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      SHORT G_M000_IG08\r\n \r\n; Total bytes of code 295"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 550,
+          "ProfileCount": "455424",
+          "Inlinees": "6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "EBD20EBE11E339CF39479EE83E1BF4A12DE8888019D22D5EBDF4B7D8E233F6DC",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 455424\r\n; 6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rbx, rcx\r\n       mov      rdi, rdx\r\n       mov      rsi, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002E\r\n       mov      rcx, 0x7FFAB0822220\r\n       call     CORINFO_HELP_NEWSFAST\r\n       mov      rbp, rax\r\n       mov      rcx, 0x1701262B420\r\n       mov      gword ptr [rbp+0x08], rcx\r\n       mov      r14, gword ptr [rsi]\r\n       mov      esi, dword ptr [rsi+0x08]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG03:                ;; offset=0x0059\r\n       mov      gword ptr [rsp+0x28], r14\r\n       mov      dword ptr [rsp+0x30], esi\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r15\r\n       mov      rax, qword ptr [r15]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rdx, word  ptr [rsp+0x48]\r\n       movzx    r14, byte  ptr [rsp+0x4A]\r\n       mov      rsi, gword ptr [rsp+0x50]\r\n       mov      r15d, dword ptr [rsp+0x58]\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG04:                ;; offset=0x0093\r\n       mov      rcx, rbp\r\n       call     [System.Collections.Generic.List`1[char]:AddWithResize(char):this]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG05:                ;; offset=0x00A1\r\n       mov      rcx, rdi\r\n       mov      rdx, rbp\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      byte  ptr [rdi+0x08], 1\r\n       lea      rcx, [rdi+0x10]\r\n       mov      rdx, rsi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rdi+0x18], r15d\r\n       mov      rax, rdi\r\n \r\nG_M000_IG06:                ;; offset=0x00C3\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG07:                ;; offset=0x00D2\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0506460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG19\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG08:                ;; offset=0x00F4\r\n       mov      rcx, rax\r\n       mov      edx, r14d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       mov      esi, eax\r\n       movzx    r15, word  ptr [r15+0x08]\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0506460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG20\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG09:                ;; offset=0x012B\r\n       mov      rcx, rax\r\n       mov      edx, r15d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       cmp      eax, esi\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG10:                ;; offset=0x0141\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       inc      r15d\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r13d, dword ptr [r8+0x08]\r\n       cmp      r15d, r13d\r\n       jg       G_M000_IG21\r\n \r\nG_M000_IG11:                ;; offset=0x0160\r\n       mov      edx, r14d\r\n       mov      r14d, 1\r\n \r\nG_M000_IG12:                ;; offset=0x0169\r\n       test     r14d, r14d\r\n       je       G_M000_IG05\r\n \r\nG_M000_IG13:                ;; offset=0x0172\r\n       mov      r14, rsi\r\n       mov      esi, r15d\r\n       inc      dword ptr [rbp+0x14]\r\n       mov      rcx, gword ptr [rbp+0x08]\r\n       mov      eax, dword ptr [rbp+0x10]\r\n       mov      r8d, dword ptr [rcx+0x08]\r\n       cmp      r8d, eax\r\n       jbe      G_M000_IG04\r\n \r\nG_M000_IG14:                ;; offset=0x018F\r\n       lea      r8d, [rax+0x01]\r\n       mov      dword ptr [rbp+0x10], r8d\r\n       mov      eax, eax\r\n       mov      word  ptr [rcx+2*rax+0x10], dx\r\n \r\nG_M000_IG15:                ;; offset=0x019E\r\n       mov      r15, gword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB0811680\r\n       cmp      qword ptr [r15], rcx\r\n       jne      G_M000_IG03\r\n \r\nG_M000_IG16:                ;; offset=0x01B5\r\n       mov      gword ptr [rsp+0x38], r14\r\n       mov      dword ptr [rsp+0x40], esi\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r14, word  ptr [rax]\r\n       cmp      byte  ptr [r15+0x0A], 0\r\n       jne      G_M000_IG07\r\n \r\nG_M000_IG17:                ;; offset=0x01D8\r\n       movzx    rax, word  ptr [r15+0x08]\r\n       cmp      r14d, eax\r\n       je       G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x01E6\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       xor      edx, edx\r\n       xor      r14d, r14d\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG19:                ;; offset=0x01FA\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG08\r\n \r\nG_M000_IG20:                ;; offset=0x020C\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG09\r\n \r\nG_M000_IG21:                ;; offset=0x021E\r\n       mov      r15d, r13d\r\n       jmp      G_M000_IG11\r\n \r\n; Total bytes of code 550"
+        }
+      ]
+    },
+    {
+      "Run": "24-asm-only",
+      "RawDisassemblySHA256": "E85DF4048CEFDAF8FDEC842348986CE3F7B5A81FD0D9E00F6969EA787B0537E1",
+      "Methods": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 32,
+          "ProfileCount": "",
+          "Inlinees": "",
+          "NormalizedInstructionSHA256": "77080BD1343E81D6E7E5B0240BA4BED190BBB19C983AA872ED79E35F9987E55D",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; rsp based frame\r\n; fully interruptible\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n \r\nG_M000_IG02:                ;; offset=0x0000\r\n       mov      rax, 0x7FFAB0801960\r\n       cmp      qword ptr [rcx], rax\r\n       jne      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x000F\r\n       tail.jmp [Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n \r\nG_M000_IG04:                ;; offset=0x0015\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n \r\nG_M000_IG05:                ;; offset=0x001C\r\n       tail.jmp [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n \r\n; Total bytes of code 32"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.Cursol:get_Current():byref:this",
+          "Tier": "Tier1",
+          "NativeBytes": 78,
+          "ProfileCount": "2.855322e+07",
+          "Inlinees": "0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "FBA555576360B4B18B9F8732A92D075781F679C30B6FE5DB8BB72E730BB85A51",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.Cursol:get_Current():byref:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Dynamic PGO\r\n; rbp based frame\r\n; fully interruptible\r\n; with Dynamic PGO: fgCalledCount is 2.855322e+07\r\n; 0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     rbp\r\n       sub      rsp, 48\r\n       lea      rbp, [rsp+0x30]\r\n \r\nG_M000_IG02:                ;; offset=0x000A\r\n       mov      rax, gword ptr [rcx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ecx, dword ptr [rax+0x08]\r\n       jae      SHORT G_M000_IG03\r\n       lea      rax, bword ptr [rax+2*rcx+0x10]\r\n       mov      bword ptr [rbp-0x08], rax\r\n       jmp      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x0020\r\n       call     CORINFO_HELP_RNGCHKFAIL\r\n       int3     \r\n \r\nG_M000_IG04:                ;; offset=0x0026\r\n       mov      rax, bword ptr [rbp-0x08]\r\n \r\nG_M000_IG05:                ;; offset=0x002A\r\n       add      rsp, 48\r\n       pop      rbp\r\n       ret      \r\n \r\nG_M000_IG06:                ;; offset=0x0030\r\n       sub      rsp, 40\r\n \r\nG_M000_IG07:                ;; offset=0x0034\r\n       mov      rax, 0x7FFAB031B108\r\n       mov      bword ptr [rbp-0x08], rax\r\n       lea      rax, G_M000_IG04\r\n \r\nG_M000_IG08:                ;; offset=0x0049\r\n       add      rsp, 40\r\n       ret      \r\n \r\n; Total bytes of code 78"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 310,
+          "ProfileCount": "4.335616e+07",
+          "Inlinees": "2 inlinees with PGO data; 8 single block inlinees; 0 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "7840340F2E205AF808FE432954EF819739D745A05D883E000D67728A9F293C27",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; fully interruptible\r\n; with Synthesized PGO: fgCalledCount is 4.335616e+07\r\n; 2 inlinees with PGO data; 8 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 104\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      qword ptr [rsp+0x60], rax\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002E\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       xor      ebp, ebp\r\n \r\nG_M000_IG03:                ;; offset=0x0034\r\n       mov      ecx, dword ptr [rdi+0x08]\r\n       cmp      ecx, ebp\r\n       jle      G_M000_IG21\r\n \r\nG_M000_IG04:                ;; offset=0x003F\r\n       mov      rcx, gword ptr [rdi+8*rbp+0x10]\r\n       mov      r8, 0x7FFAB0801960\r\n       cmp      qword ptr [rcx], r8\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG05:                ;; offset=0x0057\r\n       mov      r14, gword ptr [rcx+0x08]\r\n       xor      r15d, r15d\r\n       cmp      dword ptr [r14+0x08], 0\r\n       jle      SHORT G_M000_IG17\r\n \r\nG_M000_IG06:                ;; offset=0x0065\r\n       mov      rcx, gword ptr [r14+8*r15+0x10]\r\n \r\nG_M000_IG07:                ;; offset=0x006A\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x28], xmm0\r\n \r\nG_M000_IG08:                ;; offset=0x0074\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x38]\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n       movzx    rax, byte  ptr [rsp+0x3A]\r\n       test     eax, eax\r\n       je       SHORT G_M000_IG16\r\n \r\nG_M000_IG09:                ;; offset=0x008F\r\n       movzx    r8, word  ptr [rsp+0x38]\r\n       mov      rdx, gword ptr [rsp+0x40]\r\n       mov      ecx, dword ptr [rsp+0x48]\r\n \r\nG_M000_IG10:                ;; offset=0x009E\r\n       mov      word  ptr [rsp+0x50], r8w\r\n       mov      gword ptr [rsp+0x58], rdx\r\n       mov      dword ptr [rsp+0x60], ecx\r\n \r\nG_M000_IG11:                ;; offset=0x00AD\r\n       test     eax, eax\r\n       je       SHORT G_M000_IG20\r\n \r\nG_M000_IG12:                ;; offset=0x00B1\r\n       vmovdqu  xmm0, xmmword ptr [rsp+0x50]\r\n       vmovdqu  xmmword ptr [rsi], xmm0\r\n       mov      rcx, qword ptr [rsp+0x60]\r\n       mov      qword ptr [rsi+0x10], rcx\r\n \r\nG_M000_IG13:                ;; offset=0x00C4\r\n       mov      byte  ptr [rsi+0x02], al\r\n \r\nG_M000_IG14:                ;; offset=0x00C7\r\n       mov      rax, rsi\r\n \r\nG_M000_IG15:                ;; offset=0x00CA\r\n       add      rsp, 104\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG16:                ;; offset=0x00D7\r\n       inc      r15d\r\n       cmp      dword ptr [r14+0x08], r15d\r\n       jg       SHORT G_M000_IG06\r\n \r\nG_M000_IG17:                ;; offset=0x00E0\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ecx, dword ptr [rbx+0x08]\r\n       xor      r8d, r8d\r\n       xor      eax, eax\r\n       jmp      SHORT G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x00ED\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x28], xmm0\r\n \r\nG_M000_IG19:                ;; offset=0x00F7\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x50]\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rax, byte  ptr [rsp+0x52]\r\n       jmp      SHORT G_M000_IG11\r\n \r\nG_M000_IG20:                ;; offset=0x0112\r\n       inc      ebp\r\n       jmp      G_M000_IG03\r\n \r\nG_M000_IG21:                ;; offset=0x0119\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      SHORT G_M000_IG14\r\n \r\n; Total bytes of code 310"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 286,
+          "ProfileCount": "1596576",
+          "Inlinees": "3 inlinees with PGO data; 12 single block inlinees; 1 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "9CA836D0F406C2449F1284056E23B356F1B8CB223854DE152405464196927AAE",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 1596576\r\n; 3 inlinees with PGO data; 12 single block inlinees; 1 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 104\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      qword ptr [rsp+0x60], rax\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002E\r\n       mov      rcx, gword ptr [rcx+0x08]\r\n       mov      rdi, gword ptr [rbx]\r\n       mov      ebp, dword ptr [rbx+0x08]\r\n       mov      r8, 0x7FFAB0801960\r\n       cmp      qword ptr [rcx], r8\r\n       jne      G_M000_IG12\r\n \r\nG_M000_IG03:                ;; offset=0x004B\r\n       mov      r14, gword ptr [rcx+0x08]\r\n       mov      r15d, dword ptr [r14+0x08]\r\n       test     r15d, r15d\r\n       jle      G_M000_IG11\r\n \r\nG_M000_IG04:                ;; offset=0x005C\r\n       add      r14, 16\r\n \r\nG_M000_IG05:                ;; offset=0x0060\r\n       mov      rcx, gword ptr [r14]\r\n       mov      gword ptr [rsp+0x28], rdi\r\n       mov      dword ptr [rsp+0x30], ebp\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x38]\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n       movzx    rax, byte  ptr [rsp+0x3A]\r\n       test     eax, eax\r\n       je       SHORT G_M000_IG10\r\n \r\nG_M000_IG06:                ;; offset=0x0087\r\n       test     eax, eax\r\n       jne      SHORT G_M000_IG13\r\n \r\nG_M000_IG07:                ;; offset=0x008B\r\n       mov      rdi, gword ptr [rbx]\r\n       mov      ebp, dword ptr [rbx+0x08]\r\n       inc      ebp\r\n       mov      rcx, gword ptr [rbx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ebp, ecx\r\n       cmovg    ebp, ecx\r\n       mov      rcx, rbx\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       mov      word  ptr [rsi], cx\r\n       mov      byte  ptr [rsi+0x02], 1\r\n       lea      rcx, [rsi+0x08]\r\n       mov      rdx, rdi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebp\r\n \r\nG_M000_IG08:                ;; offset=0x00C0\r\n       mov      rax, rsi\r\n \r\nG_M000_IG09:                ;; offset=0x00C3\r\n       add      rsp, 104\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG10:                ;; offset=0x00D0\r\n       add      r14, 8\r\n       dec      r15d\r\n       jne      SHORT G_M000_IG05\r\n \r\nG_M000_IG11:                ;; offset=0x00D9\r\n       xor      eax, eax\r\n       jmp      SHORT G_M000_IG06\r\n \r\nG_M000_IG12:                ;; offset=0x00DD\r\n       mov      gword ptr [rsp+0x28], rdi\r\n       mov      dword ptr [rsp+0x30], ebp\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x50]\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rax, byte  ptr [rsp+0x52]\r\n       jmp      SHORT G_M000_IG06\r\n \r\nG_M000_IG13:                ;; offset=0x0101\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      SHORT G_M000_IG08\r\n \r\n; Total bytes of code 286"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 365,
+          "ProfileCount": "542976",
+          "Inlinees": "3 inlinees with PGO data; 12 single block inlinees; 2 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "47C85783E250951CC3BE6A20C3483EBF61696101B4C7553CAA8B662B78254FCF",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; fully interruptible\r\n; with Synthesized PGO: fgCalledCount is 542976\r\n; 3 inlinees with PGO data; 12 single block inlinees; 2 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x20], ymm4\r\n       vmovdqu  ymmword ptr [rsp+0x40], ymm4\r\n       mov      rbx, rcx\r\n       mov      rdi, rdx\r\n       mov      rsi, r8\r\n \r\nG_M000_IG02:                ;; offset=0x0027\r\n       mov      rcx, 0x7FFAB0812170\r\n       call     CORINFO_HELP_NEWSFAST\r\n       mov      rbp, rax\r\n       mov      rcx, 0x1A21263B420\r\n       mov      gword ptr [rbp+0x08], rcx\r\n       mov      r14, gword ptr [rsi]\r\n       mov      esi, dword ptr [rsi+0x08]\r\n       jmp      SHORT G_M000_IG07\r\n \r\nG_M000_IG03:                ;; offset=0x004F\r\n       movzx    rdx, word  ptr [rsp+0x30]\r\n       mov      r15, gword ptr [rsp+0x38]\r\n       mov      r13d, dword ptr [rsp+0x40]\r\n \r\nG_M000_IG04:                ;; offset=0x005E\r\n       test     eax, eax\r\n       je       G_M000_IG14\r\n \r\nG_M000_IG05:                ;; offset=0x0066\r\n       mov      r14, r15\r\n       mov      esi, r13d\r\n       inc      dword ptr [rbp+0x14]\r\n       mov      rcx, gword ptr [rbp+0x08]\r\n       mov      eax, dword ptr [rbp+0x10]\r\n       mov      r8d, dword ptr [rcx+0x08]\r\n       cmp      r8d, eax\r\n       jbe      G_M000_IG13\r\n \r\nG_M000_IG06:                ;; offset=0x0083\r\n       lea      r8d, [rax+0x01]\r\n       mov      dword ptr [rbp+0x10], r8d\r\n       mov      eax, eax\r\n       mov      word  ptr [rcx+2*rax+0x10], dx\r\n \r\nG_M000_IG07:                ;; offset=0x0092\r\n       mov      rcx, gword ptr [rbx+0x08]\r\n       mov      r8, 0x7FFAB0801960\r\n       cmp      qword ptr [rcx], r8\r\n       jne      SHORT G_M000_IG12\r\n \r\nG_M000_IG08:                ;; offset=0x00A5\r\n       mov      r15, gword ptr [rcx+0x08]\r\n       xor      r13d, r13d\r\n       cmp      dword ptr [r15+0x08], 0\r\n       jle      SHORT G_M000_IG11\r\n \r\nG_M000_IG09:                ;; offset=0x00B3\r\n       mov      rcx, gword ptr [r15+8*r13+0x10]\r\n       mov      gword ptr [rsp+0x20], r14\r\n       mov      dword ptr [rsp+0x28], esi\r\n       lea      r8, [rsp+0x20]\r\n       lea      rdx, [rsp+0x30]\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n       movzx    rax, byte  ptr [rsp+0x32]\r\n       test     eax, eax\r\n       jne      G_M000_IG03\r\n \r\nG_M000_IG10:                ;; offset=0x00E0\r\n       inc      r13d\r\n       cmp      dword ptr [r15+0x08], r13d\r\n       jg       SHORT G_M000_IG09\r\n \r\nG_M000_IG11:                ;; offset=0x00E9\r\n       xor      edx, edx\r\n       xor      eax, eax\r\n       mov      r15, r14\r\n       mov      r13d, esi\r\n       jmp      G_M000_IG04\r\n \r\nG_M000_IG12:                ;; offset=0x00F8\r\n       mov      gword ptr [rsp+0x20], r14\r\n       mov      dword ptr [rsp+0x28], esi\r\n       lea      r8, [rsp+0x20]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rdx, word  ptr [rsp+0x48]\r\n       movzx    rax, byte  ptr [rsp+0x4A]\r\n       mov      r15, gword ptr [rsp+0x50]\r\n       mov      r13d, dword ptr [rsp+0x58]\r\n       jmp      G_M000_IG04\r\n \r\nG_M000_IG13:                ;; offset=0x012E\r\n       mov      rcx, rbp\r\n       call     [System.Collections.Generic.List`1[char]:AddWithResize(char):this]\r\n       jmp      G_M000_IG07\r\n \r\nG_M000_IG14:                ;; offset=0x013C\r\n       mov      rcx, rdi\r\n       mov      rdx, rbp\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      byte  ptr [rdi+0x08], 1\r\n       lea      rcx, [rdi+0x10]\r\n       mov      rdx, r15\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rdi+0x18], r13d\r\n       mov      rax, rdi\r\n \r\nG_M000_IG15:                ;; offset=0x015E\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\n; Total bytes of code 365"
+        }
+      ]
+    },
+    {
+      "Run": "25-asm-only",
+      "RawDisassemblySHA256": "49DDD521E6CE64D8703F36657AE601EC463DBACAAFE863815DEAE47791451A41",
+      "Methods": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 32,
+          "ProfileCount": "",
+          "Inlinees": "",
+          "NormalizedInstructionSHA256": "836963C5D4851B02DE07BC0286B6B1FB4AC6936C481A5FCF842BED9C6A6B5AC0",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; rsp based frame\r\n; fully interruptible\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n \r\nG_M000_IG02:                ;; offset=0x0000\r\n       mov      rax, 0x7FFAB08311C0\r\n       cmp      qword ptr [rcx], rax\r\n       jne      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x000F\r\n       tail.jmp [Marimo.Kotowari.Core.CharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n \r\nG_M000_IG04:                ;; offset=0x0015\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n \r\nG_M000_IG05:                ;; offset=0x001C\r\n       tail.jmp [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n \r\n; Total bytes of code 32"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.Cursol:get_Current():byref:this",
+          "Tier": "Tier1",
+          "NativeBytes": 78,
+          "ProfileCount": "1.538048e+07",
+          "Inlinees": "0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "FBA555576360B4B18B9F8732A92D075781F679C30B6FE5DB8BB72E730BB85A51",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.Cursol:get_Current():byref:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Dynamic PGO\r\n; rbp based frame\r\n; fully interruptible\r\n; with Dynamic PGO: fgCalledCount is 1.538048e+07\r\n; 0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     rbp\r\n       sub      rsp, 48\r\n       lea      rbp, [rsp+0x30]\r\n \r\nG_M000_IG02:                ;; offset=0x000A\r\n       mov      rax, gword ptr [rcx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ecx, dword ptr [rax+0x08]\r\n       jae      SHORT G_M000_IG03\r\n       lea      rax, bword ptr [rax+2*rcx+0x10]\r\n       mov      bword ptr [rbp-0x08], rax\r\n       jmp      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x0020\r\n       call     CORINFO_HELP_RNGCHKFAIL\r\n       int3     \r\n \r\nG_M000_IG04:                ;; offset=0x0026\r\n       mov      rax, bword ptr [rbp-0x08]\r\n \r\nG_M000_IG05:                ;; offset=0x002A\r\n       add      rsp, 48\r\n       pop      rbp\r\n       ret      \r\n \r\nG_M000_IG06:                ;; offset=0x0030\r\n       sub      rsp, 40\r\n \r\nG_M000_IG07:                ;; offset=0x0034\r\n       mov      rax, 0x7FFAB034B108\r\n       mov      bword ptr [rbp-0x08], rax\r\n       lea      rax, G_M000_IG04\r\n \r\nG_M000_IG08:                ;; offset=0x0049\r\n       add      rsp, 40\r\n       ret      \r\n \r\n; Total bytes of code 78"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 363,
+          "ProfileCount": "3.990938e+07",
+          "Inlinees": "3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "735BCB33D00BCC09ADFAE8886DA61D63411C52F684C996873D5DEB4655CAE4CF",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 3.990938e+07\r\n; 3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002B\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       xor      ebp, ebp\r\n \r\nG_M000_IG03:                ;; offset=0x0031\r\n       mov      ecx, dword ptr [rdi+0x08]\r\n       cmp      ecx, ebp\r\n       jle      G_M000_IG21\r\n \r\nG_M000_IG04:                ;; offset=0x003C\r\n       mov      r14, gword ptr [rdi+8*rbp+0x10]\r\n       mov      rcx, 0x7FFAB08311C0\r\n       cmp      qword ptr [r14], rcx\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG05:                ;; offset=0x0054\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x38], xmm0\r\n \r\nG_M000_IG06:                ;; offset=0x005E\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r15, word  ptr [rax]\r\n       cmp      byte  ptr [r14+0x0A], 0\r\n       jne      SHORT G_M000_IG16\r\n \r\nG_M000_IG07:                ;; offset=0x0074\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       cmp      r15d, ecx\r\n       jne      G_M000_IG17\r\n \r\nG_M000_IG08:                ;; offset=0x0082\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      edx, dword ptr [rsp+0x40]\r\n       inc      edx\r\n       mov      rcx, gword ptr [rsp+0x38]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      edx, ecx\r\n       jg       G_M000_IG22\r\n \r\nG_M000_IG09:                ;; offset=0x009D\r\n       mov      r13d, 1\r\n \r\nG_M000_IG10:                ;; offset=0x00A3\r\n       mov      word  ptr [rsp+0x48], r15w\r\n       mov      gword ptr [rsp+0x50], r8\r\n       mov      dword ptr [rsp+0x58], edx\r\n \r\nG_M000_IG11:                ;; offset=0x00B2\r\n       test     r13d, r13d\r\n       je       G_M000_IG20\r\n \r\nG_M000_IG12:                ;; offset=0x00BB\r\n       vmovdqu  xmm0, xmmword ptr [rsp+0x48]\r\n       vmovdqu  xmmword ptr [rsi], xmm0\r\n       mov      rcx, qword ptr [rsp+0x58]\r\n       mov      qword ptr [rsi+0x10], rcx\r\n \r\nG_M000_IG13:                ;; offset=0x00CE\r\n       mov      byte  ptr [rsi+0x02], r13b\r\n \r\nG_M000_IG14:                ;; offset=0x00D2\r\n       mov      rax, rsi\r\n \r\nG_M000_IG15:                ;; offset=0x00D5\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG16:                ;; offset=0x00E4\r\n       mov      ecx, r15d\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      r13d, eax\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      r13d, eax\r\n       je       SHORT G_M000_IG08\r\n \r\nG_M000_IG17:                ;; offset=0x0100\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      edx, dword ptr [rsp+0x40]\r\n       xor      r15d, r15d\r\n       xor      r13d, r13d\r\n       jmp      SHORT G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x0111\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x28], xmm0\r\n \r\nG_M000_IG19:                ;; offset=0x011B\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r14\r\n       mov      rax, qword ptr [r14]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    r13, byte  ptr [rsp+0x4A]\r\n       jmp      G_M000_IG11\r\n \r\nG_M000_IG20:                ;; offset=0x013D\r\n       inc      ebp\r\n       jmp      G_M000_IG03\r\n \r\nG_M000_IG21:                ;; offset=0x0144\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      G_M000_IG14\r\n \r\nG_M000_IG22:                ;; offset=0x0164\r\n       mov      edx, ecx\r\n       jmp      G_M000_IG09\r\n \r\n; Total bytes of code 363"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 295,
+          "ProfileCount": "904416",
+          "Inlinees": "4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "186672A8D3712B437EAB552657AE410EA062DCB40667A76B5814A88F1991FAF7",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 904416\r\n; 4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r14\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x0027\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       mov      rbp, gword ptr [rbx]\r\n       mov      r14d, dword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB08311C0\r\n       cmp      qword ptr [rdi], rcx\r\n       jne      G_M000_IG12\r\n \r\nG_M000_IG03:                ;; offset=0x0045\r\n       mov      gword ptr [rsp+0x38], rbp\r\n       mov      dword ptr [rsp+0x40], r14d\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       cmp      byte  ptr [rdi+0x0A], 0\r\n       jne      SHORT G_M000_IG10\r\n \r\nG_M000_IG04:                ;; offset=0x0063\r\n       movzx    rax, word  ptr [rdi+0x08]\r\n       cmp      ecx, eax\r\n       jne      SHORT G_M000_IG11\r\n \r\nG_M000_IG05:                ;; offset=0x006B\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r8d, dword ptr [r8+0x08]\r\n       mov      ebp, 1\r\n \r\nG_M000_IG06:                ;; offset=0x0079\r\n       test     ebp, ebp\r\n       jne      G_M000_IG13\r\n \r\nG_M000_IG07:                ;; offset=0x0081\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      rdi, rdx\r\n       mov      ebp, dword ptr [rbx+0x08]\r\n       inc      ebp\r\n       mov      ecx, dword ptr [rdx+0x08]\r\n       cmp      ebp, ecx\r\n       cmovg    ebp, ecx\r\n       mov      rcx, rbx\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       mov      word  ptr [rsi], cx\r\n       mov      byte  ptr [rsi+0x02], 1\r\n       lea      rcx, [rsi+0x08]\r\n       mov      rdx, rdi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebp\r\n \r\nG_M000_IG08:                ;; offset=0x00B6\r\n       mov      rax, rsi\r\n \r\nG_M000_IG09:                ;; offset=0x00B9\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r14\r\n       ret      \r\n \r\nG_M000_IG10:                ;; offset=0x00C4\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      ebp, eax\r\n       movzx    rcx, word  ptr [rdi+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      ebp, eax\r\n       je       SHORT G_M000_IG05\r\n \r\nG_M000_IG11:                ;; offset=0x00DA\r\n       xor      ebp, ebp\r\n       jmp      SHORT G_M000_IG06\r\n \r\nG_M000_IG12:                ;; offset=0x00DE\r\n       mov      gword ptr [rsp+0x28], rbp\r\n       mov      dword ptr [rsp+0x30], r14d\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, rdi\r\n       mov      rax, qword ptr [rdi]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rbp, byte  ptr [rsp+0x4A]\r\n       jmp      G_M000_IG06\r\n \r\nG_M000_IG13:                ;; offset=0x010A\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      SHORT G_M000_IG08\r\n \r\n; Total bytes of code 295"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 550,
+          "ProfileCount": "507200",
+          "Inlinees": "6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "EBD20EBE11E339CF39479EE83E1BF4A12DE8888019D22D5EBDF4B7D8E233F6DC",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 507200\r\n; 6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rbx, rcx\r\n       mov      rdi, rdx\r\n       mov      rsi, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002E\r\n       mov      rcx, 0x7FFAB0841D58\r\n       call     CORINFO_HELP_NEWSFAST\r\n       mov      rbp, rax\r\n       mov      rcx, 0x1CF8A6FB420\r\n       mov      gword ptr [rbp+0x08], rcx\r\n       mov      r14, gword ptr [rsi]\r\n       mov      esi, dword ptr [rsi+0x08]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG03:                ;; offset=0x0059\r\n       mov      gword ptr [rsp+0x28], r14\r\n       mov      dword ptr [rsp+0x30], esi\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r15\r\n       mov      rax, qword ptr [r15]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rdx, word  ptr [rsp+0x48]\r\n       movzx    r14, byte  ptr [rsp+0x4A]\r\n       mov      rsi, gword ptr [rsp+0x50]\r\n       mov      r15d, dword ptr [rsp+0x58]\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG04:                ;; offset=0x0093\r\n       mov      rcx, rbp\r\n       call     [System.Collections.Generic.List`1[char]:AddWithResize(char):this]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG05:                ;; offset=0x00A1\r\n       mov      rcx, rdi\r\n       mov      rdx, rbp\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      byte  ptr [rdi+0x08], 1\r\n       lea      rcx, [rdi+0x10]\r\n       mov      rdx, rsi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rdi+0x18], r15d\r\n       mov      rax, rdi\r\n \r\nG_M000_IG06:                ;; offset=0x00C3\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG07:                ;; offset=0x00D2\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0526460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG19\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG08:                ;; offset=0x00F4\r\n       mov      rcx, rax\r\n       mov      edx, r14d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       mov      esi, eax\r\n       movzx    r15, word  ptr [r15+0x08]\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0526460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG20\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG09:                ;; offset=0x012B\r\n       mov      rcx, rax\r\n       mov      edx, r15d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       cmp      eax, esi\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG10:                ;; offset=0x0141\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       inc      r15d\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r13d, dword ptr [r8+0x08]\r\n       cmp      r15d, r13d\r\n       jg       G_M000_IG21\r\n \r\nG_M000_IG11:                ;; offset=0x0160\r\n       mov      edx, r14d\r\n       mov      r14d, 1\r\n \r\nG_M000_IG12:                ;; offset=0x0169\r\n       test     r14d, r14d\r\n       je       G_M000_IG05\r\n \r\nG_M000_IG13:                ;; offset=0x0172\r\n       mov      r14, rsi\r\n       mov      esi, r15d\r\n       inc      dword ptr [rbp+0x14]\r\n       mov      rcx, gword ptr [rbp+0x08]\r\n       mov      eax, dword ptr [rbp+0x10]\r\n       mov      r8d, dword ptr [rcx+0x08]\r\n       cmp      r8d, eax\r\n       jbe      G_M000_IG04\r\n \r\nG_M000_IG14:                ;; offset=0x018F\r\n       lea      r8d, [rax+0x01]\r\n       mov      dword ptr [rbp+0x10], r8d\r\n       mov      eax, eax\r\n       mov      word  ptr [rcx+2*rax+0x10], dx\r\n \r\nG_M000_IG15:                ;; offset=0x019E\r\n       mov      r15, gword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB08311C0\r\n       cmp      qword ptr [r15], rcx\r\n       jne      G_M000_IG03\r\n \r\nG_M000_IG16:                ;; offset=0x01B5\r\n       mov      gword ptr [rsp+0x38], r14\r\n       mov      dword ptr [rsp+0x40], esi\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r14, word  ptr [rax]\r\n       cmp      byte  ptr [r15+0x0A], 0\r\n       jne      G_M000_IG07\r\n \r\nG_M000_IG17:                ;; offset=0x01D8\r\n       movzx    rax, word  ptr [r15+0x08]\r\n       cmp      r14d, eax\r\n       je       G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x01E6\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       xor      edx, edx\r\n       xor      r14d, r14d\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG19:                ;; offset=0x01FA\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG08\r\n \r\nG_M000_IG20:                ;; offset=0x020C\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG09\r\n \r\nG_M000_IG21:                ;; offset=0x021E\r\n       mov      r15d, r13d\r\n       jmp      G_M000_IG11\r\n \r\n; Total bytes of code 550"
+        }
+      ]
+    },
+    {
+      "Run": "30-asm-only",
+      "RawDisassemblySHA256": "0914AF1EA256C8EA038FBF3B65BFB99C196B09322AE79B84E2C049BD1564D8B6",
+      "Methods": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 32,
+          "ProfileCount": "",
+          "Inlinees": "",
+          "NormalizedInstructionSHA256": "836963C5D4851B02DE07BC0286B6B1FB4AC6936C481A5FCF842BED9C6A6B5AC0",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Parser`1[char]:Parse(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; rsp based frame\r\n; fully interruptible\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n \r\nG_M000_IG02:                ;; offset=0x0000\r\n       mov      rax, 0x7FFAB0831680\r\n       cmp      qword ptr [rcx], rax\r\n       jne      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x000F\r\n       tail.jmp [Marimo.Kotowari.Core.CharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this]\r\n \r\nG_M000_IG04:                ;; offset=0x0015\r\n       mov      rax, qword ptr [rcx]\r\n       mov      rax, qword ptr [rax+0x40]\r\n \r\nG_M000_IG05:                ;; offset=0x001C\r\n       tail.jmp [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n \r\n; Total bytes of code 32"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.Cursol:get_Current():byref:this",
+          "Tier": "Tier1",
+          "NativeBytes": 78,
+          "ProfileCount": "1.461658e+07",
+          "Inlinees": "0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "FBA555576360B4B18B9F8732A92D075781F679C30B6FE5DB8BB72E730BB85A51",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.Cursol:get_Current():byref:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Dynamic PGO\r\n; rbp based frame\r\n; fully interruptible\r\n; with Dynamic PGO: fgCalledCount is 1.461658e+07\r\n; 0 inlinees with PGO data; 2 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     rbp\r\n       sub      rsp, 48\r\n       lea      rbp, [rsp+0x30]\r\n \r\nG_M000_IG02:                ;; offset=0x000A\r\n       mov      rax, gword ptr [rcx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ecx, dword ptr [rax+0x08]\r\n       jae      SHORT G_M000_IG03\r\n       lea      rax, bword ptr [rax+2*rcx+0x10]\r\n       mov      bword ptr [rbp-0x08], rax\r\n       jmp      SHORT G_M000_IG04\r\n \r\nG_M000_IG03:                ;; offset=0x0020\r\n       call     CORINFO_HELP_RNGCHKFAIL\r\n       int3     \r\n \r\nG_M000_IG04:                ;; offset=0x0026\r\n       mov      rax, bword ptr [rbp-0x08]\r\n \r\nG_M000_IG05:                ;; offset=0x002A\r\n       add      rsp, 48\r\n       pop      rbp\r\n       ret      \r\n \r\nG_M000_IG06:                ;; offset=0x0030\r\n       sub      rsp, 40\r\n \r\nG_M000_IG07:                ;; offset=0x0034\r\n       mov      rax, 0x7FFAB034B108\r\n       mov      bword ptr [rbp-0x08], rax\r\n       lea      rax, G_M000_IG04\r\n \r\nG_M000_IG08:                ;; offset=0x0049\r\n       add      rsp, 40\r\n       ret      \r\n \r\n; Total bytes of code 78"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 359,
+          "ProfileCount": "3.808051e+07",
+          "Inlinees": "3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "8D244E5B00D042B7C658CDCF58A0EBD7D53F5E2A5714566844B4A340A2B849DE",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.OrParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 3.808051e+07\r\n; 3 inlinees with PGO data; 14 single block inlinees; 1 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002B\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       xor      ebp, ebp\r\n \r\nG_M000_IG03:                ;; offset=0x0031\r\n       mov      ecx, dword ptr [rdi+0x08]\r\n       cmp      ecx, ebp\r\n       jle      G_M000_IG19\r\n \r\nG_M000_IG04:                ;; offset=0x003C\r\n       mov      r14, gword ptr [rdi+8*rbp+0x10]\r\n       mov      rcx, 0x7FFAB0831680\r\n       cmp      qword ptr [r14], rcx\r\n       jne      G_M000_IG16\r\n \r\nG_M000_IG05:                ;; offset=0x0054\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x38], xmm0\r\n \r\nG_M000_IG06:                ;; offset=0x005E\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r15, word  ptr [rax]\r\n       cmp      byte  ptr [r14+0x0A], 0\r\n       jne      SHORT G_M000_IG14\r\n \r\nG_M000_IG07:                ;; offset=0x0074\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       cmp      r15d, ecx\r\n       jne      SHORT G_M000_IG15\r\n \r\nG_M000_IG08:                ;; offset=0x007E\r\n       mov      rax, gword ptr [rsp+0x38]\r\n       mov      r10d, dword ptr [rsp+0x40]\r\n       inc      r10d\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r9d, dword ptr [r8+0x08]\r\n       cmp      r10d, r9d\r\n       jg       G_M000_IG20\r\n \r\nG_M000_IG09:                ;; offset=0x009D\r\n       mov      r13d, 1\r\n \r\nG_M000_IG10:                ;; offset=0x00A3\r\n       test     r13d, r13d\r\n       je       G_M000_IG18\r\n \r\nG_M000_IG11:                ;; offset=0x00AC\r\n       mov      word  ptr [rsi], r15w\r\n       mov      byte  ptr [rsi+0x02], r13b\r\n       mov      gword ptr [rsi+0x08], rax\r\n       mov      dword ptr [rsi+0x10], r10d\r\n \r\nG_M000_IG12:                ;; offset=0x00BC\r\n       mov      rax, rsi\r\n \r\nG_M000_IG13:                ;; offset=0x00BF\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG14:                ;; offset=0x00CE\r\n       mov      ecx, r15d\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      r13d, eax\r\n       movzx    rcx, word  ptr [r14+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      r13d, eax\r\n       je       SHORT G_M000_IG08\r\n \r\nG_M000_IG15:                ;; offset=0x00EA\r\n       mov      rax, gword ptr [rsp+0x38]\r\n       mov      r10d, dword ptr [rsp+0x40]\r\n       xor      r15d, r15d\r\n       xor      r13d, r13d\r\n       jmp      SHORT G_M000_IG10\r\n \r\nG_M000_IG16:                ;; offset=0x00FC\r\n       vmovdqu  xmm0, xmmword ptr [rbx]\r\n       vmovdqu  xmmword ptr [rsp+0x28], xmm0\r\n \r\nG_M000_IG17:                ;; offset=0x0106\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r14\r\n       mov      rax, qword ptr [r14]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    r15, word  ptr [rsp+0x48]\r\n       movzx    r13, byte  ptr [rsp+0x4A]\r\n       mov      rax, gword ptr [rsp+0x50]\r\n       mov      r10d, dword ptr [rsp+0x58]\r\n       jmp      G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x0138\r\n       inc      ebp\r\n       jmp      G_M000_IG03\r\n \r\nG_M000_IG19:                ;; offset=0x013F\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG20:                ;; offset=0x015F\r\n       mov      r10d, r9d\r\n       jmp      G_M000_IG09\r\n \r\n; Total bytes of code 359"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 295,
+          "ProfileCount": "869616",
+          "Inlinees": "4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "E6280EE73EEC26F8E0B998ECD895C222B2C9A524B46246746C02C56F38983EE5",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ExpectCharParser:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 869616\r\n; 4 inlinees with PGO data; 18 single block inlinees; 2 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r14\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rsi, rdx\r\n       mov      rbx, r8\r\n \r\nG_M000_IG02:                ;; offset=0x0027\r\n       mov      rdi, gword ptr [rcx+0x08]\r\n       mov      rbp, gword ptr [rbx]\r\n       mov      r14d, dword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB0831680\r\n       cmp      qword ptr [rdi], rcx\r\n       jne      G_M000_IG12\r\n \r\nG_M000_IG03:                ;; offset=0x0045\r\n       mov      gword ptr [rsp+0x38], rbp\r\n       mov      dword ptr [rsp+0x40], r14d\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       cmp      byte  ptr [rdi+0x0A], 0\r\n       jne      SHORT G_M000_IG10\r\n \r\nG_M000_IG04:                ;; offset=0x0063\r\n       movzx    rax, word  ptr [rdi+0x08]\r\n       cmp      ecx, eax\r\n       jne      SHORT G_M000_IG11\r\n \r\nG_M000_IG05:                ;; offset=0x006B\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r8d, dword ptr [r8+0x08]\r\n       mov      ebp, 1\r\n \r\nG_M000_IG06:                ;; offset=0x0079\r\n       test     ebp, ebp\r\n       jne      G_M000_IG13\r\n \r\nG_M000_IG07:                ;; offset=0x0081\r\n       mov      rdi, gword ptr [rbx]\r\n       mov      ebp, dword ptr [rbx+0x08]\r\n       inc      ebp\r\n       mov      rcx, gword ptr [rbx]\r\n       mov      ecx, dword ptr [rcx+0x08]\r\n       cmp      ebp, ecx\r\n       cmovg    ebp, ecx\r\n       mov      rcx, rbx\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    rcx, word  ptr [rax]\r\n       mov      word  ptr [rsi], cx\r\n       mov      byte  ptr [rsi+0x02], 1\r\n       lea      rcx, [rsi+0x08]\r\n       mov      rdx, rdi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebp\r\n \r\nG_M000_IG08:                ;; offset=0x00B6\r\n       mov      rax, rsi\r\n \r\nG_M000_IG09:                ;; offset=0x00B9\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r14\r\n       ret      \r\n \r\nG_M000_IG10:                ;; offset=0x00C4\r\n       call     [System.Char:ToLower(char):char]\r\n       mov      ebp, eax\r\n       movzx    rcx, word  ptr [rdi+0x08]\r\n       call     [System.Char:ToLower(char):char]\r\n       cmp      ebp, eax\r\n       je       SHORT G_M000_IG05\r\n \r\nG_M000_IG11:                ;; offset=0x00DA\r\n       xor      ebp, ebp\r\n       jmp      SHORT G_M000_IG06\r\n \r\nG_M000_IG12:                ;; offset=0x00DE\r\n       mov      gword ptr [rsp+0x28], rbp\r\n       mov      dword ptr [rsp+0x30], r14d\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, rdi\r\n       mov      rax, qword ptr [rdi]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rbp, byte  ptr [rsp+0x4A]\r\n       jmp      G_M000_IG06\r\n \r\nG_M000_IG13:                ;; offset=0x010A\r\n       mov      rdx, gword ptr [rbx]\r\n       mov      ebx, dword ptr [rbx+0x08]\r\n       mov      word  ptr [rsi], 0\r\n       mov      byte  ptr [rsi+0x02], 0\r\n       lea      rcx, [rsi+0x08]\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rsi+0x10], ebx\r\n       jmp      SHORT G_M000_IG08\r\n \r\n; Total bytes of code 295"
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this",
+          "Tier": "Tier1",
+          "NativeBytes": 550,
+          "ProfileCount": "474688",
+          "Inlinees": "6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data",
+          "NormalizedInstructionSHA256": "EBD20EBE11E339CF39479EE83E1BF4A12DE8888019D22D5EBDF4B7D8E233F6DC",
+          "RawDisassembly": "; Assembly listing for method Marimo.Kotowari.Core.ZeroOrMoreParser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.Collections.Generic.IEnumerable`1[char]]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 474688\r\n; 6 inlinees with PGO data; 18 single block inlinees; 3 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       push     r15\r\n       push     r14\r\n       push     r13\r\n       push     rdi\r\n       push     rsi\r\n       push     rbp\r\n       push     rbx\r\n       sub      rsp, 96\r\n       xor      eax, eax\r\n       mov      qword ptr [rsp+0x28], rax\r\n       vxorps   xmm4, xmm4, xmm4\r\n       vmovdqu  ymmword ptr [rsp+0x30], ymm4\r\n       vmovdqa  xmmword ptr [rsp+0x50], xmm4\r\n       mov      rbx, rcx\r\n       mov      rdi, rdx\r\n       mov      rsi, r8\r\n \r\nG_M000_IG02:                ;; offset=0x002E\r\n       mov      rcx, 0x7FFAB0842220\r\n       call     CORINFO_HELP_NEWSFAST\r\n       mov      rbp, rax\r\n       mov      rcx, 0x1879262B420\r\n       mov      gword ptr [rbp+0x08], rcx\r\n       mov      r14, gword ptr [rsi]\r\n       mov      esi, dword ptr [rsi+0x08]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG03:                ;; offset=0x0059\r\n       mov      gword ptr [rsp+0x28], r14\r\n       mov      dword ptr [rsp+0x30], esi\r\n       lea      r8, [rsp+0x28]\r\n       lea      rdx, [rsp+0x48]\r\n       mov      rcx, r15\r\n       mov      rax, qword ptr [r15]\r\n       mov      rax, qword ptr [rax+0x40]\r\n       call     [rax+0x20]Marimo.Kotowari.Parser`1[char]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[char]:this\r\n       movzx    rdx, word  ptr [rsp+0x48]\r\n       movzx    r14, byte  ptr [rsp+0x4A]\r\n       mov      rsi, gword ptr [rsp+0x50]\r\n       mov      r15d, dword ptr [rsp+0x58]\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG04:                ;; offset=0x0093\r\n       mov      rcx, rbp\r\n       call     [System.Collections.Generic.List`1[char]:AddWithResize(char):this]\r\n       jmp      G_M000_IG15\r\n \r\nG_M000_IG05:                ;; offset=0x00A1\r\n       mov      rcx, rdi\r\n       mov      rdx, rbp\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      byte  ptr [rdi+0x08], 1\r\n       lea      rcx, [rdi+0x10]\r\n       mov      rdx, rsi\r\n       call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       mov      dword ptr [rdi+0x18], r15d\r\n       mov      rax, rdi\r\n \r\nG_M000_IG06:                ;; offset=0x00C3\r\n       add      rsp, 96\r\n       pop      rbx\r\n       pop      rbp\r\n       pop      rsi\r\n       pop      rdi\r\n       pop      r13\r\n       pop      r14\r\n       pop      r15\r\n       ret      \r\n \r\nG_M000_IG07:                ;; offset=0x00D2\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0526460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG19\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG08:                ;; offset=0x00F4\r\n       mov      rcx, rax\r\n       mov      edx, r14d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       mov      esi, eax\r\n       movzx    r15, word  ptr [r15+0x08]\r\n       call     [System.Globalization.CultureInfo:get_CurrentCulture():System.Globalization.CultureInfo]\r\n       mov      rcx, 0x7FFAB0526460\r\n       cmp      qword ptr [rax], rcx\r\n       jne      G_M000_IG20\r\n       mov      rcx, rax\r\n       call     [System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this]\r\n \r\nG_M000_IG09:                ;; offset=0x012B\r\n       mov      rcx, rax\r\n       mov      edx, r15d\r\n       cmp      dword ptr [rcx], ecx\r\n       call     [System.Globalization.TextInfo:ToLower(char):char:this]\r\n       cmp      eax, esi\r\n       jne      G_M000_IG18\r\n \r\nG_M000_IG10:                ;; offset=0x0141\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       inc      r15d\r\n       mov      r8, gword ptr [rsp+0x38]\r\n       mov      r13d, dword ptr [r8+0x08]\r\n       cmp      r15d, r13d\r\n       jg       G_M000_IG21\r\n \r\nG_M000_IG11:                ;; offset=0x0160\r\n       mov      edx, r14d\r\n       mov      r14d, 1\r\n \r\nG_M000_IG12:                ;; offset=0x0169\r\n       test     r14d, r14d\r\n       je       G_M000_IG05\r\n \r\nG_M000_IG13:                ;; offset=0x0172\r\n       mov      r14, rsi\r\n       mov      esi, r15d\r\n       inc      dword ptr [rbp+0x14]\r\n       mov      rcx, gword ptr [rbp+0x08]\r\n       mov      eax, dword ptr [rbp+0x10]\r\n       mov      r8d, dword ptr [rcx+0x08]\r\n       cmp      r8d, eax\r\n       jbe      G_M000_IG04\r\n \r\nG_M000_IG14:                ;; offset=0x018F\r\n       lea      r8d, [rax+0x01]\r\n       mov      dword ptr [rbp+0x10], r8d\r\n       mov      eax, eax\r\n       mov      word  ptr [rcx+2*rax+0x10], dx\r\n \r\nG_M000_IG15:                ;; offset=0x019E\r\n       mov      r15, gword ptr [rbx+0x08]\r\n       mov      rcx, 0x7FFAB0831680\r\n       cmp      qword ptr [r15], rcx\r\n       jne      G_M000_IG03\r\n \r\nG_M000_IG16:                ;; offset=0x01B5\r\n       mov      gword ptr [rsp+0x38], r14\r\n       mov      dword ptr [rsp+0x40], esi\r\n       lea      rcx, [rsp+0x38]\r\n       call     [Marimo.Kotowari.Core.Cursol:get_Current():byref:this]\r\n       movzx    r14, word  ptr [rax]\r\n       cmp      byte  ptr [r15+0x0A], 0\r\n       jne      G_M000_IG07\r\n \r\nG_M000_IG17:                ;; offset=0x01D8\r\n       movzx    rax, word  ptr [r15+0x08]\r\n       cmp      r14d, eax\r\n       je       G_M000_IG10\r\n \r\nG_M000_IG18:                ;; offset=0x01E6\r\n       mov      rsi, gword ptr [rsp+0x38]\r\n       mov      r15d, dword ptr [rsp+0x40]\r\n       xor      edx, edx\r\n       xor      r14d, r14d\r\n       jmp      G_M000_IG12\r\n \r\nG_M000_IG19:                ;; offset=0x01FA\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG08\r\n \r\nG_M000_IG20:                ;; offset=0x020C\r\n       mov      rcx, rax\r\n       mov      rax, qword ptr [rax]\r\n       mov      rax, qword ptr [rax+0x48]\r\n       call     [rax+0x38]System.Globalization.CultureInfo:get_TextInfo():System.Globalization.TextInfo:this\r\n       jmp      G_M000_IG09\r\n \r\nG_M000_IG21:                ;; offset=0x021E\r\n       mov      r15d, r13d\r\n       jmp      G_M000_IG11\r\n \r\n; Total bytes of code 550"
+        }
+      ]
+    }
+  ],
+  "TraceExtracts": [
+    {
+      "Run": "01-pgo-on",
+      "EventsLost": 0,
+      "RawTraceSHA256": "90277508873A2EB3D9B076EC3B2EF26FFA5025D1DEE85FF0FDF200CA7C3D4A2D",
+      "Windows": [
+        {
+          "Stage": "WorkloadJitting",
+          "Iteration": 1,
+          "StartMs": 179.226,
+          "StopMs": 1308.0979,
+          "StartUtc": "2026-10-04T23:52:53.501226Z",
+          "StopUtc": "2026-10-04T23:52:54.6300979Z",
+          "Operations": 1,
+          "MeanMs": 1128.8719
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 1,
+          "StartMs": 1358.1592,
+          "StopMs": 4751.7629,
+          "StartUtc": "2026-10-04T23:52:54.6801592Z",
+          "StopUtc": "2026-10-04T23:52:58.0737629Z",
+          "Operations": 4,
+          "MeanMs": 848.4009249999999
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 2,
+          "StartMs": 4756.7743,
+          "StopMs": 5962.3339,
+          "StartUtc": "2026-10-04T23:52:58.0787743Z",
+          "StopUtc": "2026-10-04T23:52:59.2843339Z",
+          "Operations": 4,
+          "MeanMs": 301.3898999999999
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 3,
+          "StartMs": 5973.1868,
+          "StopMs": 7159.0147,
+          "StartUtc": "2026-10-04T23:52:59.2951868Z",
+          "StopUtc": "2026-10-04T23:53:00.4810147Z",
+          "Operations": 4,
+          "MeanMs": 296.45697499999983
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 4,
+          "StartMs": 7164.2194,
+          "StopMs": 8195.4765,
+          "StartUtc": "2026-10-04T23:53:00.4862194Z",
+          "StopUtc": "2026-10-04T23:53:01.5174765Z",
+          "Operations": 4,
+          "MeanMs": 257.8142750000002
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 5,
+          "StartMs": 8200.6411,
+          "StopMs": 9234.4212,
+          "StartUtc": "2026-10-04T23:53:01.5226411Z",
+          "StopUtc": "2026-10-04T23:53:02.5564212Z",
+          "Operations": 4,
+          "MeanMs": 258.445025
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 6,
+          "StartMs": 9239.8816,
+          "StopMs": 10255.3306,
+          "StartUtc": "2026-10-04T23:53:02.5618816Z",
+          "StopUtc": "2026-10-04T23:53:03.5773306Z",
+          "Operations": 4,
+          "MeanMs": 253.86224999999968
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 7,
+          "StartMs": 10260.6946,
+          "StopMs": 11301.8753,
+          "StartUtc": "2026-10-04T23:53:03.5826946Z",
+          "StopUtc": "2026-10-04T23:53:04.6238753Z",
+          "Operations": 4,
+          "MeanMs": 260.29517499999974
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 8,
+          "StartMs": 11307.6251,
+          "StopMs": 12348.1878,
+          "StartUtc": "2026-10-04T23:53:04.6296251Z",
+          "StopUtc": "2026-10-04T23:53:05.6701878Z",
+          "Operations": 4,
+          "MeanMs": 260.1406750000001
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 9,
+          "StartMs": 12356.3865,
+          "StopMs": 13400.1479,
+          "StartUtc": "2026-10-04T23:53:05.6783865Z",
+          "StopUtc": "2026-10-04T23:53:06.7221479Z",
+          "Operations": 4,
+          "MeanMs": 260.94034999999985
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 10,
+          "StartMs": 13406.9844,
+          "StopMs": 14490.3774,
+          "StartUtc": "2026-10-04T23:53:06.7289844Z",
+          "StopUtc": "2026-10-04T23:53:07.8123774Z",
+          "Operations": 4,
+          "MeanMs": 270.84825
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 1,
+          "StartMs": 14497.3285,
+          "StopMs": 15563.9736,
+          "StartUtc": "2026-10-04T23:53:07.8193285Z",
+          "StopUtc": "2026-10-04T23:53:08.8859736Z",
+          "Operations": 4,
+          "MeanMs": 266.66127499999993
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 2,
+          "StartMs": 15568.4022,
+          "StopMs": 16636.5279,
+          "StartUtc": "2026-10-04T23:53:08.8904022Z",
+          "StopUtc": "2026-10-04T23:53:09.9585279Z",
+          "Operations": 4,
+          "MeanMs": 267.0314250000001
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 3,
+          "StartMs": 16643.429,
+          "StopMs": 17682.5473,
+          "StartUtc": "2026-10-04T23:53:09.965429Z",
+          "StopUtc": "2026-10-04T23:53:11.0045473Z",
+          "Operations": 4,
+          "MeanMs": 259.77957499999957
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 4,
+          "StartMs": 17690.5191,
+          "StopMs": 18690.5432,
+          "StartUtc": "2026-10-04T23:53:11.0125191Z",
+          "StopUtc": "2026-10-04T23:53:12.0125432Z",
+          "Operations": 4,
+          "MeanMs": 250.00602499999968
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 5,
+          "StartMs": 18697.1968,
+          "StopMs": 19729.1089,
+          "StartUtc": "2026-10-04T23:53:12.0191968Z",
+          "StopUtc": "2026-10-04T23:53:13.0511089Z",
+          "Operations": 4,
+          "MeanMs": 257.97802499999943
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 6,
+          "StartMs": 19736.1227,
+          "StopMs": 20793.5669,
+          "StartUtc": "2026-10-04T23:53:13.0581227Z",
+          "StopUtc": "2026-10-04T23:53:14.1155669Z",
+          "Operations": 4,
+          "MeanMs": 264.36105000000043
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 7,
+          "StartMs": 20798.5298,
+          "StopMs": 21877.217,
+          "StartUtc": "2026-10-04T23:53:14.1205298Z",
+          "StopUtc": "2026-10-04T23:53:15.199217Z",
+          "Operations": 4,
+          "MeanMs": 269.6718000000001
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 8,
+          "StartMs": 21886.4825,
+          "StopMs": 22987.8792,
+          "StartUtc": "2026-10-04T23:53:15.2084825Z",
+          "StopUtc": "2026-10-04T23:53:16.3098792Z",
+          "Operations": 4,
+          "MeanMs": 275.3491750000003
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 9,
+          "StartMs": 22991.8994,
+          "StopMs": 24000.7461,
+          "StartUtc": "2026-10-04T23:53:16.3138994Z",
+          "StopUtc": "2026-10-04T23:53:17.3227461Z",
+          "Operations": 4,
+          "MeanMs": 252.21167500000047
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 10,
+          "StartMs": 24008.2837,
+          "StopMs": 25039.1108,
+          "StartUtc": "2026-10-04T23:53:17.3302837Z",
+          "StopUtc": "2026-10-04T23:53:18.3611108Z",
+          "Operations": 4,
+          "MeanMs": 257.70677499999965
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 11,
+          "StartMs": 25045.653,
+          "StopMs": 26080.2359,
+          "StartUtc": "2026-10-04T23:53:18.367653Z",
+          "StopUtc": "2026-10-04T23:53:19.4022359Z",
+          "Operations": 4,
+          "MeanMs": 258.6457250000003
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 12,
+          "StartMs": 26087.6323,
+          "StopMs": 27128.1345,
+          "StartUtc": "2026-10-04T23:53:19.4096323Z",
+          "StopUtc": "2026-10-04T23:53:20.4501345Z",
+          "Operations": 4,
+          "MeanMs": 260.12554999999975
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 13,
+          "StartMs": 27134.3942,
+          "StopMs": 28151.747,
+          "StartUtc": "2026-10-04T23:53:20.4563942Z",
+          "StopUtc": "2026-10-04T23:53:21.473747Z",
+          "Operations": 4,
+          "MeanMs": 254.33820000000014
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 14,
+          "StartMs": 28158.2069,
+          "StopMs": 29180.1183,
+          "StartUtc": "2026-10-04T23:53:21.4802069Z",
+          "StopUtc": "2026-10-04T23:53:22.5021183Z",
+          "Operations": 4,
+          "MeanMs": 255.4778499999993
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 15,
+          "StartMs": 29186.7551,
+          "StopMs": 30217.0151,
+          "StartUtc": "2026-10-04T23:53:22.5087551Z",
+          "StopUtc": "2026-10-04T23:53:23.5390151Z",
+          "Operations": 4,
+          "MeanMs": 257.5650000000005
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 16,
+          "StartMs": 30223.8069,
+          "StopMs": 31232.4817,
+          "StartUtc": "2026-10-04T23:53:23.5458069Z",
+          "StopUtc": "2026-10-04T23:53:24.5544817Z",
+          "Operations": 4,
+          "MeanMs": 252.16870000000017
+        }
+      ],
+      "Versions": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "QuickJitted",
+          "StartMs": 200.5386,
+          "LoadMs": 200.6077,
+          "NativeBytes": 77,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJitted",
+          "StartMs": 200.859,
+          "LoadMs": 201.081,
+          "NativeBytes": 347,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJitted",
+          "StartMs": 206.8568,
+          "LoadMs": 207.2597,
+          "NativeBytes": 388,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3082.2154,
+          "LoadMs": 3082.3714,
+          "NativeBytes": 115,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3089.4205,
+          "LoadMs": 3089.625,
+          "NativeBytes": 347,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3170.979,
+          "LoadMs": 3171.2295,
+          "NativeBytes": 388,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "OptimizedTier1",
+          "StartMs": 4423.5003,
+          "LoadMs": 4423.7278,
+          "NativeBytes": 32,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 4423.5535,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": "unprofitable inline"
+            }
+          ]
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "OptimizedTier1",
+          "StartMs": 4424.9928,
+          "LoadMs": 4425.8579,
+          "NativeBytes": 363,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 4425.0424,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.OrParser`1[System.Char]:get_Parsers",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.0689,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.0868,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Current",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 4425.1077,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1155,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_IgnoreCase",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.122,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1305,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4425.1362,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1475,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4425.1641,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:GoFoward",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1703,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1763,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Text",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.1859,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Math:Min",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.194,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:set_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.2104,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.2221,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.233,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.2424,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.2505,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.261,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4425.2696,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            }
+          ]
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "OptimizedTier1",
+          "StartMs": 4576.0782,
+          "LoadMs": 4577.3193,
+          "NativeBytes": 546,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 4576.1467,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.1555,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Object:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.1655,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:get_Parser",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.1853,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.2037,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Current",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 4576.2349,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.2435,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_IgnoreCase",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.2502,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.2684,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.2781,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_CurrentCulture",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.2872,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_TextInfo",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.2955,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.TextInfo:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.3024,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.3137,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.3201,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_CurrentCulture",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.3266,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_TextInfo",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.3329,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.TextInfo:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4576.3501,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:GoFoward",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.357,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.3682,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Text",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.3783,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Math:Min",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.3861,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:set_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4026,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4147,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4262,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4359,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4447,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4525,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Cursol",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4682,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.ParseResult`1[System.__Canon]:Success",
+              "Inlinee": "System.ArgumentNullException:.ctor",
+              "Reason": "too many il bytes"
+            },
+            {
+              "TimeMs": 4576.4748,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.__Canon]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4862,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.__Canon]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.4935,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Cursol",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.5054,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Parsed",
+              "Inlinee": "System.InvalidOperationException:.ctor",
+              "Reason": "too many il bytes"
+            },
+            {
+              "TimeMs": 4576.5129,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Parsed",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.52,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4576.5395,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "System.Collections.Generic.List`1[System.Char]:Add",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:AddWithResize",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 4576.5475,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:Add",
+              "Reason": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Run": "11-pgo-on",
+      "EventsLost": 0,
+      "RawTraceSHA256": "7C13F0F11B5380E8FE1B270E3545BACB43B62B4B32EDA49DF1A47DEC897C91B7",
+      "Windows": [
+        {
+          "Stage": "WorkloadJitting",
+          "Iteration": 1,
+          "StartMs": 187.8701,
+          "StopMs": 1442.0681,
+          "StartUtc": "2026-10-05T00:02:54.6398701Z",
+          "StopUtc": "2026-10-05T00:02:55.8940681Z",
+          "Operations": 1,
+          "MeanMs": 1254.1979999999999
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 1,
+          "StartMs": 1493.3959,
+          "StopMs": 4952.5548,
+          "StartUtc": "2026-10-05T00:02:55.9453959Z",
+          "StopUtc": "2026-10-05T00:02:59.4045548Z",
+          "Operations": 4,
+          "MeanMs": 864.789725
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 2,
+          "StartMs": 4957.3166,
+          "StopMs": 6895.8991,
+          "StartUtc": "2026-10-05T00:02:59.4093166Z",
+          "StopUtc": "2026-10-05T00:03:01.3478991Z",
+          "Operations": 4,
+          "MeanMs": 484.6456249999999
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 3,
+          "StartMs": 6909.1022,
+          "StopMs": 7942.1686,
+          "StartUtc": "2026-10-05T00:03:01.3611022Z",
+          "StopUtc": "2026-10-05T00:03:02.3941686Z",
+          "Operations": 4,
+          "MeanMs": 258.2665999999999
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 4,
+          "StartMs": 7948.382,
+          "StopMs": 8826.4874,
+          "StartUtc": "2026-10-05T00:03:02.400382Z",
+          "StopUtc": "2026-10-05T00:03:03.2784874Z",
+          "Operations": 4,
+          "MeanMs": 219.5263500000001
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 5,
+          "StartMs": 8832.8584,
+          "StopMs": 9758.5874,
+          "StartUtc": "2026-10-05T00:03:03.2848584Z",
+          "StopUtc": "2026-10-05T00:03:04.2105874Z",
+          "Operations": 4,
+          "MeanMs": 231.4322500000003
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 6,
+          "StartMs": 9764.6958,
+          "StopMs": 10651.6899,
+          "StartUtc": "2026-10-05T00:03:04.2166958Z",
+          "StopUtc": "2026-10-05T00:03:05.1036899Z",
+          "Operations": 4,
+          "MeanMs": 221.74852499999997
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 7,
+          "StartMs": 10658.0052,
+          "StopMs": 11572.7526,
+          "StartUtc": "2026-10-05T00:03:05.1100052Z",
+          "StopUtc": "2026-10-05T00:03:06.0247526Z",
+          "Operations": 4,
+          "MeanMs": 228.68685000000005
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 8,
+          "StartMs": 11579.1008,
+          "StopMs": 12456.7849,
+          "StartUtc": "2026-10-05T00:03:06.0311008Z",
+          "StopUtc": "2026-10-05T00:03:06.9087849Z",
+          "Operations": 4,
+          "MeanMs": 219.4210250000001
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 9,
+          "StartMs": 12463.3258,
+          "StopMs": 13347.7017,
+          "StartUtc": "2026-10-05T00:03:06.9153258Z",
+          "StopUtc": "2026-10-05T00:03:07.7997017Z",
+          "Operations": 4,
+          "MeanMs": 221.09397499999977
+        },
+        {
+          "Stage": "WorkloadWarmup",
+          "Iteration": 10,
+          "StartMs": 13354.0176,
+          "StopMs": 14221.0603,
+          "StartUtc": "2026-10-05T00:03:07.8060176Z",
+          "StopUtc": "2026-10-05T00:03:08.6730603Z",
+          "Operations": 4,
+          "MeanMs": 216.760675
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 1,
+          "StartMs": 14229.1627,
+          "StopMs": 15103.4227,
+          "StartUtc": "2026-10-05T00:03:08.6811627Z",
+          "StopUtc": "2026-10-05T00:03:09.5554227Z",
+          "Operations": 4,
+          "MeanMs": 218.5649999999996
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 2,
+          "StartMs": 15108.5258,
+          "StopMs": 16000.8711,
+          "StartUtc": "2026-10-05T00:03:09.5605258Z",
+          "StopUtc": "2026-10-05T00:03:10.4528711Z",
+          "Operations": 4,
+          "MeanMs": 223.08632500000022
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 3,
+          "StartMs": 16005.2871,
+          "StopMs": 16894.1756,
+          "StartUtc": "2026-10-05T00:03:10.4572871Z",
+          "StopUtc": "2026-10-05T00:03:11.3461756Z",
+          "Operations": 4,
+          "MeanMs": 222.22212499999978
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 4,
+          "StartMs": 16900.9395,
+          "StopMs": 17783.2846,
+          "StartUtc": "2026-10-05T00:03:11.3529395Z",
+          "StopUtc": "2026-10-05T00:03:12.2352846Z",
+          "Operations": 4,
+          "MeanMs": 220.58627499999966
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 5,
+          "StartMs": 17790.6385,
+          "StopMs": 18693.7844,
+          "StartUtc": "2026-10-05T00:03:12.2426385Z",
+          "StopUtc": "2026-10-05T00:03:13.1457844Z",
+          "Operations": 4,
+          "MeanMs": 225.78647499999988
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 6,
+          "StartMs": 18701.2775,
+          "StopMs": 19663.2337,
+          "StartUtc": "2026-10-05T00:03:13.1532775Z",
+          "StopUtc": "2026-10-05T00:03:14.1152337Z",
+          "Operations": 4,
+          "MeanMs": 240.48905000000013
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 7,
+          "StartMs": 19669.9274,
+          "StopMs": 20557.87,
+          "StartUtc": "2026-10-05T00:03:14.1219274Z",
+          "StopUtc": "2026-10-05T00:03:15.00987Z",
+          "Operations": 4,
+          "MeanMs": 221.98564999999962
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 8,
+          "StartMs": 20564.1551,
+          "StopMs": 21683.6621,
+          "StartUtc": "2026-10-05T00:03:15.0161551Z",
+          "StopUtc": "2026-10-05T00:03:16.1356621Z",
+          "Operations": 4,
+          "MeanMs": 279.87675000000036
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 9,
+          "StartMs": 21693.2184,
+          "StopMs": 22670.6135,
+          "StartUtc": "2026-10-05T00:03:16.1452184Z",
+          "StopUtc": "2026-10-05T00:03:17.1226135Z",
+          "Operations": 4,
+          "MeanMs": 244.34877499999948
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 10,
+          "StartMs": 22677.3943,
+          "StopMs": 23715.8564,
+          "StartUtc": "2026-10-05T00:03:17.1293943Z",
+          "StopUtc": "2026-10-05T00:03:18.1678564Z",
+          "Operations": 4,
+          "MeanMs": 259.61552500000016
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 11,
+          "StartMs": 23725.4621,
+          "StopMs": 24673.9187,
+          "StartUtc": "2026-10-05T00:03:18.1774621Z",
+          "StopUtc": "2026-10-05T00:03:19.1259187Z",
+          "Operations": 4,
+          "MeanMs": 237.11414999999943
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 12,
+          "StartMs": 24680.4248,
+          "StopMs": 25589.3462,
+          "StartUtc": "2026-10-05T00:03:19.1324248Z",
+          "StopUtc": "2026-10-05T00:03:20.0413462Z",
+          "Operations": 4,
+          "MeanMs": 227.23034999999982
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 13,
+          "StartMs": 25596.2915,
+          "StopMs": 26704.6802,
+          "StartUtc": "2026-10-05T00:03:20.0482915Z",
+          "StopUtc": "2026-10-05T00:03:21.1566802Z",
+          "Operations": 4,
+          "MeanMs": 277.0971749999999
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 14,
+          "StartMs": 26712.7169,
+          "StopMs": 27703.9486,
+          "StartUtc": "2026-10-05T00:03:21.1647169Z",
+          "StopUtc": "2026-10-05T00:03:22.1559486Z",
+          "Operations": 4,
+          "MeanMs": 247.80792500000007
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 15,
+          "StartMs": 27710.496,
+          "StopMs": 28644.2195,
+          "StartUtc": "2026-10-05T00:03:22.162496Z",
+          "StopUtc": "2026-10-05T00:03:23.0962195Z",
+          "Operations": 4,
+          "MeanMs": 233.43087500000001
+        },
+        {
+          "Stage": "WorkloadActual",
+          "Iteration": 16,
+          "StartMs": 28650.3989,
+          "StopMs": 29584.7953,
+          "StartUtc": "2026-10-05T00:03:23.1023989Z",
+          "StopUtc": "2026-10-05T00:03:24.0367953Z",
+          "Operations": 4,
+          "MeanMs": 233.59910000000036
+        }
+      ],
+      "Versions": [
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "QuickJitted",
+          "StartMs": 209.8163,
+          "LoadMs": 209.8852,
+          "NativeBytes": 77,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJitted",
+          "StartMs": 210.1619,
+          "LoadMs": 210.3989,
+          "NativeBytes": 347,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJitted",
+          "StartMs": 216.0258,
+          "LoadMs": 216.4236,
+          "NativeBytes": 388,
+          "ReJit": "0",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3093.8839,
+          "LoadMs": 3094.013,
+          "NativeBytes": 115,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3109.3498,
+          "LoadMs": 3109.5858,
+          "NativeBytes": 347,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "QuickJittedInstrumented",
+          "StartMs": 3208.8477,
+          "LoadMs": 3209.0785,
+          "NativeBytes": 388,
+          "ReJit": "1",
+          "Inlines": []
+        },
+        {
+          "Method": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+          "Tier": "OptimizedTier1",
+          "StartMs": 4439.4261,
+          "LoadMs": 4439.6006,
+          "NativeBytes": 32,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 4439.468,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": "unprofitable inline"
+            }
+          ]
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+          "Tier": "OptimizedTier1",
+          "StartMs": 4442.3471,
+          "LoadMs": 4461.3753,
+          "NativeBytes": 359,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 4442.3959,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.OrParser`1[System.Char]:get_Parsers",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4174,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4386,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Current",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 4442.4583,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4664,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_IgnoreCase",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4734,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4833,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4442.4894,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.4954,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 4442.5122,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:GoFoward",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5188,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5267,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Text",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5366,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Math:Min",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5445,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:set_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.561,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5729,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5858,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.5952,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.6042,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.615,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 4442.6363,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.OrParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            }
+          ]
+        },
+        {
+          "Method": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+          "Tier": "OptimizedTier1",
+          "StartMs": 6698.216,
+          "LoadMs": 6699.693,
+          "NativeBytes": 546,
+          "ReJit": "2",
+          "Inlines": [
+            {
+              "TimeMs": 6698.3012,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.3105,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Object:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.3237,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:get_Parser",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.3502,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Parser`1[System.Char]:Parse",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.3746,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Current",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 6698.4036,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:ParseCore",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.4136,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_IgnoreCase",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.4227,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.4411,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.4519,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_CurrentCulture",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.4628,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_TextInfo",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.4723,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.TextInfo:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.4794,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.CharParser:get_Char",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.4941,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Char:ToLower",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.5029,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_CurrentCulture",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.5099,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.CultureInfo:get_TextInfo",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.5169,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Globalization.TextInfo:ToLower",
+              "Reason": "unprofitable inline"
+            },
+            {
+              "TimeMs": 6698.5352,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:GoFoward",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.544,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.5513,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:get_Text",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.5623,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Math:Min",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.5708,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.Core.Cursol:set_Index",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.5926,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6116,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6274,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:Failure",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6405,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6538,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6667,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Cursol",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.6862,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.ParseResult`1[System.__Canon]:Success",
+              "Inlinee": "System.ArgumentNullException:.ctor",
+              "Reason": "too many il bytes"
+            },
+            {
+              "TimeMs": 6698.695,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.__Canon]:Success",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.7136,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.__Canon]:.ctor",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.7233,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Cursol",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.7434,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Parsed",
+              "Inlinee": "System.InvalidOperationException:.ctor",
+              "Reason": "too many il bytes"
+            },
+            {
+              "TimeMs": 6698.7526,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_Parsed",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.761,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "Marimo.Kotowari.ParseResult`1[System.Char]:get_IsSuccess",
+              "Reason": null
+            },
+            {
+              "TimeMs": 6698.7842,
+              "Outcome": "Method/InliningFailed",
+              "Inliner": "System.Collections.Generic.List`1[System.Char]:Add",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:AddWithResize",
+              "Reason": "noinline per IL/cached result"
+            },
+            {
+              "TimeMs": 6698.793,
+              "Outcome": "Method/InliningSucceeded",
+              "Inliner": "Marimo.Kotowari.Core.ZeroOrMoreParser`1[System.Char]:ParseCore",
+              "Inlinee": "System.Collections.Generic.List`1[System.Char]:Add",
+              "Reason": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Limitations": [
+    "The 172.77ms process has disassembly but no EventPipe timeline.",
+    "Code difference is observed; the contribution of each difference to elapsed time is not causally isolated.",
+    "Raw per-type PGO histograms and the precise profile-read instruction timestamp were not collected.",
+    "Different diagnostic configurations are separate cohorts, not one population-frequency estimate.",
+    "All 32 runs have identical target method bodies and metadata excluding MVID; BDN rebuilt the assemblies, so fixed-binary repeated launches remain untested."
+  ]
+}

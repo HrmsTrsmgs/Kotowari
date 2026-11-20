@@ -11,12 +11,29 @@ namespace Marimo.Kotowari.Tests.Core;
 public class DebugParserのテスト
 {
     [Fact]
+    public void 子のnull成功値を返します()
+    {
+        var tested = new DebugParser<string?>(
+            ParserConverter.Create<string?, char>(new CharParser('a'), _ => null), () => { });
+
+        var result = tested.Parse(new Cursol("a!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().BeNull();
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
     public void ParseAsyncは内部パーサーと同じように成功します()
     {
         var cursol = new Cursol("public");
         var parser = new CharParser('p');
         var tested = new DebugParser<char>(parser, () => { });
-        tested.Parse(cursol).Should().Be(parser.Parse(cursol));
+        var result = tested.Parse(cursol);
+        var expected = parser.Parse(cursol);
+        result.IsSuccess.Should().Be(expected.IsSuccess);
+        (result.Cursol == expected.Cursol).Should().BeTrue();
+        result.Parsed.Should().Be(expected.Parsed);
     }
     [Fact]
     public void ParseAsyncは内部パーサーと同じように失敗します()
@@ -24,7 +41,14 @@ public class DebugParserのテスト
         var cursol = new Cursol("public");
         var parser = new CharParser('a');
         var tested = new DebugParser<char>(parser, () => { });
-        tested.Parse(cursol).Should().Be(parser.Parse(cursol));
+        var result = tested.Parse(cursol);
+        var expected = parser.Parse(cursol);
+        result.IsSuccess.Should().Be(expected.IsSuccess);
+        (result.Cursol == expected.Cursol).Should().BeTrue();
+        var readParsed = () => tested.Parse(new Cursol("public")).Parsed;
+        var readExpected = () => parser.Parse(new Cursol("public")).Parsed;
+        readParsed.Should().Throw<InvalidOperationException>();
+        readExpected.Should().Throw<InvalidOperationException>();
     }
 
     [Fact]

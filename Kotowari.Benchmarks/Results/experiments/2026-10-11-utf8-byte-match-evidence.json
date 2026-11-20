@@ -1,0 +1,4927 @@
+{
+  "Schema": "kotowari-utf8-byte-match-confirmation-evidence-v1",
+  "Experiment": "UTF-8 direct byte matching in CharParser and WordParser",
+  "Phase": "confirmation",
+  "Interpretation": "All 40 fixed runs are included. Ratios use each block run mean; Actual and Result points are paired by iteration index within each run, not treated as independent trials. No diagnostic profiler or JIT disassembly was enabled.",
+  "Runs": {
+    "Count": 40,
+    "CountByCondition": {
+      "O": 8,
+      "BS": 8,
+      "CS": 8,
+      "BU": 8,
+      "CU": 8
+    },
+    "ExitCodeCounts": {
+      "Success": 40,
+      "Failure": 0
+    },
+    "StartedUtc": "2026-10-11T01:38:34.1308634+00:00",
+    "EndedUtc": "2026-10-11T02:01:43.8230720+00:00",
+    "DurationSeconds": 1389.6922086,
+    "Runtime": ".NET 10.0.12",
+    "SDK": "10.0.401",
+    "BenchmarkDotNet": "0.15.8",
+    "PGO": 1,
+    "Affinity": 4,
+    "Warmup": 16,
+    "Actual": 8,
+    "Invocation": 4,
+    "Unroll": 1,
+    "Launch": 1,
+    "Outliers": "DontRemove",
+    "Profiler": false,
+    "JitDisassembly": false
+  },
+  "Input": {
+    "Path": "artifacts/utf8-byte-match-2026-10-11/input/test.json",
+    "Bytes": 4172062,
+    "SHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+  },
+  "Conditions": {
+    "O": "original-string",
+    "BS": "baseline-string",
+    "BU": "baseline-UTF8",
+    "CS": "candidate-string",
+    "CU": "candidate-UTF8"
+  },
+  "Hosts": {
+    "O": "CD76D06DED9F00EC6E7BDFB4C59819E25A1A9CDF7899A152A24A137CF0C3393B",
+    "BS": "8972D0891DFD03FB0CF5E6582132A84FC3EAB00F90F322796A65A58D4B50A35D",
+    "CS": "EFC37CD15F893629ECD78D8BB0BA41679B78A94AB2D99121D416D7C8FD4D1AF5"
+  },
+  "Candidate": {
+    "BaselineCommit": "5e80990ed5f335c88b0c651770a47c58692c72f0",
+    "SourceFileCount": 49,
+    "ChangedSources": [
+      {
+        "Path": "Kotowari/Core/CharParser.cs",
+        "SHA256": "682AABFC20D3C5ACFBC496235EB36A6001675852D190BE26231458D7AE745557",
+        "BaselineSHA256": "7E5F8D75D604914ACCA7F0F06E7D04886EFC6BB5405A88F13085EF2E1FE1CC3B"
+      },
+      {
+        "Path": "Kotowari/Core/CursolOfTDocument.cs",
+        "SHA256": "4D25828DC3C9D49C483DD6A9F107B0AE9149B11D81C9FE7C979A13F28CF15F1E",
+        "BaselineSHA256": "7E5EB49FEB349E47E938AAFFC8101169A085E3D7D6C704C12B4A056F09AF35E2"
+      },
+      {
+        "Path": "Kotowari/Core/Utf8Document.cs",
+        "SHA256": "E357FF308FECBF14F5E58874E38B26144E2C510B1E0864A6823D17A8E842C437",
+        "BaselineSHA256": "CCD61F20C5886B34196BB1A93C510DC33F354F38B26CA3AF1B862FB4ADD4DE9A"
+      },
+      {
+        "Path": "Kotowari/Core/WordParser.cs",
+        "SHA256": "B21F914490065C48718BD0BF5DB4F04A1170BC50C89D2BB6CD6296A73B78A73A",
+        "BaselineSHA256": "AAAF2D042426DCD08D9CB9E3DF192BE8E60F326C8A3F04B8E286160E44AA0D0A"
+      }
+    ],
+    "SourceManifestSHA256": "E40A854DFD7BD6F33ABEE1A90D183C33D3EBAAA09474E07D100EE219109DDF0F",
+    "HostProject": "Utf8ByteMatch.Candidate.Measurement.csproj",
+    "HostSHA256": "EFC37CD15F893629ECD78D8BB0BA41679B78A94AB2D99121D416D7C8FD4D1AF5"
+  },
+  "Comparisons": {
+    "Primary": {
+      "Name": "candidate UTF8 / baseline UTF8",
+      "Numerator": "CU",
+      "Denominator": "BU",
+      "PairedBlockRatios": [
+        2.063152158857526,
+        1.9883964844051607,
+        1.9420790143339413,
+        2.0630388373555193,
+        2.0596103585286785,
+        2.1209052135302513,
+        1.9518640895336143,
+        1.860829658448888
+      ],
+      "GeometricMean": 2.004628419828617,
+      "ConfidenceLevel": 0.95,
+      "DegreesOfFreedom": 7,
+      "TCritical": 2.3646242510102993,
+      "CI95Lower": 1.9339932791945615,
+      "CI95Upper": 2.077843364201427
+    },
+    "Secondary": [
+      {
+        "Name": "candidate string / baseline string",
+        "Numerator": "CS",
+        "Denominator": "BS",
+        "PairedBlockRatios": [
+          0.9509876408894586,
+          0.9993746999715339,
+          1.0206655520869325,
+          1.022442456611267,
+          1.0382000036568042,
+          1.0436859536028922,
+          1.0772601467440412,
+          1.0518725263079571
+        ],
+        "GeometricMean": 1.024931912825333,
+        "ConfidenceLevel": 0.95,
+        "DegreesOfFreedom": 7,
+        "TCritical": 2.3646242510102993,
+        "CI95Lower": 0.9931855391557378,
+        "CI95Upper": 1.0576930336911328
+      },
+      {
+        "Name": "candidate UTF8 / original string",
+        "Numerator": "CU",
+        "Denominator": "O",
+        "PairedBlockRatios": [
+          1.7261267030356993,
+          2.6416084327337113,
+          2.4081196885303253,
+          2.4900562251285954,
+          2.5927770460331243,
+          2.725670301915344,
+          2.5498855968706975,
+          2.6557584126755356
+        ],
+        "GeometricMean": 2.4524322105388063,
+        "ConfidenceLevel": 0.95,
+        "DegreesOfFreedom": 7,
+        "TCritical": 2.3646242510102993,
+        "CI95Lower": 2.1685753897621436,
+        "CI95Upper": 2.773444619763917
+      },
+      {
+        "Name": "baseline string / original string",
+        "Numerator": "BS",
+        "Denominator": "O",
+        "PairedBlockRatios": [
+          0.7786400252209104,
+          1.1794179580339306,
+          0.9857013494469802,
+          1.022827175731167,
+          1.0595179787417823,
+          1.0911524223786981,
+          1.0664489071936978,
+          1.0836431720903292
+        ],
+        "GeometricMean": 1.0269434323152296,
+        "ConfidenceLevel": 0.95,
+        "DegreesOfFreedom": 7,
+        "TCritical": 2.3646242510102993,
+        "CI95Lower": 0.9263486257113946,
+        "CI95Upper": 1.1384621123235206
+      }
+    ]
+  },
+  "ByCondition": {
+    "O": {
+      "Count": 8,
+      "RunMeansMs": [
+        212.631103125,
+        138.1586375,
+        151.50511875,
+        148.192746875,
+        144.859275,
+        139.208725,
+        144.23501875,
+        138.9432375
+      ],
+      "ArithmeticMeanMs": 152.21673281250003,
+      "GeometricMeanMs": 150.73791283345096,
+      "AllocatedBytesPerOperation": {
+        "Values": [
+          64503506.0,
+          64502384.0,
+          64502584.0,
+          64503860.0,
+          64502590.0,
+          64502446.0,
+          64502372.0,
+          64504294.0
+        ],
+        "ArithmeticMean": 64503004.5,
+        "Minimum": 64502372.0,
+        "Maximum": 64504294.0
+      },
+      "GCCollections": {
+        "Gen0Total": 152.0,
+        "Gen1Total": 72.0,
+        "Gen2Total": 24.0
+      }
+    },
+    "BS": {
+      "Count": 8,
+      "RunMeansMs": [
+        165.5630875,
+        162.946778125,
+        149.3388,
+        151.57556875,
+        153.48100625,
+        151.8979375,
+        153.819278125,
+        150.564890625
+      ],
+      "ArithmeticMeanMs": 154.89841835937503,
+      "GeometricMeanMs": 154.79930958521814,
+      "AllocatedBytesPerOperation": {
+        "Values": [
+          64502590.0,
+          64502590.0,
+          64502826.0,
+          64502590.0,
+          64502590.0,
+          64502574.0,
+          64502372.0,
+          64502372.0
+        ],
+        "ArithmeticMean": 64502563.0,
+        "Minimum": 64502372.0,
+        "Maximum": 64502826.0
+      },
+      "GCCollections": {
+        "Gen0Total": 152.0,
+        "Gen1Total": 72.0,
+        "Gen2Total": 24.0
+      }
+    },
+    "CS": {
+      "Count": 8,
+      "RunMeansMs": [
+        157.44845,
+        162.8448875,
+        152.42496875,
+        154.977296875,
+        159.34398125,
+        158.53374375,
+        165.703378125,
+        158.375071875
+      ],
+      "ArithmeticMeanMs": 158.706472265625,
+      "GeometricMeanMs": 158.65875247721863,
+      "AllocatedBytesPerOperation": {
+        "Values": [
+          64502546.0,
+          64504062.0,
+          64502590.0,
+          64503582.0,
+          64502574.0,
+          64502590.0,
+          64502570.0,
+          64502590.0
+        ],
+        "ArithmeticMean": 64502888.0,
+        "Minimum": 64502546.0,
+        "Maximum": 64504062.0
+      },
+      "GCCollections": {
+        "Gen0Total": 152.0,
+        "Gen1Total": 72.0,
+        "Gen2Total": 24.0
+      }
+    },
+    "BU": {
+      "Count": 8,
+      "RunMeansMs": [
+        177.896828125,
+        183.545396875,
+        187.8618,
+        178.866371875,
+        182.35866875,
+        178.90336875,
+        188.4264375,
+        198.29846875
+      ],
+      "ArithmeticMeanMs": 184.519667578125,
+      "GeometricMeanMs": 184.41049180264113,
+      "AllocatedBytesPerOperation": {
+        "Values": [
+          56160120.0,
+          56158202.0,
+          56158206.0,
+          56158202.0,
+          56158004.0,
+          56158076.0,
+          56158202.0,
+          56159692.0
+        ],
+        "ArithmeticMean": 56158588.0,
+        "Minimum": 56158004.0,
+        "Maximum": 56160120.0
+      },
+      "GCCollections": {
+        "Gen0Total": 144.0,
+        "Gen1Total": 56.0,
+        "Gen2Total": 16.0
+      }
+    },
+    "CU": {
+      "Count": 8,
+      "RunMeansMs": [
+        367.028225,
+        364.961021875,
+        364.842459375,
+        369.008271875,
+        375.587803125,
+        379.4370875,
+        367.782796875,
+        368.999671875
+      ],
+      "ArithmeticMeanMs": 369.70591718749995,
+      "GeometricMeanMs": 369.6745127821464,
+      "AllocatedBytesPerOperation": {
+        "Values": [
+          53954070.0,
+          53954062.0,
+          53954070.0,
+          53955828.0,
+          53955642.0,
+          53953986.0,
+          53955060.0,
+          53954070.0
+        ],
+        "ArithmeticMean": 53954598.5,
+        "Minimum": 53953986.0,
+        "Maximum": 53955828.0
+      },
+      "GCCollections": {
+        "Gen0Total": 136.0,
+        "Gen1Total": 56.0,
+        "Gen2Total": 16.0
+      }
+    }
+  },
+  "Power": {
+    "RequestedFlags": "ES_CONTINUOUS|ES_SYSTEM_REQUIRED",
+    "ScopeThreadId": 48528,
+    "AcquireReturn": 2147483648,
+    "ReleaseReturn": 2147483649,
+    "ScopeClearedUtc": "2026-10-11T02:01:44.1768996Z",
+    "PerBlockStatus": "Each block recorded AC/saver and verified active power plan unchanged.",
+    "FinalStatus": {
+      "ACLineStatus": 1,
+      "BatteryFlag": 1,
+      "BatteryLifePercent": 77,
+      "BatterySaver": false
+    }
+  },
+  "RawSource": {
+    "Path": "artifacts/utf8-byte-match-2026-10-11/runs/confirmation/all-runs.json",
+    "SHA256": "B1DB1BAB50C37C66CAEBDCB34903EB13AD6FE9EB7C42495AB8F9005119ADF105"
+  },
+  "RunsData": [
+    {
+      "Block": 1,
+      "Order": 1,
+      "Condition": "O",
+      "HostPid": 49620,
+      "WorkerPid": 38592,
+      "StartedUtc": "2026-10-11T01:38:34.1308634Z",
+      "StoppedUtc": "2026-10-11T01:39:11.4462218Z",
+      "ExitCode": 0,
+      "MeanMs": 212.631103125,
+      "AllocatedBytesPerOperation": 64503506,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 832352800.0,
+            "NanosecondsPerOperation": 208088200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 832352600.0,
+            "NanosecondsPerOperation": 208088150.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 865171300.0,
+            "NanosecondsPerOperation": 216292825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 865171100.0,
+            "NanosecondsPerOperation": 216292775.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 824142400.0,
+            "NanosecondsPerOperation": 206035600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 824142200.0,
+            "NanosecondsPerOperation": 206035550.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 859403400.0,
+            "NanosecondsPerOperation": 214850850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 859403200.0,
+            "NanosecondsPerOperation": 214850800.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 782837000.0,
+            "NanosecondsPerOperation": 195709250.0
+          },
+          "Result": {
+            "TotalNanoseconds": 782836800.0,
+            "NanosecondsPerOperation": 195709200.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 803743000.0,
+            "NanosecondsPerOperation": 200935750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 803742800.0,
+            "NanosecondsPerOperation": 200935700.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 910309700.0,
+            "NanosecondsPerOperation": 227577425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 910309500.0,
+            "NanosecondsPerOperation": 227577375.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 926237300.0,
+            "NanosecondsPerOperation": 231559325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 926237100.0,
+            "NanosecondsPerOperation": 231559275.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 1,
+      "Order": 2,
+      "Condition": "BS",
+      "HostPid": 25400,
+      "WorkerPid": 40300,
+      "StartedUtc": "2026-10-11T01:39:11.9397121Z",
+      "StoppedUtc": "2026-10-11T01:39:45.1233115Z",
+      "ExitCode": 0,
+      "MeanMs": 165.5630875,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 685164000.0,
+            "NanosecondsPerOperation": 171291000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 685163800.0,
+            "NanosecondsPerOperation": 171290950.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 667536400.0,
+            "NanosecondsPerOperation": 166884100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 667536200.0,
+            "NanosecondsPerOperation": 166884050.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 654450700.0,
+            "NanosecondsPerOperation": 163612675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 654450500.0,
+            "NanosecondsPerOperation": 163612625.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 669557600.0,
+            "NanosecondsPerOperation": 167389400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 669557400.0,
+            "NanosecondsPerOperation": 167389350.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 597414500.0,
+            "NanosecondsPerOperation": 149353625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 597414300.0,
+            "NanosecondsPerOperation": 149353575.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 615581500.0,
+            "NanosecondsPerOperation": 153895375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 615581300.0,
+            "NanosecondsPerOperation": 153895325.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 747837600.0,
+            "NanosecondsPerOperation": 186959400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 747837400.0,
+            "NanosecondsPerOperation": 186959350.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 660478100.0,
+            "NanosecondsPerOperation": 165119525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 660477900.0,
+            "NanosecondsPerOperation": 165119475.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 1,
+      "Order": 3,
+      "Condition": "CU",
+      "HostPid": 50588,
+      "WorkerPid": 37388,
+      "StartedUtc": "2026-10-11T01:39:45.3575930Z",
+      "StoppedUtc": "2026-10-11T01:40:46.8265387Z",
+      "ExitCode": 0,
+      "MeanMs": 367.028225,
+      "AllocatedBytesPerOperation": 53954070,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1450374200.0,
+            "NanosecondsPerOperation": 362593550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1450373900.0,
+            "NanosecondsPerOperation": 362593475.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1455356700.0,
+            "NanosecondsPerOperation": 363839175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1455356400.0,
+            "NanosecondsPerOperation": 363839100.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1442772800.0,
+            "NanosecondsPerOperation": 360693200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1442772500.0,
+            "NanosecondsPerOperation": 360693125.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1526912400.0,
+            "NanosecondsPerOperation": 381728100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1526912100.0,
+            "NanosecondsPerOperation": 381728025.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1474353000.0,
+            "NanosecondsPerOperation": 368588250.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1474352700.0,
+            "NanosecondsPerOperation": 368588175.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1462463000.0,
+            "NanosecondsPerOperation": 365615750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1462462700.0,
+            "NanosecondsPerOperation": 365615675.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1491028200.0,
+            "NanosecondsPerOperation": 372757050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1491027900.0,
+            "NanosecondsPerOperation": 372756975.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1441645300.0,
+            "NanosecondsPerOperation": 360411325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1441645000.0,
+            "NanosecondsPerOperation": 360411250.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 1,
+      "Order": 4,
+      "Condition": "CS",
+      "HostPid": 12060,
+      "WorkerPid": 36156,
+      "StartedUtc": "2026-10-11T01:40:47.0688829Z",
+      "StoppedUtc": "2026-10-11T01:41:16.4098193Z",
+      "ExitCode": 0,
+      "MeanMs": 157.44845,
+      "AllocatedBytesPerOperation": 64502546,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 626375800.0,
+            "NanosecondsPerOperation": 156593950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 626375600.0,
+            "NanosecondsPerOperation": 156593900.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 626186000.0,
+            "NanosecondsPerOperation": 156546500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 626185800.0,
+            "NanosecondsPerOperation": 156546450.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 612541600.0,
+            "NanosecondsPerOperation": 153135400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 612541400.0,
+            "NanosecondsPerOperation": 153135350.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 642568300.0,
+            "NanosecondsPerOperation": 160642075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 642568100.0,
+            "NanosecondsPerOperation": 160642025.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 644521200.0,
+            "NanosecondsPerOperation": 161130300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 644521000.0,
+            "NanosecondsPerOperation": 161130250.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 671848100.0,
+            "NanosecondsPerOperation": 167962025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 671847900.0,
+            "NanosecondsPerOperation": 167961975.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 604074500.0,
+            "NanosecondsPerOperation": 151018625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 604074300.0,
+            "NanosecondsPerOperation": 151018575.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 610236500.0,
+            "NanosecondsPerOperation": 152559125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 610236300.0,
+            "NanosecondsPerOperation": 152559075.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 1,
+      "Order": 5,
+      "Condition": "BU",
+      "HostPid": 8000,
+      "WorkerPid": 44292,
+      "StartedUtc": "2026-10-11T01:41:16.6375221Z",
+      "StoppedUtc": "2026-10-11T01:41:47.5408811Z",
+      "ExitCode": 0,
+      "MeanMs": 177.896828125,
+      "AllocatedBytesPerOperation": 56160120,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 696884100.0,
+            "NanosecondsPerOperation": 174221025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 696883900.0,
+            "NanosecondsPerOperation": 174220975.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 703390200.0,
+            "NanosecondsPerOperation": 175847550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 703390000.0,
+            "NanosecondsPerOperation": 175847500.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 721969500.0,
+            "NanosecondsPerOperation": 180492375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 721969300.0,
+            "NanosecondsPerOperation": 180492325.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 703851400.0,
+            "NanosecondsPerOperation": 175962850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 703851200.0,
+            "NanosecondsPerOperation": 175962800.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 711097500.0,
+            "NanosecondsPerOperation": 177774375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 711097300.0,
+            "NanosecondsPerOperation": 177774325.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 754899800.0,
+            "NanosecondsPerOperation": 188724950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 754899600.0,
+            "NanosecondsPerOperation": 188724900.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 686026600.0,
+            "NanosecondsPerOperation": 171506650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 686026400.0,
+            "NanosecondsPerOperation": 171506600.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 714581000.0,
+            "NanosecondsPerOperation": 178645250.0
+          },
+          "Result": {
+            "TotalNanoseconds": 714580800.0,
+            "NanosecondsPerOperation": 178645200.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 2,
+      "Order": 1,
+      "Condition": "BU",
+      "HostPid": 34992,
+      "WorkerPid": 51956,
+      "StartedUtc": "2026-10-11T01:41:47.8118459Z",
+      "StoppedUtc": "2026-10-11T01:42:20.9573131Z",
+      "ExitCode": 0,
+      "MeanMs": 183.545396875,
+      "AllocatedBytesPerOperation": 56158202,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 716038900.0,
+            "NanosecondsPerOperation": 179009725.0
+          },
+          "Result": {
+            "TotalNanoseconds": 716038700.0,
+            "NanosecondsPerOperation": 179009675.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 717349800.0,
+            "NanosecondsPerOperation": 179337450.0
+          },
+          "Result": {
+            "TotalNanoseconds": 717349600.0,
+            "NanosecondsPerOperation": 179337400.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 786745900.0,
+            "NanosecondsPerOperation": 196686475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 786745700.0,
+            "NanosecondsPerOperation": 196686425.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 711538200.0,
+            "NanosecondsPerOperation": 177884550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 711538000.0,
+            "NanosecondsPerOperation": 177884500.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 753505400.0,
+            "NanosecondsPerOperation": 188376350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 753505200.0,
+            "NanosecondsPerOperation": 188376300.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 746287300.0,
+            "NanosecondsPerOperation": 186571825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 746287100.0,
+            "NanosecondsPerOperation": 186571775.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 713862700.0,
+            "NanosecondsPerOperation": 178465675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 713862500.0,
+            "NanosecondsPerOperation": 178465625.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 728126100.0,
+            "NanosecondsPerOperation": 182031525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 728125900.0,
+            "NanosecondsPerOperation": 182031475.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 2,
+      "Order": 2,
+      "Condition": "CS",
+      "HostPid": 18732,
+      "WorkerPid": 39732,
+      "StartedUtc": "2026-10-11T01:42:21.1710817Z",
+      "StoppedUtc": "2026-10-11T01:42:50.8381209Z",
+      "ExitCode": 0,
+      "MeanMs": 162.8448875,
+      "AllocatedBytesPerOperation": 64504062,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 658567900.0,
+            "NanosecondsPerOperation": 164641975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 658567700.0,
+            "NanosecondsPerOperation": 164641925.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 694030500.0,
+            "NanosecondsPerOperation": 173507625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 694030300.0,
+            "NanosecondsPerOperation": 173507575.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 697066100.0,
+            "NanosecondsPerOperation": 174266525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 697065900.0,
+            "NanosecondsPerOperation": 174266475.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 624206600.0,
+            "NanosecondsPerOperation": 156051650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 624206400.0,
+            "NanosecondsPerOperation": 156051600.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 624166200.0,
+            "NanosecondsPerOperation": 156041550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 624166000.0,
+            "NanosecondsPerOperation": 156041500.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 639078600.0,
+            "NanosecondsPerOperation": 159769650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 639078400.0,
+            "NanosecondsPerOperation": 159769600.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 639995400.0,
+            "NanosecondsPerOperation": 159998850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 639995200.0,
+            "NanosecondsPerOperation": 159998800.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 633926700.0,
+            "NanosecondsPerOperation": 158481675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 633926500.0,
+            "NanosecondsPerOperation": 158481625.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 2,
+      "Order": 3,
+      "Condition": "CU",
+      "HostPid": 30320,
+      "WorkerPid": 31616,
+      "StartedUtc": "2026-10-11T01:42:51.1132301Z",
+      "StoppedUtc": "2026-10-11T01:43:41.3507946Z",
+      "ExitCode": 0,
+      "MeanMs": 364.961021875,
+      "AllocatedBytesPerOperation": 53954062,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1457507400.0,
+            "NanosecondsPerOperation": 364376850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1457507200.0,
+            "NanosecondsPerOperation": 364376800.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1449226200.0,
+            "NanosecondsPerOperation": 362306550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1449226000.0,
+            "NanosecondsPerOperation": 362306500.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1442054900.0,
+            "NanosecondsPerOperation": 360513725.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1442054700.0,
+            "NanosecondsPerOperation": 360513675.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1441334100.0,
+            "NanosecondsPerOperation": 360333525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1441333900.0,
+            "NanosecondsPerOperation": 360333475.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1457894500.0,
+            "NanosecondsPerOperation": 364473625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1457894300.0,
+            "NanosecondsPerOperation": 364473575.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1466612600.0,
+            "NanosecondsPerOperation": 366653150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1466612400.0,
+            "NanosecondsPerOperation": 366653100.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1487781600.0,
+            "NanosecondsPerOperation": 371945400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1487781400.0,
+            "NanosecondsPerOperation": 371945350.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1476343000.0,
+            "NanosecondsPerOperation": 369085750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1476342800.0,
+            "NanosecondsPerOperation": 369085700.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 2,
+      "Order": 4,
+      "Condition": "BS",
+      "HostPid": 41796,
+      "WorkerPid": 39476,
+      "StartedUtc": "2026-10-11T01:43:41.5672273Z",
+      "StoppedUtc": "2026-10-11T01:44:10.6165055Z",
+      "ExitCode": 0,
+      "MeanMs": 162.946778125,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 736029600.0,
+            "NanosecondsPerOperation": 184007400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 736029400.0,
+            "NanosecondsPerOperation": 184007350.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 689014600.0,
+            "NanosecondsPerOperation": 172253650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 689014400.0,
+            "NanosecondsPerOperation": 172253600.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 641737600.0,
+            "NanosecondsPerOperation": 160434400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 641737400.0,
+            "NanosecondsPerOperation": 160434350.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609420600.0,
+            "NanosecondsPerOperation": 152355150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609420400.0,
+            "NanosecondsPerOperation": 152355100.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 586868100.0,
+            "NanosecondsPerOperation": 146717025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 586867900.0,
+            "NanosecondsPerOperation": 146716975.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 672324500.0,
+            "NanosecondsPerOperation": 168081125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 672324300.0,
+            "NanosecondsPerOperation": 168081075.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 669516400.0,
+            "NanosecondsPerOperation": 167379100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 669516200.0,
+            "NanosecondsPerOperation": 167379050.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609387100.0,
+            "NanosecondsPerOperation": 152346775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609386900.0,
+            "NanosecondsPerOperation": 152346725.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 2,
+      "Order": 5,
+      "Condition": "O",
+      "HostPid": 12772,
+      "WorkerPid": 40640,
+      "StartedUtc": "2026-10-11T01:44:10.8337335Z",
+      "StoppedUtc": "2026-10-11T01:44:38.1923144Z",
+      "ExitCode": 0,
+      "MeanMs": 138.1586375,
+      "AllocatedBytesPerOperation": 64502384,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 560089800.0,
+            "NanosecondsPerOperation": 140022450.0
+          },
+          "Result": {
+            "TotalNanoseconds": 560089650.0,
+            "NanosecondsPerOperation": 140022412.5
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 548948700.0,
+            "NanosecondsPerOperation": 137237175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 548948550.0,
+            "NanosecondsPerOperation": 137237137.5
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 539565900.0,
+            "NanosecondsPerOperation": 134891475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 539565750.0,
+            "NanosecondsPerOperation": 134891437.5
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 550639400.0,
+            "NanosecondsPerOperation": 137659850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 550639250.0,
+            "NanosecondsPerOperation": 137659812.5
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 560800000.0,
+            "NanosecondsPerOperation": 140200000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 560799850.0,
+            "NanosecondsPerOperation": 140199962.5
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 560291400.0,
+            "NanosecondsPerOperation": 140072850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 560291250.0,
+            "NanosecondsPerOperation": 140072812.5
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 533007800.0,
+            "NanosecondsPerOperation": 133251950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 533007650.0,
+            "NanosecondsPerOperation": 133251912.5
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 567734600.0,
+            "NanosecondsPerOperation": 141933650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 567734450.0,
+            "NanosecondsPerOperation": 141933612.5
+          }
+        }
+      ]
+    },
+    {
+      "Block": 3,
+      "Order": 1,
+      "Condition": "BS",
+      "HostPid": 17688,
+      "WorkerPid": 28760,
+      "StartedUtc": "2026-10-11T01:44:38.5350449Z",
+      "StoppedUtc": "2026-10-11T01:45:07.5906882Z",
+      "ExitCode": 0,
+      "MeanMs": 149.3388,
+      "AllocatedBytesPerOperation": 64502826,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 589163600.0,
+            "NanosecondsPerOperation": 147290900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 589163400.0,
+            "NanosecondsPerOperation": 147290850.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 594123200.0,
+            "NanosecondsPerOperation": 148530800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 594123000.0,
+            "NanosecondsPerOperation": 148530750.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 603537900.0,
+            "NanosecondsPerOperation": 150884475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 603537700.0,
+            "NanosecondsPerOperation": 150884425.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 607177500.0,
+            "NanosecondsPerOperation": 151794375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 607177300.0,
+            "NanosecondsPerOperation": 151794325.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 579430700.0,
+            "NanosecondsPerOperation": 144857675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 579430500.0,
+            "NanosecondsPerOperation": 144857625.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 623885700.0,
+            "NanosecondsPerOperation": 155971425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 623885500.0,
+            "NanosecondsPerOperation": 155971375.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 607412300.0,
+            "NanosecondsPerOperation": 151853075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 607412100.0,
+            "NanosecondsPerOperation": 151853025.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 574112300.0,
+            "NanosecondsPerOperation": 143528075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 574112100.0,
+            "NanosecondsPerOperation": 143528025.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 3,
+      "Order": 2,
+      "Condition": "CS",
+      "HostPid": 44356,
+      "WorkerPid": 18496,
+      "StartedUtc": "2026-10-11T01:45:07.8157886Z",
+      "StoppedUtc": "2026-10-11T01:45:37.8579909Z",
+      "ExitCode": 0,
+      "MeanMs": 152.42496875,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609069100.0,
+            "NanosecondsPerOperation": 152267275.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609068900.0,
+            "NanosecondsPerOperation": 152267225.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 606689800.0,
+            "NanosecondsPerOperation": 151672450.0
+          },
+          "Result": {
+            "TotalNanoseconds": 606689600.0,
+            "NanosecondsPerOperation": 151672400.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 599948600.0,
+            "NanosecondsPerOperation": 149987150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 599948400.0,
+            "NanosecondsPerOperation": 149987100.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 623087700.0,
+            "NanosecondsPerOperation": 155771925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 623087500.0,
+            "NanosecondsPerOperation": 155771875.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 627757700.0,
+            "NanosecondsPerOperation": 156939425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 627757500.0,
+            "NanosecondsPerOperation": 156939375.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 605087700.0,
+            "NanosecondsPerOperation": 151271925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 605087500.0,
+            "NanosecondsPerOperation": 151271875.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 595344700.0,
+            "NanosecondsPerOperation": 148836175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 595344500.0,
+            "NanosecondsPerOperation": 148836125.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 610615300.0,
+            "NanosecondsPerOperation": 152653825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 610615100.0,
+            "NanosecondsPerOperation": 152653775.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 3,
+      "Order": 3,
+      "Condition": "O",
+      "HostPid": 10268,
+      "WorkerPid": 47128,
+      "StartedUtc": "2026-10-11T01:45:38.1004486Z",
+      "StoppedUtc": "2026-10-11T01:46:07.8139569Z",
+      "ExitCode": 0,
+      "MeanMs": 151.50511875,
+      "AllocatedBytesPerOperation": 64502584,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 616683900.0,
+            "NanosecondsPerOperation": 154170975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 616683700.0,
+            "NanosecondsPerOperation": 154170925.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 633671000.0,
+            "NanosecondsPerOperation": 158417750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 633670800.0,
+            "NanosecondsPerOperation": 158417700.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 572958700.0,
+            "NanosecondsPerOperation": 143239675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 572958500.0,
+            "NanosecondsPerOperation": 143239625.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 566832700.0,
+            "NanosecondsPerOperation": 141708175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 566832500.0,
+            "NanosecondsPerOperation": 141708125.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 581487200.0,
+            "NanosecondsPerOperation": 145371800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 581487000.0,
+            "NanosecondsPerOperation": 145371750.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 597154100.0,
+            "NanosecondsPerOperation": 149288525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 597153900.0,
+            "NanosecondsPerOperation": 149288475.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 638298100.0,
+            "NanosecondsPerOperation": 159574525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 638297900.0,
+            "NanosecondsPerOperation": 159574475.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 641079700.0,
+            "NanosecondsPerOperation": 160269925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 641079500.0,
+            "NanosecondsPerOperation": 160269875.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 3,
+      "Order": 4,
+      "Condition": "BU",
+      "HostPid": 15420,
+      "WorkerPid": 7304,
+      "StartedUtc": "2026-10-11T01:46:08.0697466Z",
+      "StoppedUtc": "2026-10-11T01:46:41.6931049Z",
+      "ExitCode": 0,
+      "MeanMs": 187.8618,
+      "AllocatedBytesPerOperation": 56158206,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 838796800.0,
+            "NanosecondsPerOperation": 209699200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 838796600.0,
+            "NanosecondsPerOperation": 209699150.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 851724700.0,
+            "NanosecondsPerOperation": 212931175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 851724500.0,
+            "NanosecondsPerOperation": 212931125.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 757629300.0,
+            "NanosecondsPerOperation": 189407325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 757629100.0,
+            "NanosecondsPerOperation": 189407275.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 721275100.0,
+            "NanosecondsPerOperation": 180318775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 721274900.0,
+            "NanosecondsPerOperation": 180318725.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 717139800.0,
+            "NanosecondsPerOperation": 179284950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 717139600.0,
+            "NanosecondsPerOperation": 179284900.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 703059800.0,
+            "NanosecondsPerOperation": 175764950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 703059600.0,
+            "NanosecondsPerOperation": 175764900.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 705932000.0,
+            "NanosecondsPerOperation": 176483000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 705931800.0,
+            "NanosecondsPerOperation": 176482950.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 716021700.0,
+            "NanosecondsPerOperation": 179005425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 716021500.0,
+            "NanosecondsPerOperation": 179005375.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 3,
+      "Order": 5,
+      "Condition": "CU",
+      "HostPid": 46560,
+      "WorkerPid": 43708,
+      "StartedUtc": "2026-10-11T01:46:41.9125036Z",
+      "StoppedUtc": "2026-10-11T01:47:32.8419130Z",
+      "ExitCode": 0,
+      "MeanMs": 364.842459375,
+      "AllocatedBytesPerOperation": 53954070,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1447378800.0,
+            "NanosecondsPerOperation": 361844700.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1447378600.0,
+            "NanosecondsPerOperation": 361844650.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1451943300.0,
+            "NanosecondsPerOperation": 362985825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1451943100.0,
+            "NanosecondsPerOperation": 362985775.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1531271400.0,
+            "NanosecondsPerOperation": 382817850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1531271200.0,
+            "NanosecondsPerOperation": 382817800.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1489582100.0,
+            "NanosecondsPerOperation": 372395525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1489581900.0,
+            "NanosecondsPerOperation": 372395475.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1443273400.0,
+            "NanosecondsPerOperation": 360818350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1443273200.0,
+            "NanosecondsPerOperation": 360818300.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1447924200.0,
+            "NanosecondsPerOperation": 361981050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1447924000.0,
+            "NanosecondsPerOperation": 361981000.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1414397200.0,
+            "NanosecondsPerOperation": 353599300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1414397000.0,
+            "NanosecondsPerOperation": 353599250.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1449189900.0,
+            "NanosecondsPerOperation": 362297475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1449189700.0,
+            "NanosecondsPerOperation": 362297425.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 4,
+      "Order": 1,
+      "Condition": "CU",
+      "HostPid": 22956,
+      "WorkerPid": 41588,
+      "StartedUtc": "2026-10-11T01:47:33.1068050Z",
+      "StoppedUtc": "2026-10-11T01:48:23.3532088Z",
+      "ExitCode": 0,
+      "MeanMs": 369.008271875,
+      "AllocatedBytesPerOperation": 53955828,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1465598500.0,
+            "NanosecondsPerOperation": 366399625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1465598300.0,
+            "NanosecondsPerOperation": 366399575.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1448629600.0,
+            "NanosecondsPerOperation": 362157400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1448629400.0,
+            "NanosecondsPerOperation": 362157350.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1487208700.0,
+            "NanosecondsPerOperation": 371802175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1487208500.0,
+            "NanosecondsPerOperation": 371802125.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1497228000.0,
+            "NanosecondsPerOperation": 374307000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1497227800.0,
+            "NanosecondsPerOperation": 374306950.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1475087800.0,
+            "NanosecondsPerOperation": 368771950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1475087600.0,
+            "NanosecondsPerOperation": 368771900.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1497642300.0,
+            "NanosecondsPerOperation": 374410575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1497642100.0,
+            "NanosecondsPerOperation": 374410525.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1461398100.0,
+            "NanosecondsPerOperation": 365349525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1461397900.0,
+            "NanosecondsPerOperation": 365349475.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1475473300.0,
+            "NanosecondsPerOperation": 368868325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1475473100.0,
+            "NanosecondsPerOperation": 368868275.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 4,
+      "Order": 2,
+      "Condition": "BU",
+      "HostPid": 32036,
+      "WorkerPid": 20760,
+      "StartedUtc": "2026-10-11T01:48:23.5945927Z",
+      "StoppedUtc": "2026-10-11T01:48:55.5561226Z",
+      "ExitCode": 0,
+      "MeanMs": 178.866371875,
+      "AllocatedBytesPerOperation": 56158202,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 706332900.0,
+            "NanosecondsPerOperation": 176583225.0
+          },
+          "Result": {
+            "TotalNanoseconds": 706332700.0,
+            "NanosecondsPerOperation": 176583175.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 725095200.0,
+            "NanosecondsPerOperation": 181273800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 725095000.0,
+            "NanosecondsPerOperation": 181273750.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 703670100.0,
+            "NanosecondsPerOperation": 175917525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 703669900.0,
+            "NanosecondsPerOperation": 175917475.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 728354100.0,
+            "NanosecondsPerOperation": 182088525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 728353900.0,
+            "NanosecondsPerOperation": 182088475.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 724306400.0,
+            "NanosecondsPerOperation": 181076600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 724306200.0,
+            "NanosecondsPerOperation": 181076550.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 687940100.0,
+            "NanosecondsPerOperation": 171985025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 687939900.0,
+            "NanosecondsPerOperation": 171984975.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 729667100.0,
+            "NanosecondsPerOperation": 182416775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 729666900.0,
+            "NanosecondsPerOperation": 182416725.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 718359600.0,
+            "NanosecondsPerOperation": 179589900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 718359400.0,
+            "NanosecondsPerOperation": 179589850.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 4,
+      "Order": 3,
+      "Condition": "O",
+      "HostPid": 15596,
+      "WorkerPid": 52500,
+      "StartedUtc": "2026-10-11T01:48:55.7984565Z",
+      "StoppedUtc": "2026-10-11T01:49:23.8891299Z",
+      "ExitCode": 0,
+      "MeanMs": 148.192746875,
+      "AllocatedBytesPerOperation": 64503860,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 594708800.0,
+            "NanosecondsPerOperation": 148677200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 594708600.0,
+            "NanosecondsPerOperation": 148677150.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 632241800.0,
+            "NanosecondsPerOperation": 158060450.0
+          },
+          "Result": {
+            "TotalNanoseconds": 632241600.0,
+            "NanosecondsPerOperation": 158060400.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 544295900.0,
+            "NanosecondsPerOperation": 136073975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 544295700.0,
+            "NanosecondsPerOperation": 136073925.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 685252600.0,
+            "NanosecondsPerOperation": 171313150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 685252400.0,
+            "NanosecondsPerOperation": 171313100.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 584067700.0,
+            "NanosecondsPerOperation": 146016925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 584067500.0,
+            "NanosecondsPerOperation": 146016875.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 558145500.0,
+            "NanosecondsPerOperation": 139536375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 558145300.0,
+            "NanosecondsPerOperation": 139536325.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 565389300.0,
+            "NanosecondsPerOperation": 141347325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 565389100.0,
+            "NanosecondsPerOperation": 141347275.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 578067900.0,
+            "NanosecondsPerOperation": 144516975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 578067700.0,
+            "NanosecondsPerOperation": 144516925.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 4,
+      "Order": 4,
+      "Condition": "CS",
+      "HostPid": 51404,
+      "WorkerPid": 50776,
+      "StartedUtc": "2026-10-11T01:49:24.1188200Z",
+      "StoppedUtc": "2026-10-11T01:49:53.0153935Z",
+      "ExitCode": 0,
+      "MeanMs": 154.977296875,
+      "AllocatedBytesPerOperation": 64503582,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 648610200.0,
+            "NanosecondsPerOperation": 162152550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 648610100.0,
+            "NanosecondsPerOperation": 162152525.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 606972500.0,
+            "NanosecondsPerOperation": 151743125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 606972400.0,
+            "NanosecondsPerOperation": 151743100.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 623639200.0,
+            "NanosecondsPerOperation": 155909800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 623639100.0,
+            "NanosecondsPerOperation": 155909775.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 624714600.0,
+            "NanosecondsPerOperation": 156178650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 624714500.0,
+            "NanosecondsPerOperation": 156178625.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 602731400.0,
+            "NanosecondsPerOperation": 150682850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 602731300.0,
+            "NanosecondsPerOperation": 150682825.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 616290000.0,
+            "NanosecondsPerOperation": 154072500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 616289900.0,
+            "NanosecondsPerOperation": 154072475.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 616927000.0,
+            "NanosecondsPerOperation": 154231750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 616926900.0,
+            "NanosecondsPerOperation": 154231725.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 619389400.0,
+            "NanosecondsPerOperation": 154847350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 619389300.0,
+            "NanosecondsPerOperation": 154847325.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 4,
+      "Order": 5,
+      "Condition": "BS",
+      "HostPid": 29580,
+      "WorkerPid": 53176,
+      "StartedUtc": "2026-10-11T01:49:53.2477279Z",
+      "StoppedUtc": "2026-10-11T01:50:22.9025039Z",
+      "ExitCode": 0,
+      "MeanMs": 151.57556875,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 598820700.0,
+            "NanosecondsPerOperation": 149705175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 598820500.0,
+            "NanosecondsPerOperation": 149705125.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 658679000.0,
+            "NanosecondsPerOperation": 164669750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 658678800.0,
+            "NanosecondsPerOperation": 164669700.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 619761700.0,
+            "NanosecondsPerOperation": 154940425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 619761500.0,
+            "NanosecondsPerOperation": 154940375.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 593319700.0,
+            "NanosecondsPerOperation": 148329925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 593319500.0,
+            "NanosecondsPerOperation": 148329875.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 610380300.0,
+            "NanosecondsPerOperation": 152595075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 610380100.0,
+            "NanosecondsPerOperation": 152595025.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 589095600.0,
+            "NanosecondsPerOperation": 147273900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 589095400.0,
+            "NanosecondsPerOperation": 147273850.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 578066700.0,
+            "NanosecondsPerOperation": 144516675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 578066500.0,
+            "NanosecondsPerOperation": 144516625.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 602296100.0,
+            "NanosecondsPerOperation": 150574025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 602295900.0,
+            "NanosecondsPerOperation": 150573975.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 5,
+      "Order": 1,
+      "Condition": "CS",
+      "HostPid": 47232,
+      "WorkerPid": 43044,
+      "StartedUtc": "2026-10-11T01:50:23.2741488Z",
+      "StoppedUtc": "2026-10-11T01:50:53.4621741Z",
+      "ExitCode": 0,
+      "MeanMs": 159.34398125,
+      "AllocatedBytesPerOperation": 64502574,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 618332300.0,
+            "NanosecondsPerOperation": 154583075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 618332100.0,
+            "NanosecondsPerOperation": 154583025.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 631356600.0,
+            "NanosecondsPerOperation": 157839150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 631356400.0,
+            "NanosecondsPerOperation": 157839100.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 654009200.0,
+            "NanosecondsPerOperation": 163502300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 654009000.0,
+            "NanosecondsPerOperation": 163502250.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 671161400.0,
+            "NanosecondsPerOperation": 167790350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 671161200.0,
+            "NanosecondsPerOperation": 167790300.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 622004300.0,
+            "NanosecondsPerOperation": 155501075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 622004100.0,
+            "NanosecondsPerOperation": 155501025.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 636749200.0,
+            "NanosecondsPerOperation": 159187300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 636749000.0,
+            "NanosecondsPerOperation": 159187250.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 628484700.0,
+            "NanosecondsPerOperation": 157121175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 628484500.0,
+            "NanosecondsPerOperation": 157121125.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 636911300.0,
+            "NanosecondsPerOperation": 159227825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 636911100.0,
+            "NanosecondsPerOperation": 159227775.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 5,
+      "Order": 2,
+      "Condition": "BU",
+      "HostPid": 19076,
+      "WorkerPid": 17080,
+      "StartedUtc": "2026-10-11T01:50:53.7120669Z",
+      "StoppedUtc": "2026-10-11T01:51:25.2932255Z",
+      "ExitCode": 0,
+      "MeanMs": 182.35866875,
+      "AllocatedBytesPerOperation": 56158004,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 718883700.0,
+            "NanosecondsPerOperation": 179720925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 718883500.0,
+            "NanosecondsPerOperation": 179720875.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 706070300.0,
+            "NanosecondsPerOperation": 176517575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 706070100.0,
+            "NanosecondsPerOperation": 176517525.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 774012200.0,
+            "NanosecondsPerOperation": 193503050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 774012000.0,
+            "NanosecondsPerOperation": 193503000.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 715428300.0,
+            "NanosecondsPerOperation": 178857075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 715428100.0,
+            "NanosecondsPerOperation": 178857025.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 728902100.0,
+            "NanosecondsPerOperation": 182225525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 728901900.0,
+            "NanosecondsPerOperation": 182225475.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 740566400.0,
+            "NanosecondsPerOperation": 185141600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 740566200.0,
+            "NanosecondsPerOperation": 185141550.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 717598300.0,
+            "NanosecondsPerOperation": 179399575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 717598100.0,
+            "NanosecondsPerOperation": 179399525.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 734017700.0,
+            "NanosecondsPerOperation": 183504425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 734017500.0,
+            "NanosecondsPerOperation": 183504375.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 5,
+      "Order": 3,
+      "Condition": "BS",
+      "HostPid": 38204,
+      "WorkerPid": 6388,
+      "StartedUtc": "2026-10-11T01:51:25.5676206Z",
+      "StoppedUtc": "2026-10-11T01:51:54.5161359Z",
+      "ExitCode": 0,
+      "MeanMs": 153.48100625,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 602201400.0,
+            "NanosecondsPerOperation": 150550350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 602201200.0,
+            "NanosecondsPerOperation": 150550300.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 604918400.0,
+            "NanosecondsPerOperation": 151229600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 604918200.0,
+            "NanosecondsPerOperation": 151229550.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 643380700.0,
+            "NanosecondsPerOperation": 160845175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 643380500.0,
+            "NanosecondsPerOperation": 160845125.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 647249500.0,
+            "NanosecondsPerOperation": 161812375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 647249300.0,
+            "NanosecondsPerOperation": 161812325.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 594954100.0,
+            "NanosecondsPerOperation": 148738525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 594953900.0,
+            "NanosecondsPerOperation": 148738475.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 590179500.0,
+            "NanosecondsPerOperation": 147544875.0
+          },
+          "Result": {
+            "TotalNanoseconds": 590179300.0,
+            "NanosecondsPerOperation": 147544825.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 603047900.0,
+            "NanosecondsPerOperation": 150761975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 603047700.0,
+            "NanosecondsPerOperation": 150761925.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 625462300.0,
+            "NanosecondsPerOperation": 156365575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 625462100.0,
+            "NanosecondsPerOperation": 156365525.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 5,
+      "Order": 4,
+      "Condition": "CU",
+      "HostPid": 51344,
+      "WorkerPid": 26880,
+      "StartedUtc": "2026-10-11T01:51:54.7335324Z",
+      "StoppedUtc": "2026-10-11T01:52:44.4693788Z",
+      "ExitCode": 0,
+      "MeanMs": 375.587803125,
+      "AllocatedBytesPerOperation": 53955642,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1490995500.0,
+            "NanosecondsPerOperation": 372748875.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1490995300.0,
+            "NanosecondsPerOperation": 372748825.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1447581700.0,
+            "NanosecondsPerOperation": 361895425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1447581500.0,
+            "NanosecondsPerOperation": 361895375.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1445229600.0,
+            "NanosecondsPerOperation": 361307400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1445229400.0,
+            "NanosecondsPerOperation": 361307350.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1614324600.0,
+            "NanosecondsPerOperation": 403581150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1614324400.0,
+            "NanosecondsPerOperation": 403581100.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1577029100.0,
+            "NanosecondsPerOperation": 394257275.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1577028900.0,
+            "NanosecondsPerOperation": 394257225.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1475512200.0,
+            "NanosecondsPerOperation": 368878050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1475512000.0,
+            "NanosecondsPerOperation": 368878000.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1470363300.0,
+            "NanosecondsPerOperation": 367590825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1470363100.0,
+            "NanosecondsPerOperation": 367590775.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1497775300.0,
+            "NanosecondsPerOperation": 374443825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1497775100.0,
+            "NanosecondsPerOperation": 374443775.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 5,
+      "Order": 5,
+      "Condition": "O",
+      "HostPid": 25972,
+      "WorkerPid": 25360,
+      "StartedUtc": "2026-10-11T01:52:44.6914380Z",
+      "StoppedUtc": "2026-10-11T01:53:12.9337903Z",
+      "ExitCode": 0,
+      "MeanMs": 144.859275,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 564784300.0,
+            "NanosecondsPerOperation": 141196075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 564784100.0,
+            "NanosecondsPerOperation": 141196025.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 648908500.0,
+            "NanosecondsPerOperation": 162227125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 648908300.0,
+            "NanosecondsPerOperation": 162227075.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 629999900.0,
+            "NanosecondsPerOperation": 157499975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 629999700.0,
+            "NanosecondsPerOperation": 157499925.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 562288600.0,
+            "NanosecondsPerOperation": 140572150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 562288400.0,
+            "NanosecondsPerOperation": 140572100.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 556952800.0,
+            "NanosecondsPerOperation": 139238200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 556952600.0,
+            "NanosecondsPerOperation": 139238150.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 561089300.0,
+            "NanosecondsPerOperation": 140272325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 561089100.0,
+            "NanosecondsPerOperation": 140272275.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 550403800.0,
+            "NanosecondsPerOperation": 137600950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 550403600.0,
+            "NanosecondsPerOperation": 137600900.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 561071200.0,
+            "NanosecondsPerOperation": 140267800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 561071000.0,
+            "NanosecondsPerOperation": 140267750.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 6,
+      "Order": 1,
+      "Condition": "O",
+      "HostPid": 51136,
+      "WorkerPid": 27708,
+      "StartedUtc": "2026-10-11T01:53:13.2147476Z",
+      "StoppedUtc": "2026-10-11T01:53:42.3160363Z",
+      "ExitCode": 0,
+      "MeanMs": 139.208725,
+      "AllocatedBytesPerOperation": 64502446,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 573807700.0,
+            "NanosecondsPerOperation": 143451925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 573807500.0,
+            "NanosecondsPerOperation": 143451875.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 556770000.0,
+            "NanosecondsPerOperation": 139192500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 556769800.0,
+            "NanosecondsPerOperation": 139192450.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 559305500.0,
+            "NanosecondsPerOperation": 139826375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 559305300.0,
+            "NanosecondsPerOperation": 139826325.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 540972300.0,
+            "NanosecondsPerOperation": 135243075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 540972100.0,
+            "NanosecondsPerOperation": 135243025.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 559910200.0,
+            "NanosecondsPerOperation": 139977550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 559910000.0,
+            "NanosecondsPerOperation": 139977500.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 573749300.0,
+            "NanosecondsPerOperation": 143437325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 573749100.0,
+            "NanosecondsPerOperation": 143437275.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 555138400.0,
+            "NanosecondsPerOperation": 138784600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 555138200.0,
+            "NanosecondsPerOperation": 138784550.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 535027400.0,
+            "NanosecondsPerOperation": 133756850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 535027200.0,
+            "NanosecondsPerOperation": 133756800.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 6,
+      "Order": 2,
+      "Condition": "CU",
+      "HostPid": 43656,
+      "WorkerPid": 36132,
+      "StartedUtc": "2026-10-11T01:53:42.5490245Z",
+      "StoppedUtc": "2026-10-11T01:54:32.9813545Z",
+      "ExitCode": 0,
+      "MeanMs": 379.4370875,
+      "AllocatedBytesPerOperation": 53953986,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1551813300.0,
+            "NanosecondsPerOperation": 387953325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1551813100.0,
+            "NanosecondsPerOperation": 387953275.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1453783900.0,
+            "NanosecondsPerOperation": 363445975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1453783700.0,
+            "NanosecondsPerOperation": 363445925.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1614930700.0,
+            "NanosecondsPerOperation": 403732675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1614930500.0,
+            "NanosecondsPerOperation": 403732625.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1498735900.0,
+            "NanosecondsPerOperation": 374683975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1498735700.0,
+            "NanosecondsPerOperation": 374683925.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1488699600.0,
+            "NanosecondsPerOperation": 372174900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1488699400.0,
+            "NanosecondsPerOperation": 372174850.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1499744900.0,
+            "NanosecondsPerOperation": 374936225.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1499744700.0,
+            "NanosecondsPerOperation": 374936175.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1475318400.0,
+            "NanosecondsPerOperation": 368829600.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1475318200.0,
+            "NanosecondsPerOperation": 368829550.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1558961700.0,
+            "NanosecondsPerOperation": 389740425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1558961500.0,
+            "NanosecondsPerOperation": 389740375.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 6,
+      "Order": 3,
+      "Condition": "BS",
+      "HostPid": 26148,
+      "WorkerPid": 47448,
+      "StartedUtc": "2026-10-11T01:54:33.1995765Z",
+      "StoppedUtc": "2026-10-11T01:55:03.4694674Z",
+      "ExitCode": 0,
+      "MeanMs": 151.8979375,
+      "AllocatedBytesPerOperation": 64502574,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 592607900.0,
+            "NanosecondsPerOperation": 148151975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 592607700.0,
+            "NanosecondsPerOperation": 148151925.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 586582700.0,
+            "NanosecondsPerOperation": 146645675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 586582500.0,
+            "NanosecondsPerOperation": 146645625.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 578914300.0,
+            "NanosecondsPerOperation": 144728575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 578914100.0,
+            "NanosecondsPerOperation": 144728525.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 581312600.0,
+            "NanosecondsPerOperation": 145328150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 581312400.0,
+            "NanosecondsPerOperation": 145328100.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 587611800.0,
+            "NanosecondsPerOperation": 146902950.0
+          },
+          "Result": {
+            "TotalNanoseconds": 587611600.0,
+            "NanosecondsPerOperation": 146902900.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 612669900.0,
+            "NanosecondsPerOperation": 153167475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 612669700.0,
+            "NanosecondsPerOperation": 153167425.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 623629700.0,
+            "NanosecondsPerOperation": 155907425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 623629500.0,
+            "NanosecondsPerOperation": 155907375.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 697406700.0,
+            "NanosecondsPerOperation": 174351675.0
+          },
+          "Result": {
+            "TotalNanoseconds": 697406500.0,
+            "NanosecondsPerOperation": 174351625.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 6,
+      "Order": 4,
+      "Condition": "BU",
+      "HostPid": 37480,
+      "WorkerPid": 34356,
+      "StartedUtc": "2026-10-11T01:55:03.7189335Z",
+      "StoppedUtc": "2026-10-11T01:55:35.2332322Z",
+      "ExitCode": 0,
+      "MeanMs": 178.90336875,
+      "AllocatedBytesPerOperation": 56158076,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 768752600.0,
+            "NanosecondsPerOperation": 192188150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 768752400.0,
+            "NanosecondsPerOperation": 192188100.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 703844600.0,
+            "NanosecondsPerOperation": 175961150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 703844400.0,
+            "NanosecondsPerOperation": 175961100.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 691198600.0,
+            "NanosecondsPerOperation": 172799650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 691198400.0,
+            "NanosecondsPerOperation": 172799600.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 702425000.0,
+            "NanosecondsPerOperation": 175606250.0
+          },
+          "Result": {
+            "TotalNanoseconds": 702424800.0,
+            "NanosecondsPerOperation": 175606200.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 728426300.0,
+            "NanosecondsPerOperation": 182106575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 728426100.0,
+            "NanosecondsPerOperation": 182106525.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 713760200.0,
+            "NanosecondsPerOperation": 178440050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 713760000.0,
+            "NanosecondsPerOperation": 178440000.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 719881600.0,
+            "NanosecondsPerOperation": 179970400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 719881400.0,
+            "NanosecondsPerOperation": 179970350.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 696620500.0,
+            "NanosecondsPerOperation": 174155125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 696620300.0,
+            "NanosecondsPerOperation": 174155075.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 6,
+      "Order": 5,
+      "Condition": "CS",
+      "HostPid": 52676,
+      "WorkerPid": 39624,
+      "StartedUtc": "2026-10-11T01:55:35.5336521Z",
+      "StoppedUtc": "2026-10-11T01:56:05.3659462Z",
+      "ExitCode": 0,
+      "MeanMs": 158.53374375,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 635006600.0,
+            "NanosecondsPerOperation": 158751650.0
+          },
+          "Result": {
+            "TotalNanoseconds": 635006400.0,
+            "NanosecondsPerOperation": 158751600.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 617219600.0,
+            "NanosecondsPerOperation": 154304900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 617219400.0,
+            "NanosecondsPerOperation": 154304850.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 674025900.0,
+            "NanosecondsPerOperation": 168506475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 674025700.0,
+            "NanosecondsPerOperation": 168506425.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 655637500.0,
+            "NanosecondsPerOperation": 163909375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 655637300.0,
+            "NanosecondsPerOperation": 163909325.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 635048200.0,
+            "NanosecondsPerOperation": 158762050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 635048000.0,
+            "NanosecondsPerOperation": 158762000.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 628853400.0,
+            "NanosecondsPerOperation": 157213350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 628853200.0,
+            "NanosecondsPerOperation": 157213300.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609103000.0,
+            "NanosecondsPerOperation": 152275750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609102800.0,
+            "NanosecondsPerOperation": 152275700.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 618187200.0,
+            "NanosecondsPerOperation": 154546800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 618187000.0,
+            "NanosecondsPerOperation": 154546750.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 7,
+      "Order": 1,
+      "Condition": "BU",
+      "HostPid": 48376,
+      "WorkerPid": 39580,
+      "StartedUtc": "2026-10-11T01:56:05.6304824Z",
+      "StoppedUtc": "2026-10-11T01:56:38.3217306Z",
+      "ExitCode": 0,
+      "MeanMs": 188.4264375,
+      "AllocatedBytesPerOperation": 56158202,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 735014500.0,
+            "NanosecondsPerOperation": 183753625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 735014300.0,
+            "NanosecondsPerOperation": 183753575.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 734784700.0,
+            "NanosecondsPerOperation": 183696175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 734784500.0,
+            "NanosecondsPerOperation": 183696125.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 751231100.0,
+            "NanosecondsPerOperation": 187807775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 751230900.0,
+            "NanosecondsPerOperation": 187807725.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 719184800.0,
+            "NanosecondsPerOperation": 179796200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 719184600.0,
+            "NanosecondsPerOperation": 179796150.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 735384400.0,
+            "NanosecondsPerOperation": 183846100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 735384200.0,
+            "NanosecondsPerOperation": 183846050.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 863314900.0,
+            "NanosecondsPerOperation": 215828725.0
+          },
+          "Result": {
+            "TotalNanoseconds": 863314700.0,
+            "NanosecondsPerOperation": 215828675.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 743378200.0,
+            "NanosecondsPerOperation": 185844550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 743378000.0,
+            "NanosecondsPerOperation": 185844500.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 747355000.0,
+            "NanosecondsPerOperation": 186838750.0
+          },
+          "Result": {
+            "TotalNanoseconds": 747354800.0,
+            "NanosecondsPerOperation": 186838700.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 7,
+      "Order": 2,
+      "Condition": "CU",
+      "HostPid": 32180,
+      "WorkerPid": 7668,
+      "StartedUtc": "2026-10-11T01:56:38.5449387Z",
+      "StoppedUtc": "2026-10-11T01:57:28.0508403Z",
+      "ExitCode": 0,
+      "MeanMs": 367.782796875,
+      "AllocatedBytesPerOperation": 53955060,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1472150200.0,
+            "NanosecondsPerOperation": 368037550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1472150000.0,
+            "NanosecondsPerOperation": 368037500.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1434441800.0,
+            "NanosecondsPerOperation": 358610450.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1434441600.0,
+            "NanosecondsPerOperation": 358610400.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1478609700.0,
+            "NanosecondsPerOperation": 369652425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1478609500.0,
+            "NanosecondsPerOperation": 369652375.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1657223300.0,
+            "NanosecondsPerOperation": 414305825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1657223100.0,
+            "NanosecondsPerOperation": 414305775.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1434394900.0,
+            "NanosecondsPerOperation": 358598725.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1434394700.0,
+            "NanosecondsPerOperation": 358598675.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1436644700.0,
+            "NanosecondsPerOperation": 359161175.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1436644500.0,
+            "NanosecondsPerOperation": 359161125.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1437203400.0,
+            "NanosecondsPerOperation": 359300850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1437203200.0,
+            "NanosecondsPerOperation": 359300800.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1418383100.0,
+            "NanosecondsPerOperation": 354595775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1418382900.0,
+            "NanosecondsPerOperation": 354595725.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 7,
+      "Order": 3,
+      "Condition": "CS",
+      "HostPid": 23280,
+      "WorkerPid": 40468,
+      "StartedUtc": "2026-10-11T01:57:28.3256048Z",
+      "StoppedUtc": "2026-10-11T01:57:58.5720081Z",
+      "ExitCode": 0,
+      "MeanMs": 165.703378125,
+      "AllocatedBytesPerOperation": 64502570,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 659835400.0,
+            "NanosecondsPerOperation": 164958850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 659835200.0,
+            "NanosecondsPerOperation": 164958800.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 640496600.0,
+            "NanosecondsPerOperation": 160124150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 640496400.0,
+            "NanosecondsPerOperation": 160124100.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 637056400.0,
+            "NanosecondsPerOperation": 159264100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 637056200.0,
+            "NanosecondsPerOperation": 159264050.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 635475600.0,
+            "NanosecondsPerOperation": 158868900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 635475400.0,
+            "NanosecondsPerOperation": 158868850.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 676477400.0,
+            "NanosecondsPerOperation": 169119350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 676477200.0,
+            "NanosecondsPerOperation": 169119300.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 708566000.0,
+            "NanosecondsPerOperation": 177141500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 708565800.0,
+            "NanosecondsPerOperation": 177141450.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 719400900.0,
+            "NanosecondsPerOperation": 179850225.0
+          },
+          "Result": {
+            "TotalNanoseconds": 719400700.0,
+            "NanosecondsPerOperation": 179850175.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 625201400.0,
+            "NanosecondsPerOperation": 156300350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 625201200.0,
+            "NanosecondsPerOperation": 156300300.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 7,
+      "Order": 4,
+      "Condition": "O",
+      "HostPid": 41036,
+      "WorkerPid": 39060,
+      "StartedUtc": "2026-10-11T01:57:58.8636346Z",
+      "StoppedUtc": "2026-10-11T01:58:26.4200875Z",
+      "ExitCode": 0,
+      "MeanMs": 144.23501875,
+      "AllocatedBytesPerOperation": 64502372,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 598306000.0,
+            "NanosecondsPerOperation": 149576500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 598305800.0,
+            "NanosecondsPerOperation": 149576450.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 575116000.0,
+            "NanosecondsPerOperation": 143779000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 575115800.0,
+            "NanosecondsPerOperation": 143778950.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 545496900.0,
+            "NanosecondsPerOperation": 136374225.0
+          },
+          "Result": {
+            "TotalNanoseconds": 545496700.0,
+            "NanosecondsPerOperation": 136374175.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 562232800.0,
+            "NanosecondsPerOperation": 140558200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 562232600.0,
+            "NanosecondsPerOperation": 140558150.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 578152500.0,
+            "NanosecondsPerOperation": 144538125.0
+          },
+          "Result": {
+            "TotalNanoseconds": 578152300.0,
+            "NanosecondsPerOperation": 144538075.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 593186300.0,
+            "NanosecondsPerOperation": 148296575.0
+          },
+          "Result": {
+            "TotalNanoseconds": 593186100.0,
+            "NanosecondsPerOperation": 148296525.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 562262100.0,
+            "NanosecondsPerOperation": 140565525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 562261900.0,
+            "NanosecondsPerOperation": 140565475.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 600769600.0,
+            "NanosecondsPerOperation": 150192400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 600769400.0,
+            "NanosecondsPerOperation": 150192350.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 7,
+      "Order": 5,
+      "Condition": "BS",
+      "HostPid": 38708,
+      "WorkerPid": 41636,
+      "StartedUtc": "2026-10-11T01:58:26.6905540Z",
+      "StoppedUtc": "2026-10-11T01:58:55.4560261Z",
+      "ExitCode": 0,
+      "MeanMs": 153.819278125,
+      "AllocatedBytesPerOperation": 64502372,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 616872200.0,
+            "NanosecondsPerOperation": 154218050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 616872000.0,
+            "NanosecondsPerOperation": 154218000.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 655955100.0,
+            "NanosecondsPerOperation": 163988775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 655954900.0,
+            "NanosecondsPerOperation": 163988725.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 604570200.0,
+            "NanosecondsPerOperation": 151142550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 604570000.0,
+            "NanosecondsPerOperation": 151142500.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 629912200.0,
+            "NanosecondsPerOperation": 157478050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 629912000.0,
+            "NanosecondsPerOperation": 157478000.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 610652600.0,
+            "NanosecondsPerOperation": 152663150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 610652400.0,
+            "NanosecondsPerOperation": 152663100.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 603755500.0,
+            "NanosecondsPerOperation": 150938875.0
+          },
+          "Result": {
+            "TotalNanoseconds": 603755300.0,
+            "NanosecondsPerOperation": 150938825.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 590520600.0,
+            "NanosecondsPerOperation": 147630150.0
+          },
+          "Result": {
+            "TotalNanoseconds": 590520400.0,
+            "NanosecondsPerOperation": 147630100.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609980100.0,
+            "NanosecondsPerOperation": 152495025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609979900.0,
+            "NanosecondsPerOperation": 152494975.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 8,
+      "Order": 1,
+      "Condition": "BS",
+      "HostPid": 29724,
+      "WorkerPid": 46900,
+      "StartedUtc": "2026-10-11T01:58:55.7617033Z",
+      "StoppedUtc": "2026-10-11T01:59:24.2307376Z",
+      "ExitCode": 0,
+      "MeanMs": 150.564890625,
+      "AllocatedBytesPerOperation": 64502372,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 600146200.0,
+            "NanosecondsPerOperation": 150036550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 600146000.0,
+            "NanosecondsPerOperation": 150036500.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 575047100.0,
+            "NanosecondsPerOperation": 143761775.0
+          },
+          "Result": {
+            "TotalNanoseconds": 575046900.0,
+            "NanosecondsPerOperation": 143761725.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 579811900.0,
+            "NanosecondsPerOperation": 144952975.0
+          },
+          "Result": {
+            "TotalNanoseconds": 579811700.0,
+            "NanosecondsPerOperation": 144952925.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 588778500.0,
+            "NanosecondsPerOperation": 147194625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 588778300.0,
+            "NanosecondsPerOperation": 147194575.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 609423400.0,
+            "NanosecondsPerOperation": 152355850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 609423200.0,
+            "NanosecondsPerOperation": 152355800.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 640001900.0,
+            "NanosecondsPerOperation": 160000475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 640001700.0,
+            "NanosecondsPerOperation": 160000425.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 607217400.0,
+            "NanosecondsPerOperation": 151804350.0
+          },
+          "Result": {
+            "TotalNanoseconds": 607217200.0,
+            "NanosecondsPerOperation": 151804300.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 617651700.0,
+            "NanosecondsPerOperation": 154412925.0
+          },
+          "Result": {
+            "TotalNanoseconds": 617651500.0,
+            "NanosecondsPerOperation": 154412875.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 8,
+      "Order": 2,
+      "Condition": "O",
+      "HostPid": 48664,
+      "WorkerPid": 3424,
+      "StartedUtc": "2026-10-11T01:59:24.4464222Z",
+      "StoppedUtc": "2026-10-11T01:59:52.0223524Z",
+      "ExitCode": 0,
+      "MeanMs": 138.9432375,
+      "AllocatedBytesPerOperation": 64504294,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 548605700.0,
+            "NanosecondsPerOperation": 137151425.0
+          },
+          "Result": {
+            "TotalNanoseconds": 548605600.0,
+            "NanosecondsPerOperation": 137151400.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 562360400.0,
+            "NanosecondsPerOperation": 140590100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 562360300.0,
+            "NanosecondsPerOperation": 140590075.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 572905200.0,
+            "NanosecondsPerOperation": 143226300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 572905100.0,
+            "NanosecondsPerOperation": 143226275.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 544857600.0,
+            "NanosecondsPerOperation": 136214400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 544857500.0,
+            "NanosecondsPerOperation": 136214375.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 547004000.0,
+            "NanosecondsPerOperation": 136751000.0
+          },
+          "Result": {
+            "TotalNanoseconds": 547003900.0,
+            "NanosecondsPerOperation": 136750975.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 548329900.0,
+            "NanosecondsPerOperation": 137082475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 548329800.0,
+            "NanosecondsPerOperation": 137082450.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 561913200.0,
+            "NanosecondsPerOperation": 140478300.0
+          },
+          "Result": {
+            "TotalNanoseconds": 561913100.0,
+            "NanosecondsPerOperation": 140478275.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 560208400.0,
+            "NanosecondsPerOperation": 140052100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 560208300.0,
+            "NanosecondsPerOperation": 140052075.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 8,
+      "Order": 3,
+      "Condition": "CS",
+      "HostPid": 49216,
+      "WorkerPid": 14744,
+      "StartedUtc": "2026-10-11T01:59:52.2381748Z",
+      "StoppedUtc": "2026-10-11T02:00:21.6695676Z",
+      "ExitCode": 0,
+      "MeanMs": 158.375071875,
+      "AllocatedBytesPerOperation": 64502590,
+      "Gen0": 19,
+      "Gen1": 9,
+      "Gen2": 3,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 619028100.0,
+            "NanosecondsPerOperation": 154757025.0
+          },
+          "Result": {
+            "TotalNanoseconds": 619027900.0,
+            "NanosecondsPerOperation": 154756975.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 623674000.0,
+            "NanosecondsPerOperation": 155918500.0
+          },
+          "Result": {
+            "TotalNanoseconds": 623673800.0,
+            "NanosecondsPerOperation": 155918450.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 588715400.0,
+            "NanosecondsPerOperation": 147178850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 588715200.0,
+            "NanosecondsPerOperation": 147178800.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 594356400.0,
+            "NanosecondsPerOperation": 148589100.0
+          },
+          "Result": {
+            "TotalNanoseconds": 594356200.0,
+            "NanosecondsPerOperation": 148589050.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 603398500.0,
+            "NanosecondsPerOperation": 150849625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 603398300.0,
+            "NanosecondsPerOperation": 150849575.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 605572300.0,
+            "NanosecondsPerOperation": 151393075.0
+          },
+          "Result": {
+            "TotalNanoseconds": 605572100.0,
+            "NanosecondsPerOperation": 151393025.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 661457900.0,
+            "NanosecondsPerOperation": 165364475.0
+          },
+          "Result": {
+            "TotalNanoseconds": 661457700.0,
+            "NanosecondsPerOperation": 165364425.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 771801300.0,
+            "NanosecondsPerOperation": 192950325.0
+          },
+          "Result": {
+            "TotalNanoseconds": 771801100.0,
+            "NanosecondsPerOperation": 192950275.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 8,
+      "Order": 4,
+      "Condition": "CU",
+      "HostPid": 53032,
+      "WorkerPid": 46808,
+      "StartedUtc": "2026-10-11T02:00:21.9780310Z",
+      "StoppedUtc": "2026-10-11T02:01:11.3158740Z",
+      "ExitCode": 0,
+      "MeanMs": 368.999671875,
+      "AllocatedBytesPerOperation": 53954070,
+      "Gen0": 17,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1446214100.0,
+            "NanosecondsPerOperation": 361553525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1446213900.0,
+            "NanosecondsPerOperation": 361553475.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1464771600.0,
+            "NanosecondsPerOperation": 366192900.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1464771400.0,
+            "NanosecondsPerOperation": 366192850.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1519340800.0,
+            "NanosecondsPerOperation": 379835200.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1519340600.0,
+            "NanosecondsPerOperation": 379835150.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1490285500.0,
+            "NanosecondsPerOperation": 372571375.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1490285300.0,
+            "NanosecondsPerOperation": 372571325.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1497895200.0,
+            "NanosecondsPerOperation": 374473800.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1497895000.0,
+            "NanosecondsPerOperation": 374473750.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1460095500.0,
+            "NanosecondsPerOperation": 365023875.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1460095300.0,
+            "NanosecondsPerOperation": 365023825.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1479705600.0,
+            "NanosecondsPerOperation": 369926400.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1479705400.0,
+            "NanosecondsPerOperation": 369926350.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1449682800.0,
+            "NanosecondsPerOperation": 362420700.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1449682600.0,
+            "NanosecondsPerOperation": 362420650.0
+          }
+        }
+      ]
+    },
+    {
+      "Block": 8,
+      "Order": 5,
+      "Condition": "BU",
+      "HostPid": 25136,
+      "WorkerPid": 3448,
+      "StartedUtc": "2026-10-11T02:01:11.5332367Z",
+      "StoppedUtc": "2026-10-11T02:01:43.8230720Z",
+      "ExitCode": 0,
+      "MeanMs": 198.29846875,
+      "AllocatedBytesPerOperation": 56159692,
+      "Gen0": 18,
+      "Gen1": 7,
+      "Gen2": 2,
+      "ActualResultSameIteration": true,
+      "Iterations": [
+        {
+          "Iteration": 1,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 860415300.0,
+            "NanosecondsPerOperation": 215103825.0
+          },
+          "Result": {
+            "TotalNanoseconds": 860415100.0,
+            "NanosecondsPerOperation": 215103775.0
+          }
+        },
+        {
+          "Iteration": 2,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 1050963400.0,
+            "NanosecondsPerOperation": 262740850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 1050963200.0,
+            "NanosecondsPerOperation": 262740800.0
+          }
+        },
+        {
+          "Iteration": 3,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 810118500.0,
+            "NanosecondsPerOperation": 202529625.0
+          },
+          "Result": {
+            "TotalNanoseconds": 810118300.0,
+            "NanosecondsPerOperation": 202529575.0
+          }
+        },
+        {
+          "Iteration": 4,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 709123400.0,
+            "NanosecondsPerOperation": 177280850.0
+          },
+          "Result": {
+            "TotalNanoseconds": 709123200.0,
+            "NanosecondsPerOperation": 177280800.0
+          }
+        },
+        {
+          "Iteration": 5,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 739359500.0,
+            "NanosecondsPerOperation": 184839875.0
+          },
+          "Result": {
+            "TotalNanoseconds": 739359300.0,
+            "NanosecondsPerOperation": 184839825.0
+          }
+        },
+        {
+          "Iteration": 6,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 720790100.0,
+            "NanosecondsPerOperation": 180197525.0
+          },
+          "Result": {
+            "TotalNanoseconds": 720789900.0,
+            "NanosecondsPerOperation": 180197475.0
+          }
+        },
+        {
+          "Iteration": 7,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 719418200.0,
+            "NanosecondsPerOperation": 179854550.0
+          },
+          "Result": {
+            "TotalNanoseconds": 719418000.0,
+            "NanosecondsPerOperation": 179854500.0
+          }
+        },
+        {
+          "Iteration": 8,
+          "Operations": 4,
+          "Actual": {
+            "TotalNanoseconds": 735364200.0,
+            "NanosecondsPerOperation": 183841050.0
+          },
+          "Result": {
+            "TotalNanoseconds": 735364000.0,
+            "NanosecondsPerOperation": 183841000.0
+          }
+        }
+      ]
+    }
+  ]
+}
