@@ -20,3 +20,18 @@
 [保存済みJSON](../Data/test.json)（4,172,062 bytes、SHA-256 `DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D`）をそのまま使用。旧版・現行版ともに文字列長4,172,062と解析後のカーソル位置が一致し、生成ノードは104,120。型・キー順・配列順・リテラル種別と値を含めた結果木の正規化表現も両版で同じSHA-256（`624E48A090C273BED971F0994A3110DEAC51E4866DA578B7B18C616C4DC8D2D6`）だった。検証は計時外。
 
 両版に共通の [JsonParserBenchmarks.Kotowari](../JsonParserBenchmarks.cs) を実行。ファイルを文字列に読む処理はGlobalSetupで、計時対象は解析と結果生成。Release・BenchmarkDotNet 0.15.8・SDK 10.0.401・.NET 10.0.12（10.0.1226.42308、x64 RyuJIT）、Windows 11 25H2 (10.0.26200.9974)、Intel Core i7-13700H。PGO有効（`DOTNET_TieredPGO=1`）、R2R無効（`DOTNET_ReadyToRun=0`）、affinity mask 4、UnrollFactor 1、MemoryDiagnoser。各起動4回暖機・5回計時、目標250 ms/反復、外れ値除外なし。ペアごとに順序を反転し、新規プロセス8回を直列実行した。生ログと各起動のBDN出力はローカルの `artifacts/whitespace-final-comparison-20261120/` に保存。
+
+## GitHub Actionsでの追加比較
+
+同じ2コミット・同じ入力を[クラウドの1ジョブ](https://github.com/HrmsTrsmgs/Kotowari/actions/runs/44647647631)で比較した。両版とも4,172,062文字を全消費し、104,120ノードの結果木が一致した。入力SHA-256は上記と同じ。結果木の照合用SHA-256は `B0462FD7FFDBD27AED04BA730473FA8FC854AA3AC6C21AC93936DA3C85186FD0`（ローカル比較とは異なる正規化方法）。
+
+| 組 | 実行順 | 旧 ms/解析 | 現行 ms/解析 | 旧 bytes/解析 | 現行 bytes/解析 |
+|---|---|---:|---:|---:|---:|
+| 1 | 旧→現行 | 97.19 | 96.91 | 36,216,884 | 36,216,672 |
+| 2 | 現行→旧 | 102.10 | 100.05 | 36,216,884 | 36,216,924 |
+| 3 | 旧→現行 | 102.39 | 106.25 | 36,216,884 | 36,216,924 |
+| 4 | 現行→旧 | 102.90 | 61.91 | 36,216,884 | 36,216,924 |
+
+現行÷旧の時間比の幾何平均は0.884、4組の対数比による95% t区間は0.587〜1.331。4組目の差が大きく、区間は1を含むため、この結果だけでは改善を確定しない。4組を独立単位とし、外れ値は除外していない。
+
+Windows 2025 runner（Windows 11 24H2、Intel Xeon Platinum 8573C、x64）、SDK 10.0.404、.NET 10.0.15、BenchmarkDotNet 0.15.8。PGO有効、R2R無効、affinity mask 4。各起動4回暖機・5回計時、250 ms/反復、UnrollFactor 1。ファイル読み込みは計時外で、前後の順序を交互にした。実行環境が異なるため、ローカルの絶対時間とは直接比較しない。生ログはGitHubの成果物に14日間、ローカルには `artifacts/cloud-json-20261120/` に保存。
