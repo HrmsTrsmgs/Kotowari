@@ -33,6 +33,14 @@ dotnet run --project Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj -c Re
 
 Versioned benchmark records are listed in [`Kotowari.Benchmarks/Results`](Kotowari.Benchmarks/Results/README.md). Each record includes the input hash, environment, dependency versions, results, and known limitations.
 
+### Compare two commits on GitHub Actions
+
+In **Actions → Giant JSON benchmark → Run workflow**, enter the full 40-character SHA of the baseline and candidate. Leave the candidate empty to use the selected branch's commit, or enter the same SHA twice for an **A/A noise check**. Use trusted commits already pushed to this repository. The [workflow](.github/workflows/giant-json-benchmark.yml) is manual only; [GitHub enables manual dispatch after the workflow is on the default branch](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow).
+
+One Windows runner builds both revisions in Release and checks the actual benchmark input against the recorded Windows sample (4,172,062 bytes, CRLF). Both revisions must consume all characters and produce identical JSON trees with the same benchmark harness and SDK. It then measures Kotowari's **parse only** (file I/O is outside timing), in four pairs of fresh processes. The order reverses each pair; Dynamic PGO stays on.
+
+The run summary shows time and allocated bytes per parse for each pair, plus the paired time ratio and its approximate 95% interval. Compare **within the same run**: hosted machines can differ, so do not compare absolute times to the local records or to a different job. Download the artifact within 14 days for the SHAs, SDK/runtime, input and tree hashes, and raw BenchmarkDotNet reports. Nothing is automatically committed; if a result informs a decision, preserve it in the existing benchmark records before the artifact expires.
+
 The suspended UTF-8 work, saved Git tags, and measurement baselines are indexed in the [UTF-8 experiment archive](docs/utf8-experiment-archive.md).
 
 ## Development continuity
