@@ -27,6 +27,9 @@ function Get-CheckoutEvidence([string] $Root, [string] $Label) {
         if ($LASTEXITCODE -ne 0) { throw "Could not resolve the SDK in $Root" }
         Invoke-LoggedDotnet "$logs/dotnet-info.txt" @('--info')
         Invoke-LoggedDotnet "$logs/build.log" @('build', $project, '-c', 'Release')
+        $framework = dotnet msbuild $project -getProperty:TargetFramework
+        if ($LASTEXITCODE -ne 0 -or $framework -notmatch '^net\d+\.\d+$') { throw "Cannot determine target framework in $Root" }
+        $bin = "Kotowari.Benchmarks/bin/Release/$framework"
 
         $inputPath = (Resolve-Path -LiteralPath "$bin/Data/test.json").Path
         $hash = (Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash
@@ -48,7 +51,7 @@ function Get-CheckoutEvidence([string] $Root, [string] $Label) {
         if ($verified.Consumed -ne $verified.Characters -or $verified.Nodes -le 0 -or
             $verified.TreeHash -notmatch '^[0-9a-f]{64}$') { throw "Invalid verification for $Label" }
         [ordered]@{
-            Sha = $sha; Sdk = $sdk; InputBytes = (Get-Item -LiteralPath $inputPath).Length; InputHash = $hash
+            Sha = $sha; Sdk = $sdk; Framework = $framework; InputBytes = (Get-Item -LiteralPath $inputPath).Length; InputHash = $hash
             HarnessHash = (Get-FileHash -LiteralPath 'Kotowari.Benchmarks/JsonParserBenchmarks.cs').Hash
             EntryPointHash = (Get-FileHash -LiteralPath 'Kotowari.Benchmarks/Program.cs').Hash
             Characters = $verified.Characters; Consumed = $verified.Consumed
@@ -65,8 +68,6 @@ $output = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPat
 if (Test-Path -LiteralPath $output) { throw "Choose a new results directory: $output" }
 $null = New-Item -ItemType Directory -Path $output
 $project = 'Kotowari.Benchmarks/Marimo.Kotowari.Benchmarks.csproj'
-$bin = 'Kotowari.Benchmarks/bin/Release/net10.0'
-$dll = "$bin/Marimo.Kotowari.Benchmarks.dll"
 $allowed = [Diagnostics.Process]::GetCurrentProcess().ProcessorAffinity.ToInt64()
 $mask = if ($allowed -band 4) { 4 } else { $allowed -band (-$allowed) }
 if ($mask -le 0) { throw "Cannot select a shared CPU from affinity mask $allowed" }
@@ -89,6 +90,8 @@ $rows = foreach ($pair in 1..4) {
         $run = (New-Item -ItemType Directory -Path "$output/pair-$pair-$side").FullName
         Push-Location -LiteralPath $roots[$side]
         try {
+            $framework = $evidence[$side].Framework
+            $dll = "Kotowari.Benchmarks/bin/Release/$framework/Marimo.Kotowari.Benchmarks.dll"
             Invoke-LoggedDotnet "$run/console.log" @(
                 $dll, '--filter', '*JsonParserBenchmarks.Kotowari', '--launchCount', '1',
                 '--warmupCount', '4', '--iterationCount', '5', '--iterationTime', '250', '--unrollFactor', '1',

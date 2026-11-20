@@ -5,7 +5,7 @@ This project compiles the unmodified C# sources in `Upstream/` from
 The original MIT license is in `LICENSE.md`; the original README is preserved
 in `UPSTREAM-README.md`.
 
-Only the build wrapper differs: it targets this repository's `net10.0` instead
+Only the build wrapper differs: it targets this repository's `net11.0` instead
 of upstream's `net6.0`, is not packable, and uses `VersionOverride` to retain
 upstream's Sprache `3.0.0-develop-00049` without changing the benchmark's central
 Sprache `2.3.1`. Implicit usings and nullable settings are unchanged.

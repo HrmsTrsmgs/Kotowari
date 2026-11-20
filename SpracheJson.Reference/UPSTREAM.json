@@ -3,7 +3,7 @@
   "commit": "aa8092aa4f5a7f1675200ac908d20c06e285aec4",
   "license": "MIT",
   "upstreamTargetFramework": "net6.0",
-  "referenceTargetFramework": "net10.0",
+  "referenceTargetFramework": "net11.0",
   "spracheVersion": "3.0.0-develop-00049",
   "sourceGitBlobs": {
     "Extensions.cs": "6d11ac7ca5eaa11e7d4f2b700160c22ad3b47c6c",
