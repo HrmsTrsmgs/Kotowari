@@ -23,6 +23,17 @@ public class JsonParserBenchmarks
         var hasFailures = false;
         var benchmarks = new JsonParserBenchmarks();
         benchmarks.Setup();
+        JsonElement systemTextJsonResult = default;
+        Exception? systemTextJsonException = null;
+        try
+        {
+            systemTextJsonResult = benchmarks.SystemTextJson();
+        }
+        catch (Exception exception)
+        {
+            systemTextJsonException = exception;
+        }
+
         foreach (var (name, parse) in new (string, Func<object>)[]
         {
             (nameof(Kotowari), benchmarks.Kotowari),
@@ -30,11 +41,16 @@ public class JsonParserBenchmarks
             (nameof(Sprache), benchmarks.Sprache),
             (nameof(SpracheJsonPackage), benchmarks.SpracheJsonPackage),
             (nameof(Superpower), benchmarks.Superpower),
-            (nameof(SystemTextJson), () => benchmarks.SystemTextJson())
+            (nameof(SystemTextJson), () => systemTextJsonResult)
         })
         {
             try
             {
+                if (name == nameof(SystemTextJson) && systemTextJsonException is not null)
+                {
+                    throw systemTextJsonException;
+                }
+
                 var result = parse();
                 if (name == nameof(Kotowari))
                 {
@@ -62,7 +78,19 @@ public class JsonParserBenchmarks
                     }
                 }
 
-                Console.WriteLine($"{name}: OK ({CountNodes(result):N0} nodes)");
+                var matchesSystemTextJson = name is nameof(Pidgin) or nameof(Sprache) or nameof(Superpower);
+                if (matchesSystemTextJson && systemTextJsonException is not null)
+                {
+                    throw new InvalidOperationException("System.Text.Json reference parsing failed.", systemTextJsonException);
+                }
+
+                if (matchesSystemTextJson && !MatchesSystemTextJson((BenchmarkJson)result, systemTextJsonResult))
+                {
+                    throw new InvalidOperationException("Result does not match System.Text.Json.");
+                }
+
+                var matchDescription = matchesSystemTextJson ? "; matches SystemTextJson" : string.Empty;
+                Console.WriteLine($"{name}: OK ({CountNodes(result):N0} nodes{matchDescription})");
             }
             catch (Exception exception)
             {
@@ -102,6 +130,24 @@ public class JsonParserBenchmarks
         JsonValueKind.Object => 1 + element.EnumerateObject().Sum(property => CountNodes(property.Value)),
         JsonValueKind.Array => 1 + element.EnumerateArray().Sum(CountNodes),
         _ => 1
+    };
+
+    private static bool MatchesSystemTextJson(BenchmarkJson result, JsonElement expected) => result switch
+    {
+        BenchmarkJsonObject value => expected.ValueKind == JsonValueKind.Object
+            && value.Members.Count == expected.EnumerateObject().Count()
+            && value.Members.All(member => expected.TryGetProperty(member.Key, out var expectedValue)
+                && MatchesSystemTextJson(member.Value, expectedValue)),
+        BenchmarkJsonArray value => expected.ValueKind == JsonValueKind.Array
+            && value.Elements.Count == expected.GetArrayLength()
+            && value.Elements.Select((element, index) => MatchesSystemTextJson(element, expected[index])).All(match => match),
+        BenchmarkJsonBoolean value => expected.ValueKind is JsonValueKind.True or JsonValueKind.False
+            && value.Value == expected.GetBoolean(),
+        BenchmarkJsonNull => expected.ValueKind == JsonValueKind.Null,
+        BenchmarkJsonNumber value => expected.ValueKind == JsonValueKind.Number
+            && string.Equals(value.Value, expected.GetRawText(), StringComparison.Ordinal),
+        BenchmarkJsonString value => expected.ValueKind == JsonValueKind.String
+            && string.Equals(value.Value, expected.GetString(), StringComparison.Ordinal)
     };
 
     [Benchmark(Baseline = true)]

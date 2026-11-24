@@ -261,12 +261,14 @@ var parser =
 
 ### R11：標準の測定前検証を、失敗を検出できる入口にする
 
-**静的確認。** [ValidateAll](../Kotowari.Benchmarks/JsonParserBenchmarks.cs) 20～43行は例外を表示するだけで、[Main](../Kotowari.Benchmarks/Program.cs) 10～15行は正常終了する。
+**着手前の静的確認。** [ValidateAll](../Kotowari.Benchmarks/JsonParserBenchmarks.cs) は例外を表示するだけで、[Main](../Kotowari.Benchmarks/Program.cs) は正常終了した。
 ノード数も表示だけで期待値とは比較せず、Setupは入力を読むだけ。したがって `--validate` の終了コードでは解析失敗を検出できない。
 
 **改善方向**：失敗を集約して非ゼロ終了し、全文消費・値・配列順序を含む結果一致を測定前に検証する。検証処理を計時へ混ぜない。
 過去の測定では一時harnessによる全文消費・正規化木の検証を行っており、過去データを一律に未検証扱いしない。
 旧SpracheJSONの異なる木・専用JSONパーサーの参考値は引き続き分ける。
+
+**2026-11-24の対応：** 失敗時の非ゼロ終了は `d59e227`、Kotowariと旧SpracheJSONの全文消費は `7741f49` と `14b48b8` で対応済み。他の4対象は既存の入口で全文消費を要求する。値の検証はPidgin・Sprache・Superpowerの3つをSystem.Text.Jsonと照合する実装まで完了し、レビュー待ち。Kotowariと旧SpracheJSONは既知の文法・出力差があるためこの照合に入れず、全文消費の検証は維持する。巨大JSONでは照合した4対象が各100,001ノード、他の2対象は各104,120ノード。差の4,119は入力中の空配列数と一致する。Kotowariの空配列の表現は[上流同期の判断記録](../docs/development-context.md#最新版同期2026-11-05)を参照。専用パーサーの計時は引き続き参考値。
 
 **2026-11-20：C# 15の網羅チェックを導入。** 比較専用の内部型 `BenchmarkJson` を `closed record` にし、計時外の `CountNodes` で6種のノードを型付き `switch` で網羅する。旧実装はオブジェクト・配列以外を `BenchmarkJson => 1` で一律に数えたため、子を持つ型の追加を見落とせた。SDK 11.0.100の最小例では未処理の派生型を追加すると `CS8509` を検出した。公開の `ParseResult<T>` や上流に合わせる `IJsonValue` は対象外。これは `--validate` の失敗時終了コードや全文消費の検証の改善ではない。
 

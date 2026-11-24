@@ -4,7 +4,7 @@
 
 ## 現在の作業状況
 
-**2026-11-24：測定前の全文消費チェックを実装。** `codex/validate-benchmark-exit`、基準 `7741f49`（Kotowariの全文消費チェック）、未push。Pidgin・Sprache・Superpowerの文法とSystem.Text.Jsonの入口はもともと全文消費を要求する。旧SpracheJSON 1.0.1だけ、公開Parseが使う内部パーサーの残り入力を計時外で確認するよう追加。計時経路・パッケージは変更なし。不正末尾の回帰は旧版で意図どおり失敗、修正後に成功し、既存サンプルでは6対象成功。Releaseビルド・全482テスト成功（既存NU1701）。次は[R11](development-candidates.md#r11標準の測定前検証を失敗を検出できる入口にする)の結果一致の検証。旧SpracheJSONの既知の結果差は別扱い。クラウド性能測定は未実施。
+**2026-11-24：測定前の結果照合を実装。** `codex/validate-benchmark-exit`、基準 `c4c015a`、未push。Pidgin・Sprache・Superpowerの結果を計時外でSystem.Text.Jsonと構造照合し、不一致を失敗にする。範囲と既知の出力差は[R11](development-candidates.md#r11標準の測定前検証を失敗を検出できる入口にする)を参照。Release非増分ビルド成功（既存NU1701）、全482件・CLI回帰2本成功、巨大JSONで6対象成功（うち3対象は参照と一致）。変更箇所の静的診断なし。成功した解析結果に値や配列順の差を入れる不一致試験は未実施。計時なし。
 
 **確認日：2026-11-20。** 再開時にはGitと照合する。
 
