@@ -17,8 +17,9 @@ public class JsonParserBenchmarks
         => _json = File.ReadAllText(
             Path.Combine(AppContext.BaseDirectory, "Data", "test.json"));
 
-    public static void ValidateAll()
+    public static bool ValidateAll()
     {
+        var hasFailures = false;
         var benchmarks = new JsonParserBenchmarks();
         benchmarks.Setup();
         foreach (var (name, parse) in new (string, Func<object>)[]
@@ -38,9 +39,12 @@ public class JsonParserBenchmarks
             }
             catch (Exception exception)
             {
+                hasFailures = true;
                 Console.WriteLine($"{name}: FAILED - {exception.Message}");
             }
         }
+
+        return !hasFailures;
     }
 
     private static int CountNodes(object result) => result switch
