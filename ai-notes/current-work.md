@@ -4,6 +4,8 @@
 
 ## 現在の作業状況
 
+**2026-11-20：C# 15のノード集計リファクタリングを完了。** `codex/upgrade-dotnet-11`、移行コミット `2c7bd11` を基準に変更、未push。比較用内部型のclosed化と計時外の網羅switchを実装し、非増分解析ビルド成功（既存NU1701）、全482テスト・変更ファイルのformat成功、`--validate` は6対象とも成功。全体formatは既存指摘で失敗。対象と残る検証上の問題は[R11](development-candidates.md#r11標準の測定前検証を失敗を検出できる入口にする)を参照。SDKはローカルの `artifacts/dotnet-11-sdk/` にのみ展開。クラウド性能測定は未実施。
+
 **確認日：2026-11-20。** 再開時にはGitと照合する。
 
 * ブランチ：`codex/optimize-word-parser`、基準HEAD：`cd1b630`。同ブランチはGitHubへpush済み。

@@ -4,7 +4,7 @@ Kotowari is a dependency-free parser combinator library for C#.
 
 ## Requirements
 
-The NuGet package targets `net10.0`. Tests and benchmarks use the .NET 10 SDK pinned in `global.json`.
+The NuGet package targets `net11.0`. Tests and benchmarks use the .NET 11 SDK specified in `global.json`.
 
 ## Build and test
 

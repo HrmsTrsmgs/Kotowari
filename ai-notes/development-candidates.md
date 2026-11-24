@@ -268,6 +268,8 @@ var parser =
 過去の測定では一時harnessによる全文消費・正規化木の検証を行っており、過去データを一律に未検証扱いしない。
 旧SpracheJSONの異なる木・専用JSONパーサーの参考値は引き続き分ける。
 
+**2026-11-20：C# 15の網羅チェックを導入。** 比較専用の内部型 `BenchmarkJson` を `closed record` にし、計時外の `CountNodes` で6種のノードを型付き `switch` で網羅する。旧実装はオブジェクト・配列以外を `BenchmarkJson => 1` で一律に数えたため、子を持つ型の追加を見落とせた。SDK 11.0.100の最小例では未処理の派生型を追加すると `CS8509` を検出した。公開の `ParseResult<T>` や上流に合わせる `IJsonValue` は対象外。これは `--validate` の失敗時終了コードや全文消費の検証の改善ではない。
+
 ### R12：比較用アダプター間の結果オブジェクト共有方針が違う
 
 **実行確認＋静的確認。寄与率は未測定。** [Pidginアダプター](../Kotowari.Benchmarks/PidginJsonParser.cs) 24～26行はtrue/false/nullのノードを文法構築時に作り `ThenReturn` で共有する。
