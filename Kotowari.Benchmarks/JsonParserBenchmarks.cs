@@ -1,6 +1,7 @@
 using BenchmarkDotNet.Attributes;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Linq;
 using System.Text.Json;
 using KotowariJson = Marimo.Parser.Json;
@@ -39,6 +40,23 @@ public class JsonParserBenchmarks
                 {
                     var validation = KotowariJson.ParseForValidation(benchmarks._json);
                     if (!validation.IsSuccess || validation.Cursol.Index != benchmarks._json.Length)
+                    {
+                        throw new InvalidOperationException("Parser did not consume the entire input.");
+                    }
+                }
+                else if (name == nameof(SpracheJsonPackage))
+                {
+                    var parserField = typeof(SpracheJSON.JSON).Assembly.GetType("SpracheJSON.JSONParser")?
+                        .GetField("JObject", BindingFlags.Static | BindingFlags.NonPublic)
+                        ?? throw new InvalidOperationException("SpracheJSON root parser field was not found.");
+                    if (parserField.FieldType != typeof(Sprache.Parser<SpracheJSON.IJSONValue>))
+                    {
+                        throw new InvalidOperationException("SpracheJSON root parser field has an unexpected type.");
+                    }
+
+                    var parser = (Sprache.Parser<SpracheJSON.IJSONValue>)parserField.GetValue(null)!;
+                    var validation = parser(new Sprache.Input(benchmarks._json));
+                    if (!validation.WasSuccessful || !validation.Remainder.AtEnd)
                     {
                         throw new InvalidOperationException("Parser did not consume the entire input.");
                     }

@@ -25,6 +25,9 @@ try {
     if (-not ($validation -cmatch '^Kotowari: FAILED - ')) {
         throw 'Expected --validate to report a Kotowari failure when non-whitespace input remains.'
     }
+    if (-not ($validation -cmatch '^SpracheJsonPackage: FAILED - ')) {
+        throw 'Expected --validate to report a SpracheJsonPackage failure when non-whitespace input remains.'
+    }
 }
 finally {
     $tempRoot = [IO.Path]::TrimEndingDirectorySeparator([IO.Path]::GetTempPath())
