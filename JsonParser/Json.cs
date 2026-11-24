@@ -246,4 +246,7 @@ public class Json
         }
         throw new ParseException();
     }
+
+    internal static ParseResult<JsonObject> ParseForValidation(string text)
+        => Document.Parse(new Cursol(text));
 }

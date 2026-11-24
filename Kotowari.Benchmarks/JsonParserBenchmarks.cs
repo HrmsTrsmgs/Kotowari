@@ -35,6 +35,15 @@ public class JsonParserBenchmarks
             try
             {
                 var result = parse();
+                if (name == nameof(Kotowari))
+                {
+                    var validation = KotowariJson.ParseForValidation(benchmarks._json);
+                    if (!validation.IsSuccess || validation.Cursol.Index != benchmarks._json.Length)
+                    {
+                        throw new InvalidOperationException("Parser did not consume the entire input.");
+                    }
+                }
+
                 Console.WriteLine($"{name}: OK ({CountNodes(result):N0} nodes)");
             }
             catch (Exception exception)

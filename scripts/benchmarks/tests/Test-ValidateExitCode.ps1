@@ -22,6 +22,9 @@ try {
     if ($exitCode -eq 0) {
         throw 'Expected a nonzero exit code when --validate reported a parser failure; got 0.'
     }
+    if (-not ($validation -cmatch '^Kotowari: FAILED - ')) {
+        throw 'Expected --validate to report a Kotowari failure when non-whitespace input remains.'
+    }
 }
 finally {
     $tempRoot = [IO.Path]::TrimEndingDirectorySeparator([IO.Path]::GetTempPath())
