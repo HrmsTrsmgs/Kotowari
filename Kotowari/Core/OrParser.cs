@@ -1,29 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Marimo.Kotowari.Core;
 
 public class OrParser<T> : Parser<T>
-    where T : notnull
 {
     Parser<T>[] Parsers { get; }
 
     public OrParser(params Parser<T>[] parsers)
         => Parsers = parsers;
 
-    protected override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
     {
-        foreach(var parser in Parsers)
+        foreach (var parser in Parsers)
         {
-            var result = parser.Parse(cursol);
-
-            if(result.IsSuccess)
+            if (parser.TryParseCore(start, out next, out parsed))
             {
-                return result;
+                return true;
             }
         }
-        return ParseResult<T>.Failure(cursol);
+        next = start;
+        parsed = default;
+        return false;
     }
 }

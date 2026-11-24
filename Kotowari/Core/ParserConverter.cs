@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Marimo.Kotowari.Core;
 
 public class ParserConverter<U, T> : Parser<T>
-    where U : notnull
-    where T : notnull
 {
     Parser<U> Parser { get; }
     Func<U, T> Converter { get; }
@@ -18,12 +17,15 @@ public class ParserConverter<U, T> : Parser<T>
         Converter = converter;
     }
 
-    protected override ParseResult<T> ParseCore(Cursol cursol)
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
     {
-        var result = Parser.Parse(cursol);
+        if (!Parser.TryParseCore(start, out next, out var childParsed))
+        {
+            parsed = default;
+            return false;
+        }
 
-        return result.IsSuccess
-            ? ParseResult<T>.Success(result.Cursol, Converter(result.Parsed))
-            : ParseResult<T>.Failure(result.Cursol);
+        parsed = Converter(childParsed);
+        return true;
     }
 }

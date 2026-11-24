@@ -1,0 +1,21 @@
+{
+  "repository": "https://github.com/IanWold/SpracheJson",
+  "commit": "aa8092aa4f5a7f1675200ac908d20c06e285aec4",
+  "license": "MIT",
+  "upstreamTargetFramework": "net6.0",
+  "referenceTargetFramework": "net10.0",
+  "spracheVersion": "3.0.0-develop-00049",
+  "sourceGitBlobs": {
+    "Extensions.cs": "6d11ac7ca5eaa11e7d4f2b700160c22ad3b47c6c",
+    "Json.cs": "4d1d7642ecefb8eac73623f8536155ee30c992df",
+    "JsonMapper.cs": "cb05e4b865690dda2b99218c31bb870f78041581",
+    "JsonParser.cs": "cc3dd3319cd6c32ac96c5822a2332ee7a80256d8",
+    "JsonSerializer.cs": "11f368bd7f531ad4a835a9a98d155c2405a0df88",
+    "SyntaxTree/IJsonValue.cs": "17e9be16fd568029e96ec6b6d99ae7639c5cb2c8",
+    "SyntaxTree/JsonArray.cs": "e04c0fe62223128b98100f86bf5932e175ba01eb",
+    "SyntaxTree/JsonLiteral.cs": "97ab4610e6620d48b5983196689464ddcac94fe4",
+    "SyntaxTree/JsonLiteralType.cs": "d99d753fd32022c824cedfadcfbf694beb910155",
+    "SyntaxTree/JsonObject.cs": "457b80b9caa422a766e57c0b23a6e15a430ce7e1"
+  },
+  "licenseGitBlob": "970b341a4321a4972325503b735b569686b6c3f7"
+}

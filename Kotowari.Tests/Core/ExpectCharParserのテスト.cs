@@ -11,6 +11,30 @@ namespace Marimo.Kotowari.Tests.Core;
 public class ExpectCharParserのテスト
 {
     [Fact]
+    public void 組み合わせから呼んでも派生否定パーサーの処理と基底実装を使います()
+    {
+        var parser = new UpperCaseExpectCharParser();
+        var tested = new ZeroOrMoreParser<char>(parser);
+
+        var result = tested.Parse(new Cursol("ab!"));
+
+        result.Parsed.Should().Equal('A', 'B');
+        result.Cursol.Index.Should().Be(2);
+        parser.呼び出し回数.Should().Be(3);
+    }
+
+    [Fact]
+    public void 否定対象が消費して失敗しても自身の開始位置から一文字だけ読みます()
+    {
+        var tested = new ExpectCharParser(new ConsumingFailureCharParser());
+
+        var result = tested.Parse(new Cursol("あb"));
+
+        result.Parsed.Should().Be('あ');
+        result.Cursol.Index.Should().Be(1);
+    }
+
+    [Fact]
     public void ParseAsyncは指定ていない文字を読み込みに成功します()
     {
         var cursol = new Cursol("public");

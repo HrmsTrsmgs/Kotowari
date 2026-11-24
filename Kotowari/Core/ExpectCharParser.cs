@@ -7,8 +7,17 @@ namespace Marimo.Kotowari.Core;
 
 public class ExpectCharParser(Parser<char> expectChars) : Parser<char>
 {
-    protected override ParseResult<char> ParseCore(Cursol cursol)
-        => expectChars.Parse(cursol).IsSuccess
-            ? ParseResult<char>.Failure(cursol)
-            : ParseResult<char>.Success(cursol.GoFoward(1), cursol.Current);
+    protected internal override bool TryParseCore(Cursol start, out Cursol next, out char parsed)
+    {
+        if (expectChars.TryParseCore(start, out _, out _))
+        {
+            next = start;
+            parsed = default;
+            return false;
+        }
+
+        next = start.GoFoward(1);
+        parsed = start.Current;
+        return true;
+    }
 }

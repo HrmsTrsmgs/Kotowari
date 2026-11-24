@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using KotowariJson = Marimo.Parser.JSON;
+using KotowariJson = Marimo.Parser.Json;
 
 namespace Marimo.Kotowari.Benchmarks;
 
@@ -48,9 +48,9 @@ public class JsonParserBenchmarks
         BenchmarkJsonObject value => 1 + value.Members.Values.Sum(CountNodes),
         BenchmarkJsonArray value => 1 + value.Elements.Sum(CountNodes),
         BenchmarkJson => 1,
-        Marimo.Parser.JSONObject value => 1 + value.Pairs.Values.Sum(CountNodes),
-        Marimo.Parser.JSONArray value => 1 + value.Elements.Sum(CountNodes),
-        Marimo.Parser.JSONLiteral => 1,
+        Marimo.Parser.JsonObject value => 1 + value.Pairs.Values.Sum(CountNodes),
+        Marimo.Parser.JsonArray value => 1 + value.Elements.Sum(CountNodes),
+        Marimo.Parser.JsonLiteral => 1,
         SpracheJSON.JSONObject value => 1 + value.Pairs.Values.Sum(CountNodes),
         SpracheJSON.JSONArray value => 1 + value.Elements.Sum(CountNodes),
         SpracheJSON.JSONLiteral => 1,

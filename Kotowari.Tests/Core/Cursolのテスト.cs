@@ -10,6 +10,29 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class Cursolのテスト
 {
+    [Theory]
+    [InlineData("", 0, '\0')]
+    [InlineData("a", 0, 'a')]
+    [InlineData("a", 1, '\0')]
+    [InlineData("a", 100, '\0')]
+    [InlineData("a", -1, '\0')]
+    [InlineData("a", int.MinValue, '\0')]
+    [InlineData("a\0b", 1, '\0')]
+    [InlineData("aあb", 1, 'あ')]
+    public void Currentは範囲内の文字を返し範囲外ではヌル文字を返します(
+        string text, int step, char expected)
+    {
+        new Cursol(text).GoFoward(step).Current.Should().Be(expected);
+    }
+
+    [Fact]
+    public void 初期化していないCursolのCurrentを読むと例外になります()
+    {
+        var read = () => default(Cursol).Current;
+
+        read.Should().Throw<NullReferenceException>();
+    }
+
     [Fact]
     public void 初期状態のIndexは0です()
     {
@@ -22,7 +45,7 @@ public class Cursolのテスト
     {
         var text = "ABC";
         var tested = new Cursol(text);
-        tested.Text.Should().Equal(text);
+        new string(tested.Text).Should().Be(text);
     }
 
     [Fact]
@@ -49,6 +72,14 @@ public class Cursolのテスト
     }
 
     [Fact]
+    public void GoFowardは非常に大きな正の移動でも文書末尾で止まります()
+    {
+        var tested = new Cursol("ABC").GoFoward(1);
+
+        tested.GoFoward(int.MaxValue).Index.Should().Be(3);
+    }
+
+    [Fact]
     public void GoFowardは元の値をCursolを変更しません()
     {
         var tested = new Cursol("ABC");
@@ -60,7 +91,7 @@ public class Cursolのテスト
     public void Copyは同じTextを持つCursolを返します()
     {
         var tested = new Cursol("ABC");
-        tested.Copy().Text.Should().Equal("ABC");
+        new string(tested.Copy().Text).Should().Be("ABC");
     }
 
     [Fact]
@@ -99,4 +130,5 @@ public class Cursolのテスト
 
         (first != second).Should().BeTrue();
     }
+
 }

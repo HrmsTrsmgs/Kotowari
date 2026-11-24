@@ -1,0 +1,3348 @@
+﻿{
+  "Schema": "kotowari-string-benchmark-evidence-v1",
+  "Experiment": "2026-10-19-parsed-value-guard",
+  "Decision": {
+    "Outcome": "Not adopted by performance gate",
+    "Status": "Reverted; source and test files match baseline HEAD",
+    "BaselineCommit": "d2f7aa8915ca1f580fc009b0a5d88d7b3c9d1ec1",
+    "BaselineDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+    "CandidateDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+    "Basis": "Exploration paired 95% log-t CI upper was above 1; independent confirmation was not run because the predeclared exploration gate failed."
+  },
+  "Change": {
+    "Files": [
+      "Kotowari/ParseResult.cs",
+      "Kotowari.Tests/ParseResultのテスト.cs"
+    ],
+    "Patch": {
+      "Format": "git diff",
+      "Text": "diff --git \"a/Kotowari.Tests/ParseResult\\343\\201\\256\\343\\203\\206\\343\\202\\271\\343\\203\\210.cs\" \"b/Kotowari.Tests/ParseResult\\343\\201\\256\\343\\203\\206\\343\\202\\271\\343\\203\\210.cs\"\r\nindex 1db4a1a..37ff7e4 100644\r\n--- \"a/Kotowari.Tests/ParseResult\\343\\201\\256\\343\\203\\206\\343\\202\\271\\343\\203\\210.cs\"\r\n+++ \"b/Kotowari.Tests/ParseResult\\343\\201\\256\\343\\203\\206\\343\\202\\271\\343\\203\\210.cs\"\r\n@@ -38,6 +38,35 @@ public class ParseResultのテスト\r\n         action.Should().Throw<InvalidOperationException>();\r\n     }\r\n \r\n+    [Fact]\r\n+    public void 初期値の参照型結果から値は取得できません()\r\n+    {\r\n+        var tested = default(ParseResult<string>);\r\n+        var action = () => tested.Parsed;\r\n+\r\n+        tested.IsSuccess.Should().BeFalse();\r\n+        action.Should().Throw<InvalidOperationException>();\r\n+    }\r\n+\r\n+    [Fact]\r\n+    public void 初期値の値型結果から値は取得できません()\r\n+    {\r\n+        var tested = default(ParseResult<int>);\r\n+        var action = () => tested.Parsed;\r\n+\r\n+        tested.IsSuccess.Should().BeFalse();\r\n+        action.Should().Throw<InvalidOperationException>();\r\n+    }\r\n+\r\n+    [Fact]\r\n+    public void 成功結果は値型の初期値も保持します()\r\n+    {\r\n+        var tested = ParseResult<int>.Success(new Cursol(\"text\"), 0);\r\n+\r\n+        tested.IsSuccess.Should().BeTrue();\r\n+        tested.Parsed.Should().Be(0);\r\n+    }\r\n+\r\n     [Fact]\r\n     public void 成功結果にnullは指定できません()\r\n     {\r\ndiff --git a/Kotowari/ParseResult.cs b/Kotowari/ParseResult.cs\r\nindex 6ecf466..09d42a9 100644\r\n--- a/Kotowari/ParseResult.cs\r\n+++ b/Kotowari/ParseResult.cs\r\n@@ -12,9 +12,11 @@ public readonly struct ParseResult<T>\r\n \r\n     public Cursol Cursol { get; }\r\n \r\n+    // 成功結果はnullを拒否するSuccessからのみ生成される。\r\n+    // FailureとdefaultはIsSuccessがfalseなので、値の取得を拒否する。\r\n     public T Parsed\r\n-        => IsSuccess && parsed is not null\r\n-            ? parsed\r\n+        => IsSuccess\r\n+            ? parsed!\r\n             : throw new InvalidOperationException();\r\n \r\n     ParseResult(bool isSuccess, Cursol cursol, T? parsed)\r\n",
+      "SHA256": "0A4DE8043F77BC95AFC329E61BEAAF5B78855EFCAED71C028D993EDC277210EE"
+    },
+    "BaselineSources": [
+      {
+        "Path": "JsonParser/IJSONValue.cs",
+        "SHA256": "EEFE3E1CE965243BC072EAFF12CC62796AD05CAC171A16F1AF1566A409689393"
+      },
+      {
+        "Path": "JsonParser/JSON.cs",
+        "SHA256": "C56824F58723477202B8960655B31CB353E337611C533644F5DA46FF44C03CAA"
+      },
+      {
+        "Path": "JsonParser/JSONArray.cs",
+        "SHA256": "7C37D7B7848F27C84595046B0A43C334E3EF813361F632617C7741FEFEA882E8"
+      },
+      {
+        "Path": "JsonParser/JSONLiteral.cs",
+        "SHA256": "D66B1E04A1F0047278D454B9E232C2946D686A25354FBF376086251A5C33E633"
+      },
+      {
+        "Path": "JsonParser/JSONMap.cs",
+        "SHA256": "88291EED5CEC06AD950D195C1FDC6040AF2840DD942048B76BD3E7E3FEBC1C04"
+      },
+      {
+        "Path": "JsonParser/JSONObject.cs",
+        "SHA256": "2D7528625795B2E80C69EF53A97FB9F282C69DB0333CEE3615711DFECFE06DDE"
+      },
+      {
+        "Path": "JsonParser/JsonParser.csproj",
+        "SHA256": "17295E13A557E7334A816CC6A83FB4CE16FE19B3D214FCBC91FCBA9E36BE967D"
+      },
+      {
+        "Path": "JsonParser/LiteralType.cs",
+        "SHA256": "32FE784B7B28FC86218B1344C949ADA1C4B3B844A99E5C85007EDE7C87BB728F"
+      },
+      {
+        "Path": "JsonParser/ParseException.cs",
+        "SHA256": "E1DAAF598E67AB8C0F20B7510CA582B5088A3CF0F194C5D976707193A5221E6C"
+      },
+      {
+        "Path": "Kotowari/.editorconfig",
+        "SHA256": "B0D248BCB1250D3CB1C3D3A63C01B1D8C15CEC3BF5A5DCDC3645ADE44A1482CA"
+      },
+      {
+        "Path": "Kotowari/Core/CharParser.cs",
+        "SHA256": "E8417CF8D1948B0CCF4AD753D92C860E2AE201D603022C1CC129AC8FC6ADC8D4"
+      },
+      {
+        "Path": "Kotowari/Core/ConditionalCharParser.cs",
+        "SHA256": "68C5EFC6322E7FB21288542A55FF068555D703DA1D9AE0860BE277168EEA6FA2"
+      },
+      {
+        "Path": "Kotowari/Core/Cursol.cs",
+        "SHA256": "1CD72974C11574218C1CD7B5465BFF4AA3C993F533CE21F8A1EF83542F7238CF"
+      },
+      {
+        "Path": "Kotowari/Core/DebugParser.cs",
+        "SHA256": "3BFEEEB7E1303F1D4FFD726BB438BFE41926C79206218A14080EDDF67CF2D91E"
+      },
+      {
+        "Path": "Kotowari/Core/DelimitedSequenceParser.cs",
+        "SHA256": "ECFDB507B0D3F7E8B05EA76DDA6F96DBBC4595AF3E4659A16AC20A5906799EBC"
+      },
+      {
+        "Path": "Kotowari/Core/ExpectCharParser.cs",
+        "SHA256": "9A716A409575AE69FDCF3EE0A8779F0FE4930859F1D68C1486278F6BF676D467"
+      },
+      {
+        "Path": "Kotowari/Core/OneOrMoreParser.cs",
+        "SHA256": "501D4A245F542EA5DB9A27F7620444A867A67549993EE3632872850EFD7F1A57"
+      },
+      {
+        "Path": "Kotowari/Core/Optional.cs",
+        "SHA256": "00BA91276E2EE9552FE4E5A3647B2E8D7FE9D7935C9A8384BE3B581E14600DC1"
+      },
+      {
+        "Path": "Kotowari/Core/OptionalParser.cs",
+        "SHA256": "E5A83D7BDC504A1A4593CB29DCACC68311F2A479D2C61BD843821457FF7880B1"
+      },
+      {
+        "Path": "Kotowari/Core/OrParser.cs",
+        "SHA256": "3D841DF3895729CD437D9E64FCCFBA1D2E2C265A643220CC97CABDA0E0B3B3AB"
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueBuffer.cs",
+        "SHA256": "D0ABCD63B8B40AD7B58AD5C28A81BFCCE8235E7AAF41E536EE006360DB179518"
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueScratchBuffer.cs",
+        "SHA256": "B3F1674B57EE29A88DB260DDC626C75ADF332A19C3451087F16AAE0C6ABFE5AE"
+      },
+      {
+        "Path": "Kotowari/Core/ParserConverter.cs",
+        "SHA256": "26DBA8CCF00F8D68D58512A4DD6E90613050E147969414A5FECD3747CAF6EB37"
+      },
+      {
+        "Path": "Kotowari/Core/RecursiveParser.cs",
+        "SHA256": "B0DF71B492510CC095CA1B73250DDDD2CF5A7690BD6DDEE5636B5AD401179D49"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser10.cs",
+        "SHA256": "B2BD95547F397884C013FCBF197BD7ABA7945B6F77601A2ED2622951BF82B1E8"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser2.cs",
+        "SHA256": "1BDFBE91A2B1EFBB10775E829FF31DDD8C27F8109071E5F6FFCA2FB379D86D48"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser3.cs",
+        "SHA256": "16608F0873DAF941D7F485AD9E4EF163B7A85700853E3C009ACE9021F18B94BF"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser4.cs",
+        "SHA256": "74ABB8EC12880A1E99944B77DE93BC28132340A43DC772684DDFB360C6AC2ED9"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser5.cs",
+        "SHA256": "AC08F8B9BE84FAFAB977D2F69D08433BBE5CCFF83D35407CD44243910E224434"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser6.cs",
+        "SHA256": "938913FD3FD284BD8814585C42025C270A0385B697E5D3BFBF0857BD393DF639"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser7.cs",
+        "SHA256": "ACE23CCA292C224B69F77A73DBFA59B7253B4995FFD1C06DE3FA1C92E828CA07"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser8.cs",
+        "SHA256": "78DAF95F9045D9781D1F666EBF8412F2272ECA97422AF2889F62B4D40FEA6DF8"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser9.cs",
+        "SHA256": "10214C10C2AE29B4C7FF5F995197C0A337C2B15F6C9DC7D74C0F41969C294D14"
+      },
+      {
+        "Path": "Kotowari/Core/WordParser.cs",
+        "SHA256": "F32A7EB3881E4A9902007E95645AFA5234DC4243D49E51F806D1A9B27B00D77E"
+      },
+      {
+        "Path": "Kotowari/Core/ZeroOrMoreParser.cs",
+        "SHA256": "9959FED7E4E6C369C22851668A6528DEF6A6E9674981ED39D3A6232D5CBB4E0B"
+      },
+      {
+        "Path": "Kotowari/Marimo.Kotowari.csproj",
+        "SHA256": "9E3F391585776526DECFDE4FA4B9FCE79A7530A2E1136732ACB093C7F9774798"
+      },
+      {
+        "Path": "Kotowari/OptionalParser.cs",
+        "SHA256": "86C64691CFC1C90CEA5873846AB6447170401A8C55E621EA9453422CE77976C5"
+      },
+      {
+        "Path": "Kotowari/Parser.cs",
+        "SHA256": "1EEB0D5433CD937E1409F91B9924328ADFF7C022D8DE23D05F78F88040E56981"
+      },
+      {
+        "Path": "Kotowari/ParserConverter.cs",
+        "SHA256": "D80129274CB6E99EC7F0F8C40B7B0AC904D21756E7436371D3BF5C884E4728A2"
+      },
+      {
+        "Path": "Kotowari/ParseResult.cs",
+        "SHA256": "1EFEF464DE0C2D27DECCC42A5DE9AE1A500018307B5EFC0905ED52B26F28E9A1"
+      },
+      {
+        "Path": "Kotowari/ParserOfT.cs",
+        "SHA256": "A469C70DB68B9BEDF66932635BE6191634292A716399C81BB1FCF9A4326BCBBC"
+      },
+      {
+        "Path": "Kotowari/SequenceParser.cs",
+        "SHA256": "28A31454785C0032533DC76C23996E535ECF8C34A488388C4B81C3163FA43C1C"
+      },
+      {
+        "Path": "Kotowari/WithWhiteSpaceParser.cs",
+        "SHA256": "C5A7CAE81934FCD8965545542CDC2285A529E2DA5D3D893F874E3947C2D1215A"
+      }
+    ],
+    "CandidateSources": [
+      {
+        "Path": "JsonParser/IJSONValue.cs",
+        "SHA256": "EEFE3E1CE965243BC072EAFF12CC62796AD05CAC171A16F1AF1566A409689393"
+      },
+      {
+        "Path": "JsonParser/JSON.cs",
+        "SHA256": "C56824F58723477202B8960655B31CB353E337611C533644F5DA46FF44C03CAA"
+      },
+      {
+        "Path": "JsonParser/JSONArray.cs",
+        "SHA256": "7C37D7B7848F27C84595046B0A43C334E3EF813361F632617C7741FEFEA882E8"
+      },
+      {
+        "Path": "JsonParser/JSONLiteral.cs",
+        "SHA256": "D66B1E04A1F0047278D454B9E232C2946D686A25354FBF376086251A5C33E633"
+      },
+      {
+        "Path": "JsonParser/JSONMap.cs",
+        "SHA256": "88291EED5CEC06AD950D195C1FDC6040AF2840DD942048B76BD3E7E3FEBC1C04"
+      },
+      {
+        "Path": "JsonParser/JSONObject.cs",
+        "SHA256": "2D7528625795B2E80C69EF53A97FB9F282C69DB0333CEE3615711DFECFE06DDE"
+      },
+      {
+        "Path": "JsonParser/JsonParser.csproj",
+        "SHA256": "17295E13A557E7334A816CC6A83FB4CE16FE19B3D214FCBC91FCBA9E36BE967D"
+      },
+      {
+        "Path": "JsonParser/LiteralType.cs",
+        "SHA256": "32FE784B7B28FC86218B1344C949ADA1C4B3B844A99E5C85007EDE7C87BB728F"
+      },
+      {
+        "Path": "JsonParser/ParseException.cs",
+        "SHA256": "E1DAAF598E67AB8C0F20B7510CA582B5088A3CF0F194C5D976707193A5221E6C"
+      },
+      {
+        "Path": "Kotowari/.editorconfig",
+        "SHA256": "B0D248BCB1250D3CB1C3D3A63C01B1D8C15CEC3BF5A5DCDC3645ADE44A1482CA"
+      },
+      {
+        "Path": "Kotowari/Core/CharParser.cs",
+        "SHA256": "E8417CF8D1948B0CCF4AD753D92C860E2AE201D603022C1CC129AC8FC6ADC8D4"
+      },
+      {
+        "Path": "Kotowari/Core/ConditionalCharParser.cs",
+        "SHA256": "68C5EFC6322E7FB21288542A55FF068555D703DA1D9AE0860BE277168EEA6FA2"
+      },
+      {
+        "Path": "Kotowari/Core/Cursol.cs",
+        "SHA256": "1CD72974C11574218C1CD7B5465BFF4AA3C993F533CE21F8A1EF83542F7238CF"
+      },
+      {
+        "Path": "Kotowari/Core/DebugParser.cs",
+        "SHA256": "3BFEEEB7E1303F1D4FFD726BB438BFE41926C79206218A14080EDDF67CF2D91E"
+      },
+      {
+        "Path": "Kotowari/Core/DelimitedSequenceParser.cs",
+        "SHA256": "ECFDB507B0D3F7E8B05EA76DDA6F96DBBC4595AF3E4659A16AC20A5906799EBC"
+      },
+      {
+        "Path": "Kotowari/Core/ExpectCharParser.cs",
+        "SHA256": "9A716A409575AE69FDCF3EE0A8779F0FE4930859F1D68C1486278F6BF676D467"
+      },
+      {
+        "Path": "Kotowari/Core/OneOrMoreParser.cs",
+        "SHA256": "501D4A245F542EA5DB9A27F7620444A867A67549993EE3632872850EFD7F1A57"
+      },
+      {
+        "Path": "Kotowari/Core/Optional.cs",
+        "SHA256": "00BA91276E2EE9552FE4E5A3647B2E8D7FE9D7935C9A8384BE3B581E14600DC1"
+      },
+      {
+        "Path": "Kotowari/Core/OptionalParser.cs",
+        "SHA256": "E5A83D7BDC504A1A4593CB29DCACC68311F2A479D2C61BD843821457FF7880B1"
+      },
+      {
+        "Path": "Kotowari/Core/OrParser.cs",
+        "SHA256": "3D841DF3895729CD437D9E64FCCFBA1D2E2C265A643220CC97CABDA0E0B3B3AB"
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueBuffer.cs",
+        "SHA256": "D0ABCD63B8B40AD7B58AD5C28A81BFCCE8235E7AAF41E536EE006360DB179518"
+      },
+      {
+        "Path": "Kotowari/Core/ParsedValueScratchBuffer.cs",
+        "SHA256": "B3F1674B57EE29A88DB260DDC626C75ADF332A19C3451087F16AAE0C6ABFE5AE"
+      },
+      {
+        "Path": "Kotowari/Core/ParserConverter.cs",
+        "SHA256": "26DBA8CCF00F8D68D58512A4DD6E90613050E147969414A5FECD3747CAF6EB37"
+      },
+      {
+        "Path": "Kotowari/Core/RecursiveParser.cs",
+        "SHA256": "B0DF71B492510CC095CA1B73250DDDD2CF5A7690BD6DDEE5636B5AD401179D49"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser10.cs",
+        "SHA256": "B2BD95547F397884C013FCBF197BD7ABA7945B6F77601A2ED2622951BF82B1E8"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser2.cs",
+        "SHA256": "1BDFBE91A2B1EFBB10775E829FF31DDD8C27F8109071E5F6FFCA2FB379D86D48"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser3.cs",
+        "SHA256": "16608F0873DAF941D7F485AD9E4EF163B7A85700853E3C009ACE9021F18B94BF"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser4.cs",
+        "SHA256": "74ABB8EC12880A1E99944B77DE93BC28132340A43DC772684DDFB360C6AC2ED9"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser5.cs",
+        "SHA256": "AC08F8B9BE84FAFAB977D2F69D08433BBE5CCFF83D35407CD44243910E224434"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser6.cs",
+        "SHA256": "938913FD3FD284BD8814585C42025C270A0385B697E5D3BFBF0857BD393DF639"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser7.cs",
+        "SHA256": "ACE23CCA292C224B69F77A73DBFA59B7253B4995FFD1C06DE3FA1C92E828CA07"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser8.cs",
+        "SHA256": "78DAF95F9045D9781D1F666EBF8412F2272ECA97422AF2889F62B4D40FEA6DF8"
+      },
+      {
+        "Path": "Kotowari/Core/SequenceParser9.cs",
+        "SHA256": "10214C10C2AE29B4C7FF5F995197C0A337C2B15F6C9DC7D74C0F41969C294D14"
+      },
+      {
+        "Path": "Kotowari/Core/WordParser.cs",
+        "SHA256": "F32A7EB3881E4A9902007E95645AFA5234DC4243D49E51F806D1A9B27B00D77E"
+      },
+      {
+        "Path": "Kotowari/Core/ZeroOrMoreParser.cs",
+        "SHA256": "9959FED7E4E6C369C22851668A6528DEF6A6E9674981ED39D3A6232D5CBB4E0B"
+      },
+      {
+        "Path": "Kotowari/Marimo.Kotowari.csproj",
+        "SHA256": "9E3F391585776526DECFDE4FA4B9FCE79A7530A2E1136732ACB093C7F9774798"
+      },
+      {
+        "Path": "Kotowari/OptionalParser.cs",
+        "SHA256": "86C64691CFC1C90CEA5873846AB6447170401A8C55E621EA9453422CE77976C5"
+      },
+      {
+        "Path": "Kotowari/Parser.cs",
+        "SHA256": "1EEB0D5433CD937E1409F91B9924328ADFF7C022D8DE23D05F78F88040E56981"
+      },
+      {
+        "Path": "Kotowari/ParserConverter.cs",
+        "SHA256": "D80129274CB6E99EC7F0F8C40B7B0AC904D21756E7436371D3BF5C884E4728A2"
+      },
+      {
+        "Path": "Kotowari/ParseResult.cs",
+        "SHA256": "5CFD0049DC8D16D2C096DF92E838F6C500821AEDD77073E7A4BC91413E7D44E2"
+      },
+      {
+        "Path": "Kotowari/ParserOfT.cs",
+        "SHA256": "A469C70DB68B9BEDF66932635BE6191634292A716399C81BB1FCF9A4326BCBBC"
+      },
+      {
+        "Path": "Kotowari/SequenceParser.cs",
+        "SHA256": "28A31454785C0032533DC76C23996E535ECF8C34A488388C4B81C3163FA43C1C"
+      },
+      {
+        "Path": "Kotowari/WithWhiteSpaceParser.cs",
+        "SHA256": "C5A7CAE81934FCD8965545542CDC2285A529E2DA5D3D893F874E3947C2D1215A"
+      }
+    ],
+    "BaselineSourceCount": 43,
+    "CandidateSourceCount": 43,
+    "BaselineDLLs": [
+      {
+        "Name": "BenchmarkDotNet.Annotations.dll",
+        "SHA256": "4B5D273032CAE7C8FC97E16713B8D4F1EE3A2AA28A0E2BD0695232FB9DD7D558"
+      },
+      {
+        "Name": "BenchmarkDotNet.dll",
+        "SHA256": "D460626B2E1A9FA2F786E09E6C85CDF4D7B73DECA636450A0E23892C8CE6192B"
+      },
+      {
+        "Name": "CommandLine.dll",
+        "SHA256": "8A55501CD1A1590A4BD93A17C6FDD2C01A0ED5BFF1AEA9036BDC78D98C9A3FAD"
+      },
+      {
+        "Name": "Dia2Lib.dll",
+        "SHA256": "6C4CAC68010FE032218EFE5E9FCF46EEF9F77BFAA5F3BD33F03C5FF77D5A8FAC"
+      },
+      {
+        "Name": "Gee.External.Capstone.dll",
+        "SHA256": "6DFDA67784598DE9677173B89D0692593935F1A4024D36040C95DEA48C1B5965"
+      },
+      {
+        "Name": "Iced.dll",
+        "SHA256": "F058C01321B4CDFC9B9151879E88E59571C8D0BA176FBCF95BC936A8F3D073ED"
+      },
+      {
+        "Name": "Marimo.Kotowari.dll",
+        "SHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8"
+      },
+      {
+        "Name": "Marimo.Parser.dll",
+        "SHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+      },
+      {
+        "Name": "Microsoft.CodeAnalysis.CSharp.dll",
+        "SHA256": "53302ACCA07700E9BB10DCF21034435D6E0454C8EEBF2481164EC13E520004C9"
+      },
+      {
+        "Name": "Microsoft.CodeAnalysis.dll",
+        "SHA256": "395736B2D0E02BE77BEDC3847B269DA7A93BF8E49CD3431A4A8E68D2C52D5846"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.FastSerialization.dll",
+        "SHA256": "83E89BAF0BBECCA8CFA194CFF13365F716849E22EFC374B669206F26998A019F"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.NETCore.Client.dll",
+        "SHA256": "BAED2D25CA5BC53A3447C237D5572C92EAC1FD842807B3E72602A711749B1B22"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.Runtime.dll",
+        "SHA256": "06F9910C8A37F8D4D758538E6DD307DE58BCFB3BB13E83658142C08087A25382"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.Tracing.TraceEvent.dll",
+        "SHA256": "401E948DAC99D0F9756EF96D5A8B8E4736E19E9F82CE8CDD744495951E3A94BB"
+      },
+      {
+        "Name": "Microsoft.DotNet.PlatformAbstractions.dll",
+        "SHA256": "B1F4AD169FB192747F5D2D3111C01DB4257E3EC1F7F18F301F7FC4BE3B869FF3"
+      },
+      {
+        "Name": "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "SHA256": "9CCD830351AA28BC683D4F8D1CEFD9E724161F972D25BFB64EEE5BF55C48C5E3"
+      },
+      {
+        "Name": "Microsoft.Extensions.DependencyInjection.dll",
+        "SHA256": "2AA8182B5356A8CC5C35FC3641A87E814857D8D9BE399AC78F260343754D09E0"
+      },
+      {
+        "Name": "Microsoft.Extensions.Logging.Abstractions.dll",
+        "SHA256": "D575C9D1543CA726CE14DBDFFD103E93EA527CD46BB28316DA1F4122DBC55D56"
+      },
+      {
+        "Name": "Microsoft.Extensions.Logging.dll",
+        "SHA256": "183650081B551DFAD967A7CBF79946A229CB79458B8D04A12DB7C44B03BB9AB7"
+      },
+      {
+        "Name": "Microsoft.Extensions.Options.dll",
+        "SHA256": "786112CB2F6646EF1170219A8C0BB813C9F14A6781E67C6266414F55A679565D"
+      },
+      {
+        "Name": "Microsoft.Extensions.Primitives.dll",
+        "SHA256": "8CE9A85927EC7507B11FFE90080E7A811D51304A9E8B1DA20C350159BA403902"
+      },
+      {
+        "Name": "Perfolizer.dll",
+        "SHA256": "22A4A336DB943465CBDFC8D0A8E23E89DF3024D39F1C5954D97554B3DA39E300"
+      },
+      {
+        "Name": "Pragmastat.dll",
+        "SHA256": "E9B3FC36000E7FE3FB11D3EA6A65F3C9C7B17E03C9F5034306437D65972E8C51"
+      },
+      {
+        "Name": "StringExecutionRecovery.ChildHarness.dll",
+        "SHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+      },
+      {
+        "Name": "StringExecutionRecovery.Measurement.dll",
+        "SHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Name": "System.CodeDom.dll",
+        "SHA256": "8D0CF191C86FEEA81C9875652C06E454ABE8DBFF66BEA9E4CB5F8AA2DC02F32A"
+      },
+      {
+        "Name": "System.Management.dll",
+        "SHA256": "0BE24B09DA5ABAD0B20EFCB58FAB14B0DEDC79B09D4FBDCB894BE268105A2195"
+      },
+      {
+        "Name": "TraceReloggerLib.dll",
+        "SHA256": "6830C0F1D3F3C17719181E73DD5CFA8CCBB3F3C575329D2120576545103467B5"
+      }
+    ],
+    "CandidateDLLs": [
+      {
+        "Name": "BenchmarkDotNet.Annotations.dll",
+        "SHA256": "4B5D273032CAE7C8FC97E16713B8D4F1EE3A2AA28A0E2BD0695232FB9DD7D558"
+      },
+      {
+        "Name": "BenchmarkDotNet.dll",
+        "SHA256": "D460626B2E1A9FA2F786E09E6C85CDF4D7B73DECA636450A0E23892C8CE6192B"
+      },
+      {
+        "Name": "CommandLine.dll",
+        "SHA256": "8A55501CD1A1590A4BD93A17C6FDD2C01A0ED5BFF1AEA9036BDC78D98C9A3FAD"
+      },
+      {
+        "Name": "Dia2Lib.dll",
+        "SHA256": "6C4CAC68010FE032218EFE5E9FCF46EEF9F77BFAA5F3BD33F03C5FF77D5A8FAC"
+      },
+      {
+        "Name": "Gee.External.Capstone.dll",
+        "SHA256": "6DFDA67784598DE9677173B89D0692593935F1A4024D36040C95DEA48C1B5965"
+      },
+      {
+        "Name": "Iced.dll",
+        "SHA256": "F058C01321B4CDFC9B9151879E88E59571C8D0BA176FBCF95BC936A8F3D073ED"
+      },
+      {
+        "Name": "Marimo.Kotowari.dll",
+        "SHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059"
+      },
+      {
+        "Name": "Marimo.Parser.dll",
+        "SHA256": "1075799C05DC787D354EFC931D3A641C5C4424561F91C401947DB8D018CA0ACB"
+      },
+      {
+        "Name": "Microsoft.CodeAnalysis.CSharp.dll",
+        "SHA256": "53302ACCA07700E9BB10DCF21034435D6E0454C8EEBF2481164EC13E520004C9"
+      },
+      {
+        "Name": "Microsoft.CodeAnalysis.dll",
+        "SHA256": "395736B2D0E02BE77BEDC3847B269DA7A93BF8E49CD3431A4A8E68D2C52D5846"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.FastSerialization.dll",
+        "SHA256": "83E89BAF0BBECCA8CFA194CFF13365F716849E22EFC374B669206F26998A019F"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.NETCore.Client.dll",
+        "SHA256": "BAED2D25CA5BC53A3447C237D5572C92EAC1FD842807B3E72602A711749B1B22"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.Runtime.dll",
+        "SHA256": "06F9910C8A37F8D4D758538E6DD307DE58BCFB3BB13E83658142C08087A25382"
+      },
+      {
+        "Name": "Microsoft.Diagnostics.Tracing.TraceEvent.dll",
+        "SHA256": "401E948DAC99D0F9756EF96D5A8B8E4736E19E9F82CE8CDD744495951E3A94BB"
+      },
+      {
+        "Name": "Microsoft.DotNet.PlatformAbstractions.dll",
+        "SHA256": "B1F4AD169FB192747F5D2D3111C01DB4257E3EC1F7F18F301F7FC4BE3B869FF3"
+      },
+      {
+        "Name": "Microsoft.Extensions.DependencyInjection.Abstractions.dll",
+        "SHA256": "9CCD830351AA28BC683D4F8D1CEFD9E724161F972D25BFB64EEE5BF55C48C5E3"
+      },
+      {
+        "Name": "Microsoft.Extensions.DependencyInjection.dll",
+        "SHA256": "2AA8182B5356A8CC5C35FC3641A87E814857D8D9BE399AC78F260343754D09E0"
+      },
+      {
+        "Name": "Microsoft.Extensions.Logging.Abstractions.dll",
+        "SHA256": "D575C9D1543CA726CE14DBDFFD103E93EA527CD46BB28316DA1F4122DBC55D56"
+      },
+      {
+        "Name": "Microsoft.Extensions.Logging.dll",
+        "SHA256": "183650081B551DFAD967A7CBF79946A229CB79458B8D04A12DB7C44B03BB9AB7"
+      },
+      {
+        "Name": "Microsoft.Extensions.Options.dll",
+        "SHA256": "786112CB2F6646EF1170219A8C0BB813C9F14A6781E67C6266414F55A679565D"
+      },
+      {
+        "Name": "Microsoft.Extensions.Primitives.dll",
+        "SHA256": "8CE9A85927EC7507B11FFE90080E7A811D51304A9E8B1DA20C350159BA403902"
+      },
+      {
+        "Name": "Perfolizer.dll",
+        "SHA256": "22A4A336DB943465CBDFC8D0A8E23E89DF3024D39F1C5954D97554B3DA39E300"
+      },
+      {
+        "Name": "Pragmastat.dll",
+        "SHA256": "E9B3FC36000E7FE3FB11D3EA6A65F3C9C7B17E03C9F5034306437D65972E8C51"
+      },
+      {
+        "Name": "StringExecutionRecovery.ChildHarness.dll",
+        "SHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612"
+      },
+      {
+        "Name": "StringExecutionRecovery.Measurement.dll",
+        "SHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96"
+      },
+      {
+        "Name": "System.CodeDom.dll",
+        "SHA256": "8D0CF191C86FEEA81C9875652C06E454ABE8DBFF66BEA9E4CB5F8AA2DC02F32A"
+      },
+      {
+        "Name": "System.Management.dll",
+        "SHA256": "0BE24B09DA5ABAD0B20EFCB58FAB14B0DEDC79B09D4FBDCB894BE268105A2195"
+      },
+      {
+        "Name": "TraceReloggerLib.dll",
+        "SHA256": "6830C0F1D3F3C17719181E73DD5CFA8CCBB3F3C575329D2120576545103467B5"
+      }
+    ],
+    "DLLCount": 28,
+    "OnlyDLLDifference": "Marimo.Kotowari.dll"
+  },
+  "Input": {
+    "Bytes": 4172062,
+    "SHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+  },
+  "Workload": {
+    "TieredPGO": 1,
+    "Affinity": 4,
+    "Warmup": 16,
+    "Actual": 8,
+    "Result": 8,
+    "InvocationCount": 4,
+    "UnrollFactor": 1,
+    "OutlierMode": "DontRemove",
+    "Path": "MemoryStream -> string -> JSON tree",
+    "Order": "Odd baseline then candidate; even candidate then baseline",
+    "ExplorationPairs": 8,
+    "ConfirmationPairs": 0,
+    "Launches": 16,
+    "Exclusions": 0
+  },
+  "Validation": {
+    "Baseline": {
+      "Variant": "baseline",
+      "Command": "dotnet StringExecutionRecovery.Measurement.dll --validate",
+      "ProcessId": 25948,
+      "ExitCode": 0,
+      "StderrBytes": 0,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "ConsumedCharacters": 4172062,
+      "ExpectedNodeCount": 100001,
+      "SystemTextJsonTreeEquivalent": true,
+      "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "StdoutPath": "baseline/diagnostics/validate.stdout.log",
+      "StderrPath": "baseline/diagnostics/validate.stderr.log"
+    },
+    "Candidate": {
+      "ProcessId": 27256,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:52:10.6738487Z",
+      "EndUTC": "2026-10-18T22:52:11.7109721Z",
+      "Stdout": "Input: 4,172,062 bytes; 4,172,062 characters\r\nStringInput consumes the full input and produces the expected JSON tree (100,001 nodes).\r\n",
+      "Stderr": ""
+    },
+    "CandidateJIT": {
+      "ProcessId": 5056,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:51:26.6526382Z",
+      "EndUTC": "2026-10-18T22:51:47.1581264Z",
+      "WallSeconds": 21.1839983,
+      "Affinity": 4,
+      "TieredPGO": 1,
+      "JitDisasm": "Marimo.Kotowari!*",
+      "JitDisasmWithCodeBytes": 1,
+      "WarmupCount": 16,
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "LibrarySHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "ChildHarnessSHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "JitOutputBytes": 3294606,
+      "JitOutputSHA256": "1FCC4806AA4B101E68307F37871471B0A7549E56D269BA4475DDF5CE291F0BED",
+      "AssemblyMethodHeaderCount": 762,
+      "ReferenceTypeParsedGetterTier1BlockCount": 1,
+      "StdoutBytes": 3919,
+      "StderrBytes": 0,
+      "AfterAll": true,
+      "DiagnosticOnly": true,
+      "OutputFiles": [
+        "jit.asm",
+        "stdout.log",
+        "stderr.log"
+      ]
+    }
+  },
+  "Comparison": {
+    "Experiment": "2026-10-19-parsed-value-guard",
+    "Batch": "exploration",
+    "Rule": "Use a separate confirmation batch only if the exploration 95% paired log-t interval upper bound is below 1; candidate adoption requires the same condition in confirmation.",
+    "PairCount": 8,
+    "DegreesOfFreedom": 7,
+    "TCritical95Df7": 2.364624251,
+    "PairedLogRatioMean": 0.023860633117632417,
+    "PairedLogRatioSampleStandardDeviation": 0.02563143294318297,
+    "PairedLogRatioStandardError": 0.009062080022826472,
+    "PairedGeometricMeanRatio": 1.0241475756893768,
+    "Confidence95": {
+      "Lower": 1.0024351791751194,
+      "Upper": 1.0463302551428062
+    },
+    "BaselineMeanMs": 134.226728515625,
+    "CandidateMeanMs": 137.47741328125,
+    "Pairs": [
+      {
+        "Block": 1,
+        "Order": "baseline-candidate",
+        "BaselineMeanNs": 133292934.375,
+        "CandidateMeanNs": 137012240.625,
+        "CandidateOverBaseline": 1.0279032513421624,
+        "LogCandidateOverBaseline": 0.027521049123635143,
+        "BaselineAllocatedBytesPerOperation": 49844350.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      },
+      {
+        "Block": 2,
+        "Order": "candidate-baseline",
+        "BaselineMeanNs": 132589553.125,
+        "CandidateMeanNs": 141798431.25,
+        "CandidateOverBaseline": 1.0694540249058555,
+        "LogCandidateOverBaseline": 0.06714826115102995,
+        "BaselineAllocatedBytesPerOperation": 49845344.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      },
+      {
+        "Block": 3,
+        "Order": "baseline-candidate",
+        "BaselineMeanNs": 135277609.375,
+        "CandidateMeanNs": 135765362.5,
+        "CandidateOverBaseline": 1.0036055717369154,
+        "LogCandidateOverBaseline": 0.0035990872453325,
+        "BaselineAllocatedBytesPerOperation": 49844362.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      },
+      {
+        "Block": 4,
+        "Order": "candidate-baseline",
+        "BaselineMeanNs": 134296971.875,
+        "CandidateMeanNs": 135694287.5,
+        "CandidateOverBaseline": 1.0104046696324664,
+        "LogCandidateOverBaseline": 0.010350913611622494,
+        "BaselineAllocatedBytesPerOperation": 49844350.0,
+        "CandidateAllocatedBytesPerOperation": 49845324.0
+      },
+      {
+        "Block": 5,
+        "Order": "baseline-candidate",
+        "BaselineMeanNs": 132581559.375,
+        "CandidateMeanNs": 139959875.0,
+        "CandidateOverBaseline": 1.055651145300915,
+        "LogCandidateOverBaseline": 0.05415777587621365,
+        "BaselineAllocatedBytesPerOperation": 49844350.0,
+        "CandidateAllocatedBytesPerOperation": 49845454.0
+      },
+      {
+        "Block": 6,
+        "Order": "candidate-baseline",
+        "BaselineMeanNs": 136546371.875,
+        "CandidateMeanNs": 135511331.25,
+        "CandidateOverBaseline": 0.9924198599289953,
+        "LogCandidateOverBaseline": -0.007609015344378974,
+        "BaselineAllocatedBytesPerOperation": 49844350.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      },
+      {
+        "Block": 7,
+        "Order": "baseline-candidate",
+        "BaselineMeanNs": 135307531.25,
+        "CandidateMeanNs": 136605237.5,
+        "CandidateOverBaseline": 1.009590790978237,
+        "LogCandidateOverBaseline": 0.009545091307423384,
+        "BaselineAllocatedBytesPerOperation": 49846006.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      },
+      {
+        "Block": 8,
+        "Order": "candidate-baseline",
+        "BaselineMeanNs": 133921296.875,
+        "CandidateMeanNs": 137472540.625,
+        "CandidateOverBaseline": 1.0265173936697662,
+        "LogCandidateOverBaseline": 0.026171901970181165,
+        "BaselineAllocatedBytesPerOperation": 49844350.0,
+        "CandidateAllocatedBytesPerOperation": 49844350.0
+      }
+    ],
+    "InputBytes": 4172062,
+    "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+  },
+  "Runs": [
+    {
+      "Run": "01-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 133292934.375,
+      "ActualMeanNs": 133292984.375,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 520320400.0,
+          "Operations": 4,
+          "NsPerOperation": 130080100.0
+        },
+        {
+          "BdnNanoseconds": 533526600.0,
+          "Operations": 4,
+          "NsPerOperation": 133381650.0
+        },
+        {
+          "BdnNanoseconds": 563265800.0,
+          "Operations": 4,
+          "NsPerOperation": 140816450.0
+        },
+        {
+          "BdnNanoseconds": 535464400.0,
+          "Operations": 4,
+          "NsPerOperation": 133866100.0
+        },
+        {
+          "BdnNanoseconds": 526359400.0,
+          "Operations": 4,
+          "NsPerOperation": 131589850.0
+        },
+        {
+          "BdnNanoseconds": 508715100.0,
+          "Operations": 4,
+          "NsPerOperation": 127178775.0
+        },
+        {
+          "BdnNanoseconds": 556637400.0,
+          "Operations": 4,
+          "NsPerOperation": 139159350.0
+        },
+        {
+          "BdnNanoseconds": 521086400.0,
+          "Operations": 4,
+          "NsPerOperation": 130271600.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 520320200.0,
+          "Operations": 4,
+          "NsPerOperation": 130080050.0
+        },
+        {
+          "BdnNanoseconds": 533526400.0,
+          "Operations": 4,
+          "NsPerOperation": 133381600.0
+        },
+        {
+          "BdnNanoseconds": 563265600.0,
+          "Operations": 4,
+          "NsPerOperation": 140816400.0
+        },
+        {
+          "BdnNanoseconds": 535464200.0,
+          "Operations": 4,
+          "NsPerOperation": 133866050.0
+        },
+        {
+          "BdnNanoseconds": 526359200.0,
+          "Operations": 4,
+          "NsPerOperation": 131589800.0
+        },
+        {
+          "BdnNanoseconds": 508714900.0,
+          "Operations": 4,
+          "NsPerOperation": 127178725.0
+        },
+        {
+          "BdnNanoseconds": 556637200.0,
+          "Operations": 4,
+          "NsPerOperation": 139159300.0
+        },
+        {
+          "BdnNanoseconds": 521086200.0,
+          "Operations": 4,
+          "NsPerOperation": 130271550.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 27108,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:52:52.4998034Z",
+      "EndUTC": "2026-10-18T22:53:11.6658703Z",
+      "WallSeconds": 19.4843248,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "01-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 137012240.625,
+      "ActualMeanNs": 137012290.625,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 551561200.0,
+          "Operations": 4,
+          "NsPerOperation": 137890300.0
+        },
+        {
+          "BdnNanoseconds": 551074200.0,
+          "Operations": 4,
+          "NsPerOperation": 137768550.0
+        },
+        {
+          "BdnNanoseconds": 597079400.0,
+          "Operations": 4,
+          "NsPerOperation": 149269850.0
+        },
+        {
+          "BdnNanoseconds": 529879000.0,
+          "Operations": 4,
+          "NsPerOperation": 132469750.0
+        },
+        {
+          "BdnNanoseconds": 537732800.0,
+          "Operations": 4,
+          "NsPerOperation": 134433200.0
+        },
+        {
+          "BdnNanoseconds": 537547700.0,
+          "Operations": 4,
+          "NsPerOperation": 134386925.0
+        },
+        {
+          "BdnNanoseconds": 541632500.0,
+          "Operations": 4,
+          "NsPerOperation": 135408125.0
+        },
+        {
+          "BdnNanoseconds": 537886500.0,
+          "Operations": 4,
+          "NsPerOperation": 134471625.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 551561000.0,
+          "Operations": 4,
+          "NsPerOperation": 137890250.0
+        },
+        {
+          "BdnNanoseconds": 551074000.0,
+          "Operations": 4,
+          "NsPerOperation": 137768500.0
+        },
+        {
+          "BdnNanoseconds": 597079200.0,
+          "Operations": 4,
+          "NsPerOperation": 149269800.0
+        },
+        {
+          "BdnNanoseconds": 529878800.0,
+          "Operations": 4,
+          "NsPerOperation": 132469700.0
+        },
+        {
+          "BdnNanoseconds": 537732600.0,
+          "Operations": 4,
+          "NsPerOperation": 134433150.0
+        },
+        {
+          "BdnNanoseconds": 537547500.0,
+          "Operations": 4,
+          "NsPerOperation": 134386875.0
+        },
+        {
+          "BdnNanoseconds": 541632300.0,
+          "Operations": 4,
+          "NsPerOperation": 135408075.0
+        },
+        {
+          "BdnNanoseconds": 537886300.0,
+          "Operations": 4,
+          "NsPerOperation": 134471575.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 33920,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:53:12.2794972Z",
+      "EndUTC": "2026-10-18T22:53:31.9654097Z",
+      "WallSeconds": 19.8259033,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "02-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 132589553.125,
+      "ActualMeanNs": 132589603.125,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 536448700.0,
+          "Operations": 4,
+          "NsPerOperation": 134112175.0
+        },
+        {
+          "BdnNanoseconds": 535778200.0,
+          "Operations": 4,
+          "NsPerOperation": 133944550.0
+        },
+        {
+          "BdnNanoseconds": 539558700.0,
+          "Operations": 4,
+          "NsPerOperation": 134889675.0
+        },
+        {
+          "BdnNanoseconds": 529289100.0,
+          "Operations": 4,
+          "NsPerOperation": 132322275.0
+        },
+        {
+          "BdnNanoseconds": 538035600.0,
+          "Operations": 4,
+          "NsPerOperation": 134508900.0
+        },
+        {
+          "BdnNanoseconds": 525744600.0,
+          "Operations": 4,
+          "NsPerOperation": 131436150.0
+        },
+        {
+          "BdnNanoseconds": 523196500.0,
+          "Operations": 4,
+          "NsPerOperation": 130799125.0
+        },
+        {
+          "BdnNanoseconds": 514815900.0,
+          "Operations": 4,
+          "NsPerOperation": 128703975.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 536448500.0,
+          "Operations": 4,
+          "NsPerOperation": 134112125.0
+        },
+        {
+          "BdnNanoseconds": 535778000.0,
+          "Operations": 4,
+          "NsPerOperation": 133944500.0
+        },
+        {
+          "BdnNanoseconds": 539558500.0,
+          "Operations": 4,
+          "NsPerOperation": 134889625.0
+        },
+        {
+          "BdnNanoseconds": 529288900.0,
+          "Operations": 4,
+          "NsPerOperation": 132322225.0
+        },
+        {
+          "BdnNanoseconds": 538035400.0,
+          "Operations": 4,
+          "NsPerOperation": 134508850.0
+        },
+        {
+          "BdnNanoseconds": 525744400.0,
+          "Operations": 4,
+          "NsPerOperation": 131436100.0
+        },
+        {
+          "BdnNanoseconds": 523196300.0,
+          "Operations": 4,
+          "NsPerOperation": 130799075.0
+        },
+        {
+          "BdnNanoseconds": 514815700.0,
+          "Operations": 4,
+          "NsPerOperation": 128703925.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49845344,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 29208,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:53:59.5079737Z",
+      "EndUTC": "2026-10-18T22:54:19.7665558Z",
+      "WallSeconds": 20.3584187,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "02-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 141798431.25,
+      "ActualMeanNs": 141798481.25,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 571600100.0,
+          "Operations": 4,
+          "NsPerOperation": 142900025.0
+        },
+        {
+          "BdnNanoseconds": 558433600.0,
+          "Operations": 4,
+          "NsPerOperation": 139608400.0
+        },
+        {
+          "BdnNanoseconds": 612668600.0,
+          "Operations": 4,
+          "NsPerOperation": 153167150.0
+        },
+        {
+          "BdnNanoseconds": 553818500.0,
+          "Operations": 4,
+          "NsPerOperation": 138454625.0
+        },
+        {
+          "BdnNanoseconds": 553545800.0,
+          "Operations": 4,
+          "NsPerOperation": 138386450.0
+        },
+        {
+          "BdnNanoseconds": 564254100.0,
+          "Operations": 4,
+          "NsPerOperation": 141063525.0
+        },
+        {
+          "BdnNanoseconds": 562932500.0,
+          "Operations": 4,
+          "NsPerOperation": 140733125.0
+        },
+        {
+          "BdnNanoseconds": 560298200.0,
+          "Operations": 4,
+          "NsPerOperation": 140074550.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 571599900.0,
+          "Operations": 4,
+          "NsPerOperation": 142899975.0
+        },
+        {
+          "BdnNanoseconds": 558433400.0,
+          "Operations": 4,
+          "NsPerOperation": 139608350.0
+        },
+        {
+          "BdnNanoseconds": 612668400.0,
+          "Operations": 4,
+          "NsPerOperation": 153167100.0
+        },
+        {
+          "BdnNanoseconds": 553818300.0,
+          "Operations": 4,
+          "NsPerOperation": 138454575.0
+        },
+        {
+          "BdnNanoseconds": 553545600.0,
+          "Operations": 4,
+          "NsPerOperation": 138386400.0
+        },
+        {
+          "BdnNanoseconds": 564253900.0,
+          "Operations": 4,
+          "NsPerOperation": 141063475.0
+        },
+        {
+          "BdnNanoseconds": 562932300.0,
+          "Operations": 4,
+          "NsPerOperation": 140733075.0
+        },
+        {
+          "BdnNanoseconds": 560298000.0,
+          "Operations": 4,
+          "NsPerOperation": 140074500.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 10004,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:53:38.0615175Z",
+      "EndUTC": "2026-10-18T22:53:58.9059562Z",
+      "WallSeconds": 21.1544202,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "03-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 135277609.375,
+      "ActualMeanNs": 135277659.375,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 532616400.0,
+          "Operations": 4,
+          "NsPerOperation": 133154100.0
+        },
+        {
+          "BdnNanoseconds": 523221700.0,
+          "Operations": 4,
+          "NsPerOperation": 130805425.0
+        },
+        {
+          "BdnNanoseconds": 566414600.0,
+          "Operations": 4,
+          "NsPerOperation": 141603650.0
+        },
+        {
+          "BdnNanoseconds": 528866500.0,
+          "Operations": 4,
+          "NsPerOperation": 132216625.0
+        },
+        {
+          "BdnNanoseconds": 536375200.0,
+          "Operations": 4,
+          "NsPerOperation": 134093800.0
+        },
+        {
+          "BdnNanoseconds": 540236400.0,
+          "Operations": 4,
+          "NsPerOperation": 135059100.0
+        },
+        {
+          "BdnNanoseconds": 558881600.0,
+          "Operations": 4,
+          "NsPerOperation": 139720400.0
+        },
+        {
+          "BdnNanoseconds": 542272700.0,
+          "Operations": 4,
+          "NsPerOperation": 135568175.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 532616200.0,
+          "Operations": 4,
+          "NsPerOperation": 133154050.0
+        },
+        {
+          "BdnNanoseconds": 523221500.0,
+          "Operations": 4,
+          "NsPerOperation": 130805375.0
+        },
+        {
+          "BdnNanoseconds": 566414400.0,
+          "Operations": 4,
+          "NsPerOperation": 141603600.0
+        },
+        {
+          "BdnNanoseconds": 528866300.0,
+          "Operations": 4,
+          "NsPerOperation": 132216575.0
+        },
+        {
+          "BdnNanoseconds": 536375000.0,
+          "Operations": 4,
+          "NsPerOperation": 134093750.0
+        },
+        {
+          "BdnNanoseconds": 540236200.0,
+          "Operations": 4,
+          "NsPerOperation": 135059050.0
+        },
+        {
+          "BdnNanoseconds": 558881400.0,
+          "Operations": 4,
+          "NsPerOperation": 139720350.0
+        },
+        {
+          "BdnNanoseconds": 542272500.0,
+          "Operations": 4,
+          "NsPerOperation": 135568125.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844362,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 25512,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:54:24.1103128Z",
+      "EndUTC": "2026-10-18T22:54:44.255875Z",
+      "WallSeconds": 20.4249917,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "03-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 135765362.5,
+      "ActualMeanNs": 135765412.5,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 553041000.0,
+          "Operations": 4,
+          "NsPerOperation": 138260250.0
+        },
+        {
+          "BdnNanoseconds": 534916000.0,
+          "Operations": 4,
+          "NsPerOperation": 133729000.0
+        },
+        {
+          "BdnNanoseconds": 589727800.0,
+          "Operations": 4,
+          "NsPerOperation": 147431950.0
+        },
+        {
+          "BdnNanoseconds": 527935100.0,
+          "Operations": 4,
+          "NsPerOperation": 131983775.0
+        },
+        {
+          "BdnNanoseconds": 534708300.0,
+          "Operations": 4,
+          "NsPerOperation": 133677075.0
+        },
+        {
+          "BdnNanoseconds": 526043200.0,
+          "Operations": 4,
+          "NsPerOperation": 131510800.0
+        },
+        {
+          "BdnNanoseconds": 541491600.0,
+          "Operations": 4,
+          "NsPerOperation": 135372900.0
+        },
+        {
+          "BdnNanoseconds": 536630200.0,
+          "Operations": 4,
+          "NsPerOperation": 134157550.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 553040800.0,
+          "Operations": 4,
+          "NsPerOperation": 138260200.0
+        },
+        {
+          "BdnNanoseconds": 534915800.0,
+          "Operations": 4,
+          "NsPerOperation": 133728950.0
+        },
+        {
+          "BdnNanoseconds": 589727600.0,
+          "Operations": 4,
+          "NsPerOperation": 147431900.0
+        },
+        {
+          "BdnNanoseconds": 527934900.0,
+          "Operations": 4,
+          "NsPerOperation": 131983725.0
+        },
+        {
+          "BdnNanoseconds": 534708100.0,
+          "Operations": 4,
+          "NsPerOperation": 133677025.0
+        },
+        {
+          "BdnNanoseconds": 526043000.0,
+          "Operations": 4,
+          "NsPerOperation": 131510750.0
+        },
+        {
+          "BdnNanoseconds": 541491400.0,
+          "Operations": 4,
+          "NsPerOperation": 135372850.0
+        },
+        {
+          "BdnNanoseconds": 536630000.0,
+          "Operations": 4,
+          "NsPerOperation": 134157500.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 14372,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:54:44.8281949Z",
+      "EndUTC": "2026-10-18T22:55:04.5158479Z",
+      "WallSeconds": 19.7881392,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "04-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 134296971.875,
+      "ActualMeanNs": 134297021.875,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 534584300.0,
+          "Operations": 4,
+          "NsPerOperation": 133646075.0
+        },
+        {
+          "BdnNanoseconds": 538190300.0,
+          "Operations": 4,
+          "NsPerOperation": 134547575.0
+        },
+        {
+          "BdnNanoseconds": 539722600.0,
+          "Operations": 4,
+          "NsPerOperation": 134930650.0
+        },
+        {
+          "BdnNanoseconds": 539957300.0,
+          "Operations": 4,
+          "NsPerOperation": 134989325.0
+        },
+        {
+          "BdnNanoseconds": 529758000.0,
+          "Operations": 4,
+          "NsPerOperation": 132439500.0
+        },
+        {
+          "BdnNanoseconds": 542461200.0,
+          "Operations": 4,
+          "NsPerOperation": 135615300.0
+        },
+        {
+          "BdnNanoseconds": 530212200.0,
+          "Operations": 4,
+          "NsPerOperation": 132553050.0
+        },
+        {
+          "BdnNanoseconds": 542618800.0,
+          "Operations": 4,
+          "NsPerOperation": 135654700.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 534584100.0,
+          "Operations": 4,
+          "NsPerOperation": 133646025.0
+        },
+        {
+          "BdnNanoseconds": 538190100.0,
+          "Operations": 4,
+          "NsPerOperation": 134547525.0
+        },
+        {
+          "BdnNanoseconds": 539722400.0,
+          "Operations": 4,
+          "NsPerOperation": 134930600.0
+        },
+        {
+          "BdnNanoseconds": 539957100.0,
+          "Operations": 4,
+          "NsPerOperation": 134989275.0
+        },
+        {
+          "BdnNanoseconds": 529757800.0,
+          "Operations": 4,
+          "NsPerOperation": 132439450.0
+        },
+        {
+          "BdnNanoseconds": 542461000.0,
+          "Operations": 4,
+          "NsPerOperation": 135615250.0
+        },
+        {
+          "BdnNanoseconds": 530212000.0,
+          "Operations": 4,
+          "NsPerOperation": 132553000.0
+        },
+        {
+          "BdnNanoseconds": 542618600.0,
+          "Operations": 4,
+          "NsPerOperation": 135654650.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 19012,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:55:29.4757705Z",
+      "EndUTC": "2026-10-18T22:55:49.3088695Z",
+      "WallSeconds": 19.9830377,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "04-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 135694287.5,
+      "ActualMeanNs": 135694337.5,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 553678500.0,
+          "Operations": 4,
+          "NsPerOperation": 138419625.0
+        },
+        {
+          "BdnNanoseconds": 544395500.0,
+          "Operations": 4,
+          "NsPerOperation": 136098875.0
+        },
+        {
+          "BdnNanoseconds": 542300800.0,
+          "Operations": 4,
+          "NsPerOperation": 135575200.0
+        },
+        {
+          "BdnNanoseconds": 538045700.0,
+          "Operations": 4,
+          "NsPerOperation": 134511425.0
+        },
+        {
+          "BdnNanoseconds": 549229400.0,
+          "Operations": 4,
+          "NsPerOperation": 137307350.0
+        },
+        {
+          "BdnNanoseconds": 538819800.0,
+          "Operations": 4,
+          "NsPerOperation": 134704950.0
+        },
+        {
+          "BdnNanoseconds": 535001200.0,
+          "Operations": 4,
+          "NsPerOperation": 133750300.0
+        },
+        {
+          "BdnNanoseconds": 540747900.0,
+          "Operations": 4,
+          "NsPerOperation": 135186975.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 553678300.0,
+          "Operations": 4,
+          "NsPerOperation": 138419575.0
+        },
+        {
+          "BdnNanoseconds": 544395300.0,
+          "Operations": 4,
+          "NsPerOperation": 136098825.0
+        },
+        {
+          "BdnNanoseconds": 542300600.0,
+          "Operations": 4,
+          "NsPerOperation": 135575150.0
+        },
+        {
+          "BdnNanoseconds": 538045500.0,
+          "Operations": 4,
+          "NsPerOperation": 134511375.0
+        },
+        {
+          "BdnNanoseconds": 549229200.0,
+          "Operations": 4,
+          "NsPerOperation": 137307300.0
+        },
+        {
+          "BdnNanoseconds": 538819600.0,
+          "Operations": 4,
+          "NsPerOperation": 134704900.0
+        },
+        {
+          "BdnNanoseconds": 535001000.0,
+          "Operations": 4,
+          "NsPerOperation": 133750250.0
+        },
+        {
+          "BdnNanoseconds": 540747700.0,
+          "Operations": 4,
+          "NsPerOperation": 135186925.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49845324,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 2752,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:55:08.5420587Z",
+      "EndUTC": "2026-10-18T22:55:28.9166709Z",
+      "WallSeconds": 20.5760562,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "05-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 132581559.375,
+      "ActualMeanNs": 132581621.875,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 522645500.0,
+          "Operations": 4,
+          "NsPerOperation": 130661375.0
+        },
+        {
+          "BdnNanoseconds": 534445800.0,
+          "Operations": 4,
+          "NsPerOperation": 133611450.0
+        },
+        {
+          "BdnNanoseconds": 515628000.0,
+          "Operations": 4,
+          "NsPerOperation": 128907000.0
+        },
+        {
+          "BdnNanoseconds": 542391700.0,
+          "Operations": 4,
+          "NsPerOperation": 135597925.0
+        },
+        {
+          "BdnNanoseconds": 528671700.0,
+          "Operations": 4,
+          "NsPerOperation": 132167925.0
+        },
+        {
+          "BdnNanoseconds": 522257100.0,
+          "Operations": 4,
+          "NsPerOperation": 130564275.0
+        },
+        {
+          "BdnNanoseconds": 536717700.0,
+          "Operations": 4,
+          "NsPerOperation": 134179425.0
+        },
+        {
+          "BdnNanoseconds": 539854400.0,
+          "Operations": 4,
+          "NsPerOperation": 134963600.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 522645250.0,
+          "Operations": 4,
+          "NsPerOperation": 130661312.5
+        },
+        {
+          "BdnNanoseconds": 534445550.0,
+          "Operations": 4,
+          "NsPerOperation": 133611387.5
+        },
+        {
+          "BdnNanoseconds": 515627750.0,
+          "Operations": 4,
+          "NsPerOperation": 128906937.5
+        },
+        {
+          "BdnNanoseconds": 542391450.0,
+          "Operations": 4,
+          "NsPerOperation": 135597862.5
+        },
+        {
+          "BdnNanoseconds": 528671450.0,
+          "Operations": 4,
+          "NsPerOperation": 132167862.5
+        },
+        {
+          "BdnNanoseconds": 522256850.0,
+          "Operations": 4,
+          "NsPerOperation": 130564212.5
+        },
+        {
+          "BdnNanoseconds": 536717450.0,
+          "Operations": 4,
+          "NsPerOperation": 134179362.5
+        },
+        {
+          "BdnNanoseconds": 539854150.0,
+          "Operations": 4,
+          "NsPerOperation": 134963537.5
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 21536,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:55:55.6727221Z",
+      "EndUTC": "2026-10-18T22:56:15.6111112Z",
+      "WallSeconds": 20.2250992,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "05-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 139959875.0,
+      "ActualMeanNs": 139959925.0,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 548006600.0,
+          "Operations": 4,
+          "NsPerOperation": 137001650.0
+        },
+        {
+          "BdnNanoseconds": 564754200.0,
+          "Operations": 4,
+          "NsPerOperation": 141188550.0
+        },
+        {
+          "BdnNanoseconds": 563198100.0,
+          "Operations": 4,
+          "NsPerOperation": 140799525.0
+        },
+        {
+          "BdnNanoseconds": 564132100.0,
+          "Operations": 4,
+          "NsPerOperation": 141033025.0
+        },
+        {
+          "BdnNanoseconds": 556705000.0,
+          "Operations": 4,
+          "NsPerOperation": 139176250.0
+        },
+        {
+          "BdnNanoseconds": 577834000.0,
+          "Operations": 4,
+          "NsPerOperation": 144458500.0
+        },
+        {
+          "BdnNanoseconds": 554125600.0,
+          "Operations": 4,
+          "NsPerOperation": 138531400.0
+        },
+        {
+          "BdnNanoseconds": 549962000.0,
+          "Operations": 4,
+          "NsPerOperation": 137490500.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 548006400.0,
+          "Operations": 4,
+          "NsPerOperation": 137001600.0
+        },
+        {
+          "BdnNanoseconds": 564754000.0,
+          "Operations": 4,
+          "NsPerOperation": 141188500.0
+        },
+        {
+          "BdnNanoseconds": 563197900.0,
+          "Operations": 4,
+          "NsPerOperation": 140799475.0
+        },
+        {
+          "BdnNanoseconds": 564131900.0,
+          "Operations": 4,
+          "NsPerOperation": 141032975.0
+        },
+        {
+          "BdnNanoseconds": 556704800.0,
+          "Operations": 4,
+          "NsPerOperation": 139176200.0
+        },
+        {
+          "BdnNanoseconds": 577833800.0,
+          "Operations": 4,
+          "NsPerOperation": 144458450.0
+        },
+        {
+          "BdnNanoseconds": 554125400.0,
+          "Operations": 4,
+          "NsPerOperation": 138531350.0
+        },
+        {
+          "BdnNanoseconds": 549961800.0,
+          "Operations": 4,
+          "NsPerOperation": 137490450.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49845454,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 11360,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:56:16.1994319Z",
+      "EndUTC": "2026-10-18T22:56:37.1515588Z",
+      "WallSeconds": 21.1033244,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "06-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 136546371.875,
+      "ActualMeanNs": 136546421.875,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 533178100.0,
+          "Operations": 4,
+          "NsPerOperation": 133294525.0
+        },
+        {
+          "BdnNanoseconds": 546395800.0,
+          "Operations": 4,
+          "NsPerOperation": 136598950.0
+        },
+        {
+          "BdnNanoseconds": 588742900.0,
+          "Operations": 4,
+          "NsPerOperation": 147185725.0
+        },
+        {
+          "BdnNanoseconds": 538659000.0,
+          "Operations": 4,
+          "NsPerOperation": 134664750.0
+        },
+        {
+          "BdnNanoseconds": 540882000.0,
+          "Operations": 4,
+          "NsPerOperation": 135220500.0
+        },
+        {
+          "BdnNanoseconds": 533276900.0,
+          "Operations": 4,
+          "NsPerOperation": 133319225.0
+        },
+        {
+          "BdnNanoseconds": 543194700.0,
+          "Operations": 4,
+          "NsPerOperation": 135798675.0
+        },
+        {
+          "BdnNanoseconds": 545156100.0,
+          "Operations": 4,
+          "NsPerOperation": 136289025.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 533177900.0,
+          "Operations": 4,
+          "NsPerOperation": 133294475.0
+        },
+        {
+          "BdnNanoseconds": 546395600.0,
+          "Operations": 4,
+          "NsPerOperation": 136598900.0
+        },
+        {
+          "BdnNanoseconds": 588742700.0,
+          "Operations": 4,
+          "NsPerOperation": 147185675.0
+        },
+        {
+          "BdnNanoseconds": 538658800.0,
+          "Operations": 4,
+          "NsPerOperation": 134664700.0
+        },
+        {
+          "BdnNanoseconds": 540881800.0,
+          "Operations": 4,
+          "NsPerOperation": 135220450.0
+        },
+        {
+          "BdnNanoseconds": 533276700.0,
+          "Operations": 4,
+          "NsPerOperation": 133319175.0
+        },
+        {
+          "BdnNanoseconds": 543194500.0,
+          "Operations": 4,
+          "NsPerOperation": 135798625.0
+        },
+        {
+          "BdnNanoseconds": 545155900.0,
+          "Operations": 4,
+          "NsPerOperation": 136288975.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 36424,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:57:02.225756Z",
+      "EndUTC": "2026-10-18T22:57:22.4495152Z",
+      "WallSeconds": 20.3518425,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "06-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 135511331.25,
+      "ActualMeanNs": 135511381.25,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 523664400.0,
+          "Operations": 4,
+          "NsPerOperation": 130916100.0
+        },
+        {
+          "BdnNanoseconds": 534275200.0,
+          "Operations": 4,
+          "NsPerOperation": 133568800.0
+        },
+        {
+          "BdnNanoseconds": 596072600.0,
+          "Operations": 4,
+          "NsPerOperation": 149018150.0
+        },
+        {
+          "BdnNanoseconds": 534855400.0,
+          "Operations": 4,
+          "NsPerOperation": 133713850.0
+        },
+        {
+          "BdnNanoseconds": 550763200.0,
+          "Operations": 4,
+          "NsPerOperation": 137690800.0
+        },
+        {
+          "BdnNanoseconds": 532557200.0,
+          "Operations": 4,
+          "NsPerOperation": 133139300.0
+        },
+        {
+          "BdnNanoseconds": 531140900.0,
+          "Operations": 4,
+          "NsPerOperation": 132785225.0
+        },
+        {
+          "BdnNanoseconds": 533035300.0,
+          "Operations": 4,
+          "NsPerOperation": 133258825.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 523664200.0,
+          "Operations": 4,
+          "NsPerOperation": 130916050.0
+        },
+        {
+          "BdnNanoseconds": 534275000.0,
+          "Operations": 4,
+          "NsPerOperation": 133568750.0
+        },
+        {
+          "BdnNanoseconds": 596072400.0,
+          "Operations": 4,
+          "NsPerOperation": 149018100.0
+        },
+        {
+          "BdnNanoseconds": 534855200.0,
+          "Operations": 4,
+          "NsPerOperation": 133713800.0
+        },
+        {
+          "BdnNanoseconds": 550763000.0,
+          "Operations": 4,
+          "NsPerOperation": 137690750.0
+        },
+        {
+          "BdnNanoseconds": 532557000.0,
+          "Operations": 4,
+          "NsPerOperation": 133139250.0
+        },
+        {
+          "BdnNanoseconds": 531140700.0,
+          "Operations": 4,
+          "NsPerOperation": 132785175.0
+        },
+        {
+          "BdnNanoseconds": 533035100.0,
+          "Operations": 4,
+          "NsPerOperation": 133258775.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 36408,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:56:41.8080923Z",
+      "EndUTC": "2026-10-18T22:57:01.6084786Z",
+      "WallSeconds": 20.0383384,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "07-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 135307531.25,
+      "ActualMeanNs": 135307581.25,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 537260400.0,
+          "Operations": 4,
+          "NsPerOperation": 134315100.0
+        },
+        {
+          "BdnNanoseconds": 539707300.0,
+          "Operations": 4,
+          "NsPerOperation": 134926825.0
+        },
+        {
+          "BdnNanoseconds": 545154700.0,
+          "Operations": 4,
+          "NsPerOperation": 136288675.0
+        },
+        {
+          "BdnNanoseconds": 531758100.0,
+          "Operations": 4,
+          "NsPerOperation": 132939525.0
+        },
+        {
+          "BdnNanoseconds": 542543500.0,
+          "Operations": 4,
+          "NsPerOperation": 135635875.0
+        },
+        {
+          "BdnNanoseconds": 538415600.0,
+          "Operations": 4,
+          "NsPerOperation": 134603900.0
+        },
+        {
+          "BdnNanoseconds": 525326500.0,
+          "Operations": 4,
+          "NsPerOperation": 131331625.0
+        },
+        {
+          "BdnNanoseconds": 569676500.0,
+          "Operations": 4,
+          "NsPerOperation": 142419125.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 537260200.0,
+          "Operations": 4,
+          "NsPerOperation": 134315050.0
+        },
+        {
+          "BdnNanoseconds": 539707100.0,
+          "Operations": 4,
+          "NsPerOperation": 134926775.0
+        },
+        {
+          "BdnNanoseconds": 545154500.0,
+          "Operations": 4,
+          "NsPerOperation": 136288625.0
+        },
+        {
+          "BdnNanoseconds": 531757900.0,
+          "Operations": 4,
+          "NsPerOperation": 132939475.0
+        },
+        {
+          "BdnNanoseconds": 542543300.0,
+          "Operations": 4,
+          "NsPerOperation": 135635825.0
+        },
+        {
+          "BdnNanoseconds": 538415400.0,
+          "Operations": 4,
+          "NsPerOperation": 134603850.0
+        },
+        {
+          "BdnNanoseconds": 525326300.0,
+          "Operations": 4,
+          "NsPerOperation": 131331575.0
+        },
+        {
+          "BdnNanoseconds": 569676300.0,
+          "Operations": 4,
+          "NsPerOperation": 142419075.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49846006,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 21740,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:57:29.1094083Z",
+      "EndUTC": "2026-10-18T22:57:49.6229263Z",
+      "WallSeconds": 20.8112366,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "07-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 136605237.5,
+      "ActualMeanNs": 136605287.5,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 538543400.0,
+          "Operations": 4,
+          "NsPerOperation": 134635850.0
+        },
+        {
+          "BdnNanoseconds": 538079400.0,
+          "Operations": 4,
+          "NsPerOperation": 134519850.0
+        },
+        {
+          "BdnNanoseconds": 529543600.0,
+          "Operations": 4,
+          "NsPerOperation": 132385900.0
+        },
+        {
+          "BdnNanoseconds": 538587000.0,
+          "Operations": 4,
+          "NsPerOperation": 134646750.0
+        },
+        {
+          "BdnNanoseconds": 542101800.0,
+          "Operations": 4,
+          "NsPerOperation": 135525450.0
+        },
+        {
+          "BdnNanoseconds": 599773500.0,
+          "Operations": 4,
+          "NsPerOperation": 149943375.0
+        },
+        {
+          "BdnNanoseconds": 539523900.0,
+          "Operations": 4,
+          "NsPerOperation": 134880975.0
+        },
+        {
+          "BdnNanoseconds": 545216600.0,
+          "Operations": 4,
+          "NsPerOperation": 136304150.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 538543200.0,
+          "Operations": 4,
+          "NsPerOperation": 134635800.0
+        },
+        {
+          "BdnNanoseconds": 538079200.0,
+          "Operations": 4,
+          "NsPerOperation": 134519800.0
+        },
+        {
+          "BdnNanoseconds": 529543400.0,
+          "Operations": 4,
+          "NsPerOperation": 132385850.0
+        },
+        {
+          "BdnNanoseconds": 538586800.0,
+          "Operations": 4,
+          "NsPerOperation": 134646700.0
+        },
+        {
+          "BdnNanoseconds": 542101600.0,
+          "Operations": 4,
+          "NsPerOperation": 135525400.0
+        },
+        {
+          "BdnNanoseconds": 599773300.0,
+          "Operations": 4,
+          "NsPerOperation": 149943325.0
+        },
+        {
+          "BdnNanoseconds": 539523700.0,
+          "Operations": 4,
+          "NsPerOperation": 134880925.0
+        },
+        {
+          "BdnNanoseconds": 545216400.0,
+          "Operations": 4,
+          "NsPerOperation": 136304100.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 7864,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:57:50.2990656Z",
+      "EndUTC": "2026-10-18T22:58:09.84355Z",
+      "WallSeconds": 19.6854896,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "08-baseline",
+      "Batch": "exploration",
+      "Variant": "baseline",
+      "Method": "StringInput",
+      "MeanNs": 133921296.875,
+      "ActualMeanNs": 133921346.875,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 525571300.0,
+          "Operations": 4,
+          "NsPerOperation": 131392825.0
+        },
+        {
+          "BdnNanoseconds": 528849000.0,
+          "Operations": 4,
+          "NsPerOperation": 132212250.0
+        },
+        {
+          "BdnNanoseconds": 598529100.0,
+          "Operations": 4,
+          "NsPerOperation": 149632275.0
+        },
+        {
+          "BdnNanoseconds": 537868400.0,
+          "Operations": 4,
+          "NsPerOperation": 134467100.0
+        },
+        {
+          "BdnNanoseconds": 520504500.0,
+          "Operations": 4,
+          "NsPerOperation": 130126125.0
+        },
+        {
+          "BdnNanoseconds": 523003100.0,
+          "Operations": 4,
+          "NsPerOperation": 130750775.0
+        },
+        {
+          "BdnNanoseconds": 524911000.0,
+          "Operations": 4,
+          "NsPerOperation": 131227750.0
+        },
+        {
+          "BdnNanoseconds": 526246700.0,
+          "Operations": 4,
+          "NsPerOperation": 131561675.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 525571100.0,
+          "Operations": 4,
+          "NsPerOperation": 131392775.0
+        },
+        {
+          "BdnNanoseconds": 528848800.0,
+          "Operations": 4,
+          "NsPerOperation": 132212200.0
+        },
+        {
+          "BdnNanoseconds": 598528900.0,
+          "Operations": 4,
+          "NsPerOperation": 149632225.0
+        },
+        {
+          "BdnNanoseconds": 537868200.0,
+          "Operations": 4,
+          "NsPerOperation": 134467050.0
+        },
+        {
+          "BdnNanoseconds": 520504300.0,
+          "Operations": 4,
+          "NsPerOperation": 130126075.0
+        },
+        {
+          "BdnNanoseconds": 523002900.0,
+          "Operations": 4,
+          "NsPerOperation": 130750725.0
+        },
+        {
+          "BdnNanoseconds": 524910800.0,
+          "Operations": 4,
+          "NsPerOperation": 131227700.0
+        },
+        {
+          "BdnNanoseconds": 526246500.0,
+          "Operations": 4,
+          "NsPerOperation": 131561625.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 25032,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:58:35.481693Z",
+      "EndUTC": "2026-10-18T22:58:56.3405276Z",
+      "WallSeconds": 21.0215765,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    },
+    {
+      "Run": "08-candidate",
+      "Batch": "exploration",
+      "Variant": "candidate",
+      "Method": "StringInput",
+      "MeanNs": 137472540.625,
+      "ActualMeanNs": 137472590.625,
+      "ActualIterations": [
+        {
+          "BdnNanoseconds": 537866300.0,
+          "Operations": 4,
+          "NsPerOperation": 134466575.0
+        },
+        {
+          "BdnNanoseconds": 536912200.0,
+          "Operations": 4,
+          "NsPerOperation": 134228050.0
+        },
+        {
+          "BdnNanoseconds": 604749900.0,
+          "Operations": 4,
+          "NsPerOperation": 151187475.0
+        },
+        {
+          "BdnNanoseconds": 541079000.0,
+          "Operations": 4,
+          "NsPerOperation": 135269750.0
+        },
+        {
+          "BdnNanoseconds": 540717700.0,
+          "Operations": 4,
+          "NsPerOperation": 135179425.0
+        },
+        {
+          "BdnNanoseconds": 543010700.0,
+          "Operations": 4,
+          "NsPerOperation": 135752675.0
+        },
+        {
+          "BdnNanoseconds": 549912200.0,
+          "Operations": 4,
+          "NsPerOperation": 137478050.0
+        },
+        {
+          "BdnNanoseconds": 544874900.0,
+          "Operations": 4,
+          "NsPerOperation": 136218725.0
+        }
+      ],
+      "ResultIterations": [
+        {
+          "BdnNanoseconds": 537866100.0,
+          "Operations": 4,
+          "NsPerOperation": 134466525.0
+        },
+        {
+          "BdnNanoseconds": 536912000.0,
+          "Operations": 4,
+          "NsPerOperation": 134228000.0
+        },
+        {
+          "BdnNanoseconds": 604749700.0,
+          "Operations": 4,
+          "NsPerOperation": 151187425.0
+        },
+        {
+          "BdnNanoseconds": 541078800.0,
+          "Operations": 4,
+          "NsPerOperation": 135269700.0
+        },
+        {
+          "BdnNanoseconds": 540717500.0,
+          "Operations": 4,
+          "NsPerOperation": 135179375.0
+        },
+        {
+          "BdnNanoseconds": 543010500.0,
+          "Operations": 4,
+          "NsPerOperation": 135752625.0
+        },
+        {
+          "BdnNanoseconds": 549912000.0,
+          "Operations": 4,
+          "NsPerOperation": 137478000.0
+        },
+        {
+          "BdnNanoseconds": 544874700.0,
+          "Operations": 4,
+          "NsPerOperation": 136218675.0
+        }
+      ],
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "WarmupCount": 16,
+      "AllocatedBytesPerOperation": 49844350,
+      "GC": [
+        13,
+        6,
+        2
+      ],
+      "Runtime": ".NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+      "BenchmarkDotNet": "0.15.8",
+      "Job": "Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+      "TieredPGO": 1,
+      "Affinity": 4,
+      "ProcessId": 34068,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:58:14.5933948Z",
+      "EndUTC": "2026-10-18T22:58:34.9003691Z",
+      "WallSeconds": 20.5909934,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "AssemblySHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "MeasurementHostAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+      "LibraryDLLSHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "DLLManifestSHA256": "9F11C1B9F50929EC7AD8581B1946BD23E32E2655FAA25B4DBF455E343E3D3FF0",
+      "HostLog": "host.log",
+      "Stderr": "stderr.log"
+    }
+  ],
+  "PIDAudit": {
+    "Launches": 16,
+    "UniquePIDCount": 16,
+    "ExitCodesZero": true,
+    "AllActual8": true,
+    "AllResult8": true
+  },
+  "Environment": {
+    "Before": [
+      {
+        "Stage": "before",
+        "TimestampUTC": "2026-10-18T22:52:47.9914508Z",
+        "SampleStartUTC": "2026-10-18T22:52:44.9733962Z",
+        "SampleEndUTC": "2026-10-18T22:52:47.9888666Z",
+        "ACLineStatus": 1,
+        "BatteryFlag": 1,
+        "BatteryLifePercent": 80,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "DotnetCpuActivityWindowSeconds": 3,
+        "ActiveDotnetProcesses": []
+      },
+      {
+        "Stage": "after",
+        "TimestampUTC": "2026-10-18T22:59:11.6582428Z",
+        "SampleStartUTC": "2026-10-18T22:59:08.6454848Z",
+        "SampleEndUTC": "2026-10-18T22:59:11.6526474Z",
+        "ACLineStatus": 1,
+        "BatteryFlag": 1,
+        "BatteryLifePercent": 80,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "DotnetCpuActivityWindowSeconds": 3,
+        "ActiveDotnetProcesses": []
+      }
+    ],
+    "After": [
+      {
+        "Stage": "before",
+        "TimestampUTC": "2026-10-18T22:52:47.9914508Z",
+        "SampleStartUTC": "2026-10-18T22:52:44.9733962Z",
+        "SampleEndUTC": "2026-10-18T22:52:47.9888666Z",
+        "ACLineStatus": 1,
+        "BatteryFlag": 1,
+        "BatteryLifePercent": 80,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "DotnetCpuActivityWindowSeconds": 3,
+        "ActiveDotnetProcesses": []
+      },
+      {
+        "Stage": "after",
+        "TimestampUTC": "2026-10-18T22:59:11.6582428Z",
+        "SampleStartUTC": "2026-10-18T22:59:08.6454848Z",
+        "SampleEndUTC": "2026-10-18T22:59:11.6526474Z",
+        "ACLineStatus": 1,
+        "BatteryFlag": 1,
+        "BatteryLifePercent": 80,
+        "BatterySaver": 0,
+        "PowerScheme": "電源設定の GUID: 381b4222-f694-41f0-9685-ff5bb260df2e  (バランス)",
+        "DotnetCpuActivityWindowSeconds": 3,
+        "ActiveDotnetProcesses": []
+      }
+    ],
+    "Runtime": "Microsoft.NETCore.App 10.0.12",
+    "BenchmarkDotNet": "0.15.8",
+    "OS": "Microsoft Windows 10.0.26200",
+    "CPU": "13th Gen Intel(R) Core(TM) i7-13700H; 20 logical processors"
+  },
+  "Diagnostics": {
+    "BaselineSummary": {
+      "Experiment": "string-next-2026-10-19-round3",
+      "Purpose": "Pre-change baseline validation and diagnostics only; diagnostic timing is not normal timing evidence.",
+      "Repository": {
+        "HEAD": "d2f7aa8915ca1f580fc009b0a5d88d7b3c9d1ec1",
+        "WorkingTreeMeasurementCodeChangesByThisAgent": false
+      },
+      "Input": {
+        "Path": "Kotowari.Benchmarks/Data/test.json",
+        "Bytes": 4172062,
+        "SHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D"
+      },
+      "FrozenBaseline": {
+        "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+        "HostFileCount": 43,
+        "HostDllCount": 28,
+        "DllManifestPath": "baseline/dll-manifest.json",
+        "DllMismatchCount": 0,
+        "DllMismatches": [],
+        "SourceSnapshotPath": "baseline/source",
+        "SourceManifestPath": "baseline/source-manifest.json",
+        "SourceFileCount": 43,
+        "SourceManifestHead": "d2f7aa8915ca1f580fc009b0a5d88d7b3c9d1ec1",
+        "FrozenSnapshotMismatchCount": 0,
+        "FrozenSnapshotMismatches": [],
+        "CurrentSourceDriftAfterCapture": [
+          "Kotowari/ParseResult.cs"
+        ]
+      },
+      "Validation": {
+        "Variant": "baseline",
+        "Command": "dotnet StringExecutionRecovery.Measurement.dll --validate",
+        "ProcessId": 25948,
+        "ExitCode": 0,
+        "StderrBytes": 0,
+        "InputBytes": 4172062,
+        "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+        "ConsumedCharacters": 4172062,
+        "ExpectedNodeCount": 100001,
+        "SystemTextJsonTreeEquivalent": true,
+        "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+        "StdoutPath": "baseline/diagnostics/validate.stdout.log",
+        "StderrPath": "baseline/diagnostics/validate.stderr.log"
+      },
+      "RuntimeEnvironment": {
+        "ObservedRuntimeLine": "// Runtime=.NET 10.0.12 (10.0.12, 10.0.1226.42308), X64 RyuJIT x86-64-v3\r",
+        "ObservedJobLine": "// Job: Job-RRPMUT(OutlierMode=DontRemove, Affinity=100, InvocationCount=4, IterationCount=8, LaunchCount=1, UnrollFactor=1, WarmupCount=16)\r",
+        "BenchmarkDotNet": "0.15.8",
+        "Runtime": ".NET 10.0.12",
+        "PGO": 1,
+        "AffinityMask": 4,
+        "WarmupCount": 16,
+        "ActualCount": 8,
+        "ResultCount": 8,
+        "InvocationCount": 4,
+        "UnrollFactor": 1,
+        "OutlierMode": "DontRemove"
+      },
+      "JitDiagnostic": {
+        "Capture": {
+          "ProcessId": 30164,
+          "ExitCode": 0,
+          "StartUTC": "2026-10-18T22:43:12.9923832Z",
+          "EndUTC": "2026-10-18T22:43:32.8454474Z",
+          "WallSeconds": 20.6019785,
+          "Affinity": 4,
+          "TieredPGO": 1,
+          "JitDisasm": "Marimo.Kotowari!*",
+          "JitDisasmWithCodeBytes": 1,
+          "WarmupCount": 16,
+          "ActualCount": 8,
+          "ResultCount": 8,
+          "InputBytes": 4172062,
+          "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+          "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+          "DllManifestCount": 28,
+          "JitOutputBytes": 3338096,
+          "JitOutputSHA256": "24C3479894910269E6E2CDD9D84DD5FE992FDFFC5EC1D4EDB111B8417FE82045",
+          "AssemblyMethodHeaderCount": 762,
+          "Tier1MethodHeaderCount": 232,
+          "ReferenceTypeParsedGetterTier1BlockCount": 1,
+          "StdoutBytes": 3973,
+          "StderrBytes": 0,
+          "AfterAll": true,
+          "DiagnosticOnly": true,
+          "OutputFiles": [
+            "jit.asm",
+            "stdout.log",
+            "stderr.log"
+          ]
+        },
+        "CaptureScript": {
+          "Path": "diagnostics/jit/Run-JitDiagnostic.ps1",
+          "SHA256": "1663AB47431FE0E16EBE415DB9DE1D0B3FE0A7C6009A15538F5A0A809FEF1176"
+        },
+        "HostExecutable": "baseline/host/StringExecutionRecovery.ChildHarness.dll",
+        "HostExecutableSHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+        "MeasurementAssemblySHA256": "D3DAD512D75621F9474B1BD011FE0BAB6C40F4EA20E70FB3A2E5D169A1F31E96",
+        "RunMode": "The frozen ChildHarness DLL itself was launched; no recompiled harness binary participated in the JIT capture.",
+        "Commands": [
+          "DOTNET_TieredPGO=1",
+          "DOTNET_JitDisasm=Marimo.Kotowari!*",
+          "DOTNET_JitDisasmWithCodeBytes=1",
+          "DOTNET_JitStdOutFile=diagnostics/jit/capture-01/jit.asm"
+        ],
+        "GetterBlockPath": "diagnostics/jit/capture-01/parsed-getter-tier1.asm",
+        "GetterBlockLine": 37932,
+        "GetterBlockSHA256": "DD48F5E2308A4BDB6847557412525C5CDA459590E59B200DFDE6DF07B7CC30D7",
+        "GetterTier1": {
+          "Method": "ParseResult<System.__Canon>.get_Parsed",
+          "Tier1BlockCount": 1,
+          "SuccessGuardPresent": true,
+          "ReferenceNullGuardPresent": true,
+          "CallProfileMetadataFGCalledCount": 835840,
+          "FGCalledCountIsInvocationCount": false
+        },
+        "CallerBlockPath": "diagnostics/jit/capture-01/parser-converter-tier1.asm",
+        "CallerBlockLine": 10334,
+        "CallerBlockSHA256": "8D2EAD85ED9200147CC49E090DD9F7A13F025823EF3AC88B5A5570F1F933EF19",
+        "CallerEvidence": {
+          "Method": "ParserConverter<System.__Canon,System.__Canon>.ParseCore Tier1",
+          "CallsParsedGetter": false,
+          "ParsedGetterCallReferenceCount": 0,
+          "SuccessCheckPresent": true,
+          "SeparateParsedReferenceNullCheckPresent": true,
+          "Interpretation": "Getter call is absent from the Tier1 caller block, which checks the result success field then separately checks the parsed reference for null; consistent with the property getter being inlined, and shows the null guard remains on this route."
+        },
+        "DiagnosticProjectBuild": {
+          "Attempted": true,
+          "UsedForCapture": false,
+          "ExitCode": 0,
+          "Warnings": 5,
+          "WarningCode": "CS0436",
+          "Errors": 0,
+          "GeneratedChildHarnessSHA256": "99D443233BF96B1C7FC4EA300420E5893CFC64DD7A075F44CEEC1685925F6860",
+          "Note": "Copied generated Harness.notcs/Harness.csproj was rebuilt while exploring retargeting. Actual capture instead directly used the fixed host ChildHarness binary whose SHA is recorded above."
+        },
+        "JitOutput": {
+          "Path": "diagnostics/jit/capture-01/jit.asm",
+          "Bytes": 3338096,
+          "SHA256": "24C3479894910269E6E2CDD9D84DD5FE992FDFFC5EC1D4EDB111B8417FE82045",
+          "TotalMethodHeaders": 762,
+          "Tier1MethodHeaders": 232,
+          "ReferenceGetterTier1Blocks": 1
+        }
+      },
+      "CpuDiagnostic": {
+        "Capture": {
+          "ProcessId": 27584,
+          "ExitCode": 0,
+          "StartUTC": "2026-10-18T22:44:51.7903893Z",
+          "EndUTC": "2026-10-18T22:45:14.5565872Z",
+          "WallSeconds": 22.8193921,
+          "Affinity": 4,
+          "TieredPGO": 1,
+          "EventPipeConfig": "Microsoft-DotNETCore-SampleProfiler:0:5,Microsoft-Windows-DotNETRuntime:1000001019:5,BenchmarkDotNet.EngineEventSource:ffffffffffffffff:5",
+          "ActualCount": 8,
+          "ResultCount": 8,
+          "InputBytes": 4172062,
+          "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+          "LibrarySHA256": "711A6D91E2BF0132ABB50DEC81A5B80555CDDF2BD0F4D3B8F5C849AC2F676BA8",
+          "Trace": {
+            "Name": "runtime-27584.nettrace",
+            "Bytes": 33203134,
+            "SHA256": "EA3C1CD095BF2BF338E08CE20458404509B755E6F3CBCF3273156C52FAB71871"
+          },
+          "StdoutBytes": 3981,
+          "StderrBytes": 0,
+          "AfterAll": true,
+          "DiagnosticOnly": true
+        },
+        "CaptureScript": {
+          "Path": "diagnostics/cpu/Run-CpuDiagnostic.ps1",
+          "SHA256": "FA701C36BCCC98A227E3A21604972EC7FC0F5E4E68F7E87227B160539FB74B0E"
+        },
+        "AnalyzerAssembly": "artifacts/string-execution-recovery-2026-10-12/diagnostics/cpu/bin/Release/net10.0/TraceAnalysis.dll",
+        "AnalyzerSHA256": "4E8E09F7884CD8812DA8BF62718F9EFED43F159F514C66641D2D801D457B1E1E",
+        "AnalyzerSourceSHA256": "21F45C5225BCF65BBC0F0F1136F894E60BF6E053D9EF2C8ACAFD5011D3B7482A",
+        "AnalysisPath": "diagnostics/cpu/capture-01/analysis.json",
+        "Analysis": {
+          "EventCount": 69557,
+          "EventsLost": 0,
+          "ActualWindowCount": 8,
+          "TotalActualWindowDurationMs": 4971.983499999995,
+          "CPUStackSamples": 229,
+          "MissingCPUStacks": 0,
+          "ActualExecutionThreadCpuSamplesPerSecond": 46.0580772241099,
+          "AllocationTickSamples": 11279,
+          "AllocationTickMissingStacks": 0,
+          "JitEventsInActualCount": 51,
+          "LastBackgroundJitStopMs": 20046.5781,
+          "TopSelf": [
+            {
+              "Method": "System.Threading.Thread.<PollGC>g__PollGCWorker|70_0()",
+              "Samples": 40,
+              "PercentOfSamples": 17.467248908296945
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 37,
+              "PercentOfSamples": 16.157205240174672
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 26,
+              "PercentOfSamples": 11.353711790393014
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.WordParser.ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 18,
+              "PercentOfSamples": 7.860262008733624
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 18,
+              "PercentOfSamples": 7.860262008733624
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 11,
+              "PercentOfSamples": 4.8034934497816595
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ExpectCharParser.ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 11,
+              "PercentOfSamples": 4.8034934497816595
+            },
+            {
+              "Method": "Marimo.Kotowari.WithWhiteSpaceParser`1[System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 9,
+              "PercentOfSamples": 3.930131004366812
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 8,
+              "PercentOfSamples": 3.493449781659389
+            },
+            {
+              "Method": "Marimo.Kotowari.WithWhiteSpaceParser`1[System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 8,
+              "PercentOfSamples": 3.493449781659389
+            },
+            {
+              "Method": "Marimo.Parser.JSON+<>c.<.cctor>b__37_14(value class System.ValueTuple`3<wchar,class System.Collections.Generic.IEnumerable`1<value class System.Collections.Generic.KeyValuePair`2<class System.String,class Marimo.Parser.IJSONValue>>,wchar>)",
+              "Samples": 6,
+              "PercentOfSamples": 2.6200873362445414
+            },
+            {
+              "Method": "System.Text.Unicode.Utf8Utility.TranscodeToUtf16(unsigned int8*,int32,wchar*,int32,unsigned int8*&,wchar*&)",
+              "Samples": 6,
+              "PercentOfSamples": 2.6200873362445414
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 6,
+              "PercentOfSamples": 2.6200873362445414
+            },
+            {
+              "Method": "System.Globalization.CultureInfo.get_CurrentCulture()",
+              "Samples": 5,
+              "PercentOfSamples": 2.183406113537118
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.OneOrMoreParser`1[System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 4,
+              "PercentOfSamples": 1.7467248908296944
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.__Canon],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 3,
+              "PercentOfSamples": 1.3100436681222707
+            },
+            {
+              "Method": "System.SpanHelpers.Memmove(unsigned int8&,unsigned int8&,unsigned int)",
+              "Samples": 3,
+              "PercentOfSamples": 1.3100436681222707
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.OrParser`1[System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 2,
+              "PercentOfSamples": 0.8733624454148472
+            },
+            {
+              "Method": "System.Collections.Generic.NonRandomizedStringEqualityComparer+OrdinalComparer.GetHashCode(class System.String)",
+              "Samples": 1,
+              "PercentOfSamples": 0.4366812227074236
+            },
+            {
+              "Method": "System.String.Ctor(value class System.ReadOnlySpan`1<wchar>)",
+              "Samples": 1,
+              "PercentOfSamples": 0.4366812227074236
+            }
+          ],
+          "TargetedSelf": [
+            {
+              "Method": "Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.Collections.Generic.KeyValuePair`2[System.__Canon,System.__Canon],System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 37,
+              "PercentOfSamples": 16.157205240174672
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.SequenceParser`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 26,
+              "PercentOfSamples": 11.353711790393014
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.WordParser.ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 18,
+              "PercentOfSamples": 7.860262008733624
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.SequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 18,
+              "PercentOfSamples": 7.860262008733624
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.DelimitedSequenceParser`2[System.__Canon,System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 11,
+              "PercentOfSamples": 4.8034934497816595
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ExpectCharParser.ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 11,
+              "PercentOfSamples": 4.8034934497816595
+            },
+            {
+              "Method": "Marimo.Kotowari.WithWhiteSpaceParser`1[System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 9,
+              "PercentOfSamples": 3.930131004366812
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 8,
+              "PercentOfSamples": 3.493449781659389
+            },
+            {
+              "Method": "Marimo.Kotowari.WithWhiteSpaceParser`1[System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 8,
+              "PercentOfSamples": 3.493449781659389
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.ValueTuple`2[System.__Canon,System.Char]],System.ValueTuple`3[System.Char,System.__Canon,System.Char]].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 6,
+              "PercentOfSamples": 2.6200873362445414
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.OneOrMoreParser`1[System.Char].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 4,
+              "PercentOfSamples": 1.7467248908296944
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[System.Char,System.__Canon],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 3,
+              "PercentOfSamples": 1.3100436681222707
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.OrParser`1[System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 2,
+              "PercentOfSamples": 0.8733624454148472
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`3[System.__Canon,Marimo.Kotowari.Core.Optional`1[System.__Canon],Marimo.Kotowari.Core.Optional`1[System.__Canon]],System.__Canon].ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 1,
+              "PercentOfSamples": 0.4366812227074236
+            },
+            {
+              "Method": "Marimo.Kotowari.Core.ConditionalCharParser.ParseCore(value class Marimo.Kotowari.Core.Cursol)",
+              "Samples": 1,
+              "PercentOfSamples": 0.4366812227074236
+            }
+          ]
+        },
+        "Interpretation": "CPU sample records are sampled stack observations, not invocation counts. Tiered compilation/JIT events occurred within Actual windows, so treat the profile as diagnostic and not as pure steady-state Tier1 attribution."
+      },
+      "NotUsedAsEvidence": {
+        "DiagnosticTiming": true,
+        "JitFGCalledCountAsRealCallCount": false,
+        "CPUSampleCountAsMethodInvocationCount": false,
+        "UnitTests": true,
+        "MainLibraryBuild": true,
+        "NormalBenchmarkComparison": true
+      },
+      "ArtifactsRoot": "artifacts/string-next-2026-10-19-round3"
+    },
+    "CandidateJITCapture": {
+      "ProcessId": 5056,
+      "ExitCode": 0,
+      "StartUTC": "2026-10-18T22:51:26.6526382Z",
+      "EndUTC": "2026-10-18T22:51:47.1581264Z",
+      "WallSeconds": 21.1839983,
+      "Affinity": 4,
+      "TieredPGO": 1,
+      "JitDisasm": "Marimo.Kotowari!*",
+      "JitDisasmWithCodeBytes": 1,
+      "WarmupCount": 16,
+      "ActualCount": 8,
+      "ResultCount": 8,
+      "InputBytes": 4172062,
+      "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+      "LibrarySHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+      "ChildHarnessSHA256": "A121F144604F7C62EF4626756FBB60ABA81E0867E54798867CB20BFA2ADEE612",
+      "JitOutputBytes": 3294606,
+      "JitOutputSHA256": "1FCC4806AA4B101E68307F37871471B0A7549E56D269BA4475DDF5CE291F0BED",
+      "AssemblyMethodHeaderCount": 762,
+      "ReferenceTypeParsedGetterTier1BlockCount": 1,
+      "StdoutBytes": 3919,
+      "StderrBytes": 0,
+      "AfterAll": true,
+      "DiagnosticOnly": true,
+      "OutputFiles": [
+        "jit.asm",
+        "stdout.log",
+        "stderr.log"
+      ]
+    },
+    "CandidateParsedGetterTier1": "; Assembly listing for method Marimo.Kotowari.ParseResult`1[System.__Canon]:get_Parsed():System.__Canon:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 100\r\n; No PGO data\r\n; 0 inlinees with PGO data; 1 single block inlinees; 0 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       53                   push     rbx\r\n       4883EC20             sub      rsp, 32\r\n \r\nG_M000_IG02:                ;; offset=0x0005\r\n       80790800             cmp      byte  ptr [rcx+0x08], 0\r\n       7409                 je       SHORT G_M000_IG04\r\n       488B01               mov      rax, gword ptr [rcx]\r\n \r\nG_M000_IG03:                ;; offset=0x000E\r\n       4883C420             add      rsp, 32\r\n       5B                   pop      rbx\r\n       C3                   ret      \r\n \r\nG_M000_IG04:                ;; offset=0x0014\r\n       48B95876FB27FF7F0000 mov      rcx, 0x7FFF27FB7658\r\n       E88DD1BE5F           call     CORINFO_HELP_NEWSFAST\r\n       488BD8               mov      rbx, rax\r\n       488BCB               mov      rcx, rbx\r\n       FF1591613500         call     [System.InvalidOperationException:.ctor():this]\r\n       488BCB               mov      rcx, rbx\r\n       E8D937C05F           call     CORINFO_HELP_THROW\r\n       CC                   int3     \r\n \r\n; Total bytes of code 56\r\n\r\n",
+    "CandidateParserConverterTier1": "; Assembly listing for method Marimo.Kotowari.Core.ParserConverter`2[System.__Canon,System.__Canon]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.__Canon]:this (Tier1)\r\n; Emitting BLENDED_CODE for generic X64 + VEX on Windows\r\n; Tier1 code\r\n; optimized code\r\n; optimized using Synthesized PGO\r\n; rsp based frame\r\n; partially interruptible\r\n; with Synthesized PGO: fgCalledCount is 1003584\r\n; 2 inlinees with PGO data; 20 single block inlinees; 4 inlinees without PGO data\r\n\r\nG_M000_IG01:                ;; offset=0x0000\r\n       4157                 push     r15\r\n       4156                 push     r14\r\n       4155                 push     r13\r\n       4154                 push     r12\r\n       57                   push     rdi\r\n       56                   push     rsi\r\n       55                   push     rbp\r\n       53                   push     rbx\r\n       4883EC78             sub      rsp, 120\r\n       C5D857E4             vxorps   xmm4, xmm4, xmm4\r\n       C5FE7F642420         vmovdqu  ymmword ptr [rsp+0x20], ymm4\r\n       C5FE7F642440         vmovdqu  ymmword ptr [rsp+0x40], ymm4\r\n       C5F97F642460         vmovdqa  xmmword ptr [rsp+0x60], xmm4\r\n       33C0                 xor      eax, eax\r\n       4889442470           mov      qword ptr [rsp+0x70], rax\r\n       488BF1               mov      rsi, rcx\r\n       488BDA               mov      rbx, rdx\r\n \r\nG_M000_IG02:                ;; offset=0x0033\r\n       488B7E08             mov      rdi, gword ptr [rsi+0x08]\r\n       488B07               mov      rax, qword ptr [rdi]\r\n       48BAD0292A28FF7F0000 mov      rdx, 0x7FFF282A29D0\r\n       483BC2               cmp      rax, rdx\r\n       7459                 je       SHORT G_M000_IG08\r\n \r\nG_M000_IG03:                ;; offset=0x0049\r\n       488D542458           lea      rdx, [rsp+0x58]\r\n       488BCF               mov      rcx, rdi\r\n       488B4040             mov      rax, qword ptr [rax+0x40]\r\n       FF5020               call     [rax+0x20]Marimo.Kotowari.Parser`1[System.__Canon]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.__Canon]:this\r\n       488B542458           mov      rdx, gword ptr [rsp+0x58]\r\n       400FB66C2460         movzx    rbp, byte  ptr [rsp+0x60]\r\n       4C8B742468           mov      r14, gword ptr [rsp+0x68]\r\n       448B7C2470           mov      r15d, dword ptr [rsp+0x70]\r\n \r\nG_M000_IG04:                ;; offset=0x006D\r\n       85ED                 test     ebp, ebp\r\n       0F851A010000         jne      G_M000_IG20\r\n \r\nG_M000_IG05:                ;; offset=0x0075\r\n       33C9                 xor      rcx, rcx\r\n       48890B               mov      gword ptr [rbx], rcx\r\n       C6430800             mov      byte  ptr [rbx+0x08], 0\r\n       488D4B10             lea      rcx, [rbx+0x10]\r\n       498BD6               mov      rdx, r14\r\n       E896BABE5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       44897B18             mov      dword ptr [rbx+0x18], r15d\r\n \r\nG_M000_IG06:                ;; offset=0x008E\r\n       488BC3               mov      rax, rbx\r\n \r\nG_M000_IG07:                ;; offset=0x0091\r\n       4883C478             add      rsp, 120\r\n       5B                   pop      rbx\r\n       5D                   pop      rbp\r\n       5E                   pop      rsi\r\n       5F                   pop      rdi\r\n       415C                 pop      r12\r\n       415D                 pop      r13\r\n       415E                 pop      r14\r\n       415F                 pop      r15\r\n       C3                   ret      \r\n \r\nG_M000_IG08:                ;; offset=0x00A2\r\n       488B4F08             mov      rcx, gword ptr [rdi+0x08]\r\n       48BA200A2A28FF7F0000 mov      rdx, 0x7FFF282A0A20\r\n       483911               cmp      qword ptr [rcx], rdx\r\n       7531                 jne      SHORT G_M000_IG12\r\n \r\nG_M000_IG09:                ;; offset=0x00B5\r\n       488B4908             mov      rcx, gword ptr [rcx+0x08]\r\n       488B01               mov      rax, qword ptr [rcx]\r\n       48BA90692B28FF7F0000 mov      rdx, 0x7FFF282B6990\r\n       483BC2               cmp      rax, rdx\r\n       740E                 je       SHORT G_M000_IG11\r\n \r\nG_M000_IG10:                ;; offset=0x00CB\r\n       488D542430           lea      rdx, [rsp+0x30]\r\n       488B4040             mov      rax, qword ptr [rax+0x40]\r\n       FF5020               call     [rax+0x20]Marimo.Kotowari.Parser`1[System.ValueTuple`3[char,System.__Canon,char]]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.ValueTuple`3[char,System.__Canon,char]]:this\r\n       EB1C                 jmp      SHORT G_M000_IG13\r\n \r\nG_M000_IG11:                ;; offset=0x00D9\r\n       488D542430           lea      rdx, [rsp+0x30]\r\n       FF15CCD73A00         call     [Marimo.Kotowari.Core.ParserConverter`2[System.ValueTuple`2[char,System.ValueTuple`2[System.__Canon,char]],System.ValueTuple`3[char,System.__Canon,char]]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.ValueTuple`3[char,System.__Canon,char]]:this]\r\n       EB0F                 jmp      SHORT G_M000_IG13\r\n \r\nG_M000_IG12:                ;; offset=0x00E6\r\n       488D542430           lea      rdx, [rsp+0x30]\r\n       488B01               mov      rax, qword ptr [rcx]\r\n       488B4040             mov      rax, qword ptr [rax+0x40]\r\n       FF5020               call     [rax+0x20]Marimo.Kotowari.Parser`1[System.ValueTuple`3[char,System.__Canon,char]]:ParseCore(Marimo.Kotowari.Core.Cursol):Marimo.Kotowari.ParseResult`1[System.ValueTuple`3[char,System.__Canon,char]]:this\r\n \r\nG_M000_IG13:                ;; offset=0x00F5\r\n       807C243000           cmp      byte  ptr [rsp+0x30], 0\r\n       7513                 jne      SHORT G_M000_IG16\r\n \r\nG_M000_IG14:                ;; offset=0x00FC\r\n       4C8B742448           mov      r14, gword ptr [rsp+0x48]\r\n       448B7C2450           mov      r15d, dword ptr [rsp+0x50]\r\n       33D2                 xor      rdx, rdx\r\n       33ED                 xor      ebp, ebp\r\n \r\nG_M000_IG15:                ;; offset=0x010A\r\n       E95EFFFFFF           jmp      G_M000_IG04\r\n \r\nG_M000_IG16:                ;; offset=0x010F\r\n       4C8B742448           mov      r14, gword ptr [rsp+0x48]\r\n       448B7C2450           mov      r15d, dword ptr [rsp+0x50]\r\n       488B6F10             mov      rbp, gword ptr [rdi+0x10]\r\n       488B7C2438           mov      rdi, gword ptr [rsp+0x38]\r\n       440FB76C2440         movzx    r13, word  ptr [rsp+0x40]\r\n       440FB7642442         movzx    r12, word  ptr [rsp+0x42]\r\n       48B920372528FF7F0000 mov      rcx, 0x7FFF28253720\r\n       48394D18             cmp      qword ptr [rbp+0x18], rcx\r\n       752F                 jne      SHORT G_M000_IG19\r\n \r\nG_M000_IG17:                ;; offset=0x013E\r\n       488B4D08             mov      rcx, gword ptr [rbp+0x08]\r\n       48897C2420           mov      gword ptr [rsp+0x20], rdi\r\n       6644896C2428         mov      word  ptr [rsp+0x28], r13w\r\n       66448964242A         mov      word  ptr [rsp+0x2A], r12w\r\n       488D542420           lea      rdx, [rsp+0x20]\r\n       FF1502F03400         call     [Marimo.Parser.JSON+<>c:<.cctor>b__37_8(System.ValueTuple`3[char,System.Collections.Generic.IEnumerable`1[char],char]):Marimo.Parser.JSONLiteral:this]\r\n       488BD0               mov      rdx, rax\r\n \r\nG_M000_IG18:                ;; offset=0x0161\r\n       4885D2               test     rdx, rdx\r\n       7472                 je       SHORT G_M000_IG24\r\n       BD01000000           mov      ebp, 1\r\n       EB9D                 jmp      SHORT G_M000_IG15\r\n \r\nG_M000_IG19:                ;; offset=0x016D\r\n       48897C2420           mov      gword ptr [rsp+0x20], rdi\r\n       6644896C2428         mov      word  ptr [rsp+0x28], r13w\r\n       66448964242A         mov      word  ptr [rsp+0x2A], r12w\r\n       488D542420           lea      rdx, [rsp+0x20]\r\n       488B4D08             mov      rcx, gword ptr [rbp+0x08]\r\n       FF5518               call     [rbp+0x18]System.Func`2[System.ValueTuple`3[char,System.__Canon,char],System.__Canon]:Invoke(System.ValueTuple`3[char,System.__Canon,char]):System.__Canon:this\r\n       488BD0               mov      rdx, rax\r\n       EBD2                 jmp      SHORT G_M000_IG18\r\n \r\nG_M000_IG20:                ;; offset=0x018F\r\n       488B4610             mov      rax, gword ptr [rsi+0x10]\r\n       48B968372528FF7F0000 mov      rcx, 0x7FFF28253768\r\n       48394818             cmp      qword ptr [rax+0x18], rcx\r\n       7430                 je       SHORT G_M000_IG23\r\n \r\nG_M000_IG21:                ;; offset=0x01A3\r\n       488B4808             mov      rcx, gword ptr [rax+0x08]\r\n       FF5018               call     [rax+0x18]System.Func`2[System.__Canon,System.__Canon]:Invoke(System.__Canon):System.__Canon:this\r\n \r\nG_M000_IG22:                ;; offset=0x01AA\r\n       4885C0               test     rax, rax\r\n       7465                 je       SHORT G_M000_IG25\r\n       488BCB               mov      rcx, rbx\r\n       488BD0               mov      rdx, rax\r\n       E866B9BE5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       C6430801             mov      byte  ptr [rbx+0x08], 1\r\n       488D4B10             lea      rcx, [rbx+0x10]\r\n       498BD6               mov      rdx, r14\r\n       E856B9BE5F           call     CORINFO_HELP_CHECKED_ASSIGN_REF\r\n       44897B18             mov      dword ptr [rbx+0x18], r15d\r\n       E9BBFEFFFF           jmp      G_M000_IG06\r\n \r\nG_M000_IG23:                ;; offset=0x01D3\r\n       488BC2               mov      rax, rdx\r\n       EBD2                 jmp      SHORT G_M000_IG22\r\n \r\nG_M000_IG24:                ;; offset=0x01D8\r\n       48B9A8E5F827FF7F0000 mov      rcx, 0x7FFF27F8E5A8\r\n       E899CABE5F           call     CORINFO_HELP_NEWSFAST\r\n       488BD8               mov      rbx, rax\r\n       B901000000           mov      ecx, 1\r\n       48BA783C2828FF7F0000 mov      rdx, 0x7FFF28283C78\r\n       FF15D1BE2A00         call     [CORINFO_HELP_STRCNS]\r\n       488BD0               mov      rdx, rax\r\n       488BCB               mov      rcx, rbx\r\n       FF15D5D52A00         call     [System.ArgumentNullException:.ctor(System.String):this]\r\n       488BCB               mov      rcx, rbx\r\n       E8CD30C05F           call     CORINFO_HELP_THROW\r\n       CC                   int3     \r\n \r\nG_M000_IG25:                ;; offset=0x0214\r\n       48B9A8E5F827FF7F0000 mov      rcx, 0x7FFF27F8E5A8\r\n       E85DCABE5F           call     CORINFO_HELP_NEWSFAST\r\n       488BD8               mov      rbx, rax\r\n       B901000000           mov      ecx, 1\r\n       48BA783C2828FF7F0000 mov      rdx, 0x7FFF28283C78\r\n       FF1595BE2A00         call     [CORINFO_HELP_STRCNS]\r\n       488BD0               mov      rdx, rax\r\n       488BCB               mov      rcx, rbx\r\n       FF1599D52A00         call     [System.ArgumentNullException:.ctor(System.String):this]\r\n       488BCB               mov      rcx, rbx\r\n       E89130C05F           call     CORINFO_HELP_THROW\r\n       CC                   int3     \r\n \r\n; Total bytes of code 592\r\n\r\n",
+    "CandidateJITPath": "artifacts/string-next-2026-10-19-round3/diagnostics/jit/candidate-01/jit.asm",
+    "InputParsedNullGuard": "Removed from ParserConverter<System.__Canon,System.__Canon> input path after inlining getter",
+    "OutputNullGuard": "Retained: converter result null is still checked before Success; do not generalize as all null checks removed."
+  },
+  "WordLiteralCounts": {
+    "Parser": "System.Text.Json.JsonDocument.Parse(string)",
+    "InputBytes": 4172062,
+    "InputSHA256": "DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D",
+    "True": 8417,
+    "False": 8374,
+    "Null": 16602,
+    "Total": 33393,
+    "AllJSONValueNodes": 100001,
+    "CountedAs": "JSON values; property names excluded",
+    "KotowariSource": "JsonParser/JSON.cs uses WordParser for null, true, false; current WordParser allocates char[] and string on every successful match, with char[] delayed until first success."
+  },
+  "ParentValidation": {
+    "BaselineCommit": "d2f7aa8915ca1f580fc009b0a5d88d7b3c9d1ec1",
+    "CandidateAssemblySHA256": "E373241CC9ACCAB0CA0755E2621A536DF703B88EE4C287EF89E0B4AB531FA059",
+    "BeforeImplementation": {
+      "Filter": "FullyQualifiedName~ParseResult",
+      "Passed": 7,
+      "Failed": 0,
+      "Skipped": 0,
+      "ExitCode": 0,
+      "TRX": "tests-before/parsed-before.trx"
+    },
+    "RelatedAfterImplementation": {
+      "Filter": "FullyQualifiedName~ParseResult|FullyQualifiedName~ParserConverter|FullyQualifiedName~SeqenceParser|FullyQualifiedName~OneOrMoreParser|FullyQualifiedName~ZeroOrMoreParser|FullyQualifiedName~DelimitedSequenceParser",
+      "Passed": 152,
+      "Failed": 0,
+      "Skipped": 0,
+      "ExitCode": 0,
+      "TRX": "tests-after/parsed-related-after.trx"
+    },
+    "Build": {
+      "Command": "dotnet build Kotowari.sln -c Release --no-restore --no-incremental -p:UseSharedCompilation=false -p:EnforceCodeStyleInBuild=true -p:RunAnalyzersDuringBuild=true -p:ErrorLog=obj/ide-diagnostics.sarif",
+      "ExitCode": 0,
+      "Seconds": 12.0921193,
+      "Warning": "既存のSpracheJSON互換性警告NU1701が1件",
+      "Log": "build.log"
+    },
+    "AllTests": {
+      "Command": "dotnet test Kotowari.sln -c Release --no-build --no-restore --logger trx;LogFilePrefix=all-after --results-directory artifacts/string-next-2026-10-19-round3/tests-all",
+      "ExitCode": 0,
+      "LibraryPassed": 251,
+      "JsonPassed": 57,
+      "Passed": 308,
+      "Failed": 0,
+      "Skipped": 0,
+      "Log": "test-all.log",
+      "TRX": [
+        "tests-all/all-after_net10.0_20261019074738.trx",
+        "tests-all/all-after_net10.0_20261019074739.trx"
+      ]
+    },
+    "Sarif": {
+      "ExistingOnly": true,
+      "Diagnostics": [
+        {
+          "File": "Kotowari/ParserConverter.cs",
+          "Line": 13,
+          "Rule": "IDE0090"
+        },
+        {
+          "File": "Kotowari/OptionalParser.cs",
+          "Line": 12,
+          "Rule": "IDE0090"
+        },
+        {
+          "File": "Kotowari.Tests/Core/ParserConverterのテスト.cs",
+          "Line": 49,
+          "Rule": "IDE0200"
+        },
+        {
+          "File": "JsonParser/JSONLiteral.cs",
+          "Line": 50,
+          "Rule": "IDE0066"
+        },
+        {
+          "File": "JsonParser/JSONObject.cs",
+          "Line": 47,
+          "Rule": "CA1854"
+        },
+        {
+          "File": "JsonParser/JSONLiteral.cs",
+          "Line": 59,
+          "Rule": "CA1862"
+        }
+      ]
+    },
+    "Format": {
+      "Command": "dotnet format Kotowari.sln --no-restore --verify-no-changes --severity info",
+      "ExitCode": 2,
+      "Log": "format.log",
+      "ChangedFilesHaveDiagnostics": false,
+      "MatchesPriorFormatDiagnosticSet": true,
+      "Caveat": "未変更箇所の既存WHITESPACEとIDE提案が残る。ParseResult.csとParseResultのテスト.csには指摘なし。round2ログとsort unique比較で差分0。"
+    },
+    "SourceEncoding": "変更した本体とテストは既存のUTF-8 BOMなし、CRLFを維持",
+    "MetadataRecovery": "計測担当が旧round2のparent-validationを誤ってコピーしたため、親が既存実行出力・TRX・build-statusに基づき今回の内容を復元した。検証は再実行していない。"
+  },
+  "Replay": {
+    "Scripts": [
+      {
+        "Name": "Run-Block.ps1",
+        "SHA256": "24CBBAC199C750F9E1A86A64906DAE4AA5F7585E0B9BD528F05BDAB36CCF41BF",
+        "Body": "# ProcessStartInfo.ArgumentList requires PowerShell 7.\n#requires -Version 7.0\nparam(\n    [ValidateSet('exploration','confirmation')][string]$Batch = 'exploration',\n    [Parameter(Mandatory)][ValidateRange(1,8)][int]$Block\n)\n\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$expectedInputHash = 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n$dllManifestPath = Join-Path $root 'dll-manifest.json'\n$dllManifest = Get-Content -Raw -LiteralPath $dllManifestPath | ConvertFrom-Json\n$cases = if ($Block % 2 -eq 1) { @('baseline','candidate') } else { @('candidate','baseline') }\n\nforeach ($variant in $cases) {\n    $runName = '{0:d2}-{1}' -f $Block,$variant\n    $runRoot = Join-Path $root \"runs/$Batch/$runName\"\n    $summaryPath = Join-Path $runRoot 'run-summary.json'\n    if (Test-Path -LiteralPath $summaryPath) {\n        $existing = Get-Content -Raw -LiteralPath $summaryPath | ConvertFrom-Json\n        if ($existing.Run -ne $runName -or $existing.Batch -ne $Batch -or $existing.Variant -ne $variant -or $existing.InputSHA256 -ne $expectedInputHash -or $existing.ActualCount -ne 8 -or $existing.ResultCount -ne 8) { throw \"Existing completed run summary is invalid: $runName\" }\n        Write-Output \"Preserving completed $runName.\"\n        continue\n    }\n    if (Test-Path -LiteralPath $runRoot) {\n        if (@(Get-ChildItem -LiteralPath $runRoot -Force).Count -gt 0) { throw \"Existing incomplete output cannot be resumed safely: $runRoot\" }\n    } else {\n        $null = New-Item -ItemType Directory -Path $runRoot -Force\n    }\n    $hostRoot = Join-Path $root \"$variant/host\"\n    $child = Join-Path $hostRoot 'StringExecutionRecovery.ChildHarness.dll'\n    $measurement = Join-Path $hostRoot 'StringExecutionRecovery.Measurement.dll'\n    $inputPath = Join-Path $hostRoot 'Data/test.json'\n    if ((Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash -ne $expectedInputHash) { throw \"Input hash mismatch: $variant\" }\n\n    $expectedDlls = @($dllManifest.$variant)\n    if ($expectedDlls.Count -ne 28) { throw \"Expected 28 frozen DLLs for $variant.\" }\n    foreach ($expected in $expectedDlls) {\n        $path = Join-Path $hostRoot $expected.Name\n        if (-not (Test-Path -LiteralPath $path) -or (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash -ne $expected.SHA256) { throw \"Frozen DLL mismatch: $variant/$($expected.Name)\" }\n    }\n    $childHash = (Get-FileHash -LiteralPath $child -Algorithm SHA256).Hash\n    $measurementHash = (Get-FileHash -LiteralPath $measurement -Algorithm SHA256).Hash\n\n    $start = [Diagnostics.ProcessStartInfo]::new('dotnet')\n    $start.WorkingDirectory = $hostRoot\n    $start.UseShellExecute = $false\n    $start.CreateNoWindow = $true\n    $start.RedirectStandardOutput = $true\n    $start.RedirectStandardError = $true\n    foreach ($argument in @('StringExecutionRecovery.ChildHarness.dll','--benchmarkName','Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks.StringInput','--benchmarkId','0')) { [void]$start.ArgumentList.Add($argument) }\n    $start.Environment['DOTNET_TieredPGO'] = '1'\n    $process = $null\n    $processId = $null\n    $exitCode = $null\n    $endedUtc = $null\n    $startedUtc = [DateTime]::UtcNow\n    $watch = [Diagnostics.Stopwatch]::StartNew()\n    try {\n        $process = [Diagnostics.Process]::Start($start)\n        if (-not $process) { throw \"Could not start $runName\" }\n        $processId = $process.Id\n        $process.ProcessorAffinity = [IntPtr]4\n        if ($process.ProcessorAffinity.ToInt64() -ne 4) { throw \"Affinity mismatch: $runName\" }\n        $stdoutTask = $process.StandardOutput.ReadToEndAsync()\n        $stderrTask = $process.StandardError.ReadToEndAsync()\n        while (-not $process.WaitForExit(1000)) { if ($watch.Elapsed.TotalSeconds -gt 180) { throw \"Timed out: $runName\" } }\n        $exitCode = $process.ExitCode\n        $endedUtc = [DateTime]::UtcNow\n        $stdout = $stdoutTask.GetAwaiter().GetResult()\n        $stderr = $stderrTask.GetAwaiter().GetResult()\n        [IO.File]::WriteAllText((Join-Path $runRoot 'host.log'),$stdout,[Text.UTF8Encoding]::new($false))\n        [IO.File]::WriteAllText((Join-Path $runRoot 'stderr.log'),$stderr,[Text.UTF8Encoding]::new($false))\n        if ($exitCode -ne 0) { throw \"Exit code $exitCode`: $runName\" }\n        if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n        if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion marker: $runName\" }\n        if ((Get-FileHash -LiteralPath $child -Algorithm SHA256).Hash -ne $childHash -or (Get-FileHash -LiteralPath $measurement -Algorithm SHA256).Hash -ne $measurementHash) { throw \"Harness changed during run: $runName\" }\n        foreach ($expected in $expectedDlls) { if ((Get-FileHash -LiteralPath (Join-Path $hostRoot $expected.Name) -Algorithm SHA256).Hash -ne $expected.SHA256) { throw \"Frozen DLL changed during run: $variant/$($expected.Name)\" } }\n    } catch {\n        [IO.File]::WriteAllText((Join-Path $runRoot 'runner-error.log'),$_.ToString(),[Text.UTF8Encoding]::new($false))\n        throw\n    } finally {\n        if ($process) {\n            if (-not $process.HasExited) { $process.Kill(); $process.WaitForExit() }\n            $process.Dispose()\n        }\n    }\n\n    $rows = @([regex]::Matches($stdout,'(?m)^Workload(?<stage>Warmup|Actual|Result)\\s+(?<index>\\d+):\\s+(?<ops>\\d+) op, (?<ns>[\\d.]+) ns, (?<display>[\\d.]+) (?<unit>ns|us|μs|µs|ms|s)/op') | ForEach-Object {\n        $multiplier = switch ($_.Groups['unit'].Value) { 'ns' {1.0} 'us' {1e3} 'μs' {1e3} 'µs' {1e3} 'ms' {1e6} 's' {1e9} }\n        [ordered]@{ Stage=$_.Groups['stage'].Value; Iteration=[int]$_.Groups['index'].Value; Operations=[int]$_.Groups['ops'].Value; TotalNanoseconds=[double]::Parse($_.Groups['ns'].Value,[Globalization.CultureInfo]::InvariantCulture); DisplayNsPerOperation=([double]::Parse($_.Groups['display'].Value,[Globalization.CultureInfo]::InvariantCulture)*$multiplier) }\n    })\n    foreach ($stage in 'Warmup','Actual','Result') {\n        $expectedCount = if ($stage -eq 'Warmup') {16} else {8}\n        $stageRows = @($rows | Where-Object Stage -eq $stage)\n        if ($stageRows.Count -ne $expectedCount -or @($stageRows | Where-Object Operations -ne 4).Count -gt 0) { throw \"Unexpected $stage observations: $runName\" }\n    }\n    if ($stdout -notmatch '(?m)^// Job: .*OutlierMode=DontRemove.*Affinity=(?:0{0,61})100.*InvocationCount=4.*IterationCount=8.*LaunchCount=1.*UnrollFactor=1.*WarmupCount=16') { throw \"Benchmark job settings mismatch: $runName\" }\n    $actualRows = @($rows | Where-Object Stage -eq 'Actual')\n    $resultRows = @($rows | Where-Object Stage -eq 'Result')\n    $gc = [regex]::Match($stdout,'(?m)^// GC:\\s+(?<g0>\\d+)\\s+(?<g1>\\d+)\\s+(?<g2>\\d+)\\s+(?<bytes>\\d+)\\s+(?<ops>\\d+)')\n    if (-not $gc.Success -or [int]$gc.Groups['ops'].Value -ne 4) { throw \"Allocation counters missing: $runName\" }\n    $record = [ordered]@{\n        Run=$runName; Batch=$Batch; Variant=$variant; Method='StringInput'\n        MeanNs=(($resultRows | ForEach-Object {$_.TotalNanoseconds/4} | Measure-Object -Average).Average)\n        ActualMeanNs=(($actualRows | ForEach-Object {$_.TotalNanoseconds/4} | Measure-Object -Average).Average)\n        ActualIterations=@($actualRows | ForEach-Object {[ordered]@{BdnNanoseconds=$_.TotalNanoseconds;Operations=$_.Operations;NsPerOperation=($_.TotalNanoseconds/4)}})\n        ResultIterations=@($resultRows | ForEach-Object {[ordered]@{BdnNanoseconds=$_.TotalNanoseconds;Operations=$_.Operations;NsPerOperation=($_.TotalNanoseconds/4)}})\n        ActualCount=$actualRows.Count; ResultCount=$resultRows.Count; WarmupCount=16\n        AllocatedBytesPerOperation=([long]$gc.Groups['bytes'].Value/[long]$gc.Groups['ops'].Value)\n        GC=@([int]$gc.Groups['g0'].Value,[int]$gc.Groups['g1'].Value,[int]$gc.Groups['g2'].Value)\n        Runtime=([regex]::Match($stdout,'(?m)^// Runtime=(?<v>.+)$').Groups['v'].Value)\n        BenchmarkDotNet=([regex]::Match($stdout,'(?m)^// BenchmarkDotNet v(?<v>\\S+)').Groups['v'].Value)\n        Job=([regex]::Match($stdout,'(?m)^// Job: (?<v>.+)$').Groups['v'].Value)\n        TieredPGO=1; Affinity=4; ProcessId=$processId; ExitCode=$exitCode; StartUTC=$startedUtc.ToString('o'); EndUTC=$endedUtc.ToString('o'); WallSeconds=$watch.Elapsed.TotalSeconds; InputBytes=(Get-Item $inputPath).Length; InputSHA256=$expectedInputHash\n        AssemblySHA256=$childHash; MeasurementHostAssemblySHA256=$measurementHash\n        LibraryDLLSHA256=(Get-FileHash (Join-Path $hostRoot 'Marimo.Kotowari.dll') -Algorithm SHA256).Hash\n        DLLManifestSHA256=(Get-FileHash $dllManifestPath -Algorithm SHA256).Hash\n        HostLog='host.log'; Stderr='stderr.log'\n    }\n    $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $runRoot 'run-summary.json') -Encoding utf8\n    Write-Output ('Completed {0}: {1:F3} ms/parse, 8 Actual and 8 Result.' -f $runName,($record.MeanNs/1e6))\n}\n"
+      },
+      {
+        "Name": "Summarize.ps1",
+        "SHA256": "7B9BD3EE98A7A4365C572123AF09991FC597D9BC9A1B9DE40786A8A9E9AC64BE",
+        "Body": "param([ValidateSet('exploration','confirmation')][string]$Batch = 'exploration')\n\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$runsRoot = Join-Path $root \"runs/$Batch\"\n$pairs = @()\nfor ($block = 1; $block -le 8; $block++) {\n    $baselinePath = Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $block)\n    $candidatePath = Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $block)\n    if (-not (Test-Path $baselinePath) -or -not (Test-Path $candidatePath)) { throw \"Block $block is incomplete.\" }\n    $baseline = Get-Content -Raw $baselinePath | ConvertFrom-Json\n    $candidate = Get-Content -Raw $candidatePath | ConvertFrom-Json\n    if ($baseline.Batch -ne $Batch -or $candidate.Batch -ne $Batch -or $baseline.InputSHA256 -ne $candidate.InputSHA256 -or $baseline.InputSHA256 -ne 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D') { throw \"Batch/input mismatch in block $block.\" }\n    $ratio = [double]$candidate.MeanNs/[double]$baseline.MeanNs\n    $pairs += [pscustomobject]@{\n        Block=$block\n        Order=if ($block % 2 -eq 1) {'baseline-candidate'} else {'candidate-baseline'}\n        BaselineMeanNs=[double]$baseline.MeanNs\n        CandidateMeanNs=[double]$candidate.MeanNs\n        CandidateOverBaseline=$ratio\n        LogCandidateOverBaseline=[math]::Log($ratio)\n        BaselineAllocatedBytesPerOperation=[double]$baseline.AllocatedBytesPerOperation\n        CandidateAllocatedBytesPerOperation=[double]$candidate.AllocatedBytesPerOperation\n    }\n}\n\n$logRatios = @($pairs | ForEach-Object LogCandidateOverBaseline)\n$mean = ($logRatios | Measure-Object -Average).Average\n$sumSquares = 0.0\nforeach ($value in $logRatios) { $sumSquares += [math]::Pow($value-$mean,2) }\n$sd = [math]::Sqrt($sumSquares/($logRatios.Count-1))\n$se = $sd/[math]::Sqrt($logRatios.Count)\n$critical = 2.364624251\n$margin = $critical*$se\n$summary = [ordered]@{\n    Experiment='string-next-2026-10-19-one-or-more-buffer'\n    Batch=$Batch\n    Rule='Use a separate confirmation batch only if the exploration 95% paired log-t interval upper bound is below 1; candidate adoption requires the same condition in confirmation.'\n    PairCount=$pairs.Count\n    DegreesOfFreedom=$pairs.Count-1\n    TCritical95Df7=$critical\n    PairedLogRatioMean=$mean\n    PairedLogRatioSampleStandardDeviation=$sd\n    PairedLogRatioStandardError=$se\n    PairedGeometricMeanRatio=[math]::Exp($mean)\n    Confidence95=[ordered]@{Lower=[math]::Exp($mean-$margin);Upper=[math]::Exp($mean+$margin)}\n    BaselineMeanMs=(($pairs.BaselineMeanNs | Measure-Object -Average).Average/1e6)\n    CandidateMeanMs=(($pairs.CandidateMeanNs | Measure-Object -Average).Average/1e6)\n    Pairs=$pairs\n    InputBytes=4172062\n    InputSHA256='DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n}\n$path = Join-Path $root \"$Batch-summary.json\"\n$summary | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $path -Encoding utf8\nWrite-Output ('{0}: geometric mean ratio {1:F5}; 95% paired log-t interval [{2:F5}, {3:F5}].' -f $Batch,$summary.PairedGeometricMeanRatio,$summary.Confidence95.Lower,$summary.Confidence95.Upper)\n"
+      },
+      {
+        "Name": "Record-Environment.ps1",
+        "SHA256": "FC1CDECA2632BD75B32CBD8B6E23A391830491E70D1E0275397B3B40E09EF6D0",
+        "Body": "param([Parameter(Mandatory)][ValidateSet('before','after')][string]$Stage)\n\n$ErrorActionPreference = 'Stop'\nAdd-Type -TypeDefinition @'\nusing System.Runtime.InteropServices;\n[StructLayout(LayoutKind.Sequential)]\npublic struct Round2PowerStatus {\n    public byte ACLineStatus;\n    public byte BatteryFlag;\n    public byte BatteryLifePercent;\n    public byte SystemStatusFlag;\n    public uint BatteryLifeTime;\n    public uint BatteryFullLifeTime;\n}\npublic static class Round2PowerStatusApi {\n    [DllImport(\"kernel32.dll\", SetLastError=true)]\n    public static extern bool GetSystemPowerStatus(out Round2PowerStatus status);\n}\n'@\n\n$status = New-Object Round2PowerStatus\nif (-not [Round2PowerStatusApi]::GetSystemPowerStatus([ref]$status)) { throw \"GetSystemPowerStatus failed: $([Runtime.InteropServices.Marshal]::GetLastWin32Error())\" }\n$scheme = ((powercfg.exe /getactivescheme) -join ' ')\n$first = @(Get-Process dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU)\n$sampleStart = [DateTime]::UtcNow\nStart-Sleep -Seconds 3\n$sampleEnd = [DateTime]::UtcNow\n$second = @(Get-Process dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU)\n$activity = @(\n    foreach ($process in $second) {\n        $prior = $first | Where-Object Id -eq $process.Id | Select-Object -First 1\n        if ($prior -and $null -ne $process.CPU -and $null -ne $prior.CPU -and $process.CPU -gt $prior.CPU) {\n            [ordered]@{ProcessId=$process.Id;DeltaCpuSeconds=($process.CPU-$prior.CPU)}\n        }\n    }\n)\n$record = [ordered]@{\n    Stage=$Stage\n    TimestampUTC=[DateTime]::UtcNow.ToString('o')\n    SampleStartUTC=$sampleStart.ToString('o')\n    SampleEndUTC=$sampleEnd.ToString('o')\n    ACLineStatus=[int]$status.ACLineStatus\n    BatteryFlag=[int]$status.BatteryFlag\n    BatteryLifePercent=[int]$status.BatteryLifePercent\n    BatterySaver=[int]$status.SystemStatusFlag\n    PowerScheme=$scheme\n    DotnetCpuActivityWindowSeconds=3\n    ActiveDotnetProcesses=$activity\n}\n$path = Join-Path $PSScriptRoot 'environment.json'\n$records = [Collections.Generic.List[object]]::new()\nif (Test-Path $path) {\n    foreach ($existing in @(Get-Content -Raw $path | ConvertFrom-Json)) { $records.Add($existing) }\n}\n$records.Add([pscustomobject]$record)\nConvertTo-Json -InputObject @($records.ToArray()) -Depth 6 | Set-Content -LiteralPath $path -Encoding utf8\nWrite-Output ('{0}: ACLine={1}; BatterySaver={2}; active dotnet CPU processes={3}' -f $Stage,$record.ACLineStatus,$record.BatterySaver,$activity.Count)\n"
+      }
+    ],
+    "HostSourceEvidencePath": "Kotowari.Benchmarks/Results/experiments/2026-10-18-string-cursor-bounds.json",
+    "HostSourceEvidenceSHA256": "C47CF6B5E759AC6E0C5EEDEF16A80EA4CF1E7232D44941EB74C3EA6855145325",
+    "HostSourceProperty": "ReplaySources",
+    "ReplaySources": [
+      {
+        "Path": "artifacts/string-execution-recovery-2026-10-12/host/JsonStreamBenchmarks.cs",
+        "SHA256": "8BA1F0DC3D9DBD99B7597D9E8925D8B777762584E8EC27CF1319513C819961EC",
+        "Content": "using BenchmarkDotNet.Attributes;\nusing Marimo.Parser;\nusing Marimo.Kotowari.Core;\nusing System;\nusing System.IO;\nusing System.Linq;\nusing System.Reflection;\nusing System.Text;\nusing System.Text.Json;\n\nnamespace Marimo.Kotowari.Benchmarks;\n\n[MemoryDiagnoser]\npublic class JsonStreamBenchmarks\n{\n    private byte[] _input = null!;\n\n    [GlobalSetup]\n    public void Setup()\n        => _input = File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, \"Data\", \"test.json\"));\n\n    public static void Validate()\n    {\n        var benchmarks = new JsonStreamBenchmarks();\n        benchmarks.Setup();\n        var text = Encoding.UTF8.GetString(benchmarks._input);\n        using var expected = JsonDocument.Parse(benchmarks._input);\n\n        var actual = ParseAndVerifyFullConsumption(text);\n        AssertEquivalent(expected.RootElement, actual);\n\n        var nodeCount = CountNodes(actual);\n        if (nodeCount != 100_001)\n        {\n            throw new InvalidOperationException($\"Expected 100,001 nodes, got {nodeCount:N0}.\");\n        }\n\n        Console.WriteLine($\"Input: {benchmarks._input.Length:N0} bytes; {text.Length:N0} characters\");\n        Console.WriteLine($\"StringInput consumes the full input and produces the expected JSON tree ({nodeCount:N0} nodes).\");\n    }\n\n    [Benchmark]\n    public JSONObject StringInput()\n    {\n        using var source = new MemoryStream(_input, writable: false);\n        using var buffer = new MemoryStream(_input.Length);\n        source.CopyTo(buffer);\n        var bytes = buffer.GetBuffer().AsSpan(0, checked((int)buffer.Length));\n        return JSON.Parse(Encoding.UTF8.GetString(bytes));\n    }\n\n    private static JSONObject ParseAndVerifyFullConsumption(string text)\n    {\n        var cursor = new Cursol(text);\n        var rootParser = typeof(JSON).GetField(\"JObject\", BindingFlags.NonPublic | BindingFlags.Static)?.GetValue(null)\n            ?? throw new InvalidOperationException(\"The JSON root parser could not be found.\");\n        var parse = rootParser.GetType().GetMethod(\"Parse\", BindingFlags.Public | BindingFlags.Instance)\n            ?? throw new InvalidOperationException(\"The parser entry point could not be found.\");\n        var result = parse.Invoke(rootParser, [cursor])\n            ?? throw new InvalidOperationException(\"The JSON parser returned no result.\");\n        var resultType = result.GetType();\n        if ((bool)(resultType.GetProperty(\"IsSuccess\")?.GetValue(result)\n            ?? throw new InvalidOperationException(\"The parse status could not be read.\")) is false)\n        {\n            throw new InvalidOperationException(\"The JSON parser rejected the input.\");\n        }\n\n        var parsedCursor = (Cursol)(resultType.GetProperty(\"Cursol\")?.GetValue(result)\n            ?? throw new InvalidOperationException(\"The parse cursor could not be read.\"));\n        if (parsedCursor.Index != text.Length)\n        {\n            throw new InvalidOperationException($\"The parser consumed {parsedCursor.Index:N0} of {text.Length:N0} characters.\");\n        }\n\n        return (JSONObject)(resultType.GetProperty(\"Parsed\")?.GetValue(result)\n            ?? throw new InvalidOperationException(\"The parsed JSON object could not be read.\"));\n    }\n\n    private static int CountNodes(IJSONValue value)\n    {\n        if (value is JSONObject obj)\n        {\n            var count = 1;\n            foreach (var child in obj.Pairs.Values)\n            {\n                count += CountNodes(child);\n            }\n            return count;\n        }\n\n        if (value is JSONArray array)\n        {\n            var count = 1;\n            foreach (var child in array.Elements)\n            {\n                count += CountNodes(child);\n            }\n            return count;\n        }\n\n        return 1;\n    }\n\n    private static void AssertEquivalent(JsonElement expected, IJSONValue actual)\n    {\n        switch (expected.ValueKind)\n        {\n            case JsonValueKind.Object:\n                if (actual is not JSONObject obj)\n                {\n                    throw new InvalidOperationException(\"The parser result is not an object.\");\n                }\n\n                foreach (var property in expected.EnumerateObject())\n                {\n                    if (!obj.Pairs.TryGetValue(property.Name, out var child))\n                    {\n                        throw new InvalidOperationException($\"The parser result has no '{property.Name}' property.\");\n                    }\n\n                    AssertEquivalent(property.Value, child);\n                }\n\n                if (obj.Pairs.Count != expected.EnumerateObject().Count())\n                {\n                    throw new InvalidOperationException(\"The parser result has a different object member count.\");\n                }\n                return;\n\n            case JsonValueKind.Array:\n                if (actual is not JSONArray array)\n                {\n                    throw new InvalidOperationException(\"The parser result is not an array.\");\n                }\n\n                var index = 0;\n                foreach (var item in expected.EnumerateArray())\n                {\n                    if (index >= array.Elements.Count)\n                    {\n                        throw new InvalidOperationException(\"The parser result has too few array elements.\");\n                    }\n\n                    AssertEquivalent(item, array.Elements[index]);\n                    index++;\n                }\n\n                if (index != array.Elements.Count)\n                {\n                    throw new InvalidOperationException(\"The parser result has too many array elements.\");\n                }\n                return;\n\n            case JsonValueKind.String:\n                AssertLiteral(actual, LiteralType.String, expected.GetString());\n                return;\n\n            case JsonValueKind.Number:\n                AssertLiteral(actual, LiteralType.Number, expected.GetRawText());\n                return;\n\n            case JsonValueKind.True:\n                AssertLiteral(actual, LiteralType.Boolean, \"true\");\n                return;\n\n            case JsonValueKind.False:\n                AssertLiteral(actual, LiteralType.Boolean, \"false\");\n                return;\n\n            case JsonValueKind.Null:\n                AssertLiteral(actual, LiteralType.Null, null);\n                return;\n\n            default:\n                throw new InvalidOperationException($\"Unsupported JSON kind: {expected.ValueKind}.\");\n        }\n    }\n\n    private static void AssertLiteral(IJSONValue actual, LiteralType type, string? value)\n    {\n        if (actual is not JSONLiteral literal || literal.ValueType != type || literal.Value != value)\n        {\n            throw new InvalidOperationException($\"Unexpected JSON literal; expected {type} '{value}'.\");\n        }\n    }\n}\n"
+      },
+      {
+        "Path": "artifacts/string-execution-recovery-2026-10-12/host/Program.cs",
+        "SHA256": "CE516DB8031409D4F17212A65D83EA1C4F2E043270CEA6CB47595226D2987FB9",
+        "Content": "using BenchmarkDotNet.Configs;\nusing BenchmarkDotNet.Running;\nusing System;\n\nnamespace Marimo.Kotowari.Benchmarks;\n\npublic static class Program\n{\n    public static void Main(string[] args)\n    {\n        if (args is [\"--validate\"])\n        {\n            JsonStreamBenchmarks.Validate();\n            return;\n        }\n\n        var config = DefaultConfig.Instance.WithOptions(ConfigOptions.DisableOptimizationsValidator);\n        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, config);\n    }\n}\n"
+      },
+      {
+        "Path": "artifacts/string-execution-recovery-2026-10-12/host/StringExecutionRecovery.Measurement.csproj",
+        "SHA256": "22FF46CCBBBF2F61958E0FADA02382EBB235907F8046FD0FA1E1FE663FEE8D6E",
+        "Content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <OutputType>Exe</OutputType>\n    <TargetFramework>net10.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <AssemblyName>StringExecutionRecovery.Measurement</AssemblyName>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"BenchmarkDotNet\" />\n    <None Include=\"../../../Kotowari.Benchmarks/Data/test.json\" Link=\"Data/test.json\" CopyToOutputDirectory=\"PreserveNewest\" />\n    <Reference Include=\"Marimo.Kotowari\">\n      <HintPath>../baseline/Kotowari/bin/Release/net10.0/Marimo.Kotowari.dll</HintPath>\n    </Reference>\n    <Reference Include=\"Marimo.Parser\">\n      <HintPath>../baseline/JsonParser/bin/Release/net10.0/Marimo.Parser.dll</HintPath>\n    </Reference>\n  </ItemGroup>\n</Project>\n"
+      },
+      {
+        "Path": "artifacts/string-execution-recovery-2026-10-12/manual-harness/Harness.csproj",
+        "SHA256": "4F7ED3390D2F2C08CC7E15B488E9A972E15618D8772BE1E24D74EA3E217585D3",
+        "Content": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net10.0</TargetFramework>\n    <OutputType>Exe</OutputType>\n    <AssemblyName>StringExecutionRecovery.ChildHarness</AssemblyName>\n    <BaseOutputPath>bin/$(HarnessVariant)/</BaseOutputPath>\n    <PlatformTarget>x64</PlatformTarget>\n    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n    <DebugSymbols>false</DebugSymbols>\n    <UseSharedCompilation>false</UseSharedCompilation>\n    <RunAnalyzers>false</RunAnalyzers>\n    <Deterministic>true</Deterministic>\n    <Optimize>true</Optimize>\n    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>\n    <StartupObject>BenchmarkDotNet.Autogenerated.UniqueProgramName</StartupObject>\n    <ServerGarbageCollection>false</ServerGarbageCollection>\n    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>\n  </PropertyGroup>\n  <ItemGroup>\n    <Compile Include=\"$(HarnessVariant)/Harness.notcs\" />\n    <Reference Include=\"../host/bin/Release/net10.0/*.dll\" Condition=\"'$(HarnessVariant)' == 'baseline'\" />\n    <Reference Include=\"../candidate/bin/Release/net10.0/*.dll\" Condition=\"'$(HarnessVariant)' == 'candidate'\" />\n    <None Include=\"../../../Kotowari.Benchmarks/Data/test.json\" Link=\"Data/test.json\" CopyToOutputDirectory=\"PreserveNewest\" />\n  </ItemGroup>\n</Project>\n"
+      },
+      {
+        "Path": "artifacts/string-execution-recovery-2026-10-12/manual-harness/baseline/Harness.notcs",
+        "SHA256": "E7C422A5CE5AB4A5B223A3B36E9C92C5C4EC8B5A9EB663AF1BA129F2FF79F7D0",
+        "Content": "\n\n// <auto-generated />\n\n// this file must not be importing any namespaces\n// we should use full names everywhere to avoid any potential naming conflicts, example: #1007, #778\n\n// the namespace name must be in sync with WindowsDisassembler.BuildArguments\nnamespace BenchmarkDotNet.Autogenerated\n{\n    public class UniqueProgramName // we need different name than typical \"Program\" to avoid problems with referencing \"Program\" types from benchmarked code, #691\n    {\n        \n        public static System.Int32 Main(System.String[] args)\n        {\n            // this method MUST NOT have any dependencies to BenchmarkDotNet and any other external dlls! (CoreRT is exception from this rule)\n            // otherwise if LINQPad's shadow copy is enabled, we will not register for AssemblyLoading event\n            // before .NET Framework tries to load it for this method\n#if NETFRAMEWORK\n            using(new DirtyAssemblyResolveHelper())\n#endif\n                return AfterAssemblyLoadingAttached(args);\n        }\n\n        private static System.Int32 AfterAssemblyLoadingAttached(System.String[] args)\n        {\n            BenchmarkDotNet.Engines.IHost host; // this variable name is used by CodeGenerator.GetCoreRtSwitch, do NOT change it\n            if (BenchmarkDotNet.Engines.AnonymousPipesHost.TryGetFileHandles(args, out System.String writeHandle, out System.String readHandle))\n                host = new BenchmarkDotNet.Engines.AnonymousPipesHost(writeHandle, readHandle);\n            else\n                host = new BenchmarkDotNet.Engines.NoAcknowledgementConsoleHost();\n\n            // the first thing to do is to let diagnosers hook in before anything happens\n            // so all jit-related diagnosers can catch first jit compilation!\n            BenchmarkDotNet.Engines.HostExtensions.BeforeAnythingElse(host);\n\n            try\n            {\n                // we are not using Runnable here in any direct way in order to avoid strong dependency Main<=>Runnable\n                // which could cause the jitting/assembly loading to happen before we do anything\n                // we have some jitting diagnosers and we want them to catch all the informations!!\n\n                // this variable name is used by CodeGenerator.GetCoreRtSwitch, do NOT change it\n                System.String benchmarkName = System.Linq.Enumerable.FirstOrDefault(System.Linq.Enumerable.Skip(System.Linq.Enumerable.SkipWhile(args, arg => arg != \"--benchmarkName\"), 1)) ?? \"not provided\";\n                System.Int32 id = args.Length > 0\n                    ? System.Int32.Parse(args[args.Length - 1]) // this variable name is used by CodeGenerator.GetCoreRtSwitch, do NOT change it\n                    : 0; // used when re-using generated exe without BDN (typically to repro a bug)\n\n                if (args.Length == 0)\n                {\n                    host.WriteLine(\"You have not specified benchmark id (an integer) so the first benchmark will be executed.\");\n                }\n\n#if NATIVEAOT\n                \n#else\n                System.Type type = typeof(BenchmarkDotNet.Autogenerated.UniqueProgramName).Assembly.GetType($\"BenchmarkDotNet.Autogenerated.Runnable_{id}\");\n                type.GetMethod(\"Run\", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Invoke(null, new System.Object[] { host, benchmarkName });\n#endif\n                return 0;\n            }\n            catch (System.Exception oom) when (oom is System.OutOfMemoryException || oom is System.Reflection.TargetInvocationException reflection && reflection.InnerException is System.OutOfMemoryException)\n            {\n                host.WriteLine();\n                host.WriteLine(\"OutOfMemoryException!\");\n                host.WriteLine(\"BenchmarkDotNet continues to run additional iterations until desired accuracy level is achieved. It's possible only if the benchmark method doesn't have any side-effects.\");\n                host.WriteLine(\"If your benchmark allocates memory and keeps it alive, you are creating a memory leak.\");\n                host.WriteLine(\"You should redesign your benchmark and remove the side-effects. You can use `OperationsPerInvoke`, `IterationSetup` and `IterationCleanup` to do that.\");\n                host.WriteLine();\n                host.WriteLine(oom.ToString());\n\n                return -1;\n            }\n            catch(System.Exception ex)\n            {\n                host.WriteLine();\n                host.WriteLine(ex.ToString());\n                return -1;\n            }\n            finally\n            {\n                BenchmarkDotNet.Engines.HostExtensions.AfterAll(host);\n\n                host.Dispose();\n            }\n        }\n    }\n\n#if NETFRAMEWORK\n    internal class DirtyAssemblyResolveHelper : System.IDisposable\n    {\n        internal DirtyAssemblyResolveHelper() => System.AppDomain.CurrentDomain.AssemblyResolve += HelpTheFrameworkToResolveTheAssembly;\n\n        public void Dispose() => System.AppDomain.CurrentDomain.AssemblyResolve -= HelpTheFrameworkToResolveTheAssembly;\n\n        /// <summary>\n        /// according to https://msdn.microsoft.com/en-us/library/ff527268(v=vs.110).aspx\n        /// \"the handler is invoked whenever the runtime fails to bind to an assembly by name.\"\n        /// </summary>\n        /// <returns>not null when we find it manually, null when can't help</returns>\n        private System.Reflection.Assembly HelpTheFrameworkToResolveTheAssembly(System.Object sender, System.ResolveEventArgs args)\n        {\n#if SHADOWCOPY // used for LINQPad\n            const System.String shadowCopyFolderPath = @\"\";\n\n            System.String guessedPath = System.IO.Path.Combine(shadowCopyFolderPath, $\"{new System.Reflection.AssemblyName(args.Name).Name}.dll\");\n\n            return System.IO.File.Exists(guessedPath) ? System.Reflection.Assembly.LoadFrom(guessedPath) : null;\n#else\n            System.Reflection.AssemblyName fullName = new System.Reflection.AssemblyName(args.Name);\n            System.String simpleName = fullName.Name;\n\n            System.String guessedPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, $\"{simpleName}.dll\");\n\n            if (!System.IO.File.Exists(guessedPath))\n            {\n                System.Console.WriteLine($\"// Wrong assembly binding redirects for {args.Name}.\");\n                return null; // we can't help, and we also don't call Assembly.Load which if fails comes back here, creates endless loop and causes StackOverflow\n            }\n\n            // the file is right there, but has most probably different version and there is no assembly binding redirect or there is a wrong one...\n            // so we just load it and ignore the version mismatch\n\n            // we warn the user about that, in case some Super User want to be aware of that\n            System.Console.WriteLine($\"// Wrong assembly binding redirects for {simpleName}, loading it from disk anyway.\");\n\n            return System.Reflection.Assembly.LoadFrom(guessedPath);\n#endif // SHADOWCOPY\n        }\n    }\n#endif // NETFRAMEWORK\n\n        // the type name must be in sync with WindowsDisassembler.BuildArguments\n    public unsafe class Runnable_0 : global::Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks\n    {\n        public static void Run(BenchmarkDotNet.Engines.IHost host, System.String benchmarkName)\n        {\n            BenchmarkDotNet.Autogenerated.Runnable_0 instance = new BenchmarkDotNet.Autogenerated.Runnable_0 {  }; // do NOT change name \"instance\" (used in SmartParamameter)\n            \n\n            host.WriteLine();\n            foreach (System.String infoLine in BenchmarkDotNet.Environments.BenchmarkEnvironmentInfo.GetCurrent().ToFormattedString())\n            {\n                host.WriteLine($\"// {infoLine}\");\n            }\n            BenchmarkDotNet.Jobs.Job job = new BenchmarkDotNet.Jobs.Job(); // use full name to avoid naming conflicts, #778\n            BenchmarkDotNet.Jobs.AccuracyMode.OutlierModeCharacteristic[job] = (Perfolizer.Mathematics.OutlierDetection.OutlierMode)(0);\n                BenchmarkDotNet.Jobs.EnvironmentMode.AffinityCharacteristic[job] = new System.IntPtr(4);\n                BenchmarkDotNet.Jobs.RunMode.InvocationCountCharacteristic[job] = 4;\n                BenchmarkDotNet.Jobs.RunMode.IterationCountCharacteristic[job] = 8;\n                BenchmarkDotNet.Jobs.RunMode.LaunchCountCharacteristic[job] = 1;\n                BenchmarkDotNet.Jobs.RunMode.UnrollFactorCharacteristic[job] = 1;\n                BenchmarkDotNet.Jobs.RunMode.WarmupCountCharacteristic[job] = 16;\n            job.Freeze();\n            host.WriteLine($\"// Job: {job.DisplayInfo}\");\n            host.WriteLine();\n\n            System.Collections.Generic.IEnumerable<BenchmarkDotNet.Validators.ValidationError> errors = BenchmarkDotNet.Environments.BenchmarkEnvironmentInfo.Validate(job);\n            if (BenchmarkDotNet.Validators.ValidationErrorReporter.ReportIfAny(errors, host))\n                return;\n\n            BenchmarkDotNet.Engines.EngineParameters engineParameters = new BenchmarkDotNet.Engines.EngineParameters()\n            {\n                Host = host,\n                WorkloadActionUnroll = instance.WorkloadActionUnroll,\n                WorkloadActionNoUnroll = instance.WorkloadActionNoUnroll,\n                Dummy1Action = instance.Dummy1,\n                Dummy2Action = instance.Dummy2,\n                Dummy3Action = instance.Dummy3,\n                OverheadActionNoUnroll = instance.OverheadActionNoUnroll,\n                OverheadActionUnroll = instance.OverheadActionUnroll,\n                GlobalSetupAction = instance.globalSetupAction,\n                GlobalCleanupAction = instance.globalCleanupAction,\n                IterationSetupAction = instance.iterationSetupAction,\n                IterationCleanupAction = instance.iterationCleanupAction,\n                TargetJob = job,\n                OperationsPerInvoke = 1,\n                MeasureExtraStats = true,\n                BenchmarkName = benchmarkName\n            };\n\n            using (BenchmarkDotNet.Engines.IEngine engine = new BenchmarkDotNet.Engines.EngineFactory().CreateReadyToRun(engineParameters))\n            {\n                BenchmarkDotNet.Engines.RunResults results = engine.Run();\n\n                host.ReportResults(results); // printing costs memory, do this after runs\n\n                instance.__TrickTheJIT__(); // compile the method for disassembler, but without actual run of the benchmark ;)\n            }\n        }\n\n        public delegate Marimo.Parser.JSONObject OverheadDelegate();\n\n        public delegate  Marimo.Parser.JSONObject WorkloadDelegate();\n\n        public Runnable_0()\n        {\n            globalSetupAction = Setup;\n            globalCleanupAction = () => { };\n            iterationSetupAction = () => { };\n            iterationCleanupAction = () => { };\n            overheadDelegate = __Overhead;\n            workloadDelegate = StringInput;\n            \n        }\n\n        private System.Action globalSetupAction;\n        private System.Action globalCleanupAction;\n        private System.Action iterationSetupAction;\n        private System.Action iterationCleanupAction;\n        private BenchmarkDotNet.Autogenerated.Runnable_0.OverheadDelegate overheadDelegate;\n        private BenchmarkDotNet.Autogenerated.Runnable_0.WorkloadDelegate workloadDelegate;\n        \n\n        // this method is used only for the disassembly diagnoser purposes\n        // the goal is to get this and the benchmarked method jitted, but without executing the benchmarked method itself\n        public System.Int32 NotEleven;\n        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoOptimization | System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\n        public void __TrickTheJIT__()\n        {\n            NotEleven = new System.Random(123).Next(0, 10);\n            __ForDisassemblyDiagnoser__();\n        }\n\n        private System.Int32 dummyVar;\n\n        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\n        private void Dummy1()\n        {\n            dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;\n        }\n\n        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\n        private void Dummy2()\n        {\n            dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;\n        }\n\n        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\n        private void Dummy3()\n        {\n            dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;dummyVar++;\n        }\n\n        private Marimo.Parser.JSONObject __Overhead() // __ is to avoid possible name conflict\n        {\n            return null;\n        }\n\n\n        private BenchmarkDotNet.Engines.Consumer consumer = new BenchmarkDotNet.Engines.Consumer();\n\n        [System.Runtime.CompilerServices.MethodImpl(BenchmarkDotNet.Portability.CodeGenHelper.AggressiveOptimizationOption)]\n        private void OverheadActionUnroll(System.Int64 invokeCount)\n        {\n            \n            for (System.Int64 i = 0; i < invokeCount; i++)\n            {\n                consumer.Consume(overheadDelegate());\n            }\n        }\n\n        [System.Runtime.CompilerServices.MethodImpl(BenchmarkDotNet.Portability.CodeGenHelper.AggressiveOptimizationOption)]\n        private void OverheadActionNoUnroll(System.Int64 invokeCount)\n        {\n            \n            for (System.Int64 i = 0; i < invokeCount; i++)\n            {\n                consumer.Consume(overheadDelegate());\n            }\n        }\n\n        [System.Runtime.CompilerServices.MethodImpl(BenchmarkDotNet.Portability.CodeGenHelper.AggressiveOptimizationOption)]\n        private void WorkloadActionUnroll(System.Int64 invokeCount)\n        {\n            \n            for (System.Int64  i = 0; i < invokeCount; i++)\n            {\n                consumer.Consume(workloadDelegate());\n            }\n        }\n\n        [System.Runtime.CompilerServices.MethodImpl(BenchmarkDotNet.Portability.CodeGenHelper.AggressiveOptimizationOption)]\n        private void WorkloadActionNoUnroll(System.Int64 invokeCount)\n        {\n            \n            for (System.Int64 i = 0; i < invokeCount; i++)\n            {\n                consumer.Consume(workloadDelegate());\n            }\n        }\n        \n        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoOptimization | System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]\n        public Marimo.Parser.JSONObject __ForDisassemblyDiagnoser__()\n        {\n            if (NotEleven == 11)\n            {\n                \n                return StringInput();\n            }\n            \n            return default(Marimo.Parser.JSONObject);\n        }\n\n    }\n}\n"
+      },
+      {
+        "Path": "artifacts/string-cursor-bounds-2026-10-18/Run-Block.ps1",
+        "SHA256": "81F2B7EAE06B675E4C0D47D35115BE1DD56F87E5069E6C44F66BF9B8E1E6EDF5",
+        "Content": "# ProcessStartInfo.ArgumentList requires PowerShell 7; Windows PowerShell 5.1 has no\n# ArgumentList and otherwise fails before starting a benchmark child process.\n#requires -Version 7.0\nparam(\n    [ValidateSet('exploration','confirmation')][string]$Batch='exploration',\n    [Parameter(Mandatory)][ValidateRange(1,8)][int]$Block\n)\n\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$inputPath = Join-Path (Resolve-Path (Join-Path $root '../..')).Path 'Kotowari.Benchmarks/Data/test.json'\n$expectedInputHash = 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\nif ((Get-FileHash -LiteralPath $inputPath -Algorithm SHA256).Hash -ne $expectedInputHash) { throw 'Input hash mismatch.' }\n\n$cases = if ($Block % 2 -eq 1) { @('baseline','candidate') } else { @('candidate','baseline') }\nforeach ($variant in $cases) {\n    $runName = '{0:d2}-{1}' -f $Block,$variant\n    $runRoot = Join-Path $root \"runs/$Batch/$runName\"\n    $summaryPath = Join-Path $runRoot 'run-summary.json'\n    if (Test-Path -LiteralPath $summaryPath) {\n        $existingSummary = Get-Content -Raw -LiteralPath $summaryPath | ConvertFrom-Json\n        if ($existingSummary.Run -ne $runName -or $existingSummary.Batch -ne $Batch -or $existingSummary.InputSHA256 -ne $expectedInputHash -or $existingSummary.ResultCount -ne 8) { throw \"Existing run summary is invalid: $runName\" }\n        Write-Output \"Preserving already completed $runName.\"\n        continue\n    }\n    $reuseOutput = Test-Path -LiteralPath $runRoot\n    $hostLog = Join-Path $runRoot 'host.log'\n    $stderrPath = Join-Path $runRoot 'stderr.log'\n    if ($reuseOutput) {\n        if (-not (Test-Path -LiteralPath $hostLog) -or -not (Test-Path -LiteralPath $stderrPath)) { throw \"Run output already exists and cannot be resumed: $runName\" }\n    } else {\n        New-Item -ItemType Directory -Path $runRoot -Force | Out-Null\n    }\n\n    $manualRoot = Join-Path $root \"$variant/host\"\n    $assembly = Join-Path $manualRoot 'StringExecutionRecovery.ChildHarness.dll'\n    $measurementHost = Join-Path $manualRoot 'StringExecutionRecovery.Measurement.dll'\n    $sourceRoot = Join-Path $root \"$variant/source\"\n    if (-not (Test-Path -LiteralPath $assembly) -or -not (Test-Path -LiteralPath $measurementHost)) { throw \"Frozen harness is not built: $assembly\" }\n    $manifestPath = Join-Path $root 'dll-manifest.json'\n    if (-not (Test-Path -LiteralPath $manifestPath)) { throw 'Frozen DLL manifest is missing.' }\n    $dllManifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json\n    $expectedDlls = @($dllManifest.$variant)\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if (-not (Test-Path -LiteralPath $dllPath) -or (Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch before run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $beforeHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($reuseOutput) {\n        Write-Output \"Validating existing completed process output for $runName.\"\n        $stdout = Get-Content -Raw -LiteralPath $hostLog\n        $stderr = if ((Get-Item -LiteralPath $stderrPath).Length -gt 0) { Get-Content -Raw -LiteralPath $stderrPath } else { '' }\n        $processId = $null\n        $utc = (Get-Item -LiteralPath $hostLog).CreationTimeUtc\n        $elapsedSeconds = $null\n        $affinity = 4\n    } else {\n        Write-Output \"Starting $runName.\"\n        $start = [Diagnostics.ProcessStartInfo]::new('dotnet')\n        $start.WorkingDirectory = $manualRoot\n        $start.UseShellExecute = $false\n        $start.CreateNoWindow = $true\n        $start.RedirectStandardOutput = $true\n        $start.RedirectStandardError = $true\n        foreach ($argument in @('StringExecutionRecovery.ChildHarness.dll','--benchmarkName','Marimo.Kotowari.Benchmarks.JsonStreamBenchmarks.StringInput','--benchmarkId','0')) {\n            $start.ArgumentList.Add($argument)\n        }\n        $start.Environment['DOTNET_TieredPGO'] = '1'\n        $utc = [DateTime]::UtcNow\n        $watch = [Diagnostics.Stopwatch]::StartNew()\n        $process = [Diagnostics.Process]::Start($start)\n        if (-not $process) { throw \"Could not start measurement process: $runName\" }\n        $processId = $process.Id\n        try {\n            $process.ProcessorAffinity = [IntPtr]4\n            $affinity = $process.ProcessorAffinity.ToInt64()\n            if ($affinity -ne 4) { throw \"Affinity mismatch: $runName\" }\n            $stdoutTask = $process.StandardOutput.ReadToEndAsync()\n            $stderrTask = $process.StandardError.ReadToEndAsync()\n            while (-not $process.WaitForExit(1000)) {\n                if ($watch.Elapsed.TotalSeconds -gt 180) { throw \"Measurement timed out: $runName\" }\n            }\n            $stdout = $stdoutTask.GetAwaiter().GetResult()\n            $stderr = $stderrTask.GetAwaiter().GetResult()\n            [IO.File]::WriteAllText($hostLog,$stdout,[Text.UTF8Encoding]::new($false))\n            [IO.File]::WriteAllText($stderrPath,$stderr,[Text.UTF8Encoding]::new($false))\n            if ($process.ExitCode -ne 0) { throw \"Measurement process exited $($process.ExitCode): $runName\" }\n            if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n            if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n        } finally {\n            if (-not $process.HasExited) { $process.Kill(); $process.WaitForExit() }\n            $process.Dispose()\n        }\n        $elapsedSeconds = $watch.Elapsed.TotalSeconds\n    }\n    if ($stderr.Trim().Length -ne 0) { throw \"Unexpected stderr: $runName\" }\n    if ($stdout -notmatch '(?m)^// AfterAll\\s*$') { throw \"Missing completion signal: $runName\" }\n    $afterHash = (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash\n    if ($beforeHash -ne $afterHash) { throw \"Built assembly changed during run: $runName\" }\n    foreach ($expectedDll in $expectedDlls) {\n        $dllPath = Join-Path $manualRoot $expectedDll.Name\n        if ((Get-FileHash -LiteralPath $dllPath -Algorithm SHA256).Hash -ne $expectedDll.SHA256) { throw \"Frozen DLL hash mismatch after run: $variant/$($expectedDll.Name)\" }\n    }\n\n    $observations = @([regex]::Matches($stdout, '(?m)^Workload(?<stage>Warmup|Actual|Result)\\s+(?<index>\\d+):\\s+(?<ops>\\d+) op, (?<ns>[\\d.]+) ns, (?<display>[\\d.]+) (?<unit>ns|us|μs|µs|ms|s)/op') | ForEach-Object {\n        $displayValue = [double]::Parse($_.Groups['display'].Value,[Globalization.CultureInfo]::InvariantCulture)\n        $displayMultiplier = switch ($_.Groups['unit'].Value) { 'ns' { 1.0 } 'us' { 1e3 } 'μs' { 1e3 } 'µs' { 1e3 } 'ms' { 1e6 } 's' { 1e9 } }\n        [pscustomobject]@{\n            Stage=$_.Groups['stage'].Value\n            Iteration=[int]$_.Groups['index'].Value\n            Operations=[int]$_.Groups['ops'].Value\n            TotalNanoseconds=[double]::Parse($_.Groups['ns'].Value,[Globalization.CultureInfo]::InvariantCulture)\n            DisplayNsPerOperation=$displayValue * $displayMultiplier\n            DisplayRoundingToleranceNs=0.000055 * $displayMultiplier\n        }\n    })\n    foreach ($stage in 'Warmup','Actual','Result') {\n        $expected = if ($stage -eq 'Warmup') { 16 } else { 8 }\n        $rows = @($observations | Where-Object Stage -eq $stage)\n        if ($rows.Count -ne $expected -or @($rows | Where-Object Operations -ne 4).Count) { throw \"Unexpected $stage observations or operation count: $runName\" }\n        if (@($rows | Where-Object { [math]::Abs(($_.TotalNanoseconds / $_.Operations) - $_.DisplayNsPerOperation) -gt $_.DisplayRoundingToleranceNs }).Count) { throw \"Nanoseconds/Operations normalization mismatch: $runName\" }\n    }\n    if ($stdout -notmatch '(?m)^// Job: .*OutlierMode=DontRemove.*Affinity=(?:0{0,61})100.*InvocationCount=4.*IterationCount=8.*LaunchCount=1.*UnrollFactor=1.*WarmupCount=16') { throw \"Job settings mismatch: $runName\" }\n\n    $actuals = @($observations | Where-Object Stage -eq 'Actual')\n    $results = @($observations | Where-Object Stage -eq 'Result')\n    $actualValues = @($actuals | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultValues = @($results | ForEach-Object { $_.TotalNanoseconds / $_.Operations })\n    $resultMeanNs = ($resultValues | Measure-Object -Average).Average\n    $actualMeanNs = ($actualValues | Measure-Object -Average).Average\n    $displayMeanNs = (($results | ForEach-Object { $_.DisplayNsPerOperation } | Measure-Object -Average).Average)\n    $displayMeanToleranceNs = (($results | ForEach-Object { $_.DisplayRoundingToleranceNs } | Measure-Object -Average).Average)\n    if ([math]::Abs($resultMeanNs - $displayMeanNs) -gt $displayMeanToleranceNs) { throw \"Result mean differs from displayed BDN mean beyond rounding: $runName\" }\n    $gc = [regex]::Match($stdout, '(?m)^// GC:\\s+(?<gen0>\\d+)\\s+(?<gen1>\\d+)\\s+(?<gen2>\\d+)\\s+(?<allocated>\\d+)\\s+(?<operations>\\d+)')\n    if (-not $gc.Success -or [long]$gc.Groups['operations'].Value -ne 4) { throw \"Missing or invalid allocation counters: $runName\" }\n    $runtime = [regex]::Match($stdout,'(?m)^// Runtime=(?<runtime>.+)$')\n    $benchmarkDotNet = [regex]::Match($stdout,'(?m)^// BenchmarkDotNet v(?<version>\\S+)')\n    if (-not $runtime.Success -or -not $benchmarkDotNet.Success) { throw \"Runtime or BenchmarkDotNet version missing: $runName\" }\n\n    $sourceFiles = @(Get-ChildItem -LiteralPath $sourceRoot -Recurse -File | Where-Object { ($_.Extension -in @('.cs','.csproj') -or $_.Name -eq '.editorconfig') -and $_.FullName -notmatch '[\\\\/](bin|obj)[\\\\/]' } | Sort-Object FullName | ForEach-Object {\n        [ordered]@{ Path=$_.FullName.Substring($sourceRoot.Length+1).Replace('\\','/'); SHA256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash }\n    })\n    $libraryPath = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $jsonPath = Join-Path $manualRoot 'Marimo.Parser.dll'\n    $libraryHash = (Get-FileHash -LiteralPath $libraryPath -Algorithm SHA256).Hash\n    $jsonHash = (Get-FileHash -LiteralPath $jsonPath -Algorithm SHA256).Hash\n    $executedLibrary = Join-Path $manualRoot 'Marimo.Kotowari.dll'\n    $executedJson = Join-Path $manualRoot 'Marimo.Parser.dll'\n    if ((Get-FileHash -LiteralPath $executedLibrary -Algorithm SHA256).Hash -ne $libraryHash -or (Get-FileHash -LiteralPath $executedJson -Algorithm SHA256).Hash -ne $jsonHash) { throw \"Manual harness DLL hashes differ from frozen inputs: $runName\" }\n\n    $record = [ordered]@{\n        Run=$runName; Batch=$Batch; Variant=$variant; Method='StringInput'; MeanNs=$resultMeanNs\n        ActualMeanNs=$actualMeanNs; ResultMeanNsPerOperation=$resultMeanNs; DisplayMeanNsPerOperation=$displayMeanNs\n        ConsoleNormalizationVerified=$true; ResultObservationCount=$results.Count\n        AllocatedBytesPerOperation=([long]$gc.Groups['allocated'].Value / [long]$gc.Groups['operations'].Value)\n        GC=@([long]$gc.Groups['gen0'].Value,[long]$gc.Groups['gen1'].Value,[long]$gc.Groups['gen2'].Value)\n        ActualIterations=@($actuals | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualNsPerOperation=$actualValues\n        ResultIterations=@($results | ForEach-Object { [ordered]@{ BdnNanoseconds=$_.TotalNanoseconds; Operations=$_.Operations; NsPerOperation=($_.TotalNanoseconds/$_.Operations); DisplayNsPerOperation=$_.DisplayNsPerOperation } })\n        ActualCount=$actuals.Count; ResultCount=$results.Count; WarmupCount=16\n        Runtime=$runtime.Groups['runtime'].Value; BenchmarkDotNet=$benchmarkDotNet.Groups['version'].Value\n        Job=([regex]::Match($stdout,'(?m)^// Job: (?<job>.+)$').Groups['job'].Value); TieredPGO=1; Affinity=$affinity\n        ProcessId=$processId; StartUTC=$utc.ToString('o'); WallSeconds=$elapsedSeconds\n        PowerShell=$PSVersionTable.PSVersion.ToString()\n        ResumedExistingOutput=$reuseOutput\n        InputBytes=(Get-Item -LiteralPath $inputPath).Length; InputSHA256=$expectedInputHash\n        AssemblySHA256=$afterHash; MeasurementHostAssemblySHA256=(Get-FileHash -LiteralPath $measurementHost -Algorithm SHA256).Hash\n        LibraryDLLSHA256=$libraryHash; JsonDLLSHA256=$jsonHash\n        ChildLibraryDLLSHA256=$libraryHash; ChildJsonDLLSHA256=$jsonHash\n        DLLManifestSHA256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash\n        SourceFiles=$sourceFiles\n    }\n    $record | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryPath -Encoding utf8\n    Write-Output ('Completed {0}: mean {1:F3} ms, {2} Actual/{3} Result.' -f $runName,($record.MeanNs/1e6),$record.ActualCount,$record.ResultCount)\n}\nWrite-Output \"Block $Block completed.\"\n"
+      },
+      {
+        "Path": "artifacts/string-cursor-bounds-2026-10-18/Summarize.ps1",
+        "SHA256": "22EF4F1BC10AC800951A80688896F07221459949DD8A78A21273BC3ADEA21902",
+        "Content": "param([ValidateSet('exploration','confirmation')][string]$Batch='exploration')\n$ErrorActionPreference = 'Stop'\n$root = $PSScriptRoot\n$runsRoot = Join-Path $root \"runs/$Batch\"\n$pairs = @()\nfor ($block = 1; $block -le 8; $block++) {\n    $baselinePath = Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $block)\n    $candidatePath = Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $block)\n    if (-not (Test-Path -LiteralPath $baselinePath) -or -not (Test-Path -LiteralPath $candidatePath)) { throw \"Block $block is incomplete.\" }\n    $baseline = Get-Content -Raw -LiteralPath $baselinePath | ConvertFrom-Json\n    $candidate = Get-Content -Raw -LiteralPath $candidatePath | ConvertFrom-Json\n    if ($baseline.Batch -ne $Batch -or $candidate.Batch -ne $Batch -or $baseline.InputSHA256 -ne $candidate.InputSHA256 -or $baseline.InputSHA256 -ne 'DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D') { throw \"Batch/input mismatch in block $block.\" }\n    $pairs += [pscustomobject]@{\n        Block=$block; Order=if ($block % 2 -eq 1) { 'baseline-candidate' } else { 'candidate-baseline' }\n        BaselineMeanNs=[double]$baseline.MeanNs; CandidateMeanNs=[double]$candidate.MeanNs\n        CandidateOverBaseline=[double]$candidate.MeanNs/[double]$baseline.MeanNs\n        LogCandidateOverBaseline=[math]::Log([double]$candidate.MeanNs/[double]$baseline.MeanNs)\n        BaselineAllocatedBytesPerOperation=[double]$baseline.AllocatedBytesPerOperation; CandidateAllocatedBytesPerOperation=[double]$candidate.AllocatedBytesPerOperation\n        BaselineAssemblySHA256=$baseline.AssemblySHA256; CandidateAssemblySHA256=$candidate.AssemblySHA256\n    }\n}\n\n$logRatios = @($pairs | ForEach-Object { $_.LogCandidateOverBaseline })\n$meanLogRatio = ($logRatios | Measure-Object -Average).Average\n$sumSquares = 0.0\nforeach ($logRatio in $logRatios) { $sumSquares += [math]::Pow(($logRatio - $meanLogRatio),2) }\n$sampleSdLogRatio = [math]::Sqrt($sumSquares / ($logRatios.Count - 1))\n$standardErrorLogRatio = $sampleSdLogRatio / [math]::Sqrt($logRatios.Count)\n$tCriticalDf7 = 2.364624251\n$marginLogRatio = $tCriticalDf7 * $standardErrorLogRatio\n$geometricMeanRatio = [math]::Exp($meanLogRatio)\n$interval = @([math]::Exp($meanLogRatio - $marginLogRatio),[math]::Exp($meanLogRatio + $marginLogRatio))\n$summary = [ordered]@{\n    Experiment='string-cursor-bounds-2026-10-18'; Batch=$Batch;\n    Rule='Candidate adopted only when the geometric mean of paired candidate/baseline ratios has a 95% Student t interval upper bound below 1; interval is calculated on log ratios and exponentiated.'\n    PairCount=$pairs.Count; DegreesOfFreedom=$pairs.Count-1; TCritical95Df7=$tCriticalDf7\n    PairedLogRatioMean=$meanLogRatio; PairedLogRatioSampleStandardDeviation=$sampleSdLogRatio; PairedLogRatioStandardError=$standardErrorLogRatio\n    PairedGeometricMeanRatio=$geometricMeanRatio\n    Confidence95=[ordered]@{Lower=$interval[0];Upper=$interval[1]};\n    BaselineMeanMs=($pairs.BaselineMeanNs | Measure-Object -Average).Average/1e6\n    CandidateMeanMs=($pairs.CandidateMeanNs | Measure-Object -Average).Average/1e6\n    Pairs=$pairs\n    BaselineLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-baseline/run-summary.json' -f $_)) | ConvertFrom-Json })\n    CandidateLaunches=@(1..8 | ForEach-Object { Get-Content -Raw -LiteralPath (Join-Path $runsRoot ('{0:d2}-candidate/run-summary.json' -f $_)) | ConvertFrom-Json })\n    InputBytes=4172062; InputSHA256='DC87DD0FB85CB6F875AC336B70FEFC1E32BB1F284C8F6E011E0CB0256F9A354D'\n}\n$summary | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $root \"$Batch-summary.json\") -Encoding utf8\nWrite-Output ('Paired candidate/baseline geometric mean ratio {0:F5}; 95% t interval [{1:F5}, {2:F5}] (log scale, df=7).' -f $geometricMeanRatio,$interval[0],$interval[1])\n"
+      },
+      {
+        "Path": "artifacts/string-cursor-bounds-2026-10-18/Record-Environment.ps1",
+        "SHA256": "0C4196BCC7B9DDAF9966D200611CBAED62E0FBE9A344D674870BB3D6737885A5",
+        "Content": "param(\n    [Parameter(Mandatory)][ValidateSet('before','after')][string]$Stage\n)\n\n$ErrorActionPreference = 'Stop'\nAdd-Type -TypeDefinition @'\nusing System.Runtime.InteropServices;\n[StructLayout(LayoutKind.Sequential)]\npublic struct StringRecoveryPowerStatus {\n    public byte ACLineStatus;\n    public byte BatteryFlag;\n    public byte BatteryLifePercent;\n    public byte SystemStatusFlag;\n    public uint BatteryLifeTime;\n    public uint BatteryFullLifeTime;\n}\npublic static class StringRecoveryPowerStatusApi {\n    [DllImport(\"kernel32.dll\", SetLastError=true)]\n    public static extern bool GetSystemPowerStatus(out StringRecoveryPowerStatus status);\n}\n'@\n\n$status = New-Object StringRecoveryPowerStatus\nif (-not [StringRecoveryPowerStatusApi]::GetSystemPowerStatus([ref]$status)) {\n    throw \"GetSystemPowerStatus failed: $([Runtime.InteropServices.Marshal]::GetLastWin32Error())\"\n}\n$powerScheme = (powercfg.exe /getactivescheme) -join ' '\n$sampleStart = [DateTime]::UtcNow\n$first = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimFirst = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\nStart-Sleep -Seconds 3\n$sampleEnd = [DateTime]::UtcNow\n$second = @(Get-Process -Name dotnet -ErrorAction SilentlyContinue | Select-Object Id,CPU,StartTime)\n$cimSecond = @(Get-CimInstance -ClassName Win32_Process | Select-Object ProcessId,Name,KernelModeTime,UserModeTime)\n$cpuActivity = @(\n    foreach ($process in $second) {\n        $previous = $first | Where-Object Id -eq $process.Id | Select-Object -First 1\n        if ($previous -and $null -ne $process.CPU -and $null -ne $previous.CPU -and $process.CPU -gt $previous.CPU) {\n            [ordered]@{ ProcessId=$process.Id; DeltaCpuSeconds=($process.CPU-$previous.CPU) }\n        }\n    }\n)\n$cimCpuActivity = @(\n    foreach ($process in $cimSecond) {\n        $previous = $cimFirst | Where-Object ProcessId -eq $process.ProcessId | Select-Object -First 1\n        if ($previous -and $null -ne $process.KernelModeTime -and $null -ne $process.UserModeTime) {\n            $delta = ([double]$process.KernelModeTime + [double]$process.UserModeTime) - ([double]$previous.KernelModeTime + [double]$previous.UserModeTime)\n            if ($delta -gt 0) { [ordered]@{ ProcessId=$process.ProcessId; Name=$process.Name; DeltaCpuSeconds=($delta / 10000000) } }\n        }\n    }\n)\n$record = [ordered]@{\n    Stage=$Stage\n    TimestampUTC=[DateTime]::UtcNow.ToString('o')\n    SampleStartUTC=$sampleStart.ToString('o')\n    SampleEndUTC=$sampleEnd.ToString('o')\n    ACLineStatus=[int]$status.ACLineStatus\n    ACLineMeaning='1=online, 0=offline, 255=unknown'\n    BatterySaver=[int]$status.SystemStatusFlag\n    BatterySaverMeaning='1=active, 0=inactive'\n    BatteryFlag=[int]$status.BatteryFlag\n    BatteryLifePercent=[int]$status.BatteryLifePercent\n    PowerScheme=$powerScheme\n    DotnetCpuActivityWindowSeconds=3\n    ActiveDotnetProcesses=$cpuActivity\n    ActiveCimProcesses=$cimCpuActivity\n}\n$path = Join-Path $PSScriptRoot 'environment.json'\nif (Test-Path -LiteralPath $path) {\n    $records = @(Get-Content -Raw -LiteralPath $path | ConvertFrom-Json)\n} else {\n    $records = @()\n}\n$records += [pscustomobject]$record\n$records | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $path -Encoding utf8\nWrite-Output ('{0}: ACLine={1}, BatterySaver={2}, PowerScheme={3}, dotnetCPU-active={4}' -f $Stage,$record.ACLineStatus,$record.BatterySaver,$record.PowerScheme,$cpuActivity.Count)\n"
+      }
+    ],
+    "ReplaySourcesNote": "Exact text snapshots of the measured workload, generated BDN harness, harness project and execution/summary scripts, not a new supported benchmark API. Paths are repository-relative original artifact paths. Restore baseline/candidate library sources separately from the indicated commit/working tree. Build configuration and original local-path assumptions are preserved; see the accompanying report for reconstruction limitations.",
+    "Caveat": "Fixed host reused; clean rebuild/replay was not verified."
+  },
+  "PreparationAndExclusions": [
+    "One pre-run invocation through Windows PowerShell 5.1 failed before process spawn because ProcessStartInfo.ArgumentList was null; no PID, host execution, or measurement run resulted. Rerun via PowerShell 7 succeeded.",
+    "No normal measurement launches excluded. Diagnostic and validation launches are separate and not timed observations.",
+    "Summarize.ps1 initially emitted the prior round experiment label; only the Experiment label was corrected to parsed-value-guard. The paired observations and summary statistics were not changed; see summary-label-correction.json.",
+    "A prior stale parent-validation copy was accidentally placed over the round3 file; the parent restored the correct validation JSON from recorded command output and explicitly confirmed it. The restored JSON is embedded here.",
+    "Parent candidate build/test/format validation is separately embedded in ParentValidation."
+  ]
+}

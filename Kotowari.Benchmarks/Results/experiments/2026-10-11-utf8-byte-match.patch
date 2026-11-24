@@ -1,0 +1,206 @@
+diff --git a/Kotowari/Core/CharParser.cs b/Kotowari/Core/CharParser.cs
+index 38d602b..dde92cb 100644
+--- a/Kotowari/Core/CharParser.cs
++++ b/Kotowari/Core/CharParser.cs
+@@ -11,10 +11,14 @@ public class CharParser : Parser<char>
+ 
+     bool IgnoreCase { get; }
+ 
++    readonly byte[]? utf8;
++
+     public CharParser(char @char, bool ignoreCase = false)
+     {
+         Char = @char;
+         IgnoreCase = ignoreCase;
++        // 文法定義時だけ符号化する。単独サロゲートは置換文字に一致させず、通常処理へ戻す。
++        utf8 = char.IsSurrogate(@char) ? null : Encoding.UTF8.GetBytes(@char.ToString());
+     }
+ 
+     protected internal override ParseResult<char, TDocument> ParseCore<TDocument>(Cursol<TDocument> cursol)
+@@ -27,12 +31,29 @@ public class CharParser : Parser<char>
+ 
+     ParseResult<char, TDocument> ParseCharacter<TDocument>(Cursol<TDocument> cursol)
+         where TDocument : IDocument, allows ref struct
+-        => cursol.Current switch
++    {
++        if (utf8 is not null && cursol.TryGetUtf8(out var bytes) && !bytes.IsEmpty)
++        {
++            if (bytes.StartsWith(utf8))
++                return ParseResult<char, TDocument>.Success(cursol.AdvanceUtf8Bytes(utf8.Length), Char);
++
++            if (bytes[0] < 0x80)
++            {
++                var current = (char)bytes[0];
++                return IgnoreCase && char.ToLower(current) == char.ToLower(Char)
++                    ? ParseResult<char, TDocument>.Success(cursol.AdvanceUtf8Bytes(1), current)
++                    : ParseResult<char, TDocument>.Failure(cursol);
++            }
++        }
++
++        // 非ASCIIの大小文字比較、終端のNUL、補助平面文字の拒否は文字読み取りの契約を使う。
++        return cursol.Current switch
+         {
+             var c when (IgnoreCase ? char.ToLower(c) == char.ToLower(Char) : c == Char)
+                     => ParseResult<char, TDocument>.Success(cursol.GoFoward(1), c),
+             _ => ParseResult<char, TDocument>.Failure(cursol)
+         };
++    }
+ 
+     sealed class Execution<TDocument>(CharParser parser) : ParserExecution<char, TDocument>(parser)
+         where TDocument : IDocument, allows ref struct
+diff --git a/Kotowari/Core/CursolOfTDocument.cs b/Kotowari/Core/CursolOfTDocument.cs
+index b4800cc..acfa865 100644
+--- a/Kotowari/Core/CursolOfTDocument.cs
++++ b/Kotowari/Core/CursolOfTDocument.cs
+@@ -1,5 +1,7 @@
+ ﻿using System;
+ 
++using System.Runtime.CompilerServices;
++
+ namespace Marimo.Kotowari.Core;
+ 
+ 
+@@ -34,6 +36,36 @@ public readonly ref struct Cursol<TDocument>
+ 
+     public Cursol<TDocument> Copy() => this with { };
+ 
++    /// <summary>
++    /// UTF-8文書の場合だけ、現在位置以降を直接照合するために借用します。
++    /// </summary>
++    /// <remarks>
++    /// ref structはboxingによる型変換ができないため、厳密な型一致を確認して参照を変換します。
++    /// 異なる型のレイアウトを仮定せず、文書を書き換えたり借用期間を延長したりしません。
++    /// 文字列や外部の文書型は通常の文字読み取りを使用します。
++    /// </remarks>
++    internal bool TryGetUtf8(out ReadOnlySpan<byte> remaining)
++    {
++        if (typeof(TDocument) == typeof(Utf8Document))
++        {
++            ref readonly var utf8 = ref Unsafe.As<TDocument, Utf8Document>(ref Unsafe.AsRef(in document));
++            var bytes = utf8.Utf8;
++            if ((uint)Index <= (uint)bytes.Length)
++            {
++                remaining = bytes[Index..];
++                return true;
++            }
++        }
++
++        remaining = default;
++        return false;
++    }
++
++    // TryGetUtf8で借用した範囲の直接照合に成功した場合に、その消費バイト数だけ進む。
++    // 文字数を再走査せず、文書の同一性と借用期間は元のカーソルを引き継ぐ。
++    internal Cursol<TDocument> AdvanceUtf8Bytes(int count)
++        => this with { Index = Index + count };
++
+     /// <summary>
+     /// 同じ文書の同じ位置を指すかを比較します。入力内容そのものは比較しません。
+     /// </summary>
+diff --git a/Kotowari/Core/Utf8Document.cs b/Kotowari/Core/Utf8Document.cs
+index cf7fbfd..43abdd4 100644
+--- a/Kotowari/Core/Utf8Document.cs
++++ b/Kotowari/Core/Utf8Document.cs
+@@ -28,7 +28,7 @@ public readonly ref struct Utf8Document : IDocument
+     /// Spanフィールドへ戻す場合やランタイム更新時には、全体測定で再評価する。
+     /// 根拠と条件はKotowari.Benchmarks/Results/2026-10-10-utf8-document-layout.mdを参照。
+     /// </remarks>
+-    ReadOnlySpan<byte> Utf8
++    internal ReadOnlySpan<byte> Utf8
+         => MemoryMarshal.CreateReadOnlySpan(in utf8Reference, utf8Length);
+ 
+     internal Utf8Document(ReadOnlySpan<byte> utf8)
+diff --git a/Kotowari/Core/WordParser.cs b/Kotowari/Core/WordParser.cs
+index 4a7dec0..4ac067b 100644
+--- a/Kotowari/Core/WordParser.cs
++++ b/Kotowari/Core/WordParser.cs
+@@ -3,6 +3,7 @@ using System.Collections.Generic;
+ using System.Text.RegularExpressions;
+ using System.Threading.Tasks;
+ using System.Linq;
++using System.Text;
+ using System.Net.Http.Headers;
+ using System.Transactions;
+ 
+@@ -15,6 +16,10 @@ public class WordParser : Parser<string>
+ 
+     Parser<char> WhiteSpace { get; }
+ 
++    string Word { get; }
++
++    byte[]? Utf8Word { get; }
++
+     public WordParser(string word, bool ignoreCase = false)
+         : this(word, ignoreCase, new CharParser(' '))
+     {
+@@ -29,6 +34,8 @@ public class WordParser : Parser<string>
+     {
+         Parsers = [.. word.Select(c => new CharParser(c, ignoreCase))];
+         IgnoreCase = ignoreCase;
++        Word = word;
++        Utf8Word = word.Any(char.IsSurrogate) ? null : Encoding.UTF8.GetBytes(word);
+ 
+         WhiteSpace = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
+     }
+@@ -46,11 +53,17 @@ public class WordParser : Parser<string>
+     {
+         readonly ParserExecution<char, TDocument>[] parsers;
+         readonly ParserExecution<char, TDocument> whiteSpace;
++        readonly string word;
++        readonly byte[]? utf8Word;
++        readonly bool ignoreCase;
+ 
+         Execution(WordParser definition) : base(definition)
+         {
+             parsers = [.. definition.Parsers.Select(it => it.CreateExecution<TDocument>())];
+             whiteSpace = definition.WhiteSpace.CreateExecution<TDocument>();
++            word = definition.Word;
++            utf8Word = definition.Utf8Word;
++            ignoreCase = definition.IgnoreCase;
+         }
+ 
+         internal static Execution<TDocument> Get(WordParser definition)
+@@ -60,6 +73,25 @@ public class WordParser : Parser<string>
+         internal override ParseResult<string, TDocument> ParseCore(Cursol<TDocument> cursol)
+         {
+             var current = WhiteSpaceExecution.Skip(whiteSpace, cursol);
++            if (utf8Word is not null && current.TryGetUtf8(out var bytes) && bytes.Length >= utf8Word.Length)
++            {
++                var candidate = bytes[..utf8Word.Length];
++                if (candidate.SequenceEqual(utf8Word))
++                {
++                    current = current.AdvanceUtf8Bytes(utf8Word.Length);
++                    return ParseResult<string, TDocument>.Success(WhiteSpaceExecution.Skip(whiteSpace, current), word);
++                }
++
++                if (ignoreCase && MatchesAsciiIgnoringCase(candidate, utf8Word))
++                {
++                    // 入力の表記を結果へ残す。後続の空白パーサーが入力を変更する前に具体化する。
++                    var parsed = Encoding.UTF8.GetString(candidate);
++                    current = current.AdvanceUtf8Bytes(utf8Word.Length);
++                    return ParseResult<string, TDocument>.Success(WhiteSpaceExecution.Skip(whiteSpace, current), parsed);
++                }
++            }
++
++            // 一括照合できない場合は、途中の拒否・カルチャー・終端NULの既存契約を保つ。
+             // 単語長が既知なので、Listの拡張と最後の配列化を避ける。
+             // 最初の成功まで確保を遅らせ、先頭失敗では割り当てない。
+             // 短語の比較ではList・ジェネレーター・stackalloc版より速かった。変更時は再比較する。
+@@ -80,5 +112,17 @@ public class WordParser : Parser<string>
+             return ParseResult<string, TDocument>.Success(current,
+                 returnValue is null ? string.Empty : new string(returnValue));
+         }
++
++        static bool MatchesAsciiIgnoringCase(ReadOnlySpan<byte> input, ReadOnlySpan<byte> expected)
++        {
++            for (var index = 0; index < expected.Length; index++)
++            {
++                if (input[index] >= 0x80 || expected[index] >= 0x80
++                    || char.ToLower((char)input[index]) != char.ToLower((char)expected[index]))
++                    return false;
++            }
++
++            return true;
++        }
+     }
+ }

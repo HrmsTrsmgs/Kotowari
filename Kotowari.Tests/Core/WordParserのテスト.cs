@@ -2,7 +2,7 @@
 using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,7 +43,6 @@ public class WordParserのテスト
         result.Parsed.Should().Be("public");
     }
 
-
     [Fact]
     public void ParseAsyncは読み込みに成功した場合に単語の長さだけ進んだカーソルを返します()
     {
@@ -67,47 +66,55 @@ public class WordParserのテスト
     }
 
     [Fact]
-    public void ParseAsyncは単語前のスペースを読み飛ばします()
+    public void 指定文字列の前に空白があると一致せず入力を消費しません()
     {
         var cursol = new Cursol(" public");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
 
-        result.Cursol.Index.Should().Be(7);
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Should().Be(cursol);
     }
 
     [Fact]
-    public void ParseAsyncは単語後のスペースを読み飛ばします()
+    public void 指定文字列に一致しても後ろの空白は消費しません()
     {
         var cursol = new Cursol("public ");
         var tested = new WordParser("public");
 
         var result = tested.Parse(cursol);
 
-        result.Cursol.Index.Should().Be(7);
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("public");
+        result.Cursol.Index.Should().Be(6);
+        result.Cursol.Current.Should().Be(' ');
     }
 
     [Fact]
-    public void 指定した空白パーサーで単語前後を読み飛ばします()
+    public void 指定文字列に含まれる前後の空白もそのまま照合します()
     {
-        var tested = new WordParser("public", new CharParser('_'));
+        var tested = new WordParser(" public ");
 
-        var result = tested.Parse(new Cursol("_public_"));
+        var result = tested.Parse(new Cursol(" public !"));
 
         result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(" public ");
         result.Cursol.Index.Should().Be(8);
+        result.Cursol.Current.Should().Be('!');
     }
 
     [Fact]
-    public void 大文字小文字を無視して指定した空白パーサーで単語前後を読み飛ばします()
+    public void 指定文字列が空でも空白は消費しません()
     {
-        var tested = new WordParser("public", true, new CharParser('_'));
+        var cursol = new Cursol(" x");
+        var tested = new WordParser("");
 
-        var result = tested.Parse(new Cursol("_PUBLIC_"));
+        var result = tested.Parse(cursol);
 
         result.IsSuccess.Should().BeTrue();
-        result.Cursol.Index.Should().Be(8);
+        result.Parsed.Should().BeEmpty();
+        result.Cursol.Should().Be(cursol);
     }
 
     [Fact]
@@ -115,6 +122,141 @@ public class WordParserのテスト
     {
         var action = () => new WordParser("public", false, null!);
 
-        action.Should().Throw<ArgumentNullException>();
+        action.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("whiteSpace");
     }
+
+    [Fact]
+    public void 同じパーサーで失敗後にも別の入力を読み込めます()
+    {
+        var tested = new WordParser("public", true);
+
+        var failure = tested.Parse(new Cursol("publiX,"));
+        var success = tested.Parse(new Cursol("PUBLIC,"));
+
+        failure.IsSuccess.Should().BeFalse();
+        failure.Cursol.Index.Should().Be(0);
+        success.IsSuccess.Should().BeTrue();
+        success.Parsed.Should().Be("PUBLIC");
+        success.Cursol.Index.Should().Be(6);
+    }
+
+    [Fact]
+    public void 大文字小文字を無視しない場合には異なる文字を読み込みません()
+    {
+        var tested = new WordParser("Public");
+
+        tested.Parse(new Cursol("public,")).IsSuccess.Should().BeFalse();
+    }
+
+    [Fact]
+    public void 開始位置が0でなくても単語の照合に失敗したら元のカーソルを返します()
+    {
+        var cursol = new Cursol("xpubliX").GoFoward(1);
+        var tested = new WordParser("public");
+
+        var result = tested.Parse(cursol);
+
+        result.IsSuccess.Should().BeFalse();
+        result.Cursol.Should().Be(cursol);
+    }
+
+    [Theory]
+    [InlineData("a\0\0", "a")]
+    [InlineData("\0", "")]
+    [InlineData("a\0", "a\0")]
+    public void 入力終端のNULも単語の文字として読み込めます(string word, string input)
+    {
+        var tested = new WordParser(word);
+
+        var result = tested.Parse(new Cursol(input));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be(word);
+        result.Cursol.Index.Should().Be(input.Length);
+    }
+
+    [Fact]
+    public void 負の位置では終端文字を読み込んでから文書の先頭へ進みます()
+    {
+        var tested = new WordParser("\0\0ab");
+
+        var result = tested.Parse(new Cursol("ab,").GoFoward(-2));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("\0\0ab");
+        result.Cursol.Index.Should().Be(2);
+    }
+
+    [Fact]
+    public void 大文字小文字の比較には解析時のカルチャーを使用します()
+    {
+        var original = CultureInfo.CurrentCulture;
+        try
+        {
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            var tested = new WordParser("I", true);
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+
+            var turkish = tested.Parse(new Cursol("ı,"));
+            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+            var english = tested.Parse(new Cursol("ı,"));
+
+            turkish.IsSuccess.Should().BeTrue();
+            turkish.Parsed.Should().Be("ı");
+            turkish.Cursol.Index.Should().Be(1);
+            english.IsSuccess.Should().BeFalse();
+            english.Cursol.Index.Should().Be(0);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = original;
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void IgnoreCaseはコンストラクターで指定した値を返します(bool ignoreCase)
+    {
+        var tested = new WordParser("public", ignoreCase);
+
+        tested.IgnoreCase.Should().Be(ignoreCase);
+    }
+
+    [Fact]
+    public void IgnoreCaseは大文字小文字を無視する指定を返します()
+    {
+        var tested = new WordParser("public", true);
+
+        tested.IgnoreCase.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IgnoreCaseは大文字小文字の指定を省略するとfalseを返します()
+    {
+        new WordParser("public").IgnoreCase.Should().BeFalse();
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void 単語がnullの場合は空白パーサーより先にsource引数の例外を返します(bool nullWhiteSpace)
+    {
+        var action = () => new WordParser(null!, true, nullWhiteSpace ? null! : new CharParser('_'));
+
+        action.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("source");
+    }
+
+    [Fact]
+    public void 文字列入力を同じ単語パーサーで読み込めます()
+    {
+        Parser<string> tested = new WordParser("éあb");
+
+        var result = tested.Parse(new Cursol("éあb,"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Parsed.Should().Be("éあb");
+        result.Cursol.Index.Should().Be(3);
+    }
+
 }
