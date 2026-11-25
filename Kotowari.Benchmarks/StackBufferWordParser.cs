@@ -1,9 +1,6 @@
 ﻿using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 
 namespace Marimo.Kotowari.Benchmarks;
 
@@ -14,7 +11,7 @@ internal sealed class StackBufferWordParser(string word, bool ignoreCase, Parser
 
     protected override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out string parsed)
     {
-        var current = SkipBlankAsync(start);
+        var current = SkipWhiteSpace(start);
         Span<char> returnValue = Parsers.Length <= StackBufferLimit
             ? stackalloc char[Parsers.Length]
             : new char[Parsers.Length];
@@ -32,7 +29,7 @@ internal sealed class StackBufferWordParser(string word, bool ignoreCase, Parser
             returnValue[index++] = childParsed;
         }
 
-        current = SkipBlankAsync(current);
+        current = SkipWhiteSpace(current);
         next = current;
         parsed = new string(returnValue);
         return true;

@@ -3,15 +3,10 @@ using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.ExceptionServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace Marimo.Parser;
 
-
+/// <summary>Parses, maps and serializes JSON using the SpracheJson sample's conventions.</summary>
 public class Json
 {
     /// <summary>Maps a JSON value using the upstream sample's mapping contract.</summary>
@@ -42,58 +37,39 @@ public class Json
     static readonly Parser<char> WhiteSpace =
         new ConditionalCharParser(char.IsWhiteSpace);
 
-    static Parser<char> BraceOpen = new CharParser('{');
+    static readonly Parser<char> DoubleQuote = new CharParser('"');
 
-    static Parser<char> BraceClose = new CharParser('}');
+    static readonly Parser<char> Dot = new CharParser('.');
 
-    static Parser<char> BracketOpen = new CharParser('[');
+    static readonly Parser<char> Plus = new CharParser('+');
 
-    static Parser<char> BracketClose = new CharParser(']');
+    static readonly Parser<char> Minus = new CharParser('-');
 
-    static Parser<char> DoubleQuote = new CharParser('"');
+    static readonly Parser<char> BackSlash = new CharParser('\\');
 
-    static Parser<char> Collon = new CharParser(':');
+    // Structural punctuation consumes trailing whitespace; characters inside strings and numbers do not.
+    static Parser<char> Punctuation(char character) => new CharParser(character).WithWhiteSpace(WhiteSpace);
 
-    static Parser<char> Dot = new CharParser('.');
+    static readonly Parser<char> BraceOpenSign = Punctuation('{');
+    static readonly Parser<char> BraceCloseSign = Punctuation('}');
+    static readonly Parser<char> BracketOpenSign = Punctuation('[');
+    static readonly Parser<char> BracketCloseSign = Punctuation(']');
+    static readonly Parser<char> ColonSign = Punctuation(':');
+    static readonly Parser<char> CommaSign = Punctuation(',');
 
-    static Parser<char> Plus = new CharParser('+');
-
-    static Parser<char> Minus = new CharParser('-');
-
-    static Parser<char> BackSlash = new CharParser('\\');
-
-    static Parser<char> Comma = new CharParser(',');
-
-    static Parser<char> BraceOpenSign =
-        BraceOpen.WithWhiteSpace(WhiteSpace);
-    static Parser<char> BraceCloseSign =
-        BraceClose.WithWhiteSpace(WhiteSpace);
-
-    static Parser<char> BracketOpenSign =
-        BracketOpen.WithWhiteSpace(WhiteSpace);
-
-    static Parser<char> BracketCloseSign =
-        BracketClose.WithWhiteSpace(WhiteSpace);
-
-    static Parser<char> CollonSign =
-        Collon.WithWhiteSpace(WhiteSpace);
-
-    static Parser<char> CommaSign =
-        Comma.WithWhiteSpace(WhiteSpace);
-
-    static Parser<JsonLiteral> JNull =
+    static readonly Parser<JsonLiteral> JNull =
         new ParserConverter<string, JsonLiteral>(
             new WordParser("null", true).WithWhiteSpace(WhiteSpace),
-            word => new JsonLiteral(LiteralType.Null));
+            _ => new JsonLiteral(LiteralType.Null));
 
-    static Parser<JsonLiteral> JBoolean =
+    static readonly Parser<JsonLiteral> JBoolean =
         new ParserConverter<string, JsonLiteral>(
             new OrParser<string>(
                 new WordParser("true", true),
                 new WordParser("false", true)).WithWhiteSpace(WhiteSpace),
             word => new JsonLiteral(word, LiteralType.Boolean));
 
-    static Parser<char> Digit =
+    static readonly Parser<char> Digit =
         new ConditionalCharParser(char.IsDigit);
 
     static readonly Parser<string> Digits =
@@ -101,7 +77,7 @@ public class Json
             new ZeroOrMoreParser<char>(Digit),
             chars => new string([.. chars]));
 
-    static Parser<string> JExp =
+    static readonly Parser<string> JExp =
         new ParserConverter<(char, Optional<char>, string), string>(
             new SequenceParser<char, Optional<char>, string>(
                 new CharParser('e', true),
@@ -112,19 +88,19 @@ public class Json
             + (tuple.Item2.IsPresent ? tuple.Item2.Value.ToString() : "")
             + tuple.Item3);
 
-    static Parser<string> JFrac =
+    static readonly Parser<string> JFrac =
         new ParserConverter<(char, string), string>(
             new SequenceParser<char, string>(Dot, Digits),
             tuple => $"{tuple.Item1}{tuple.Item2}");
 
-    static Parser<string> JInt =
+    static readonly Parser<string> JInt =
         new ParserConverter<(Optional<char>, string), string>(
             new SequenceParser<Optional<char>, string>(
                 new OptionalParser<char>(new CharParser('-')),
                 Digits),
             tuple => $"{(tuple.Item1.IsPresent ? "-" : "")}{tuple.Item2}");
 
-    static Parser<JsonLiteral> JNumber =
+    static readonly Parser<JsonLiteral> JNumber =
         new ParserConverter<(string, Optional<string>, Optional<string>), JsonLiteral>(
             new SequenceParser<string, Optional<string>, Optional<string>>(
                 JInt,
@@ -137,7 +113,7 @@ public class Json
                     + (tuple.Item3.IsPresent ? tuple.Item3.Value : ""),
                     LiteralType.Number)).WithWhiteSpace(WhiteSpace);
 
-    static Parser<char> ControlChar =
+    static readonly Parser<char> ControlChar =
         new ParserConverter<(char, char), char>(
             new SequenceParser<char, char>(
                 BackSlash,
@@ -160,13 +136,13 @@ public class Json
             });
 
     // 固定2文字の除外をまとめ、通常文字ごとの候補走査と文字の再取得を省く。
-    static Parser<char> JChar =
+    static readonly Parser<char> JChar =
         new JsonStringCharacterParser(
             new OrParser<char>(
                 new ConditionalCharParser(it => it is not ('"' or '\\')),
                 ControlChar));
 
-    static Parser<JsonLiteral> JString =
+    static readonly Parser<JsonLiteral> JString =
         new ParserConverter<(char, IEnumerable<char>, char), JsonLiteral>(
             new SequenceParser<char, IEnumerable<char>, char>(
                 DoubleQuote,
@@ -174,14 +150,14 @@ public class Json
                 DoubleQuote),
             tuple => new JsonLiteral(new string([.. tuple.Item2]), LiteralType.String)).WithWhiteSpace(WhiteSpace);
 
-    static Parser<JsonLiteral> JLiteral =
+    static readonly Parser<JsonLiteral> JLiteral =
         new OrParser<JsonLiteral>(
             JString,
             JBoolean,
             JNull,
             JNumber);
 
-    static Parser<IJsonValue> JValue =
+    static readonly Parser<IJsonValue> JValue =
         new OrParser<IJsonValue>(
             new RecursiveParser<IJsonValue>(
                 () => new ParserConverter<JsonArray, IJsonValue>(
@@ -193,12 +169,12 @@ public class Json
                     obj => obj)),
             new ParserConverter<JsonLiteral, IJsonValue>(JLiteral, literal => literal));
 
-    static Parser<IEnumerable<IJsonValue>> JElements =
+    static readonly Parser<IEnumerable<IJsonValue>> JElements =
         new DelimitedSequenceParser<IJsonValue, char>(
             JValue,
             CommaSign);
 
-    static Parser<JsonArray> JArray =
+    static readonly Parser<JsonArray> JArray =
         new ParserConverter<(char, IEnumerable<IJsonValue>, char), JsonArray>(
             new SequenceParser<char, IEnumerable<IJsonValue>, char>(
                 BracketOpenSign,
@@ -218,14 +194,12 @@ public class Json
     static readonly Parser<KeyValuePair<string, IJsonValue>> JPair =
         new ParserConverter<(string, char, IJsonValue), KeyValuePair<string, IJsonValue>>(
             new SequenceParser<string, char, IJsonValue>(
-                        JKey,
-                        CollonSign,
-                        JValue),
-            tuple => new KeyValuePair<string, IJsonValue>(
-                tuple.Item1,
-                tuple.Item3));
+                JKey,
+                ColonSign,
+                JValue),
+            tuple => new(tuple.Item1, tuple.Item3));
 
-    static Parser<JsonObject> JObject =
+    static readonly Parser<JsonObject> JObject =
         new ParserConverter<(char, IEnumerable<KeyValuePair<string, IJsonValue>>, char), JsonObject>(
             new SequenceParser<char, IEnumerable<KeyValuePair<string, IJsonValue>>, char>(
                 BraceOpenSign,
@@ -237,16 +211,17 @@ public class Json
 
     static readonly Parser<JsonObject> Document = new WithWhiteSpaceParser<JsonObject>(WhiteSpace, JObject);
 
+    /// <summary>Parses the leading JSON object without requiring the input to end after it.</summary>
+    /// <param name="text">The input text, optionally starting with whitespace.</param>
+    /// <returns>The parsed object.</returns>
+    /// <exception cref="ParseException">The object parser reports failure.</exception>
     public static JsonObject Parse(string text)
     {
-        var result = Document.Parse(new Cursol(text));
-        if (result.IsSuccess)
-        {
-            return result.Parsed;
-        }
-        throw new ParseException();
+        var result = ParseDocument(text);
+        return result.IsSuccess ? result.Parsed : throw new ParseException();
     }
 
-    internal static ParseResult<JsonObject> ParseForValidation(string text)
+    /// <summary>Keeps the final cursor available for callers that verify full input consumption.</summary>
+    internal static ParseResult<JsonObject> ParseDocument(string text)
         => Document.Parse(new Cursol(text));
 }

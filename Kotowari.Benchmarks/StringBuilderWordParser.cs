@@ -1,8 +1,5 @@
 ﻿using Marimo.Kotowari.Core;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Text;
 
 namespace Marimo.Kotowari.Benchmarks;
@@ -12,7 +9,7 @@ internal sealed class StringBuilderWordParser(string word, bool ignoreCase, Pars
 {
     protected override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out string parsed)
     {
-        var current = SkipBlankAsync(start);
+        var current = SkipWhiteSpace(start);
         var returnValue = new StringBuilder();
         foreach (var parser in Parsers)
         {
@@ -27,7 +24,7 @@ internal sealed class StringBuilderWordParser(string word, bool ignoreCase, Pars
             returnValue.Append(childParsed);
         }
 
-        current = SkipBlankAsync(current);
+        current = SkipWhiteSpace(current);
         next = current;
         parsed = returnValue.ToString();
         return true;

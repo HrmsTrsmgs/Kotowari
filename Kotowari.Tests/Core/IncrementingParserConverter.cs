@@ -1,9 +1,5 @@
 ﻿using Marimo.Kotowari.Core;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Marimo.Kotowari.Tests.Core;
 
 // 継承元ごとのTryParseCoreを呼ぶことで、外部派生型のフォールバックを観測する。

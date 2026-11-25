@@ -7,7 +7,7 @@
 ## 運用と記録の置き場所
 
 仕様を必要時に質問し、重要な合意を記録し、中断時に次の着手点を残す。
-更新の基準と事実・推測の区別は、[共通指示の「仕様の確認と継続記録」](ai-instructions/common.md#仕様の確認と継続記録)に従う。
+更新の基準と事実・推測の区別は、[共通指示の「仕様・判断と再開記録」](ai-instructions/common.md#仕様判断と再開記録)に従う。
 
 | 残す内容 | 置き場所 |
 |---|---|
@@ -138,7 +138,7 @@ JSON移植では参照元の最新版を基準とし、実際に追従・検証�
 
 しかし、参照元の[上記コミットのGet](https://github.com/IanWold/SpracheJson/blob/aa8092aa4f5a7f1675200ac908d20c06e285aec4/SpracheJson/SyntaxTree/JsonLiteral.cs)も、ソース上は `Convert.ToDouble(Value)` を使っている。これは移植で新たに生じた違いを直す修正ではなく、参照元にはない仕様を片側だけに追加するものだった。ユーザー確認後、実装とその独自仕様を要求するテストを未コミットのまま取り下げた。
 
-さらに、現在の[計時対象](../Kotowari.Benchmarks/JsonParserBenchmarks.cs)はParseによる解析結果の生成であり、Getやオブジェクトへのマッピングは呼んでいない。Getは[JsonMap](../JsonParser/JsonMap.cs)が使う値変換の補助機能である。「数値の字句を解析してValueに保持する処理」と「Getでdoubleへ変換する処理」は別であり、今回の変更は速度比較の処理を改善するものでもなかった。
+さらに、[計時対象](../Kotowari.Benchmarks/JsonParserBenchmarks.cs)はParseによる解析結果の生成であり、Getやオブジェクトへのマッピングは呼んでいない。Getはマッピングで使う値変換の補助機能である（当時は `JsonMap`、現在は [JsonMapper](../JsonParser/JsonMapper.cs)）。「数値の字句を解析してValueに保持する処理」と「Getでdoubleへ変換する処理」は別であり、今回の変更は速度比較の処理を改善するものでもなかった。
 
 採用しなかったのは「JSONとして一般に正しそうだから、片側のGetだけを直す」進め方である。不足する確認を両側に追加することや、将来の参照元変更へ追従することまで否定したものではない。R04の観測事実は[候補一覧](../ai-notes/development-candidates.md#r04json数値の取得結果が実行カルチャーで変わる)に残す。
 

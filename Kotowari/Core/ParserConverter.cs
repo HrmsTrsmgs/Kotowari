@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Marimo.Kotowari.Core;
 
-public class ParserConverter<U, T> : Parser<T>
+/// <summary>子の成功値だけを変換し、子の成否と解析後のカーソルを保ちます。</summary>
+/// <param name="parser">変換前の値を返すパーサー。</param>
+/// <param name="converter">成功値を変換する関数。子が失敗した場合は呼ばれません。</param>
+public class ParserConverter<U, T>(Parser<U> parser, Func<U, T> converter) : Parser<T>
 {
-    Parser<U> Parser { get; }
-    Func<U, T> Converter { get; }
+    Parser<U> Parser { get; } = parser;
+    Func<U, T> Converter { get; } = converter;
 
-    public ParserConverter(Parser<U> parser, Func<U, T> converter)
-    {
-        Parser = parser;
-        Converter = converter;
-    }
-
+    /// <inheritdoc/>
     protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
     {
         if (!Parser.TryParseCore(start, out next, out var childParsed))

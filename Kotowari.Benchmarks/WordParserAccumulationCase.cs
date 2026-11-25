@@ -1,10 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using Marimo.Kotowari.Core;
-using System;
-using System.Linq;
-
-namespace Marimo.Kotowari.Benchmarks;
-
+﻿namespace Marimo.Kotowari.Benchmarks;
 
 public enum WordParserAccumulationCase
 {

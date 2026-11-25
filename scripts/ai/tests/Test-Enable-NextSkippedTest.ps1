@@ -3,7 +3,6 @@ $ErrorActionPreference = 'Stop'
 $scriptPath = Join-Path $PSScriptRoot '../Enable-NextSkippedTest.ps1'
 $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $fixtureRoot = Join-Path $repositoryRoot ('artifacts/skip-script-tests/' + [guid]::NewGuid().ToString('N'))
-$utf8 = [Text.UTF8Encoding]::new($false, $true)
 $passed = 0
 $failed = 0
 

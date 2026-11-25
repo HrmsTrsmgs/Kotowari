@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Marimo.Kotowari.Core;
 
-public class ZeroOrMoreParser<T> : Parser<IEnumerable<T>>
+/// <summary>子が失敗するまで成功値を順に集めます。最初から失敗しても空の列で成功し、停止した子のカーソルを返します。</summary>
+/// <param name="parser">反復するパーサー。成功した場合は入力位置を変える必要があります。</param>
+public class ZeroOrMoreParser<T>(Parser<T> parser) : Parser<IEnumerable<T>>
 {
-    Parser<T> Parser { get; }
-
-    public ZeroOrMoreParser(Parser<T> parser)
-        => Parser = parser;
+    Parser<T> Parser { get; } = parser;
 
     /// <summary>要素を繰り返し解析します。</summary>
     /// <exception cref="InvalidOperationException">要素パーサーが入力位置を進めずに成功した場合にスローされます。</exception>

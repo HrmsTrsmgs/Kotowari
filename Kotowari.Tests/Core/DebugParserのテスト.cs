@@ -1,9 +1,6 @@
 ﻿using FluentAssertions;
 using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -24,7 +21,7 @@ public class DebugParserのテスト
     }
 
     [Fact]
-    public void ParseAsyncは内部パーサーと同じように成功します()
+    public void 内部パーサーと同じように成功します()
     {
         var cursol = new Cursol("public");
         var parser = new CharParser('p');
@@ -36,7 +33,7 @@ public class DebugParserのテスト
         result.Parsed.Should().Be(expected.Parsed);
     }
     [Fact]
-    public void ParseAsyncは内部パーサーと同じように失敗します()
+    public void 内部パーサーと同じように失敗します()
     {
         var cursol = new Cursol("public");
         var parser = new CharParser('a');
@@ -52,7 +49,7 @@ public class DebugParserのテスト
     }
 
     [Fact]
-    public void ParseAsyncは指定したActionを呼びます()
+    public void 指定したアクションを呼びます()
     {
         bool isActioned = false;
         var cursol = new Cursol("public");

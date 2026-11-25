@@ -2,8 +2,6 @@
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -29,9 +27,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("abc")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("abc")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -39,9 +35,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var parsed = tested.Parse(new Cursol("abc")).Parsed;
-
-        parsed.Should().Be("abc");
+        tested.Parse(new Cursol("abc")).Parsed.Should().Be("abc");
     }
 
     [Fact]
@@ -52,16 +46,14 @@ public class OrParserのテスト
         var cursol = tested.Parse(new Cursol("abc")).Cursol;
 
         cursol.Index.Should().Be("abc".Length);
-   }
+    }
 
     [Fact]
     public void 一つ目の要素のパースに失敗し二つ目の要素には成功したら成功です()
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("ab")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("ab")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -69,9 +61,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var parsed = tested.Parse(new Cursol("ab")).Parsed;
-
-        parsed.Should().Be("ab");
+        tested.Parse(new Cursol("ab")).Parsed.Should().Be("ab");
     }
 
     [Fact]
@@ -89,9 +79,7 @@ public class OrParserのテスト
     {
         var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
 
-        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
-
-        isSuccess.Should().BeFalse();
+        tested.Parse(new Cursol("a")).IsSuccess.Should().BeFalse();
     }
 
     [Fact]

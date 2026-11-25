@@ -1,16 +1,13 @@
 ﻿using FluentAssertions;
-using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-public class 要素を3つ持つSeqenceParserのテスト
+public class 要素を3つ持つSequenceParserのテスト
 {
     [Fact]
     public void 間の子がnullで成功しても前後の値とともに保持します()

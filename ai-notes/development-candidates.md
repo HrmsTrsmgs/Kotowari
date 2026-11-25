@@ -131,7 +131,7 @@ doubleの精度・範囲をどこまで扱うかは、この誤変換の修正�
 **2026-11-05：Or・Sequenceは修正済み、JSONの指摘は撤回。** 以下に当初の指摘と対応を示す。
 
 * [Orテスト](../Kotowari.Tests/Core/OrParserのテスト.cs) 54～60行：「先頭失敗・2番目成功の値」が入力・期待値とも `abc` で、先頭候補の成功を見ている。`ab` へ直す候補。
-* [4要素Sequenceテスト](../Kotowari.Tests/Core/要素を4つ持つSeqenceParserのテスト.cs) 35～60行と5～10要素の同型ケース：`abc cd ...` では先頭の `ab` が接頭辞成功し、次の子で失敗する。単語内部の不一致に直す。2・3要素は修正済みなので重複追加しない。
+* [4要素Sequenceテスト](../Kotowari.Tests/Core/要素を4つ持つSequenceParserのテスト.cs) 35～60行と5～10要素の同型ケース：`abc cd ...` では先頭の `ab` が接頭辞成功し、次の子で失敗する。単語内部の不一致に直す。2・3要素は修正済みなので重複追加しない。
 * JSONテストへの「数字欠落という別の不正条件を含む」という指摘は撤回した。現在の参照元は整数部・小数部・指数部で `Digit.Many()` を用い、数字0桁を許すため、数字欠落を失敗理由とする根拠がない。5入力へ数字を補う未コミット変更は、ユーザー確認後に取り消した。一般JSON規格を比較用実装の仕様へ持ち込まない。
 
 件数を増やすのではなく、既存テストが想定した経路を確実に検証する。必要な代表ケースで短絡や子の呼び出し位置を確認する。
@@ -309,9 +309,7 @@ Sprache、Superpower、KotowariのJSONサンプルは出現ごとに生成する
 
 ### R15（P2）：本体ライブラリの最小利用例をREADMEへ追加する
 
-**提案。** [README](../README.md) はbuild/test/benchmarkが中心で、公開APIによる最小解析例、成功・失敗、残り入力の扱いがない。
-現在のAPIだけで短い例と参照方法を示し、JSONサンプルと本体の責務を区別する。
-利用例を書くためだけに公開APIを追加・変更しない。
+**2026-11-25：対応済み。** [READMEの利用例](../README.md#parse-a-sequence)で、既存の公開APIによる組み合わせ、成功値、残り入力と失敗時の扱いを示した。JSONサンプルと本体を区別し、APIは変更していない。
 
 ### R16（P3）：共有利用と異常値の契約を明確にする
 
@@ -327,13 +325,9 @@ Sprache、Superpower、KotowariのJSONサンプルは出現ごとに生成する
 
 ### R17（P3）：未実装の公開ToJsonと未使用JsonMapを整理する
 
-**静的確認＋用途判断。** [JsonObject](../JsonParser/JsonObject.cs) 63行、[JsonArray](../JsonParser/JsonArray.cs) 64行、[JsonLiteral](../JsonParser/JsonLiteral.cs) 84行のToJsonは必ずNotImplementedExceptionを投げる。
-出力も提供するのか、未対応APIを整理するのか決める。
+**参照元への同期でToJsonは実装済み（`cd1d294`）。** [同期の判断記録](../docs/development-context.md#最新版同期2026-11-05)のとおり、参照元の制約も維持する。
 
-[JsonMap](../JsonParser/JsonMap.cs) は内部・未使用で、現在のJson.Parseには影響しない。
-32行の `IsSubclassOf(typeof(IDictionary))` はinterface実装判定にならず、89行の条件は非配列IListを拒否し、数値写像は要求型によらずboxed doubleを返す。
-GetProperties/GetFieldsはinstance限定でなく、将来使うとstaticメンバーも書き換える経路がある。
-保持する理由を確認し、不要なら整理、使うなら対象型・副作用を限定してテストする。未公開経路の不具合を現行Parseの障害に数えない。
+**2026-11-25：旧 `JsonMap` は削除済み。** 現在の公開Mapは [JsonMapper](../JsonParser/JsonMapper.cs) を使用し、旧型は内部・呼び出し元なし。当時指摘した旧マッパーの型判定や反射処理は、現行Parse・Mapの障害ではない。旧コードは `git show cd1d294:JsonParser/JsonMap.cs` で確認できる。
 
 ### R18（P3）：解析失敗の診断情報を用途に応じて補う
 
@@ -365,13 +359,11 @@ trackedのCI/release workflowとパッケージ消費側のsmoke testは見当�
 
 ### R23（P3）：測定候補型のIgnoreCaseプロパティを実設定とそろえる
 
-**静的確認。** [WordParserAccumulationParser](../Kotowari.Benchmarks/WordParserAccumulationParser.cs) 13～14行で、子にはignoreCaseを渡すがプロパティには代入せず常にfalse。
-現在の解析動作は子の引数に従い、速度比較が壊れているという指摘ではない。未使用なら削除、必要なら初期化する小さな候補。
+**2026-11-25：対応済み。** [測定用の基底型](../Kotowari.Benchmarks/WordParserAccumulationParser.cs)の未使用プロパティだけを削除した。実際の照合を行う子に渡す `ignoreCase` はそのまま。
 
 ### R24（P3）：古い非同期名を実態に合わせる
 
-**静的確認。** 多くのテスト名にParseAsync、Word等の同期メソッド名にSkipBlankAsyncが残る。
-実際のAPIと失敗一覧が食い違うため、関連箇所を直す際に同期する候補。これだけで大規模な一括改名・整形を始めない。
+**2026-11-25：対応済み。** 同期APIを確認する29件のテスト名から `ParseAsync` を外し、測定用の同期メソッドを `SkipWhiteSpace` に改名した。入力・期待値・空白を読み飛ばす処理は変更していない。
 
 ## 維持する点・今回結論しないこと
 

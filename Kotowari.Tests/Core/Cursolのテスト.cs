@@ -1,9 +1,6 @@
 ﻿using FluentAssertions;
-using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;

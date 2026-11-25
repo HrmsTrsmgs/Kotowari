@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Marimo.Kotowari.Core;
+﻿namespace Marimo.Kotowari.Core;
 
 /// <summary>
 /// 子が成功したら、その値と消費位置を保って存在値で成功します。
@@ -15,6 +10,7 @@ public class OptionalParser<T>(Parser<T> parser) : Parser<Optional<T>>
 {
     Parser<T> Parser { get; } = parser;
 
+    /// <inheritdoc/>
     protected internal override bool TryParseCore(Cursol start, out Cursol next, out Optional<T> parsed)
     {
         var isSuccess = Parser.TryParseCore(start, out next, out var childParsed);
