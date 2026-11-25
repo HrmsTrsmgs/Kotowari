@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory)] [string] $Baseline,
     [Parameter(Mandatory)] [string] $Candidate,
     [Parameter(Mandatory)] [string] $OutputDirectory,
-    [switch] $ValidateOnly
+    [switch] $ValidateOnly,
+    [switch] $DotNetMigration
 )
 
 Set-StrictMode -Version Latest
@@ -23,6 +24,10 @@ function Get-CheckoutEvidence([string] $Root, [string] $Label) {
     try {
         $sha = git rev-parse --verify 'HEAD^{commit}'
         if ($LASTEXITCODE -ne 0 -or $sha -notmatch '^[0-9a-f]{40}$') { throw "Not a Git checkout: $Root" }
+        if ($DotNetMigration) {
+            $expected = @{ baseline = '6fc08f90af52b55bc6a99a8b11b86e1b5c2e0680'; candidate = '2c7bd11481ab5eb714a3278f0ebb51692225b8ca' }[$Label]
+            if ($sha -cne $expected) { throw "Dotnet migration mode only accepts $Label revision $expected; got $sha" }
+        }
         $sdk = dotnet --version
         if ($LASTEXITCODE -ne 0) { throw "Could not resolve the SDK in $Root" }
         Invoke-LoggedDotnet "$logs/dotnet-info.txt" @('--info')
@@ -78,6 +83,7 @@ $evidence = [ordered]@{
 }
 $evidence | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath "$output/comparison.json"
 foreach ($key in $evidence.Baseline.Keys) {
+    if ($DotNetMigration -and $key -in @('Sdk', 'Framework')) { continue }
     if ($key -ne 'Sha' -and $evidence.Baseline[$key] -cne $evidence.Candidate[$key]) {
         throw "Comparison refused: $key differs. See comparison.json."
     }
@@ -98,10 +104,19 @@ $rows = foreach ($pair in 1..4) {
                 '--outliers', 'DontRemove', '--affinity', "$mask", '--envVars', 'DOTNET_TieredPGO:1',
                 'DOTNET_ReadyToRun:0', '--exporters', 'json', '--artifacts', $run
             )
+            if ($DotNetMigration) {
+                $runtimeLines = @(Select-String -LiteralPath "$run/console.log" -Pattern '^// Runtime=(?<runtime>.+)$' | ForEach-Object { $_.Matches[0].Groups['runtime'].Value })
+                if ($runtimeLines.Count -ne 1 -or $runtimeLines[0] -notmatch '^\.NET (?<major>\d+)\.') {
+                    throw "Expected one BenchmarkDotNet child runtime line in $run/console.log"
+                }
+                $expectedMajor = if ($side -eq 'baseline') { 10 } else { 11 }
+                if ([int]$Matches.major -ne $expectedMajor) { throw "Expected .NET $expectedMajor child runtime for $side; got $($runtimeLines[0])" }
+                Set-Content -LiteralPath "$run/runtime.txt" -Value $runtimeLines[0]
+            }
         } finally {
             Pop-Location
         }
-        Read-GiantJsonRun $run $pair $side
+        Read-GiantJsonRun $run $pair $side -DotNetMigration:$DotNetMigration
     }
 }
-Write-GiantJsonSummary $output $rows $evidence
+Write-GiantJsonSummary $output $rows $evidence -DotNetMigration:$DotNetMigration

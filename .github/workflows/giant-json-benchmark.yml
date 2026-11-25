@@ -11,6 +11,11 @@ name: Giant JSON benchmark
         description: '比較先のコミットSHA（40桁）。空欄は選択したブランチ、同じSHAならA/A比較'
         type: string
         required: false
+      dotnet_migration:
+        description: '.NET 10 → .NET 11 migration pair only (6fc08f9 → 2c7bd11)'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -57,13 +62,22 @@ jobs:
           ref: ${{ env.CANDIDATE_SHA }}
           persist-credentials: false
 
-      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+      - name: Install baseline SDK for the migration comparison
+        if: ${{ inputs.dotnet_migration }}
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          global-json-file: baseline/global.json
+
+      - name: Install candidate SDK
+        uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           global-json-file: candidate/global.json
 
       - name: Verify the parses and measure four alternating pairs
         run: |
-          ./control/scripts/benchmarks/Compare-GiantJson.ps1 -Baseline baseline -Candidate candidate -OutputDirectory "$env:RUNNER_TEMP/json-results"
+          $arguments = @{ Baseline = 'baseline'; Candidate = 'candidate'; OutputDirectory = "$env:RUNNER_TEMP/json-results" }
+          if ('${{ inputs.dotnet_migration }}' -eq 'true') { $arguments.DotNetMigration = $true }
+          ./control/scripts/benchmarks/Compare-GiantJson.ps1 @arguments
           Get-Content -Raw -Encoding utf8 "$env:RUNNER_TEMP/json-results/summary.md" >> $env:GITHUB_STEP_SUMMARY
 
       - name: Save logs and results (including failed comparisons)
