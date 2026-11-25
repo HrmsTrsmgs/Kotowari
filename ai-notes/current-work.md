@@ -4,10 +4,13 @@
 
 ## 現在の作業状況
 
+**2026-11-26：C#版の完成を優先する。** 計画と進捗の正本は [Kotowari #10](https://github.com/HrmsTrsmgs/Kotowari/issues/10) と [GitHub Project](https://github.com/users/HrmsTrsmgs/projects/1)。次は同じ算術式文法を演算子とメソッドで書き、結果変換、失敗時の診断、Actionの実行条件を利用例で検討する。公開APIの名前や契約はまだ未確定。クラウド計時は別作業で、API設計の着手条件にしない。[Ruby版](https://github.com/HrmsTrsmgs/RubyParserCombinator/issues/1) は後続とする。
+
 **2026-11-25：全体リファクタリングを完了。** ブランチ `codex/validate-benchmark-exit`、基準 `d2bacf4`。本体のシーケンス、JSONサンプルと計時前の検証の責務を整理し、本体の公開APIの説明、未使用using、テストの名前・単純な検証句、CLI回帰の準備を整理した。上流原本、入力、パッケージは変更していない。
 
 * **検証：** .NET 11 Release非増分ビルド成功（既存NU1701のみ）、3スイート482件成功・Skip 0。厳格モードのApiCompatで本体の破壊的変更なし。本体のXMLコメントを一時生成する検証も警告0で成功。4 MB JSONの6パーサー検証、CLI回帰2本、Skip補助20件、READMEの利用例成功。formatの自作側に残る提案は、上流実装と比較器呼び出し回数を合わせているJSONサンプルのCA1854のみ。上流原本の502件は改変しない。今回の速度計測は行っていない。
-* **次回：** ローカルの `artifacts/refactor-review-20261125-162811/changed-files.md` にファイル一覧、同ディレクトリに検証ログあり。リファクタリングの追加作業は未選定。Kotowari用のGitHub Projectを確認できていないため、進捗はここに保持。
+* **取り込み・次回：** [PR #9](https://github.com/HrmsTrsmgs/Kotowari/pull/9) を `master` にマージ済み（`0b4b909`）。GitHub ProjectのR11を完了に更新した。ローカルの `artifacts/refactor-review-20261125-162811/changed-files.md` にファイル一覧、同ディレクトリに検証ログあり。リファクタリングの追加作業は未選定。
+* **.NET 10→11のクラウド計時：** 固定ペア `6fc08f9` → `2c7bd11`（計時コード・パッケージ指定・入力ソースは同一）。設定3ファイルを専用ブランチ `codex/dotnet-migration-benchmark` の `4127a7b` に保存・push済み、masterへは未取り込み。初回の[GitHub Actions実行](https://github.com/HrmsTrsmgs/Kotowari/actions/runs/45614610555)では .NET 10 の1起動を計時した後、.NET 11 側で BenchmarkDotNet 0.15.8 が `GetRuntimeVersion not implemented for NotRecognized` を出して停止したため比較不成立。Projectは進行中のまま。比較用チェックアウト両側だけを同じ.NET 11対応版のBenchmarkDotNetへそろえる案は未承認。元の作業ツリーには同じ計時設定の未コミット差分を保持している。
 
 ## 以前の空白処理の調査記録
 
