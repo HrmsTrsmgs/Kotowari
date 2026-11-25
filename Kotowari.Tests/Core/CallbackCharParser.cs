@@ -1,8 +1,6 @@
 ﻿using Marimo.Kotowari.Core;
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Marimo.Kotowari.Tests.Core;
 

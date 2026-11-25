@@ -1,16 +1,13 @@
 ﻿using FluentAssertions;
-using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-public class 要素を2つ持つSeqenceParserのテスト
+public class 要素を2つ持つSequenceParserのテスト
 {
     [Fact]
     public void 二つの子のnull成功値を保持します()
@@ -44,9 +41,7 @@ public class 要素を2つ持つSeqenceParserのテスト
     {
         var tested = new UpperCaseSequenceParser().WithWhiteSpace(new CharParser(' '));
 
-        var result = tested.Parse(new Cursol("ab!"));
-
-        result.Parsed.Should().Be(('A', 'B'));
+        tested.Parse(new Cursol("ab!")).Parsed.Should().Be(('A', 'B'));
     }
 
     static Parser<(string, string)> Tested

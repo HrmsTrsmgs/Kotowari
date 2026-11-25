@@ -11,7 +11,7 @@ public static class Program
     {
         if (args.Contains("--validate", StringComparer.Ordinal))
         {
-            JsonParserBenchmarks.ValidateAll();
+            Environment.ExitCode = JsonParserBenchmarks.ValidateAll() ? 0 : 1;
             return;
         }
 

@@ -1,15 +1,10 @@
 ﻿using FluentAssertions;
-using Marimo.Kotowari;
 using Marimo.Kotowari.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
 
-public class 要素を6つ持つSeqenceParserのテスト
+public class 要素を6つ持つSequenceParserのテスト
 {
     static Parser<(string, string, string, string, string, string)> Tested
         => new SequenceParser<string, string, string, string, string, string>(

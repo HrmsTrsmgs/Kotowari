@@ -3,8 +3,6 @@ using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -103,12 +101,11 @@ public class ZeroOrMoreParserのテスト
     }
 
     [Fact]
-    public void 一つ目の要素のパースに失敗しても成功です()        {
+    public void 一つ目の要素のパースに失敗しても成功です()
+    {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("b")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -126,9 +123,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var parsed = tested.Parse(new Cursol("b")).Parsed;
-
-        parsed.Should().BeEmpty();
+        tested.Parse(new Cursol("b")).Parsed.Should().BeEmpty();
     }
 
     [Fact]
@@ -136,9 +131,7 @@ public class ZeroOrMoreParserのテスト
     {
         var tested = new ZeroOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("a")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]

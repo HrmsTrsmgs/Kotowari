@@ -1,9 +1,5 @@
 ﻿using Marimo.Kotowari.Core;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Marimo.Kotowari.Tests.Core;
 
 // 外部派生型のTryParseCoreを通ることを観測する。

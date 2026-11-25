@@ -1,8 +1,6 @@
 ﻿using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Marimo.Kotowari.Benchmarks;
 
@@ -11,10 +9,9 @@ internal abstract class WordParserAccumulationParser(string word, bool ignoreCas
     : Parser<string>
 {
     protected Parser<char>[] Parsers { get; } = [.. word.Select(c => new CharParser(c, ignoreCase))];
-    public bool IgnoreCase { get; }
     Parser<char> WhiteSpace { get; } = whiteSpace ?? throw new ArgumentNullException(nameof(whiteSpace));
 
-    protected Cursol SkipBlankAsync(Cursol current)
+    protected Cursol SkipWhiteSpace(Cursol current)
     {
         while (true)
         {

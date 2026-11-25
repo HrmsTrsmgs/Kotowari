@@ -10,14 +10,6 @@ using JsonLiteral = SpracheJson.JsonLiteral;
 using JsonObject = SpracheJson.JsonObject;
 using LiteralType = SpracheJson.JsonLiteralType;
 using ParseException = Sprache.ParseException;
-#else
-using IJsonValue = Marimo.Parser.IJsonValue;
-using Json = Marimo.Parser.Json;
-using JsonArray = Marimo.Parser.JsonArray;
-using JsonLiteral = Marimo.Parser.JsonLiteral;
-using JsonObject = Marimo.Parser.JsonObject;
-using LiteralType = Marimo.Parser.LiteralType;
-using ParseException = Marimo.Parser.ParseException;
 #endif
 
 namespace Marimo.Parser.Test;
@@ -227,7 +219,7 @@ public class Jsonのテスト
     }
 
     [Fact]
-    public void nullを参照型へマップして返すことも拒否します()
+    public void 参照型へのマッピングでもnullは返せません()
     {
         var map = () => Json.Map<string>(new JsonLiteral("", LiteralType.Null) { Value = null });
 

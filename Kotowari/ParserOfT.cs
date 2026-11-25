@@ -1,13 +1,10 @@
 ﻿using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Marimo.Kotowari;
 
+/// <summary>カーソルの現在位置から解析し、成功時に <typeparamref name="T"/> の値を返すパーサーです。</summary>
 public abstract class Parser<T> : Parser
 {
     /// <summary>指定位置から解析し、成否、解析後のカーソル、および成功時の値を返します。</summary>
@@ -38,10 +35,13 @@ public abstract class Parser<T> : Parser
     public Parser<T> WithWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => new TrailingWhiteSpaceParser<TWhiteSpace>(WhiteSpaceSource, whiteSpace);
 
+    // 再指定は前の空白規則を重ねず、ラップする前の文法から組み立て直す。
     private protected virtual Parser<T> WhiteSpaceSource => this;
 
+    // 子の間にも空白を適用するコンビネーターだけが、構成し直した文法を返す。
     internal virtual Parser<T> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace) => this;
 
+    // 明示指定のある子はラッパー側で親の規則を退け、未指定の子だけが親の規則を引き継ぐ。
     internal virtual Parser<T> InheritWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace) => WithWhiteSpace(whiteSpace);
 
     sealed class TrailingWhiteSpaceParser<TWhiteSpace>(Parser<T> source, Parser<TWhiteSpace> whiteSpace) : Parser<T>
@@ -52,6 +52,7 @@ public abstract class Parser<T> : Parser
 
         internal override Parser<T> InheritWhiteSpace<TInheritedWhiteSpace>(Parser<TInheritedWhiteSpace> whiteSpace) => this;
 
+        /// <inheritdoc/>
         protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
         {
             if (!parser.TryParseCore(start, out next, out parsed))

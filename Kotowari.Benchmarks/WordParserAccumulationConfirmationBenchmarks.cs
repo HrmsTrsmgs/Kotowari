@@ -1,10 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
-using Marimo.Kotowari.Core;
-using System;
-using System.Linq;
 
 namespace Marimo.Kotowari.Benchmarks;
-
 
 [MemoryDiagnoser]
 public class WordParserAccumulationConfirmationBenchmarks : WordParserAccumulationBenchmarkBase

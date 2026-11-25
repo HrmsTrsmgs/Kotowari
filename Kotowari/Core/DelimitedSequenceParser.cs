@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace Marimo.Kotowari.Core;
 
-public class DelimitedSequenceParser<T, U> : Parser<IEnumerable<T>>
+/// <summary>区切りを挟む要素を順に集めます。要素がなければ空の列で成功し、最後の要素に続くだけの区切りは消費しません。</summary>
+/// <remarks>要素と区切りの一巡で、少なくとも一方が入力位置を変える必要があります。</remarks>
+/// <param name="sequence">結果に含める各要素を解析する子。</param>
+/// <param name="delimiter">隣り合う要素の間を解析する子。区切りの値は結果に含めません。</param>
+public class DelimitedSequenceParser<T, U>(Parser<T> sequence, Parser<U> delimiter) : Parser<IEnumerable<T>>
 {
-    Parser<T> Sequence { get; }
-    Parser<U> Delimiter { get; }
-    public DelimitedSequenceParser(Parser<T> sequence, Parser<U> delimiter)
-    {
-        Sequence = sequence;
-        Delimiter = delimiter;
-    }
+    Parser<T> Sequence { get; } = sequence;
+    Parser<U> Delimiter { get; } = delimiter;
 
     /// <summary>要素と区切りを交互に解析します。</summary>
     /// <exception cref="InvalidOperationException">要素と区切りの一巡で入力位置が進まずに成功した場合にスローされます。</exception>

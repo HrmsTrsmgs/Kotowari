@@ -1,10 +1,7 @@
 ﻿using FluentAssertions;
 using Marimo.Kotowari.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -143,9 +140,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("b")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]
@@ -167,9 +162,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var parsed = tested.Parse(new Cursol("b")).Parsed;
-
-        parsed.Should().BeEmpty();
+        tested.Parse(new Cursol("b")).Parsed.Should().BeEmpty();
     }
 
     [Fact]
@@ -179,9 +172,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("a")).IsSuccess.Should().BeTrue();
     }
     [Fact]
     public void 最初の要素のパースに成功すればカーソルが進みます()
@@ -201,9 +192,7 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var parsed = tested.Parse(new Cursol("a")).Parsed;
-
-        parsed.Should().Equal('a');
+        tested.Parse(new Cursol("a")).Parsed.Should().Equal('a');
     }
     [Fact]
     public void 区切り子で終わった場合は区切り子は読み込みません()
@@ -224,8 +213,6 @@ public class DelimitedSequenceParserのテスト
             new CharParser('a'),
             new CharParser(','));
 
-        var parsed = tested.Parse(new Cursol("a,a")).Parsed;
-
-        parsed.Should().Equal('a', 'a');
+        tested.Parse(new Cursol("a,a")).Parsed.Should().Equal('a', 'a');
     }
 }

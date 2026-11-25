@@ -3,8 +3,6 @@ using Marimo.Kotowari.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -124,12 +122,11 @@ public class OneOrMoreParserのテスト
     }
 
     [Fact]
-    public void 一つ目の要素のパースに失敗したら失敗です()        {
+    public void 一つ目の要素のパースに失敗したら失敗です()
+    {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(new Cursol("b")).IsSuccess;
-
-        isSuccess.Should().BeFalse();
+        tested.Parse(new Cursol("b")).IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -137,9 +134,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(new Cursol("a")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("a")).IsSuccess.Should().BeTrue();
     }
     [Fact]
     public void 一つ目の要素のパースに成功したら一つ目の要素のみが得られます()
@@ -189,9 +184,7 @@ public class OneOrMoreParserのテスト
     {
         var tested = new OneOrMoreParser<char>(new CharParser('a'));
 
-        var isSuccess = tested.Parse(new Cursol("ab")).IsSuccess;
-
-        isSuccess.Should().BeTrue();
+        tested.Parse(new Cursol("ab")).IsSuccess.Should().BeTrue();
     }
 
     [Fact]
