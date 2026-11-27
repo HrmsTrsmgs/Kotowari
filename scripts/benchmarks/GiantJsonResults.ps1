@@ -1,3 +1,7 @@
+$giantJsonPairs = 1..4
+$giantJsonSides = 'baseline', 'candidate'
+$giantJsonIterations = 1..5
+
 # BenchmarkDotNet may exit successfully without producing a valid measurement.
 function Read-GiantJsonRun([string] $Directory, [int] $Pair, [string] $Side) {
     $files = @(Get-ChildItem -LiteralPath "$Directory/results" -Filter '*-report-full-compressed.json' -File)
@@ -9,7 +13,8 @@ function Read-GiantJsonRun([string] $Directory, [int] $Pair, [string] $Side) {
     }
     $bench = $bench[0]
     $results = @($bench.Measurements | Where-Object { $_.IterationMode -eq 'Workload' -and $_.IterationStage -eq 'Result' })
-    if ($bench.Statistics.N -ne 5 -or ($results.IterationIndex -join ',') -ne '1,2,3,4,5' -or
+    if ($bench.Statistics.N -ne $giantJsonIterations.Count -or
+        ($results.IterationIndex -join ',') -ne ($giantJsonIterations -join ',') -or
         $null -eq $bench.Memory.BytesAllocatedPerOperation -or $bench.Memory.BytesAllocatedPerOperation -lt 0 -or
         $bench.Memory.TotalOperations -le 0) {
         throw "Incomplete workload or allocation results: $Directory"
@@ -30,8 +35,15 @@ function Read-GiantJsonRun([string] $Directory, [int] $Pair, [string] $Side) {
 }
 
 function Write-GiantJsonSummary([string] $Directory, [object[]] $Rows, $Evidence) {
-    if ($Rows.Count -ne 8 -or @($Rows.Environment | Sort-Object -Unique).Count -ne 1) {
-        throw 'Expected eight valid launches in the same environment.'
+    $pairCount = $giantJsonPairs.Count
+    $degreesOfFreedom = $pairCount - 1
+    $criticalValue = switch ($degreesOfFreedom) {
+        3 { 3.182446305 } # 95% paired t interval
+        default { throw "No 95% paired t critical value for $degreesOfFreedom degrees of freedom." }
+    }
+    $expectedLaunches = $pairCount * $giantJsonSides.Count
+    if ($Rows.Count -ne $expectedLaunches -or @($Rows.Environment | Sort-Object -Unique).Count -ne 1) {
+        throw "Expected $expectedLaunches valid launches in the same environment."
     }
     $Rows | ConvertTo-Json | Set-Content -LiteralPath "$Directory/launches.json"
     $kind = if ($Evidence.Baseline.Sha -eq $Evidence.Candidate.Sha) { 'A/A (same commit)' } else { 'A/B' }
@@ -46,7 +58,7 @@ function Write-GiantJsonSummary([string] $Directory, [object[]] $Rows, $Evidence
         ''
         '| Pair | Order | Baseline ms/parse | Candidate ms/parse | Baseline B/parse | Candidate B/parse |'
         '|---:|:---|---:|---:|---:|---:|'
-        foreach ($pair in 1..4) {
+        foreach ($pair in $giantJsonPairs) {
             $p = @($Rows | Where-Object Pair -eq $pair)
             $a = @($p | Where-Object Side -eq 'baseline')
             $b = @($p | Where-Object Side -eq 'candidate')
@@ -59,11 +71,11 @@ function Write-GiantJsonSummary([string] $Directory, [object[]] $Rows, $Evidence
     # Each adjacent pair of processes is one observation, not each iteration inside a process.
     $mean = ($logRatios | Measure-Object -Average).Average
     $squares = ($logRatios | ForEach-Object { [Math]::Pow($_ - $mean, 2) } | Measure-Object -Sum).Sum
-    $margin = 3.182446305 * [Math]::Sqrt($squares / 3 / 4) # 95% paired t interval, n=4, df=3
+    $margin = $criticalValue * [Math]::Sqrt($squares / $degreesOfFreedom / $pairCount)
     $summary += @(
         ''
-        ('Candidate/baseline time ratio (paired geometric mean): **{0:F3}**; approximate 95% interval **{1:F3}–{2:F3}** (4 pairs).' -f
-            [Math]::Exp($mean), [Math]::Exp($mean - $margin), [Math]::Exp($mean + $margin))
+        ('Candidate/baseline time ratio (paired geometric mean): **{0:F3}**; approximate 95% interval **{1:F3}–{2:F3}** ({3} pairs).' -f
+            [Math]::Exp($mean), [Math]::Exp($mean - $margin), [Math]::Exp($mean + $margin), $pairCount)
         'Below 1 means the candidate took less time. This is not a pass/fail threshold; compare only within this run.'
     )
     $summary | Set-Content -LiteralPath "$Directory/summary.md"

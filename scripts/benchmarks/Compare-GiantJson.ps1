@@ -84,8 +84,8 @@ foreach ($key in $evidence.Baseline.Keys) {
 }
 if ($ValidateOnly) { Write-Host 'Both revisions passed preflight; timing was not requested.'; return }
 
-$rows = foreach ($pair in 1..4) {
-    $order = if ($pair % 2) { 'baseline', 'candidate' } else { 'candidate', 'baseline' }
+$rows = foreach ($pair in $giantJsonPairs) {
+    $order = if ($pair % 2) { $giantJsonSides } else { $giantJsonSides[1], $giantJsonSides[0] }
     foreach ($side in $order) {
         $run = (New-Item -ItemType Directory -Path "$output/pair-$pair-$side").FullName
         Push-Location -LiteralPath $roots[$side]
@@ -94,7 +94,7 @@ $rows = foreach ($pair in 1..4) {
             $dll = "Kotowari.Benchmarks/bin/Release/$framework/Marimo.Kotowari.Benchmarks.dll"
             Invoke-LoggedDotnet "$run/console.log" @(
                 $dll, '--filter', '*JsonParserBenchmarks.Kotowari', '--launchCount', '1',
-                '--warmupCount', '4', '--iterationCount', '5', '--iterationTime', '250', '--unrollFactor', '1',
+                '--warmupCount', '4', '--iterationCount', "$($giantJsonIterations.Count)", '--iterationTime', '250', '--unrollFactor', '1',
                 '--outliers', 'DontRemove', '--affinity', "$mask", '--envVars', 'DOTNET_TieredPGO:1',
                 'DOTNET_ReadyToRun:0', '--exporters', 'json', '--artifacts', $run
             )
