@@ -6,6 +6,8 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class 要素を5つ持つSequenceParserのテスト
 {
+    const string SuccessInput = "ab cd ef gh ij";
+
     static Parser<(string, string, string, string, string)> Tested
         => new SequenceParser<string, string, string, string, string>(
             new WordParser("ab"),
@@ -17,19 +19,17 @@ public class 要素を5つ持つSequenceParserのテスト
     [Fact]
     public void 親に指定した空白規則で五つの単語を読み込み末尾まで進みます()
     {
-        var result = Tested.Parse(new Cursol("ab cd ef gh ij"));
+        var result = Tested.Parse(new Cursol(SuccessInput));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij"));
-        result.Cursol.Index.Should().Be("ab cd ef gh ij".Length);
+        result.Cursol.Index.Should().Be(SuccessInput.Length);
     }
 
+    public static TheoryData<string> FailedInputs => SequenceTestData.FailedInputs(SuccessInput);
+
     [Theory]
-    [InlineData("ax cd ef gh ij")]
-    [InlineData("ab cx ef gh ij")]
-    [InlineData("ab cd ex gh ij")]
-    [InlineData("ab cd ef gx ij")]
-    [InlineData("ab cd ef gh i")]
+    [MemberData(nameof(FailedInputs))]
     public void 親に空白規則を指定してもいずれかの単語が一致しなければ失敗します(string 入力)
     {
         Tested.Parse(new Cursol(入力)).IsSuccess.Should().BeFalse();
