@@ -2,6 +2,10 @@
 
 作業を区切る際に現在状況を置き換えます。確定仕様・判断は[判断記録](../docs/development-context.md)、調査・未確定事項は[開発候補](development-candidates.md)を正本とし、ここには再開に必要な参照と状態を残します。
 
+## MTP導入調査（2026-11-27）
+
+ブランチ `codex/microsoft-testing-platform`、基準 `af9482fef2887a55b0d671b745d6c71bb6333dd2`。了承済みのMTP v2とcoverlet.MTPを3テストプロジェクトへ導入し、READMEを更新。変更は未コミットでレビュー待ち。現行VSTestと変更後MTPはいずれもRelease全482件成功、Skip 0、既存NU1701警告あり。MTPのクラス指定21件成功、3プロジェクト別のTRXとCobertura出力を確認。Visual Studio 2026のテストエクスプローラーでも3プロジェクト482件成功。GitHub CLIの認証が無効でProjectの既存項目を確認・更新できず、再認証後に重複を照合し進行中へ反映する。次は差分レビューとProject照合。
+
 ## 現在の作業状況
 
 **2026-11-25：全体リファクタリングを完了。** ブランチ `codex/validate-benchmark-exit`、基準 `d2bacf4`。本体のシーケンス、JSONサンプルと計時前の検証の責務を整理し、本体の公開APIの説明、未使用using、テストの名前・単純な検証句、CLI回帰の準備を整理した。上流原本、入力、パッケージは変更していない。
