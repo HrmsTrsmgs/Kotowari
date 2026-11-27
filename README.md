@@ -31,6 +31,18 @@ dotnet build Kotowari.sln -c Release
 dotnet test Kotowari.sln -c Release
 ```
 
+The tests run on Microsoft.Testing.Platform. To run a single test class, use a fully qualified class name or a wildcard:
+
+```powershell
+dotnet test --project Kotowari.Tests/Marimo.Kotowari.Tests.csproj -c Release --filter-class '*Cursolのテスト'
+```
+
+To produce TRX and Cobertura reports for all three test projects, use separate per-project output directories:
+
+```powershell
+dotnet test --solution Kotowari.sln -c Release --results-directory TestResults --results-directory-layout per-module --report-xunit-trx --report-xunit-trx-filename results.trx --coverlet --coverlet-output-format cobertura
+```
+
 The test suites use xUnit v3 and Fluent Assertions. Fluent Assertions 8 is free for open-source and non-commercial use; commercial use requires a paid license. See the [Fluent Assertions license](https://fluentassertions.com/introduction#licensing).
 
 ## Benchmarks
