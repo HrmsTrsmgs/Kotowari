@@ -2,6 +2,14 @@
 
 作業を区切る際に現在状況を置き換えます。確定仕様・判断は[判断記録](../docs/development-context.md)、調査・未確定事項は[開発候補](development-candidates.md)を正本とし、ここには再開に必要な参照と状態を残します。
 
+## 実用上不要なエッジケースの整理（2026-11-28）
+
+[Projectの作業項目](https://github.com/users/HrmsTrsmgs/projects/1?pane=issue&itemId=320966699)。`codex/prune-unneeded-edge-cases`、基準 `2b894a7`。本体テスト3ファイルを整理し、製品コードと公開契約は変更していない。
+
+* カーソルでは未初期化値の例外型と、既存の終端・負位置と同じ経路の2入力を外した。正方向のオーバーフロー、実入力のNUL、空入力と終端、負位置は維持。Wordでは非nullableの単語引数へnullを渡す際のLINQ由来の引数名・例外順を外し、空白引数の明示された制約は維持。Orの不正文法での例外テストは外し、正常な候補で短絡を確認する既存ケースに置き換えた。
+* .NET SDK 11.0.100、MTP Releaseで、全493件から487件へ（本体295→289、JSONサンプルと上流対照は各99のまま）、失敗・Skipなし。Coverlet JSONの同じ分岐（メソッド・ILオフセット・パス）を3テストプロジェクトの各対象DLLで照合し、新たに未到達となった分岐・行は0。製品と参照の3 DLLは前後同じSHA-256。元から未到達の箇所は今回の削除根拠にせず、無進捗の反復防止・バッファ回収・対照JSONの仕様は残した。Releaseの解析付き非増分ビルド成功（既知NU1701のみ）。
+* 生結果は作業ツリーの `TestResults/edge-audit/{baseline-json,pruned-tests}`（ローカルのみ）。取り込み状況はProjectを参照。カバレッジを理由とした製品の追加削除は行わない。
+
 ## MTP導入調査（2026-11-27）
 
 ブランチ `codex/microsoft-testing-platform`、基準 `af9482fef2887a55b0d671b745d6c71bb6333dd2`。了承済みのMTP v2とcoverlet.MTPを3テストプロジェクトへ導入し、READMEを更新。変更は未コミットでレビュー待ち。現行VSTestと変更後MTPはいずれもRelease全482件成功、Skip 0、既存NU1701警告あり。MTPのクラス指定21件成功、3プロジェクト別のTRXとCobertura出力を確認。Visual Studio 2026のテストエクスプローラーでも3プロジェクト482件成功。GitHub CLIの認証が無効でProjectの既存項目を確認・更新できず、再認証後に重複を照合し進行中へ反映する。次は差分レビューとProject照合。

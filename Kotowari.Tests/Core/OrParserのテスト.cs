@@ -1,7 +1,5 @@
 ﻿using FluentAssertions;
 using Marimo.Kotowari.Core;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Marimo.Kotowari.Tests.Core;
@@ -31,11 +29,15 @@ public class OrParserのテスト
     }
 
     [Fact]
-    public void 一つ目の要素のパースに成功したら一つ目の要素が返ります()
+    public void 一つ目の要素のパースに成功したら後続候補を試さず一つ目の要素を返します()
     {
-        var tested = new OrParser<string>(new WordParser("abc"), new WordParser("ab"));
+        var secondWasTried = false;
+        var tested = new OrParser<string>(
+            new WordParser("abc"),
+            new DebugParser<string>(new WordParser("ab"), () => secondWasTried = true));
 
         tested.Parse(new Cursol("abc")).Parsed.Should().Be("abc");
+        secondWasTried.Should().BeFalse();
     }
 
     [Fact]
@@ -134,20 +136,6 @@ public class OrParserのテスト
 
         result.Parsed.Should().Equal('あ');
         result.Cursol.Index.Should().Be(1);
-    }
-
-    [Fact]
-    public void 後の候補の子がnullでも到達するまで例外を出しません()
-    {
-        var tested = new OrParser<IEnumerable<char>>(
-            new OneOrMoreParser<char>(new CharParser('a')),
-            new ZeroOrMoreParser<char>(null!));
-
-        tested.Parse(new Cursol("a!")).Parsed.Should().Equal('a');
-
-        Action parse = () => tested.Parse(new Cursol("b"));
-
-        parse.Should().Throw<NullReferenceException>();
     }
 
     [Fact]
