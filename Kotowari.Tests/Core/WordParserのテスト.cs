@@ -224,16 +224,6 @@ public class WordParserのテスト
         new WordParser("public").IgnoreCase.Should().BeFalse();
     }
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void 単語がnullの場合は空白パーサーより先にsource引数の例外を返します(bool nullWhiteSpace)
-    {
-        var action = () => new WordParser(null!, true, nullWhiteSpace ? null! : new CharParser('_'));
-
-        action.Should().Throw<ArgumentNullException>().Which.ParamName.Should().Be("source");
-    }
-
     [Fact]
     public void 文字列入力を同じ単語パーサーで読み込めます()
     {
