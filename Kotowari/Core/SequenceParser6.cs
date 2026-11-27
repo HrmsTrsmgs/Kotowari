@@ -20,18 +20,15 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6>(
     (Parser<T1>, Parser<T2>, Parser<T3>, Parser<T4>, Parser<T5>, Parser<T6>) Parsers { get; } = (parser1, parser2, parser3, parser4, parser5, parser6);
 
     Parser<(T1, T2, T3, T4, T5, T6)> Parser { get; } =
-        CreateParser(
-            parser1,
-            new SequenceParser<T2, T3, T4, T5, T6>(
-                parser2,
-                parser3,
-                parser4,
-                parser5,
-                parser6));
-
-    static Parser<(T1, T2, T3, T4, T5, T6)> CreateParser(Parser<T1> first, Parser<(T2, T3, T4, T5, T6)> remaining)
-        => new ParserConverter<(T1, (T2, T3, T4, T5, T6)), (T1, T2, T3, T4, T5, T6)>(
-            new SequenceParser<T1, (T2, T3, T4, T5, T6)>(first, remaining),
+        new ParserConverter<(T1, (T2, T3, T4, T5, T6)), (T1, T2, T3, T4, T5, T6)>(
+            new SequenceParser<T1, (T2, T3, T4, T5, T6)>(
+                parser1,
+                new SequenceParser<T2, T3, T4, T5, T6>(
+                    parser2,
+                    parser3,
+                    parser4,
+                    parser5,
+                    parser6)),
             tuple => (
                 tuple.Item1,
                 tuple.Item2.Item1,
@@ -40,35 +37,17 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6>(
                 tuple.Item2.Item4,
                 tuple.Item2.Item5));
 
-    internal static Parser<(T1, T2, T3, T4, T5, T6)> CreatePrepared<TWhiteSpace>(
-        Parser<T1> parser1,
-        Parser<T2> parser2,
-        Parser<T3> parser3,
-        Parser<T4> parser4,
-        Parser<T5> parser5,
-        Parser<T6> parser6,
-        Parser<TWhiteSpace> whiteSpace)
-        => CreateParser(
-            parser1.InheritWhiteSpace(whiteSpace),
-            SequenceParser<T2, T3, T4, T5, T6>.CreatePrepared(
-                parser2,
-                parser3,
-                parser4,
-                parser5,
-                parser6,
-                whiteSpace));
-
     internal override Parser<(T1, T2, T3, T4, T5, T6)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => GetType() == typeof(SequenceParser<T1, T2, T3, T4, T5, T6>)
-            ? CreatePrepared(
-                Parsers.Item1,
-                Parsers.Item2,
-                Parsers.Item3,
-                Parsers.Item4,
-                Parsers.Item5,
-                Parsers.Item6,
-                whiteSpace)
+            ? new SequenceParser<T1, T2, T3, T4, T5, T6>(
+                Parsers.Item1.InheritWhiteSpace(whiteSpace),
+                Parsers.Item2.InheritWhiteSpace(whiteSpace),
+                Parsers.Item3.InheritWhiteSpace(whiteSpace),
+                Parsers.Item4.InheritWhiteSpace(whiteSpace),
+                Parsers.Item5.InheritWhiteSpace(whiteSpace),
+                Parsers.Item6)
             : this;
+
     /// <inheritdoc/>
     protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2, T3, T4, T5, T6) parsed)
         => Parser.TryParseCore(start, out next, out parsed);
