@@ -523,6 +523,14 @@ public class Jsonのテスト
     }
 
     [Fact]
+    public void キーのエスケープ文字を識別します()
+    {
+        var result = Json.Parse("{\"\\\\\\\"\\b\\f\\n\\r\\t\":1}");
+
+        result["\\\"\b\f\n\r\t"].Should().BeOfType<JsonLiteral>().Which.Value.Should().Be("1");
+    }
+
+    [Fact]
     public void 文字列のエスケープ文字を識別します()
     {
         var result = Json.Parse("{\"a\":\"\\\\\\\"\\b\\f\\n\\r\\t\"}");

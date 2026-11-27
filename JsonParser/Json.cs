@@ -113,27 +113,22 @@ public class Json
                     + (tuple.Item3.IsPresent ? tuple.Item3.Value : ""),
                     LiteralType.Number)).WithWhiteSpace(WhiteSpace);
 
+    static Parser<char> Escaped(char encoded, char decoded)
+        => ParserConverter.Create(new CharParser(encoded), _ => decoded);
+
     static readonly Parser<char> ControlChar =
         new ParserConverter<(char, char), char>(
             new SequenceParser<char, char>(
                 BackSlash,
                 new OrParser<char>(
-                    DoubleQuote,
-                    BackSlash,
-                    new CharParser('b'),
-                    new CharParser('n'),
-                    new CharParser('f'),
-                    new CharParser('r'),
-                    new CharParser('t'))),
-            tuple => tuple.Item2 switch
-            {
-                'b' => '\b',
-                'n' => '\n',
-                'f' => '\f',
-                'r' => '\r',
-                't' => '\t',
-                var c => c
-            });
+                    Escaped('"', '"'),
+                    Escaped('\\', '\\'),
+                    Escaped('b', '\b'),
+                    Escaped('n', '\n'),
+                    Escaped('f', '\f'),
+                    Escaped('r', '\r'),
+                    Escaped('t', '\t'))),
+            tuple => tuple.Item2);
 
     // 固定2文字の除外をまとめ、通常文字ごとの候補走査と文字の再取得を省く。
     static readonly Parser<char> JChar =
