@@ -11,23 +11,20 @@ public class SequenceParser<T1, T2, T3>(
     Parser<T3> parser3)
     : Parser<(T1, T2, T3)>
 {
-    (Parser<T1>, Parser<T2>, Parser<T3>) Parsers { get; } = (parser1, parser2, parser3);
-
-    Parser<(T1, T2, T3)> Parser { get; } =
-        new ParserConverter<(T1, (T2, T3)), (T1, T2, T3)>(
-            new SequenceParser<T1, (T2, T3)>(
+    ParserConverter<(T1, (T2, T3)), (T1, T2, T3)> Parser { get; } =
+        ParserConverter.Create(
+            SequenceParser<T1, (T2, T3)>.CreateWithContinuation(
                 parser1,
-                new SequenceParser<T2, T3>(
-                    parser2,
-                    parser3)),
-            tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2));
+                SequenceParser.Create(parser2, parser3)),
+            static values =>
+            {
+                var (first, (second, third)) = values;
+                return (first, second, third);
+            });
 
     internal override Parser<(T1, T2, T3)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => GetType() == typeof(SequenceParser<T1, T2, T3>)
-            ? new SequenceParser<T1, T2, T3>(
-                Parsers.Item1.InheritWhiteSpace(whiteSpace),
-                Parsers.Item2.InheritWhiteSpace(whiteSpace),
-                Parsers.Item3)
+            ? Parser.PrepareSourceWhiteSpace(whiteSpace)
             : this;
 
     /// <inheritdoc/>

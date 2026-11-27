@@ -17,11 +17,9 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6>(
     Parser<T6> parser6)
     : Parser<(T1, T2, T3, T4, T5, T6)>
 {
-    (Parser<T1>, Parser<T2>, Parser<T3>, Parser<T4>, Parser<T5>, Parser<T6>) Parsers { get; } = (parser1, parser2, parser3, parser4, parser5, parser6);
-
-    Parser<(T1, T2, T3, T4, T5, T6)> Parser { get; } =
-        new ParserConverter<(T1, (T2, T3, T4, T5, T6)), (T1, T2, T3, T4, T5, T6)>(
-            new SequenceParser<T1, (T2, T3, T4, T5, T6)>(
+    ParserConverter<(T1, (T2, T3, T4, T5, T6)), (T1, T2, T3, T4, T5, T6)> Parser { get; } =
+        ParserConverter.Create(
+            SequenceParser<T1, (T2, T3, T4, T5, T6)>.CreateWithContinuation(
                 parser1,
                 new SequenceParser<T2, T3, T4, T5, T6>(
                     parser2,
@@ -29,23 +27,15 @@ public class SequenceParser<T1, T2, T3, T4, T5, T6>(
                     parser4,
                     parser5,
                     parser6)),
-            tuple => (
-                tuple.Item1,
-                tuple.Item2.Item1,
-                tuple.Item2.Item2,
-                tuple.Item2.Item3,
-                tuple.Item2.Item4,
-                tuple.Item2.Item5));
+            static values =>
+            {
+                var (first, (second, third, fourth, fifth, sixth)) = values;
+                return (first, second, third, fourth, fifth, sixth);
+            });
 
     internal override Parser<(T1, T2, T3, T4, T5, T6)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => GetType() == typeof(SequenceParser<T1, T2, T3, T4, T5, T6>)
-            ? new SequenceParser<T1, T2, T3, T4, T5, T6>(
-                Parsers.Item1.InheritWhiteSpace(whiteSpace),
-                Parsers.Item2.InheritWhiteSpace(whiteSpace),
-                Parsers.Item3.InheritWhiteSpace(whiteSpace),
-                Parsers.Item4.InheritWhiteSpace(whiteSpace),
-                Parsers.Item5.InheritWhiteSpace(whiteSpace),
-                Parsers.Item6)
+            ? Parser.PrepareSourceWhiteSpace(whiteSpace)
             : this;
 
     /// <inheritdoc/>

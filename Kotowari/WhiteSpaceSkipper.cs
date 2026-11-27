@@ -3,7 +3,7 @@ using System;
 
 namespace Marimo.Kotowari;
 
-/// <summary>後置空白を反復し、最後に空白の解析が成功した位置を保ちます。</summary>
+/// <summary>前置・後置に共通する空白の反復処理です。</summary>
 internal static class WhiteSpaceSkipper
 {
     /// <summary>空白が入力を消費して失敗した場合も、その失敗で進んだ位置は返しません。</summary>

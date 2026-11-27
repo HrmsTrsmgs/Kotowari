@@ -6,6 +6,8 @@ namespace Marimo.Kotowari.Tests.Core;
 
 public class 要素を9つ持つSequenceParserのテスト
 {
+    const string SuccessInput = "ab cd ef gh ij kl mn op qr";
+
     static Parser<(string, string, string, string, string, string, string, string, string)> Tested
         => new SequenceParser<string, string, string, string, string, string, string, string, string>(
             new WordParser("ab"),
@@ -21,23 +23,17 @@ public class 要素を9つ持つSequenceParserのテスト
     [Fact]
     public void 親に指定した空白規則で九つの単語を読み込み末尾まで進みます()
     {
-        var result = Tested.Parse(new Cursol("ab cd ef gh ij kl mn op qr"));
+        var result = Tested.Parse(new Cursol(SuccessInput));
 
         result.IsSuccess.Should().BeTrue();
         result.Parsed.Should().Be(("ab", "cd", "ef", "gh", "ij", "kl", "mn", "op", "qr"));
-        result.Cursol.Index.Should().Be("ab cd ef gh ij kl mn op qr".Length);
+        result.Cursol.Index.Should().Be(SuccessInput.Length);
     }
 
+    public static TheoryData<string> FailedInputs => SequenceTestData.FailedInputs(SuccessInput);
+
     [Theory]
-    [InlineData("ax cd ef gh ij kl mn op qr")]
-    [InlineData("ab cx ef gh ij kl mn op qr")]
-    [InlineData("ab cd ex gh ij kl mn op qr")]
-    [InlineData("ab cd ef gx ij kl mn op qr")]
-    [InlineData("ab cd ef gh ix kl mn op qr")]
-    [InlineData("ab cd ef gh ij kx mn op qr")]
-    [InlineData("ab cd ef gh ij kl mx op qr")]
-    [InlineData("ab cd ef gh ij kl mn ox qr")]
-    [InlineData("ab cd ef gh ij kl mn op q")]
+    [MemberData(nameof(FailedInputs))]
     public void 親に空白規則を指定してもいずれかの単語が一致しなければ失敗します(string 入力)
     {
         Tested.Parse(new Cursol(入力)).IsSuccess.Should().BeFalse();
