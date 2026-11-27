@@ -41,6 +41,36 @@ public class 要素を3つ持つSequenceParserのテスト
         result.Cursol.Index.Should().Be("public static int".Length);
     }
 
+    [Fact]
+    public void 空白規則は各子の後に一度ずつ適用されます()
+    {
+        var positions = new List<int>();
+        var whitespace = new CallbackCharParser((current, index) =>
+        {
+            positions.Add(index);
+            return (current == '_', current, 1);
+        });
+        var tested = SequenceParser.Create(new CharParser('a'), new CharParser('b'), new CharParser('c'))
+            .WithWhiteSpace(whitespace);
+
+        var result = tested.Parse(new Cursol("a_b_c_!"));
+
+        result.IsSuccess.Should().BeTrue();
+        result.Cursol.Index.Should().Be(6);
+        positions.Should().Equal(1, 2, 3, 4, 5, 6);
+    }
+
+    [Fact]
+    public void 末尾の入れ子には親の空白規則を継承させません()
+    {
+        var last = SequenceParser.Create(new CharParser('c'), new CharParser('d'));
+        var tested = SequenceParser.Create(new CharParser('a'), new CharParser('b'), last)
+            .WithWhiteSpace(new CharParser('_'));
+
+        tested.Parse(new Cursol("a_b_c_d")).IsSuccess.Should().BeFalse();
+        tested.Parse(new Cursol("a_b_cd_")).IsSuccess.Should().BeTrue();
+    }
+
     [Theory]
     [InlineData("publiac static int")]
     [InlineData("public statiac int")]

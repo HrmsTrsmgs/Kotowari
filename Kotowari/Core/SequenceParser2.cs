@@ -8,9 +8,14 @@ public class SequenceParser<T1, T2>(Parser<T1> parser1, Parser<T2> parser2) : Pa
 {
     (Parser<T1>, Parser<T2>) Parsers { get; } = (parser1, parser2);
 
+    internal static Parser<(T1, T2)> CreatePrepared<TWhiteSpace>(
+        Parser<T1> first,
+        Parser<T2> last,
+        Parser<TWhiteSpace> whiteSpace)
+        => new SequenceParser<T1, T2>(first.InheritWhiteSpace(whiteSpace), last);
     internal override Parser<(T1, T2)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => GetType() == typeof(SequenceParser<T1, T2>)
-            ? new SequenceParser<T1, T2>(Parsers.Item1.InheritWhiteSpace(whiteSpace), Parsers.Item2)
+            ? CreatePrepared(Parsers.Item1, Parsers.Item2, whiteSpace)
             : this;
 
     /// <inheritdoc/>
