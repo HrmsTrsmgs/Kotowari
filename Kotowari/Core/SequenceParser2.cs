@@ -8,10 +8,20 @@ public class SequenceParser<T1, T2>(Parser<T1> parser1, Parser<T2> parser2) : Pa
 {
     (Parser<T1>, Parser<T2>) Parsers { get; } = (parser1, parser2);
 
+    bool HasContinuation { get; init; }
+
+    internal static SequenceParser<T1, T2> CreateWithContinuation(Parser<T1> first, Parser<T2> remaining)
+        => new(first, remaining) { HasContinuation = true };
+
     internal override Parser<(T1, T2)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
-        => GetType() == typeof(SequenceParser<T1, T2>)
-            ? new SequenceParser<T1, T2>(Parsers.Item1.InheritWhiteSpace(whiteSpace), Parsers.Item2)
-            : this;
+    {
+        if (GetType() != typeof(SequenceParser<T1, T2>)) return this;
+
+        var first = Parsers.Item1.InheritWhiteSpace(whiteSpace);
+        return HasContinuation
+            ? CreateWithContinuation(first, Parsers.Item2.PrepareWhiteSpace(whiteSpace))
+            : new SequenceParser<T1, T2>(first, Parsers.Item2);
+    }
 
     /// <inheritdoc/>
     protected internal override bool TryParseCore(Cursol start, out Cursol next, out (T1, T2) parsed)

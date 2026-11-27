@@ -11,6 +11,10 @@ public class ParserConverter<U, T>(Parser<U> parser, Func<U, T> converter) : Par
     Parser<U> Parser { get; } = parser;
     Func<U, T> Converter { get; } = converter;
 
+    // 投影はそのままに、Sequenceの内部構造に空白規則を渡す。
+    internal ParserConverter<U, T> PrepareSourceWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
+        => new(Parser.PrepareWhiteSpace(whiteSpace), Converter);
+
     /// <inheritdoc/>
     protected internal override bool TryParseCore(Cursol start, out Cursol next, [MaybeNullWhen(false)] out T parsed)
     {

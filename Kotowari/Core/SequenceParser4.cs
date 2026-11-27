@@ -13,25 +13,23 @@ public class SequenceParser<T1, T2, T3, T4>(
     Parser<T4> parser4)
     : Parser<(T1, T2, T3, T4)>
 {
-    (Parser<T1>, Parser<T2>, Parser<T3>, Parser<T4>) Parsers { get; } = (parser1, parser2, parser3, parser4);
-
-    Parser<(T1, T2, T3, T4)> Parser { get; } =
-        new ParserConverter<(T1, (T2, T3, T4)), (T1, T2, T3, T4)>(
-            new SequenceParser<T1, (T2, T3, T4)>(
+    ParserConverter<(T1, (T2, T3, T4)), (T1, T2, T3, T4)> Parser { get; } =
+        ParserConverter.Create(
+            SequenceParser<T1, (T2, T3, T4)>.CreateWithContinuation(
                 parser1,
                 new SequenceParser<T2, T3, T4>(
                     parser2,
                     parser3,
                     parser4)),
-            tuple => (tuple.Item1, tuple.Item2.Item1, tuple.Item2.Item2, tuple.Item2.Item3));
+            static values =>
+            {
+                var (first, (second, third, fourth)) = values;
+                return (first, second, third, fourth);
+            });
 
     internal override Parser<(T1, T2, T3, T4)> PrepareWhiteSpace<TWhiteSpace>(Parser<TWhiteSpace> whiteSpace)
         => GetType() == typeof(SequenceParser<T1, T2, T3, T4>)
-            ? new SequenceParser<T1, T2, T3, T4>(
-                Parsers.Item1.InheritWhiteSpace(whiteSpace),
-                Parsers.Item2.InheritWhiteSpace(whiteSpace),
-                Parsers.Item3.InheritWhiteSpace(whiteSpace),
-                Parsers.Item4)
+            ? Parser.PrepareSourceWhiteSpace(whiteSpace)
             : this;
 
     /// <inheritdoc/>

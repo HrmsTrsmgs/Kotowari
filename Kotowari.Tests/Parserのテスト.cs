@@ -200,6 +200,68 @@ public class Parserのテスト
     }
 
     [Theory]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(6)]
+    [InlineData(7)]
+    [InlineData(8)]
+    [InlineData(9)]
+    [InlineData(10)]
+    public void 末尾の入れ子を開かず各境界で空白を読みます(int count)
+    {
+        var positions = new List<int>();
+        var whitespace = new CallbackCharParser((current, index) =>
+        {
+            positions.Add(index);
+            return (current == '_', current, 1);
+        });
+        var child = new CharParser('a');
+        var last = new SequenceParser<char, char>(new CharParser('b'), new CharParser('c'));
+        Func<Cursol, (bool IsSuccess, int Index)> Observe<T>(Parser<T> parser)
+            => start =>
+            {
+                var result = parser.Parse(start);
+                return (result.IsSuccess, result.Cursol.Index);
+            };
+
+        var tested = count switch
+        {
+            2 => Observe(new SequenceParser<char, (char, char)>(child, last).WithWhiteSpace(whitespace)),
+            3 => Observe(new SequenceParser<char, char, (char, char)>(child, child, last).WithWhiteSpace(whitespace)),
+            4 => Observe(new SequenceParser<char, char, char, (char, char)>(child, child, child, last).WithWhiteSpace(whitespace)),
+            5 => Observe(new SequenceParser<char, char, char, char, (char, char)>(child, child, child, child, last).WithWhiteSpace(whitespace)),
+            6 => Observe(new SequenceParser<char, char, char, char, char, (char, char)>(child, child, child, child, child, last).WithWhiteSpace(whitespace)),
+            7 => Observe(new SequenceParser<char, char, char, char, char, char, (char, char)>(child, child, child, child, child, child, last).WithWhiteSpace(whitespace)),
+            8 => Observe(new SequenceParser<char, char, char, char, char, char, char, (char, char)>(child, child, child, child, child, child, child, last).WithWhiteSpace(whitespace)),
+            9 => Observe(new SequenceParser<char, char, char, char, char, char, char, char, (char, char)>(child, child, child, child, child, child, child, child, last).WithWhiteSpace(whitespace)),
+            10 => Observe(new SequenceParser<char, char, char, char, char, char, char, char, char, (char, char)>(child, child, child, child, child, child, child, child, child, last).WithWhiteSpace(whitespace)),
+            _ => throw new ArgumentOutOfRangeException(nameof(count))
+        };
+        var prefix = string.Concat(System.Linq.Enumerable.Repeat("a_", count - 1));
+        var expectedPositions = new List<int>();
+        for (var i = 0; i < count - 1; i++)
+        {
+            expectedPositions.Add(2 * i + 1);
+            expectedPositions.Add(2 * i + 2);
+        }
+        expectedPositions.Add(2 * count);
+        expectedPositions.Add(2 * count + 1);
+
+        var success = tested(new Cursol(prefix + "bc_!"));
+
+        success.IsSuccess.Should().BeTrue();
+        success.Index.Should().Be(2 * count + 1);
+        positions.Should().Equal(expectedPositions);
+
+        var failure = tested(new Cursol(prefix + "b_c!"));
+
+        failure.IsSuccess.Should().BeFalse();
+        failure.Index.Should().Be(0);
+    }
+
+    [Theory]
     [InlineData("public-static_!", true, 14)]
     [InlineData("public-_static_!", false, 0)]
     public void 子が明示した空白規則は親の規則より優先されます(string input, bool isSuccess, int index)
